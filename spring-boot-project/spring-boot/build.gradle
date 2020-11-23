@@ -1,10 +1,42 @@
+import net.ltgt.gradle.errorprone.CheckSeverity;
+
+buildscript {
+	repositories {
+		mavenLocal()
+	}
+	dependencies {
+		classpath 'edu.ucr.cs.riple:NullAwayAutoFixer:1.0-SNAPSHOT'
+	}
+}
+
+
 plugins {
+	id 'java'
+	id("net.ltgt.errorprone") version "0.6"
 	id "java-library"
 	id "org.jetbrains.kotlin.jvm"
 	id "org.springframework.boot.conventions"
 	id "org.springframework.boot.configuration-properties"
 	id "org.springframework.boot.deployed"
 	id "org.springframework.boot.optional-dependencies"
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+apply plugin: 'edu.ucr.cs.riple.plugin'
+
+
+autoFixMode {
+	fixPath = "/tmp/NullAwayFix"
+	maximumRound = 20
+}
+
+annotationEditor {
+	remove = ["org.checkerframework.checker.nullness.qual.Nullable", "org.checkerframework.checker.nullness.qual.NonNull"]
+	subProjects = ["caffeine"]
 }
 
 description = "Spring Boot"
@@ -105,6 +137,12 @@ dependencies {
 		exclude group: "javax.annotation", module: "javax.annotation-api"
 		exclude group: "javax.xml.bind", module: "jaxb-api"
 	}
+
+	annotationProcessor "edu.ucr.cs.riple:nullaway:0.7.12-SNAPSHOT"
+
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	errorprone "com.google.errorprone:error_prone_core:2.3.2"
+	errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
 }
 
 compileKotlin {
@@ -121,4 +159,16 @@ compileTestKotlin {
 
 compileJava {
 	doLast new org.springframework.boot.build.log4j2.ReproducibleLog4j2PluginsDatAction()
+}
+
+tasks.withType(JavaCompile) {
+	// remove the if condition if you want to run NullAway on test code
+	if (!name.toLowerCase().contains("test")) {
+		options.errorprone.errorproneArgs += ["-XepDisableAllChecks",
+											  "-Xep:NullAway:ERROR",
+											  "-XepOpt:NullAway:AnnotatedPackages=org.springframework.boot",
+											  "-XepOpt:NullAway:AutoFix=true",
+											  "-XepDisableAllWarnings"]
+		options.compilerArgs << "-Xmaxerrs" << "100000"
+	}
 }

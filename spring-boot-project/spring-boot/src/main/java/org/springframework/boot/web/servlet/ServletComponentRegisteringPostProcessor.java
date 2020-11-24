@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,14 +34,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.web.context.WebApplicationContext;
 
-/**
- * {@link BeanFactoryPostProcessor} that registers beans for Servlet components found via
- * package scanning.
- *
- * @author Andy Wilkinson
- * @see ServletComponentScan
- * @see ServletComponentScanRegistrar
- */
 class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcessor, ApplicationContextAware {
 
 	private static final List<ServletComponentHandler> HANDLERS;
@@ -54,6 +48,7 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 
 	private final Set<String> packagesToScan;
 
+	@Nullable
 	private ApplicationContext applicationContext;
 
 	ServletComponentRegisteringPostProcessor(Set<String> packagesToScan) {

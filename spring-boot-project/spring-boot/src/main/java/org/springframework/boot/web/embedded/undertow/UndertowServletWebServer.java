@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import io.undertow.Handlers;
 import io.undertow.Undertow.Builder;
 import io.undertow.server.HttpHandler;
@@ -25,19 +27,6 @@ import org.springframework.boot.web.server.Compression;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link WebServer} that can be used to control an embedded Undertow server. Typically
- * this class should be created using {@link UndertowServletWebServerFactory} and not
- * directly.
- *
- * @author Ivan Sopov
- * @author Andy Wilkinson
- * @author Eddú Meléndez
- * @author Christoph Dreis
- * @author Kristine Jetzke
- * @since 2.0.0
- * @see UndertowServletWebServerFactory
- */
 public class UndertowServletWebServer extends UndertowWebServer {
 
 	private final String contextPath;
@@ -91,7 +80,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 	 */
 	@Deprecated
 	public UndertowServletWebServer(Builder builder, DeploymentManager manager, String contextPath,
-			boolean useForwardHeaders, boolean autoStart, Compression compression, String serverHeader) {
+			boolean useForwardHeaders, boolean autoStart, Compression compression, @Nullable String serverHeader) {
 		this(builder, UndertowWebServerFactoryDelegate.createHttpHandlerFactories(compression, useForwardHeaders,
 				serverHeader, null, new DeploymentManagerHttpHandlerFactory(manager)), contextPath, autoStart);
 	}
@@ -111,6 +100,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 		this.manager = findManager(httpHandlerFactories);
 	}
 
+	@Nullable
 	private DeploymentManager findManager(Iterable<HttpHandlerFactory> httpHandlerFactories) {
 		for (HttpHandlerFactory httpHandlerFactory : httpHandlerFactories) {
 			if (httpHandlerFactory instanceof DeploymentManagerHttpHandlerFactory) {
@@ -120,7 +110,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 		return null;
 	}
 
-	@Override
+	@Override@Nullable
 	protected HttpHandler createHttpHandler() {
 		HttpHandler handler = super.createHttpHandler();
 		if (StringUtils.hasLength(this.contextPath)) {

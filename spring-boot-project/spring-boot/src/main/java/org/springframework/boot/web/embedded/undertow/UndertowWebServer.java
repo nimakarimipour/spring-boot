@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -43,18 +45,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link WebServer} that can be used to control an Undertow web server. Usually this
- * class should be created using the {@link UndertowReactiveWebServerFactory} and not
- * directly.
- *
- * @author Ivan Sopov
- * @author Andy Wilkinson
- * @author Eddú Meléndez
- * @author Christoph Dreis
- * @author Brian Clozel
- * @since 2.0.0
- */
 public class UndertowWebServer implements WebServer {
 
 	private static final Log logger = LogFactory.getLog(UndertowWebServer.class);
@@ -69,12 +59,15 @@ public class UndertowWebServer implements WebServer {
 
 	private final boolean autoStart;
 
+	@Nullable
 	private Undertow undertow;
 
 	private volatile boolean started = false;
 
+	@Nullable
 	private volatile GracefulShutdownHandler gracefulShutdown;
 
+	@Nullable
 	private volatile List<Closeable> closeables;
 
 	/**
@@ -96,7 +89,7 @@ public class UndertowWebServer implements WebServer {
 	 * {@link #UndertowWebServer(io.undertow.Undertow.Builder, Iterable, boolean)}
 	 */
 	@Deprecated
-	public UndertowWebServer(Undertow.Builder builder, boolean autoStart, Closeable closeable) {
+	public UndertowWebServer(Undertow.Builder builder, boolean autoStart, @Nullable Closeable closeable) {
 		this(builder, Collections.singleton(new CloseableHttpHandlerFactory(closeable)), autoStart);
 	}
 
@@ -178,6 +171,7 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
+	@Nullable
 	protected HttpHandler createHttpHandler() {
 		HttpHandler handler = null;
 		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
@@ -226,6 +220,7 @@ public class UndertowWebServer implements WebServer {
 		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
 	}
 
+	@Nullable
 	private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
 		SocketAddress socketAddress = channel.getLocalAddress();
 		if (socketAddress instanceof InetSocketAddress) {
@@ -382,7 +377,7 @@ public class UndertowWebServer implements WebServer {
 
 		private final Closeable closeable;
 
-		private CloseableHttpHandlerFactory(Closeable closeable) {
+		private CloseableHttpHandlerFactory(@Nullable Closeable closeable) {
 			this.closeable = closeable;
 		}
 

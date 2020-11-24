@@ -16,25 +16,21 @@
 
 package org.springframework.boot.json;
 
+import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * Thin wrapper to adapt Jackson 2 {@link ObjectMapper} to {@link JsonParser}.
- *
- * @author Dave Syer
- * @since 1.0.0
- * @see JsonParserFactory
- */
 public class JacksonJsonParser extends AbstractJsonParser {
 
 	private static final MapTypeReference MAP_TYPE = new MapTypeReference();
 
 	private static final ListTypeReference LIST_TYPE = new ListTypeReference();
 
+	@Nullable
 	private ObjectMapper objectMapper; // Late binding
 
 	/**

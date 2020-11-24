@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -39,17 +41,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 
-/**
- * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
- * Extends {@link SpringConfigurationPropertySource} with full "relaxed" mapping support.
- * In order to use this adapter the underlying {@link PropertySource} must be fully
- * enumerable. A security restricted {@link SystemEnvironmentPropertySource} cannot be
- * adapted.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @see PropertyMapper
- */
 class SpringIterableConfigurationPropertySource extends SpringConfigurationPropertySource
 		implements IterableConfigurationPropertySource, CachingConfigurationPropertySource {
 
@@ -57,6 +48,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 	private final SoftReferenceConfigurationPropertyCache<Mappings> cache;
 
+	@Nullable
 	private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
 	SpringIterableConfigurationPropertySource(EnumerablePropertySource<?> propertySource, PropertyMapper... mappers) {
@@ -92,7 +84,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		return this.cache;
 	}
 
-	@Override
+	@Override@Nullable
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
@@ -193,14 +185,19 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private final boolean trackDescendants;
 
+		@Nullable
 		private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
 
+		@Nullable
 		private volatile Map<String, ConfigurationPropertyName> reverseMappings;
 
+		@Nullable
 		private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
+		@Nullable
 		private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
+		@Nullable
 		private volatile String[] lastUpdated;
 
 		Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
@@ -258,7 +255,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 					? reverseMappings.values().toArray(new ConfigurationPropertyName[0]) : null;
 		}
 
-		private <K, V> Map<K, V> cloneOrCreate(Map<K, V> source, int size) {
+		private <K, V> Map<K, V> cloneOrCreate(@Nullable Map<K, V> source, int size) {
 			return (source != null) ? new LinkedHashMap<>(source) : new LinkedHashMap<>(size);
 		}
 

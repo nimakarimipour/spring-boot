@@ -16,16 +16,11 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.origin.Origin;
 import org.springframework.util.Assert;
 
-/**
- * {@link ConfigDataNotFoundException} thrown when a {@link ConfigDataLocation} cannot be
- * found.
- *
- * @author Phillip Webb
- * @since 2.4.0
- */
 public class ConfigDataLocationNotFoundException extends ConfigDataNotFoundException {
 
 	private final ConfigDataLocation location;
@@ -43,7 +38,7 @@ public class ConfigDataLocationNotFoundException extends ConfigDataNotFoundExcep
 	 * @param location the location that could not be found
 	 * @param cause the exception cause
 	 */
-	public ConfigDataLocationNotFoundException(ConfigDataLocation location, Throwable cause) {
+	public ConfigDataLocationNotFoundException(ConfigDataLocation location, @Nullable Throwable cause) {
 		super(getMessage(location), cause);
 		Assert.notNull(location, "Location must not be null");
 		this.location = location;
@@ -57,7 +52,7 @@ public class ConfigDataLocationNotFoundException extends ConfigDataNotFoundExcep
 		return this.location;
 	}
 
-	@Override
+	@Override@Nullable
 	public Origin getOrigin() {
 		return Origin.from(this.location);
 	}

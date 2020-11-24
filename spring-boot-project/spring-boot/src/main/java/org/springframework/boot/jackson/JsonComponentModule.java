@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jackson;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -41,17 +43,9 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Spring Bean and Jackson {@link Module} to register {@link JsonComponent @JsonComponent}
- * annotated beans.
- *
- * @author Phillip Webb
- * @author Paul Aly
- * @since 1.4.0
- * @see JsonComponent
- */
 public class JsonComponentModule extends SimpleModule implements BeanFactoryAware, InitializingBean {
 
+	@Nullable
 	private BeanFactory beanFactory;
 
 	@Override

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.support;
 
+import javax.annotation.Nullable;
+
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -49,31 +51,9 @@ import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
-/**
- * An opinionated {@link WebApplicationInitializer} to run a {@link SpringApplication}
- * from a traditional WAR deployment. Binds {@link Servlet}, {@link Filter} and
- * {@link ServletContextInitializer} beans from the application context to the server.
- * <p>
- * To configure the application either override the
- * {@link #configure(SpringApplicationBuilder)} method (calling
- * {@link SpringApplicationBuilder#sources(Class...)}) or make the initializer itself a
- * {@code @Configuration}. If you are using {@link SpringBootServletInitializer} in
- * combination with other {@link WebApplicationInitializer WebApplicationInitializers} you
- * might also want to add an {@code @Ordered} annotation to configure a specific startup
- * order.
- * <p>
- * Note that a WebApplicationInitializer is only needed if you are building a war file and
- * deploying it. If you prefer to run an embedded web server then you won't need this at
- * all.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @since 2.0.0
- * @see #configure(SpringApplicationBuilder)
- */
 public abstract class SpringBootServletInitializer implements WebApplicationInitializer {
 
+	@Nullable
 	protected Log logger; // Don't initialize early
 
 	private boolean registerErrorPageFilter = true;
@@ -173,6 +153,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 		return (WebApplicationContext) application.run();
 	}
 
+	@Nullable
 	private ApplicationContext getExistingRootWebApplicationContext(ServletContext servletContext) {
 		Object context = servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 		if (context instanceof ApplicationContext) {

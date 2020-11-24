@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,13 +28,6 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 
-/**
- * Exception thrown if an invalid property is found when processing config data.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.4.0
- */
 public class InvalidConfigDataPropertyException extends ConfigDataException {
 
 	private static final Map<ConfigurationPropertyName, ConfigurationPropertyName> WARNING;
@@ -49,8 +44,8 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 
 	private final ConfigDataResource location;
 
-	InvalidConfigDataPropertyException(ConfigurationProperty property, ConfigurationPropertyName replacement,
-			ConfigDataResource location) {
+	InvalidConfigDataPropertyException(@Nullable ConfigurationProperty property, ConfigurationPropertyName replacement,
+			@Nullable ConfigDataResource location) {
 		super(getMessage(property, replacement, location), null);
 		this.property = property;
 		this.replacement = replacement;
@@ -103,8 +98,8 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 		}
 	}
 
-	private static String getMessage(ConfigurationProperty property, ConfigurationPropertyName replacement,
-			ConfigDataResource location) {
+	private static String getMessage(@Nullable ConfigurationProperty property, ConfigurationPropertyName replacement,
+			@Nullable ConfigDataResource location) {
 		StringBuilder message = new StringBuilder("Property '");
 		message.append(property.getName());
 		if (location != null) {

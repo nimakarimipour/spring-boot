@@ -16,33 +16,14 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.util.function.Supplier;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 
-/**
- * A simple object registry that is available during startup and {@link Environment}
- * post-processing up to the point that the {@link ApplicationContext} is prepared.
- * <p>
- * Can be used to register instances that may be expensive to create, or need to be shared
- * before the {@link ApplicationContext} is available.
- * <p>
- * The registry uses {@link Class} as a key, meaning that only a single instance of a
- * given type can be stored.
- * <p>
- * The {@link #addCloseListener(ApplicationListener)} method can be used to add a listener
- * that can perform actions when {@link BootstrapContext} has been closed and the
- * {@link ApplicationContext} is fully prepared. For example, an instance may choose to
- * register itself as a regular Spring bean so that it is available for the application to
- * use.
- *
- * @author Phillip Webb
- * @since 2.4.0
- * @see BootstrapContext
- * @see ConfigurableBootstrapContext
- */
 public interface BootstrapRegistry {
 
 	/**
@@ -99,6 +80,7 @@ public interface BootstrapRegistry {
 		 * bootstrap instances.
 		 * @return the instance
 		 */
+		@Nullable
 		T get(BootstrapContext context);
 
 		/**

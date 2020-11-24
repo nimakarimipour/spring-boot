@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -66,20 +68,6 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 
-/**
- * {@link ServletWebServerFactory} that can be used to create
- * {@link UndertowServletWebServer}s.
- * <p>
- * Unless explicitly configured otherwise, the factory will create servers that listen for
- * HTTP requests on port 8080.
- *
- * @author Ivan Sopov
- * @author Andy Wilkinson
- * @author Marcos Barbero
- * @author Eddú Meléndez
- * @since 2.0.0
- * @see UndertowServletWebServer
- */
 public class UndertowServletWebServerFactory extends AbstractServletWebServerFactory
 		implements ConfigurableUndertowWebServerFactory, ResourceLoaderAware {
 
@@ -91,6 +79,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 	private Set<UndertowDeploymentInfoCustomizer> deploymentInfoCustomizers = new LinkedHashSet<>();
 
+	@Nullable
 	private ResourceLoader resourceLoader;
 
 	private boolean eagerFilterInit = true;
@@ -179,6 +168,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		this.delegate.setAccessLogPrefix(accessLogPrefix);
 	}
 
+	@Nullable
 	public String getAccessLogPrefix() {
 		return this.delegate.getAccessLogPrefix();
 	}
@@ -428,7 +418,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		return new CompositeResourceManager(managers.toArray(new ResourceManager[0]));
 	}
 
-	private File getCanonicalDocumentRoot(File docBase) {
+	private File getCanonicalDocumentRoot(@Nullable File docBase) {
 		try {
 			File root = (docBase != null) ? docBase : createTempDir("undertow-docbase");
 			return root.getCanonicalFile();
@@ -523,7 +513,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		public void close() throws IOException {
 		}
 
-		@Override
+		@Override@Nullable
 		public Resource getResource(String path) {
 			for (URL url : this.metaInfResourceJarUrls) {
 				URLResource resource = getMetaInfResource(url, path);
@@ -548,6 +538,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 		}
 
+		@Nullable
 		private URLResource getMetaInfResource(URL resourceJar, String path) {
 			try {
 				String urlPath = URLEncoder.encode(ENCODED_SLASH.matcher(path).replaceAll("/"), "UTF-8");
@@ -576,7 +567,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 			this.delegate = delegate;
 		}
 
-		@Override
+		@Override@Nullable
 		public Resource getResource(String path) throws IOException {
 			if (path.startsWith("/org/springframework/boot")) {
 				return null;

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -29,11 +31,6 @@ import org.eclipse.jetty.server.handler.gzip.GzipHandler;
 
 import org.springframework.boot.web.server.Compression;
 
-/**
- * Jetty {@code HandlerWrapper} static factory.
- *
- * @author Brian Clozel
- */
 final class JettyHandlerWrappers {
 
 	private JettyHandlerWrappers() {
@@ -52,7 +49,7 @@ final class JettyHandlerWrappers {
 		return handler;
 	}
 
-	static HandlerWrapper createServerHeaderHandlerWrapper(String header) {
+	static HandlerWrapper createServerHeaderHandlerWrapper(@Nullable String header) {
 		return new ServerHeaderHandler(header);
 	}
 
@@ -65,7 +62,7 @@ final class JettyHandlerWrappers {
 
 		private final String value;
 
-		ServerHeaderHandler(String value) {
+		ServerHeaderHandler(@Nullable String value) {
 			this.value = value;
 		}
 

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
@@ -29,11 +31,6 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
 
-/**
- * Handler for {@link WebFilter @WebFilter}-annotated classes.
- *
- * @author Andy Wilkinson
- */
 class WebFilterHandler extends ServletComponentHandler {
 
 	WebFilterHandler() {
@@ -66,6 +63,7 @@ class WebFilterHandler extends ServletComponentHandler {
 		return EnumSet.of(dispatcherTypes[0], Arrays.copyOfRange(dispatcherTypes, 1, dispatcherTypes.length));
 	}
 
+	@Nullable
 	private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
 		return (String) (StringUtils.hasText((String) attributes.get("filterName")) ? attributes.get("filterName")
 				: beanDefinition.getBeanClassName());

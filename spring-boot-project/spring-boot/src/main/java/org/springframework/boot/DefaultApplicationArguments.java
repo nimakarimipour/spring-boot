@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,12 +27,6 @@ import java.util.Set;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.util.Assert;
 
-/**
- * Default implementation of {@link ApplicationArguments}.
- *
- * @author Phillip Webb
- * @since 1.4.1
- */
 public class DefaultApplicationArguments implements ApplicationArguments {
 
 	private final Source source;
@@ -59,7 +55,7 @@ public class DefaultApplicationArguments implements ApplicationArguments {
 		return this.source.containsProperty(name);
 	}
 
-	@Override
+	@Override@Nullable
 	public List<String> getOptionValues(String name) {
 		List<String> values = this.source.getOptionValues(name);
 		return (values != null) ? Collections.unmodifiableList(values) : null;

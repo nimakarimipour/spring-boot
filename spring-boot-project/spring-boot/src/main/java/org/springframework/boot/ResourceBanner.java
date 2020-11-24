@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -39,14 +41,6 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
 
-/**
- * Banner implementation that prints from a source text {@link Resource}.
- *
- * @author Phillip Webb
- * @author Vedran Pavic
- * @author Toshiaki Maki
- * @since 1.2.0
- */
 public class ResourceBanner implements Banner {
 
 	private static final Log logger = LogFactory.getLog(ResourceBanner.class);
@@ -102,16 +96,18 @@ public class ResourceBanner implements Banner {
 		return versions;
 	}
 
+	@Nullable
 	protected String getApplicationVersion(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationVersion() : null;
 	}
 
+	@Nullable
 	protected String getBootVersion() {
 		return SpringBootVersion.getVersion();
 	}
 
-	private String getVersionString(String version, boolean format) {
+	private String getVersionString(@Nullable String version, boolean format) {
 		if (version == null) {
 			return "";
 		}
@@ -133,6 +129,7 @@ public class ResourceBanner implements Banner {
 		return new PropertySourcesPropertyResolver(sources);
 	}
 
+	@Nullable
 	protected String getApplicationTitle(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationTitle() : null;

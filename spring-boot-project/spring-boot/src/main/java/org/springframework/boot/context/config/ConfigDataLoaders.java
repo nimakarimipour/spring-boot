@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,12 +35,6 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 
-/**
- * A collection of {@link ConfigDataLoader} instances loaded via {@code spring.factories}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataLoaders {
 
 	private final Log logger;
@@ -102,7 +98,7 @@ class ConfigDataLoaders {
 		return loader.load(context, resource);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
 		ConfigDataLoader<R> result = null;
 		for (int i = 0; i < this.loaders.size(); i++) {

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.rsocket.netty;
 
+import javax.annotation.Nullable;
+
 import java.net.InetSocketAddress;
 import java.time.Duration;
 
@@ -28,13 +30,6 @@ import org.springframework.boot.rsocket.server.RSocketServer;
 import org.springframework.boot.rsocket.server.RSocketServerException;
 import org.springframework.util.Assert;
 
-/**
- * {@link RSocketServer} that is based on a Reactor Netty server. Usually this class
- * should be created using the {@link NettyRSocketServerFactory} and not directly.
- *
- * @author Brian Clozel
- * @since 2.2.0
- */
 public class NettyRSocketServer implements RSocketServer {
 
 	private static final Log logger = LogFactory.getLog(NettyRSocketServer.class);
@@ -43,15 +38,16 @@ public class NettyRSocketServer implements RSocketServer {
 
 	private final Duration lifecycleTimeout;
 
+	@Nullable
 	private CloseableChannel channel;
 
-	public NettyRSocketServer(Mono<CloseableChannel> starter, Duration lifecycleTimeout) {
+	public NettyRSocketServer(Mono<CloseableChannel> starter, @Nullable Duration lifecycleTimeout) {
 		Assert.notNull(starter, "starter must not be null");
 		this.starter = starter;
 		this.lifecycleTimeout = lifecycleTimeout;
 	}
 
-	@Override
+	@Override@Nullable
 	public InetSocketAddress address() {
 		if (this.channel != null) {
 			return this.channel.address();

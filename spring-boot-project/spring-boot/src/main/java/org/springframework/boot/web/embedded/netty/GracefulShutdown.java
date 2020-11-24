@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.netty;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 import java.util.function.Supplier;
 
@@ -26,17 +28,13 @@ import reactor.netty.DisposableServer;
 import org.springframework.boot.web.server.GracefulShutdownCallback;
 import org.springframework.boot.web.server.GracefulShutdownResult;
 
-/**
- * Handles Netty graceful shutdown.
- *
- * @author Andy Wilkinson
- */
 final class GracefulShutdown {
 
 	private static final Log logger = LogFactory.getLog(GracefulShutdown.class);
 
 	private final Supplier<DisposableServer> disposableServer;
 
+	@Nullable
 	private volatile Thread shutdownThread;
 
 	private volatile boolean shuttingDown;

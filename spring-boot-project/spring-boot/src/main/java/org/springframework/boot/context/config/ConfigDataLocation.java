@@ -16,23 +16,12 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.StringUtils;
 
-/**
- * A user specified location that can be {@link ConfigDataLocationResolver resolved} to
- * one or {@link ConfigDataResource config data resources}. A {@link ConfigDataLocation}
- * is a simple wrapper around a {@link String} value. The exact format of the value will
- * depend on the underlying technology, but is usually a URL like syntax consisting of a
- * prefix and path. For example, {@code crypt:somehost/somepath}.
- * <p>
- * Locations can be mandatory or {@link #isOptional() optional}. Optional locations are
- * prefixed with {@code optional:}.
- *
- * @author Phillip Webb
- * @since 2.4.0
- */
 public final class ConfigDataLocation implements OriginProvider {
 
 	/**
@@ -46,7 +35,7 @@ public final class ConfigDataLocation implements OriginProvider {
 
 	private final Origin origin;
 
-	private ConfigDataLocation(boolean optional, String value, Origin origin) {
+	private ConfigDataLocation(boolean optional, String value, @Nullable Origin origin) {
 		this.value = value;
 		this.optional = optional;
 		this.origin = origin;
@@ -124,7 +113,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @param origin the origin to set
 	 * @return a new {@link ConfigDataLocation} instance.
 	 */
-	ConfigDataLocation withOrigin(Origin origin) {
+	ConfigDataLocation withOrigin(@Nullable Origin origin) {
 		return new ConfigDataLocation(this.optional, this.value, origin);
 	}
 
@@ -134,6 +123,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @return a {@link ConfigDataLocation} instance or {@code null} if no location was
 	 * provided
 	 */
+	@Nullable
 	public static ConfigDataLocation of(String location) {
 		boolean optional = location != null && location.startsWith(OPTIONAL_PREFIX);
 		String value = (!optional) ? location : location.substring(OPTIONAL_PREFIX.length());

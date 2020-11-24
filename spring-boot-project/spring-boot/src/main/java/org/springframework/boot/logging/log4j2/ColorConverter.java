@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.log4j2;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +39,6 @@ import org.springframework.boot.ansi.AnsiElement;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
 
-/**
- * Log4j2 {@link LogEventPatternConverter} colors output using the {@link AnsiOutput}
- * class. A single option 'styling' can be provided to the converter, or if not specified
- * color styling will be picked based on the logging level.
- *
- * @author Vladimir Tsanev
- * @since 1.3.0
- */
 @Plugin(name = "color", category = PatternConverter.CATEGORY)
 @ConverterKeys({ "clr", "color" })
 public final class ColorConverter extends LogEventPatternConverter {
@@ -75,9 +69,9 @@ public final class ColorConverter extends LogEventPatternConverter {
 
 	private final List<PatternFormatter> formatters;
 
-	private final AnsiElement styling;
+	@Nullable private final AnsiElement styling;
 
-	private ColorConverter(List<PatternFormatter> formatters, AnsiElement styling) {
+	private ColorConverter(List<PatternFormatter> formatters, @Nullable AnsiElement styling) {
 		super("style", "style");
 		this.formatters = formatters;
 		this.styling = styling;
@@ -89,6 +83,7 @@ public final class ColorConverter extends LogEventPatternConverter {
 	 * @param options the options
 	 * @return a new instance, or {@code null} if the options are invalid
 	 */
+	@Nullable
 	public static ColorConverter newInstance(Configuration config, String[] options) {
 		if (options.length < 1) {
 			LOGGER.error("Incorrect number of options on style. Expected at least 1, received {}", options.length);

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,15 +36,6 @@ import org.springframework.boot.origin.TextResourceOrigin.Location;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
-/**
- * Class to load {@code .properties} files into a map of {@code String} -&gt;
- * {@link OriginTrackedValue}. Also supports expansion of {@code name[]=a,b,c} list style
- * values.
- *
- * @author Madhura Bhave
- * @author Phillip Webb
- * @author Thiago Hirata
- */
 class OriginTrackedPropertiesLoader {
 
 	private final Resource resource;
@@ -145,6 +138,7 @@ class OriginTrackedPropertiesLoader {
 		return buffer.toString();
 	}
 
+	@Nullable
 	private OriginTrackedValue loadValue(StringBuilder buffer, CharacterReader reader, boolean splitLists)
 			throws IOException {
 		buffer.setLength(0);
@@ -335,7 +329,7 @@ class OriginTrackedPropertiesLoader {
 
 		private final Map<String, OriginTrackedValue> values = new LinkedHashMap<>();
 
-		void put(String key, OriginTrackedValue value) {
+		void put(String key, @Nullable OriginTrackedValue value) {
 			if (!key.isEmpty()) {
 				this.values.put(key, value);
 			}

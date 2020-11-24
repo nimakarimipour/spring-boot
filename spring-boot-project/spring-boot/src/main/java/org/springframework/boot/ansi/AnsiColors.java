@@ -16,6 +16,8 @@
 
 package org.springframework.boot.ansi;
 
+import javax.annotation.Nullable;
+
 import java.awt.Color;
 import java.awt.color.ColorSpace;
 import java.util.Collections;
@@ -25,15 +27,6 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
-/**
- * Utility for working with {@link AnsiColor} in the context of {@link Color AWT Colors}.
- *
- * @author Craig Burke
- * @author Ruben Dijkstra
- * @author Phillip Webb
- * @author Michael Simons
- * @since 1.4.0
- */
 public final class AnsiColors {
 
 	private static final Map<AnsiElement, LabColor> ANSI_COLOR_MAP;
@@ -113,10 +106,12 @@ public final class AnsiColors {
 	 * @param color the AWT color
 	 * @return the closest ANSI color
 	 */
+	@Nullable
 	public AnsiElement findClosest(Color color) {
 		return findClosest(new LabColor(color));
 	}
 
+	@Nullable
 	private AnsiElement findClosest(LabColor color) {
 		AnsiElement closest = null;
 		double closestDistance = Float.MAX_VALUE;
@@ -147,7 +142,7 @@ public final class AnsiColors {
 			this((rgb != null) ? new Color(rgb) : null);
 		}
 
-		LabColor(Color color) {
+		LabColor(@Nullable Color color) {
 			Assert.notNull(color, "Color must not be null");
 			float[] lab = fromXyz(color.getColorComponents(XYZ_COLOR_SPACE, null));
 			this.l = lab[0];

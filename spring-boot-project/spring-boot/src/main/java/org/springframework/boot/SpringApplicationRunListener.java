@@ -16,23 +16,13 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
-/**
- * Listener for the {@link SpringApplication} {@code run} method.
- * {@link SpringApplicationRunListener}s are loaded via the {@link SpringFactoriesLoader}
- * and should declare a public constructor that accepts a {@link SpringApplication}
- * instance and a {@code String[]} of arguments. A new
- * {@link SpringApplicationRunListener} instance will be created for each run.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @since 1.0.0
- */
 public interface SpringApplicationRunListener {
 
 	/**
@@ -118,7 +108,7 @@ public interface SpringApplicationRunListener {
 	 * @param exception the failure
 	 * @since 2.0.0
 	 */
-	default void failed(ConfigurableApplicationContext context, Throwable exception) {
+	default void failed(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 	}
 
 }

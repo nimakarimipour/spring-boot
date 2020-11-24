@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -45,16 +47,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 
-/**
- * Banner implementation that prints ASCII art generated from an image resource
- * {@link Resource}.
- *
- * @author Craig Burke
- * @author Phillip Webb
- * @author Madhura Bhave
- * @author Raja Kolli
- * @since 1.4.0
- */
 public class ImageBanner implements Banner {
 
 	private static final String PROPERTY_PREFIX = "spring.banner.image.";
@@ -120,7 +112,7 @@ public class ImageBanner implements Banner {
 		return (pixelMode != null) ? PixelMode.valueOf(pixelMode.trim().toUpperCase()) : PixelMode.TEXT;
 	}
 
-	private <T> T getProperty(Environment environment, String name, Class<T> targetType, T defaultValue) {
+	private <T> T getProperty(Environment environment, String name, Class<T> targetType, @Nullable T defaultValue) {
 		return environment.getProperty(PROPERTY_PREFIX + name, targetType, defaultValue);
 	}
 
@@ -167,6 +159,7 @@ public class ImageBanner implements Banner {
 		return (attribute != null) ? Integer.parseInt(attribute) * 10 : 0;
 	}
 
+	@Nullable
 	private static IIOMetadataNode findNode(IIOMetadataNode rootNode, String nodeName) {
 		if (rootNode == null) {
 			return null;

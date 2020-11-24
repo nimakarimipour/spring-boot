@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -28,12 +30,6 @@ import io.undertow.server.handlers.resource.URLResource;
 
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ResourceManager} for JAR resources.
- *
- * @author Ivan Sopov
- * @author Andy Wilkinson
- */
 class JarResourceManager implements ResourceManager {
 
 	private final String jarPath;
@@ -46,7 +42,7 @@ class JarResourceManager implements ResourceManager {
 		this.jarPath = jarPath;
 	}
 
-	@Override
+	@Override@Nullable
 	public Resource getResource(String path) throws IOException {
 		URL url = new URL("jar:file:" + this.jarPath + "!" + (path.startsWith("/") ? path : "/" + path));
 		URLResource resource = new URLResource(url, path);

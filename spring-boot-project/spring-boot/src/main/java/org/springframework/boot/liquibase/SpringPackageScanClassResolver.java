@@ -16,6 +16,8 @@
 
 package org.springframework.boot.liquibase;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 
 import liquibase.servicelocator.DefaultPackageScanClassResolver;
@@ -30,14 +32,6 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
-/**
- * Liquibase {@link PackageScanClassResolver} implementation that uses Spring's resource
- * scanning to locate classes. This variant is safe to use with Spring Boot packaged
- * executable JARs.
- *
- * @author Phillip Webb
- * @since 1.0.0
- */
 public class SpringPackageScanClassResolver extends DefaultPackageScanClassResolver {
 
 	private final Log logger;
@@ -70,6 +64,7 @@ public class SpringPackageScanClassResolver extends DefaultPackageScanClassResol
 		return resolver.getResources(pattern);
 	}
 
+	@Nullable
 	private Class<?> loadClass(ClassLoader loader, MetadataReaderFactory readerFactory, Resource resource) {
 		try {
 			MetadataReader reader = readerFactory.getMetadataReader(resource);

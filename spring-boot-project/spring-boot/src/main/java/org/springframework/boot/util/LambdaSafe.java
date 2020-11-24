@@ -16,6 +16,8 @@
 
 package org.springframework.boot.util;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Optional;
@@ -33,14 +35,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
-/**
- * Utility that can be used to invoke lambdas in a safe way. Primarily designed to help
- * support generically typed callbacks where {@link ClassCastException class cast
- * exceptions} need to be dealt with due to class erasure.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
 public final class LambdaSafe {
 
 	private static final Method CLASS_GET_MODULE;
@@ -367,7 +361,7 @@ public final class LambdaSafe {
 
 		private final R value;
 
-		private InvocationResult(R value) {
+		private InvocationResult(@Nullable R value) {
 			this.value = value;
 		}
 

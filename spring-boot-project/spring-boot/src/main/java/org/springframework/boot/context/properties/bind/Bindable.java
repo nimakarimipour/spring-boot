@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.util.List;
@@ -28,16 +30,6 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Source that can be bound by a {@link Binder}.
- *
- * @param <T> the source type
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- * @see Bindable#of(Class)
- * @see Bindable#of(ResolvableType)
- */
 public final class Bindable<T> {
 
 	private static final Annotation[] NO_ANNOTATIONS = {};
@@ -50,7 +42,7 @@ public final class Bindable<T> {
 
 	private final Annotation[] annotations;
 
-	private Bindable(ResolvableType type, ResolvableType boxedType, Supplier<T> value, Annotation[] annotations) {
+	private Bindable(ResolvableType type, ResolvableType boxedType, @Nullable Supplier<T> value, Annotation[] annotations) {
 		this.type = type;
 		this.boxedType = boxedType;
 		this.value = value;
@@ -95,7 +87,7 @@ public final class Bindable<T> {
 	 * @param type annotation type
 	 * @return the associated annotation or {@code null}
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	public <A extends Annotation> A getAnnotation(Class<A> type) {
 		for (Annotation annotation : this.annotations) {
 			if (type.isInstance(annotation)) {
@@ -147,7 +139,7 @@ public final class Bindable<T> {
 	 * @param annotations the annotations
 	 * @return an updated {@link Bindable}
 	 */
-	public Bindable<T> withAnnotations(Annotation... annotations) {
+	public Bindable<T> withAnnotations(@Nullable Annotation... annotations) {
 		return new Bindable<>(this.type, this.boxedType, this.value,
 				(annotations != null) ? annotations : NO_ANNOTATIONS);
 	}
@@ -170,7 +162,7 @@ public final class Bindable<T> {
 	 * @param suppliedValue the supplier for the value
 	 * @return an updated {@link Bindable}
 	 */
-	public Bindable<T> withSuppliedValue(Supplier<T> suppliedValue) {
+	public Bindable<T> withSuppliedValue(@Nullable Supplier<T> suppliedValue) {
 		return new Bindable<>(this.type, this.boxedType, suppliedValue, this.annotations);
 	}
 

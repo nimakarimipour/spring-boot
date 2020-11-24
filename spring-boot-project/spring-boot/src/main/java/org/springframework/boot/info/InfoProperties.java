@@ -16,6 +16,8 @@
 
 package org.springframework.boot.info;
 
+import javax.annotation.Nullable;
+
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,13 +27,6 @@ import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
 
-/**
- * Base class for components exposing unstructured data with dedicated methods for well
- * known keys.
- *
- * @author Stephane Nicoll
- * @since 1.4.0
- */
 public class InfoProperties implements Iterable<InfoProperties.Entry> {
 
 	private final Properties entries;
@@ -60,6 +55,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 	 * @param key the key of the property
 	 * @return the property value
 	 */
+	@Nullable
 	public Instant getInstant(String key) {
 		String s = get(key);
 		if (s != null) {

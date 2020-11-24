@@ -16,6 +16,8 @@
 
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -42,18 +44,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.StandardServletEnvironment;
 
-/**
- * An {@link EnvironmentPostProcessor} that parses JSON from
- * {@code spring.application.json} or equivalently {@code SPRING_APPLICATION_JSON} and
- * adds it as a map property source to the {@link Environment}. The new properties are
- * added with higher priority than the system properties.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Madhura Bhave
- * @author Artsiom Yudovin
- * @since 1.3.0
- */
 public class SpringApplicationJsonEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
 	/**
@@ -116,7 +106,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 		return result;
 	}
 
-	private void flatten(String prefix, Map<String, Object> result, Map<String, Object> map) {
+	private void flatten(@Nullable String prefix, Map<String, Object> result, Map<String, Object> map) {
 		String namePrefix = (prefix != null) ? prefix + "." : "";
 		map.forEach((key, value) -> extract(namePrefix + key, result, value));
 	}
@@ -210,6 +200,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 			return PropertySourceOrigin.get(this.propertySource, this.propertyName);
 		}
 
+		@Nullable
 		static JsonPropertyValue get(PropertySource<?> propertySource) {
 			for (String candidate : CANDIDATES) {
 				Object value = propertySource.getProperty(candidate);

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.task;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,19 +32,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-/**
- * Builder that can be used to configure and create a {@link TaskExecutor}. Provides
- * convenience methods to set common {@link ThreadPoolTaskExecutor} settings and register
- * {@link #taskDecorator(TaskDecorator)}). For advanced configuration, consider using
- * {@link TaskExecutorCustomizer}.
- * <p>
- * In a typical auto-configured Spring Boot application this builder is available as a
- * bean and can be injected whenever a {@link TaskExecutor} is needed.
- *
- * @author Stephane Nicoll
- * @author Filip Hrisafov
- * @since 2.1.0
- */
 public class TaskExecutorBuilder {
 
 	private final Integer queueCapacity;
@@ -317,7 +306,7 @@ public class TaskExecutorBuilder {
 		return taskExecutor;
 	}
 
-	private <T> Set<T> append(Set<T> set, Iterable<? extends T> additions) {
+	private <T> Set<T> append(@Nullable Set<T> set, Iterable<? extends T> additions) {
 		Set<T> result = new LinkedHashSet<>((set != null) ? set : Collections.emptySet());
 		additions.forEach(result::add);
 		return Collections.unmodifiableSet(result);

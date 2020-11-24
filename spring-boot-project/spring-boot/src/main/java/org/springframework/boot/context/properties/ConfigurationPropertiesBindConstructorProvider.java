@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 
 import org.springframework.beans.BeanUtils;
@@ -25,22 +27,16 @@ import org.springframework.core.KotlinDetector;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
 
-/**
- * {@link BindConstructorProvider} used when binding
- * {@link ConfigurationProperties @ConfigurationProperties}.
- *
- * @author Madhura Bhave
- * @author Phillip Webb
- */
 class ConfigurationPropertiesBindConstructorProvider implements BindConstructorProvider {
 
 	static final ConfigurationPropertiesBindConstructorProvider INSTANCE = new ConfigurationPropertiesBindConstructorProvider();
 
-	@Override
+	@Override@Nullable
 	public Constructor<?> getBindConstructor(Bindable<?> bindable, boolean isNestedConstructorBinding) {
 		return getBindConstructor(bindable.getType().resolve(), isNestedConstructorBinding);
 	}
 
+	@Nullable
 	Constructor<?> getBindConstructor(Class<?> type, boolean isNestedConstructorBinding) {
 		if (type == null) {
 			return null;
@@ -52,6 +48,7 @@ class ConfigurationPropertiesBindConstructorProvider implements BindConstructorP
 		return constructor;
 	}
 
+	@Nullable
 	private Constructor<?> findConstructorBindingAnnotatedConstructor(Class<?> type) {
 		if (isKotlinType(type)) {
 			Constructor<?> constructor = BeanUtils.findPrimaryConstructor(type);
@@ -62,6 +59,7 @@ class ConfigurationPropertiesBindConstructorProvider implements BindConstructorP
 		return findAnnotatedConstructor(type, type.getDeclaredConstructors());
 	}
 
+	@Nullable
 	private Constructor<?> findAnnotatedConstructor(Class<?> type, Constructor<?>... candidates) {
 		Constructor<?> constructor = null;
 		for (Constructor<?> candidate : candidates) {
@@ -81,6 +79,7 @@ class ConfigurationPropertiesBindConstructorProvider implements BindConstructorP
 				.isPresent(ConstructorBinding.class);
 	}
 
+	@Nullable
 	private Constructor<?> deduceBindConstructor(Class<?> type) {
 		if (isKotlinType(type)) {
 			return deducedKotlinBindConstructor(type);
@@ -92,6 +91,7 @@ class ConfigurationPropertiesBindConstructorProvider implements BindConstructorP
 		return null;
 	}
 
+	@Nullable
 	private Constructor<?> deducedKotlinBindConstructor(Class<?> type) {
 		Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(type);
 		if (primaryConstructor != null && primaryConstructor.getParameterCount() > 0) {

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.util;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,13 +35,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
-/**
- * Simple factory used to instantiate objects by injecting available parameters.
- *
- * @param <T> the type to instantiate
- * @author Phillip Webb
- * @since 2.4.0
- */
 public class Instantiator<T> {
 
 	private static final Comparator<Constructor<?>> CONSTRUCTOR_COMPARATOR = Comparator
@@ -118,6 +113,7 @@ public class Instantiator<T> {
 		throw new IllegalAccessException("Unable to find suitable constructor");
 	}
 
+	@Nullable
 	private Object[] getArgs(Class<?>[] parameterTypes) {
 		Object[] args = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {
@@ -130,6 +126,7 @@ public class Instantiator<T> {
 		return args;
 	}
 
+	@Nullable
 	private Function<Class<?>, Object> getAvailableParameter(Class<?> parameterType) {
 		for (Map.Entry<Class<?>, Function<Class<?>, Object>> entry : this.availableParameters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(parameterType)) {

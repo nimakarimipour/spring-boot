@@ -16,6 +16,8 @@
 
 package org.springframework.boot.security.reactive;
 
+import javax.annotation.Nullable;
+
 import java.util.function.Supplier;
 
 import reactor.core.publisher.Mono;
@@ -26,22 +28,11 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 
-/**
- * {@link ApplicationContext} backed {@link ServerWebExchangeMatcher}. Can work directly
- * with the {@link ApplicationContext}, obtain an existing bean or
- * {@link AutowireCapableBeanFactory#createBean(Class, int, boolean) create a new bean}
- * that is autowired in the usual way.
- *
- * @param <C> the type of the context that the match method actually needs to use. Can be
- * an {@link ApplicationContext} or a class of an {@link ApplicationContext#getBean(Class)
- * existing bean}.
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public abstract class ApplicationContextServerWebExchangeMatcher<C> implements ServerWebExchangeMatcher {
 
 	private final Class<? extends C> contextClass;
 
+	@Nullable
 	private volatile Supplier<C> context;
 
 	private final Object contextLock = new Object();

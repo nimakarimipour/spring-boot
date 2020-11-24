@@ -16,6 +16,8 @@
 
 package org.springframework.boot.webservices.client;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -27,19 +29,15 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
 
-/**
- * {@link WebServiceMessageSender} builder that can detect a suitable HTTP library based
- * on the classpath.
- *
- * @author Stephane Nicoll
- * @since 2.1.0
- */
 public class HttpWebServiceMessageSenderBuilder {
 
+	@Nullable
 	private Duration connectTimeout;
 
+	@Nullable
 	private Duration readTimeout;
 
+	@Nullable
 	private Supplier<ClientHttpRequestFactory> requestFactorySupplier;
 
 	/**

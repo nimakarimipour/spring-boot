@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,14 +41,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
-/**
- * Provides access to environment profiles that have either been set directly on the
- * {@link Environment} or will be set based on configuration data property values.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.4.0
- */
 public class Profiles implements Iterable<String> {
 
 	/**
@@ -91,6 +85,7 @@ public class Profiles implements Iterable<String> {
 				AbstractEnvironment.DEFAULT_PROFILES_PROPERTY_NAME, UNSET_DEFAULT));
 	}
 
+	@Nullable
 	private String[] get(Environment environment, Binder binder, Supplier<String[]> supplier, String propertyName,
 			Set<String> unset) {
 		String propertyValue = environment.getProperty(propertyName);
@@ -122,7 +117,7 @@ public class Profiles implements Iterable<String> {
 		return asUniqueItemList(StringUtils.toStringArray(expandedProfiles));
 	}
 
-	private List<String> asReversedList(List<String> list) {
+	private List<String> asReversedList(@Nullable List<String> list) {
 		if (list == null || list.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -131,11 +126,11 @@ public class Profiles implements Iterable<String> {
 		return Collections.unmodifiableList(reversed);
 	}
 
-	private List<String> asUniqueItemList(String[] array) {
+	private List<String> asUniqueItemList(@Nullable String[] array) {
 		return asUniqueItemList(array, null);
 	}
 
-	private List<String> asUniqueItemList(String[] array, Collection<String> additional) {
+	private List<String> asUniqueItemList(@Nullable String[] array, @Nullable Collection<String> additional) {
 		LinkedHashSet<String> uniqueItems = new LinkedHashSet<>(Arrays.asList(array));
 		if (!CollectionUtils.isEmpty(additional)) {
 			uniqueItems.addAll(additional);

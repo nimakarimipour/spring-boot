@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,18 +26,6 @@ import java.util.function.BiPredicate;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
 
-/**
- * {@link PropertyMapper} for system environment variables. Names are mapped by removing
- * invalid characters, converting to lower case and replacing "{@code _}" with
- * "{@code .}". For example, "{@code SERVER_PORT}" is mapped to "{@code server.port}". In
- * addition, numeric elements are mapped to indexes (e.g. "{@code HOST_0}" is mapped to
- * "{@code host[0]}").
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @see PropertyMapper
- * @see SpringConfigurationPropertySource
- */
 final class SystemEnvironmentPropertyMapper implements PropertyMapper {
 
 	public static final PropertyMapper INSTANCE = new SystemEnvironmentPropertyMapper();
@@ -120,6 +110,7 @@ final class SystemEnvironmentPropertyMapper implements PropertyMapper {
 		return legacyCompatibleName != null && legacyCompatibleName.isAncestorOf(candidate);
 	}
 
+	@Nullable
 	private ConfigurationPropertyName buildLegacyCompatibleName(ConfigurationPropertyName name) {
 		StringBuilder legacyCompatibleName = new StringBuilder();
 		for (int i = 0; i < name.getNumberOfElements(); i++) {

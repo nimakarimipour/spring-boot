@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,29 +40,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 
-/**
- * An {@link ApplicationListener} that saves application PID into file. This application
- * listener will be triggered exactly once per JVM, and the file name can be overridden at
- * runtime with a System property or environment variable named "PIDFILE" (or "pidfile")
- * or using a {@code spring.pid.file} property in the Spring {@link Environment}.
- * <p>
- * If PID file can not be created no exception is reported. This behavior can be changed
- * by assigning {@code true} to System property or environment variable named
- * {@code PID_FAIL_ON_WRITE_ERROR} (or "pid_fail_on_write_error") or to
- * {@code spring.pid.fail-on-write-error} property in the Spring {@link Environment}.
- * <p>
- * Note: access to the Spring {@link Environment} is only possible when the
- * {@link #setTriggerEventType(Class) triggerEventType} is set to
- * {@link ApplicationEnvironmentPreparedEvent}, {@link ApplicationReadyEvent}, or
- * {@link ApplicationPreparedEvent}.
- *
- * @author Jakub Kubrynski
- * @author Dave Syer
- * @author Phillip Webb
- * @author Tomasz Przybyla
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class ApplicationPidFileWriter implements ApplicationListener<SpringApplicationEvent>, Ordered {
 
 	private static final Log logger = LogFactory.getLog(ApplicationPidFileWriter.class);
@@ -163,6 +142,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		return Boolean.parseBoolean(value);
 	}
 
+	@Nullable
 	private String getProperty(SpringApplicationEvent event, List<Property> candidates) {
 		for (Property candidate : candidates) {
 			String value = candidate.getValue(event);
@@ -212,7 +192,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			this.key = key;
 		}
 
-		@Override
+		@Override@Nullable
 		public String getValue(SpringApplicationEvent event) {
 			Environment environment = getEnvironment(event);
 			if (environment == null) {
@@ -221,6 +201,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			return environment.getProperty(this.prefix + this.key);
 		}
 
+		@Nullable
 		private Environment getEnvironment(SpringApplicationEvent event) {
 			if (event instanceof ApplicationEnvironmentPreparedEvent) {
 				return ((ApplicationEnvironmentPreparedEvent) event).getEnvironment();
@@ -247,7 +228,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			this.properties = new String[] { name.toUpperCase(Locale.ENGLISH), name.toLowerCase(Locale.ENGLISH) };
 		}
 
-		@Override
+		@Override@Nullable
 		public String getValue(SpringApplicationEvent event) {
 			return SystemProperties.get(this.properties);
 		}

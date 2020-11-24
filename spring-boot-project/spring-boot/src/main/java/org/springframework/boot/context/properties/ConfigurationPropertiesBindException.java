@@ -16,22 +16,16 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.util.ClassUtils;
 
-/**
- * Exception thrown when {@link ConfigurationProperties @ConfigurationProperties} binding
- * fails.
- *
- * @author Phillip Webb
- * @author Stephane Nicoll
- * @since 2.0.0
- */
 public class ConfigurationPropertiesBindException extends BeanCreationException {
 
 	private final ConfigurationPropertiesBean bean;
 
-	ConfigurationPropertiesBindException(ConfigurationPropertiesBean bean, Exception cause) {
+	ConfigurationPropertiesBindException(@Nullable ConfigurationPropertiesBean bean, Exception cause) {
 		super(bean.getName(), getMessage(bean), cause);
 		this.bean = bean;
 	}

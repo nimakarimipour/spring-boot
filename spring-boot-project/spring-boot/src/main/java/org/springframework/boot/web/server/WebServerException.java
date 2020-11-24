@@ -16,16 +16,12 @@
 
 package org.springframework.boot.web.server;
 
-/**
- * Exceptions thrown by an web server.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
+import javax.annotation.Nullable;
+
 @SuppressWarnings("serial")
 public class WebServerException extends RuntimeException {
 
-	public WebServerException(String message, Throwable cause) {
+	public WebServerException(String message, @Nullable Throwable cause) {
 		super(message, cause);
 	}
 

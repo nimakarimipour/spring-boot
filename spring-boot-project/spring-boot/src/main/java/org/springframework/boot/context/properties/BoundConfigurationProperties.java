@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,13 +30,6 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
-/**
- * Bean to record and provide bound
- * {@link ConfigurationProperties @ConfigurationProperties}.
- *
- * @author Madhura Bhave
- * @since 2.3.0
- */
 public class BoundConfigurationProperties {
 
 	private Map<ConfigurationPropertyName, ConfigurationProperty> properties = new LinkedHashMap<>();
@@ -53,6 +48,7 @@ public class BoundConfigurationProperties {
 	 * @param name the property name
 	 * @return the bound property or {@code null}
 	 */
+	@Nullable
 	public ConfigurationProperty get(ConfigurationPropertyName name) {
 		return this.properties.get(name);
 	}
@@ -71,6 +67,7 @@ public class BoundConfigurationProperties {
 	 * @param context the context to search
 	 * @return a {@link BoundConfigurationProperties} or {@code null}
 	 */
+	@Nullable
 	public static BoundConfigurationProperties get(ApplicationContext context) {
 		if (!context.containsBeanDefinition(BEAN_NAME)) {
 			return null;

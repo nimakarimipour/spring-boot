@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -27,33 +29,10 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-/**
- * A {@link ServletContextInitializer} to register {@link DelegatingFilterProxy}s in a
- * Servlet 3.0+ container. Similar to the {@link ServletContext#addFilter(String, Filter)
- * registration} features provided by {@link ServletContext} but with a Spring Bean
- * friendly design.
- * <p>
- * The bean name of the actual delegate {@link Filter} should be specified using the
- * {@code targetBeanName} constructor argument. Unlike the {@link FilterRegistrationBean},
- * referenced filters are not instantiated early. In fact, if the delegate filter bean is
- * marked {@code @Lazy} it won't be instantiated at all until the filter is called.
- * <p>
- * Registrations can be associated with {@link #setUrlPatterns URL patterns} and/or
- * servlets (either by {@link #setServletNames name} or via a
- * {@link #setServletRegistrationBeans ServletRegistrationBean}s. When no URL pattern or
- * servlets are specified the filter will be associated to '/*'. The targetBeanName will
- * be used as the filter name if not otherwise specified.
- *
- * @author Phillip Webb
- * @since 1.4.0
- * @see ServletContextInitializer
- * @see ServletContext#addFilter(String, Filter)
- * @see FilterRegistrationBean
- * @see DelegatingFilterProxy
- */
 public class DelegatingFilterProxyRegistrationBean extends AbstractFilterRegistrationBean<DelegatingFilterProxy>
 		implements ApplicationContextAware {
 
+	@Nullable
 	private ApplicationContext applicationContext;
 
 	private final String targetBeanName;
@@ -94,6 +73,7 @@ public class DelegatingFilterProxyRegistrationBean extends AbstractFilterRegistr
 		};
 	}
 
+	@Nullable
 	private WebApplicationContext getWebApplicationContext() {
 		Assert.notNull(this.applicationContext, "ApplicationContext be injected");
 		Assert.isInstanceOf(WebApplicationContext.class, this.applicationContext);

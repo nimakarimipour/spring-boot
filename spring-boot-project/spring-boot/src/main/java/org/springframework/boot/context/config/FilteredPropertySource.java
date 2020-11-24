@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -23,13 +25,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
-/**
- * Internal {@link PropertySource} implementation used by
- * {@link ConfigFileApplicationListener} to filter out properties for specific operations.
- *
- * @author Phillip Webb
- * @deprecated since 2.4.0 along with {@link ConfigFileApplicationListener}
- */
 @Deprecated
 class FilteredPropertySource extends PropertySource<PropertySource<?>> {
 
@@ -40,7 +35,7 @@ class FilteredPropertySource extends PropertySource<PropertySource<?>> {
 		this.filteredProperties = filteredProperties;
 	}
 
-	@Override
+	@Override@Nullable
 	public Object getProperty(String name) {
 		if (this.filteredProperties.contains(name)) {
 			return null;

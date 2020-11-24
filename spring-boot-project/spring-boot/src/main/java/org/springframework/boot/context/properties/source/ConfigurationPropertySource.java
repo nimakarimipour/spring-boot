@@ -16,21 +16,13 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.function.Predicate;
 
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.PropertySource;
 
-/**
- * A source of {@link ConfigurationProperty ConfigurationProperties}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- * @see ConfigurationPropertyName
- * @see OriginTrackedValue
- * @see #getConfigurationProperty(ConfigurationPropertyName)
- */
 @FunctionalInterface
 public interface ConfigurationPropertySource {
 
@@ -40,7 +32,7 @@ public interface ConfigurationPropertySource {
 	 * @param name the name of the property (must not be {@code null})
 	 * @return the associated object or {@code null}.
 	 */
-	ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name);
+	ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name);
 
 	/**
 	 * Returns if the source contains any descendants of the specified name. May return
@@ -51,7 +43,7 @@ public interface ConfigurationPropertySource {
 	 * @param name the name to check
 	 * @return if the source contains any descendants
 	 */
-	default ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+	default ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		return ConfigurationPropertyState.UNKNOWN;
 	}
 
@@ -78,6 +70,7 @@ public interface ConfigurationPropertySource {
 	 * Return the underlying source that is actually providing the properties.
 	 * @return the underlying property source or {@code null}.
 	 */
+	@Nullable
 	default Object getUnderlyingSource() {
 		return null;
 	}
@@ -89,6 +82,7 @@ public interface ConfigurationPropertySource {
 	 * @return an adapted source or {@code null} {@link SpringConfigurationPropertySource}
 	 * @since 2.4.0
 	 */
+	@Nullable
 	static ConfigurationPropertySource from(PropertySource<?> source) {
 		if (source instanceof ConfigurationPropertySourcesPropertySource) {
 			return null;

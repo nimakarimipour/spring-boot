@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,18 +31,11 @@ import org.springframework.core.Conventions;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Base class for Servlet 3.0+ {@link javax.servlet.Registration.Dynamic dynamic} based
- * registration beans.
- *
- * @param <D> the dynamic registration result
- * @author Phillip Webb
- * @since 2.0.0
- */
 public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> extends RegistrationBean {
 
 	private static final Log logger = LogFactory.getLog(RegistrationBean.class);
 
+	@Nullable
 	private String name;
 
 	private boolean asyncSupported = true;
@@ -128,7 +123,7 @@ public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> ex
 	 * @param value the object used for convention based names
 	 * @return the deduced name
 	 */
-	protected final String getOrDeduceName(Object value) {
+	protected final String getOrDeduceName(@Nullable Object value) {
 		return (this.name != null) ? this.name : Conventions.getVariableName(value);
 	}
 

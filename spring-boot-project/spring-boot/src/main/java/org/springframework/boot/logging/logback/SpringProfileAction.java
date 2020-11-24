@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.logback;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +35,6 @@ import org.springframework.core.env.Profiles;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Logback {@link Action} to support {@code <springProfile>} tags. Allows section of a
- * logback configuration to only be enabled when a specific profile is active.
- *
- * @author Phillip Webb
- * @author Eddú Meléndez
- */
 class SpringProfileAction extends Action implements InPlayListener {
 
 	private final Environment environment;
@@ -48,6 +43,7 @@ class SpringProfileAction extends Action implements InPlayListener {
 
 	private boolean acceptsProfile;
 
+	@Nullable
 	private List<SaxEvent> events;
 
 	SpringProfileAction(Environment environment) {

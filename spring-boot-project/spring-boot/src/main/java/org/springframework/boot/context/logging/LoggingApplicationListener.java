@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.logging;
 
+import javax.annotation.Nullable;
+
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.List;
@@ -56,39 +58,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
-/**
- * An {@link ApplicationListener} that configures the {@link LoggingSystem}. If the
- * environment contains a {@code logging.config} property it will be used to bootstrap the
- * logging system, otherwise a default configuration is used. Regardless, logging levels
- * will be customized if the environment contains {@code logging.level.*} entries and
- * logging groups can be defined with {@code logging.group}.
- * <p>
- * Debug and trace logging for Spring, Tomcat, Jetty and Hibernate will be enabled when
- * the environment contains {@code debug} or {@code trace} properties that aren't set to
- * {@code "false"} (i.e. if you start your application using
- * {@literal java -jar myapp.jar [--debug | --trace]}). If you prefer to ignore these
- * properties you can set {@link #setParseArgs(boolean) parseArgs} to {@code false}.
- * <p>
- * By default, log output is only written to the console. If a log file is required, the
- * {@code logging.file.path} and {@code logging.file.name} properties can be used.
- * <p>
- * Some system properties may be set as side effects, and these can be useful if the
- * logging configuration supports placeholders (i.e. log4j or logback):
- * <ul>
- * <li>{@code LOG_FILE} is set to the value of path of the log file that should be written
- * (if any).</li>
- * <li>{@code PID} is set to the value of the current process ID if it can be determined.
- * </li>
- * </ul>
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @author Madhura Bhave
- * @author HaiTao Zhang
- * @since 2.0.0
- * @see LoggingSystem#get(ClassLoader)
- */
 public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private static final ConfigurationPropertyName LOGGING_LEVEL = ConfigurationPropertyName.of("logging.level");
@@ -174,16 +143,20 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
+	@Nullable
 	private LoggingSystem loggingSystem;
 
+	@Nullable
 	private LogFile logFile;
 
+	@Nullable
 	private LoggerGroups loggerGroups;
 
 	private int order = DEFAULT_ORDER;
 
 	private boolean parseArgs = true;
 
+	@Nullable
 	private LogLevel springBootLogging = null;
 
 	@Override
@@ -304,7 +277,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		return (value != null && !value.equals("false"));
 	}
 
-	private void initializeSystem(ConfigurableEnvironment environment, LoggingSystem system, LogFile logFile) {
+	private void initializeSystem(ConfigurableEnvironment environment, @Nullable LoggingSystem system, @Nullable LogFile logFile) {
 		String logConfig = StringUtils.trimWhitespace(environment.getProperty(CONFIG_PROPERTY));
 		try {
 			LoggingInitializationContext initializationContext = new LoggingInitializationContext(environment);
@@ -332,7 +305,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		return !StringUtils.hasLength(logConfig) || logConfig.startsWith("-D");
 	}
 
-	private void initializeFinalLoggingLevels(ConfigurableEnvironment environment, LoggingSystem system) {
+	private void initializeFinalLoggingLevels(ConfigurableEnvironment environment, @Nullable LoggingSystem system) {
 		bindLoggerGroups(environment);
 		if (this.springBootLogging != null) {
 			initializeSpringBootLogging(system, this.springBootLogging);
@@ -355,7 +328,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param springBootLogging the spring boot logging level requested
 	 * @since 2.2.0
 	 */
-	protected void initializeSpringBootLogging(LoggingSystem system, LogLevel springBootLogging) {
+	protected void initializeSpringBootLogging(@Nullable LoggingSystem system, LogLevel springBootLogging) {
 		BiConsumer<String, LogLevel> configurer = getLogLevelConfigurer(system);
 		SPRING_BOOT_LOGGING_LOGGERS.getOrDefault(springBootLogging, Collections.emptyList())
 				.forEach((name) -> configureLogLevel(name, springBootLogging, configurer));
@@ -367,7 +340,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param environment the environment
 	 * @since 2.2.0
 	 */
-	protected void setLogLevels(LoggingSystem system, ConfigurableEnvironment environment) {
+	protected void setLogLevels(@Nullable LoggingSystem system, ConfigurableEnvironment environment) {
 		BiConsumer<String, LogLevel> customizer = getLogLevelConfigurer(system);
 		Binder binder = Binder.get(environment);
 		Map<String, LogLevel> levels = binder.bind(LOGGING_LEVEL, STRING_LOGLEVEL_MAP).orElseGet(Collections::emptyMap);
@@ -385,7 +358,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		configurer.accept(name, level);
 	}
 
-	private BiConsumer<String, LogLevel> getLogLevelConfigurer(LoggingSystem system) {
+	private BiConsumer<String, LogLevel> getLogLevelConfigurer(@Nullable LoggingSystem system) {
 		return (name, level) -> {
 			try {
 				name = name.equalsIgnoreCase(LoggingSystem.ROOT_LOGGER_NAME) ? null : name;
@@ -397,7 +370,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		};
 	}
 
-	private void registerShutdownHookIfNecessary(Environment environment, LoggingSystem loggingSystem) {
+	private void registerShutdownHookIfNecessary(Environment environment, @Nullable LoggingSystem loggingSystem) {
 		boolean registerShutdownHook = environment.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, false);
 		if (registerShutdownHook) {
 			Runnable shutdownHandler = loggingSystem.getShutdownHandler();

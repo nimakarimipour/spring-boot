@@ -16,6 +16,8 @@
 
 package org.springframework.boot.cloud;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
@@ -23,14 +25,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 
-/**
- * Simple detection for well known cloud platforms. Detection can be forced using the
- * {@code "spring.main.cloud-platform"} configuration property.
- *
- * @author Phillip Webb
- * @author Brian Clozel
- * @since 1.3.0
- */
 public enum CloudPlatform {
 
 	/**
@@ -165,7 +159,7 @@ public enum CloudPlatform {
 		return isEnforced(binder.bind(PROPERTY_NAME, String.class).orElse(null));
 	}
 
-	private boolean isEnforced(String platform) {
+	private boolean isEnforced(@Nullable String platform) {
 		return name().equalsIgnoreCase(platform);
 	}
 
@@ -192,6 +186,7 @@ public enum CloudPlatform {
 	 * @param environment the environment
 	 * @return the {@link CloudPlatform} or {@code null}
 	 */
+	@Nullable
 	public static CloudPlatform getActive(Environment environment) {
 		if (environment != null) {
 			for (CloudPlatform cloudPlatform : values()) {

@@ -16,16 +16,10 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import org.springframework.core.env.PropertyResolver;
 
-/**
- * Optional strategy that used by a {@link Binder} to resolve property placeholders.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- * @see PropertySourcesPlaceholdersResolver
- */
 @FunctionalInterface
 public interface PlaceholdersResolver {
 
@@ -39,6 +33,7 @@ public interface PlaceholdersResolver {
 	 * @param value the source value
 	 * @return a value with placeholders resolved
 	 */
-	Object resolvePlaceholders(Object value);
+	@Nullable
+	Object resolvePlaceholders(@Nullable Object value);
 
 }

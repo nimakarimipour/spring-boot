@@ -16,24 +16,20 @@
 
 package org.springframework.boot.jta.atomikos;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
-/**
- * Spring friendly version of {@link com.atomikos.jdbc.AtomikosDataSourceBean}.
- *
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @since 1.2.0
- */
 @SuppressWarnings("serial")
 @ConfigurationProperties(prefix = "spring.jta.atomikos.datasource")
 public class AtomikosDataSourceBean extends com.atomikos.jdbc.AtomikosDataSourceBean
 		implements BeanNameAware, InitializingBean, DisposableBean {
 
+	@Nullable
 	private String beanName;
 
 	@Override

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.logback;
 
+import javax.annotation.Nullable;
+
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
@@ -59,15 +61,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link LoggingSystem} for <a href="https://logback.qos.ch">logback</a>.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @author Ben Hale
- * @since 1.0.0
- */
 public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 
 	// Static final field to facilitate code removal by Graal
@@ -152,8 +145,8 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 	}
 
 	@Override
-	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+	protected void loadConfiguration(LoggingInitializationContext initializationContext, @Nullable String location,
+			@Nullable LogFile logFile) {
 		super.loadConfiguration(initializationContext, location, logFile);
 		LoggerContext loggerContext = getLoggerContext();
 		stopAndReset(loggerContext);
@@ -238,7 +231,7 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		return result;
 	}
 
-	@Override
+	@Override@Nullable
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		String name = getLoggerName(loggerName);
 		LoggerContext loggerContext = getLoggerContext();
@@ -252,6 +245,7 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		return name;
 	}
 
+	@Nullable
 	private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
 		if (logger == null) {
 			return null;
@@ -342,7 +336,7 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		private static final boolean PRESENT = ClassUtils.isPresent("ch.qos.logback.core.Appender",
 				Factory.class.getClassLoader());
 
-		@Override
+		@Override@Nullable
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new LogbackLoggingSystem(classLoader);

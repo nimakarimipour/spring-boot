@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jta.bitronix;
 
+import javax.annotation.Nullable;
+
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
@@ -34,16 +36,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 
-/**
- * Spring friendly version of {@link PoolingDataSource}. Provides sensible defaults and
- * also supports direct wrapping of a {@link XADataSource} instance.
- *
- * @author Phillip Webb
- * @author Josh Long
- * @author Andy Wilkinson
- * @since 1.2.0
- * @deprecated since 2.3.0 as the Bitronix project is no longer being maintained
- */
 @Deprecated
 @SuppressWarnings("serial")
 @ConfigurationProperties(prefix = "spring.jta.bitronix.datasource")
@@ -51,8 +43,10 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 
 	private static final ThreadLocal<PoolingDataSourceBean> source = new ThreadLocal<>();
 
+	@Nullable
 	private XADataSource dataSource;
 
+	@Nullable
 	private String beanName;
 
 	public PoolingDataSourceBean() {
@@ -95,6 +89,7 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 		setDriverProperties(new Properties());
 	}
 
+	@Nullable
 	protected final XADataSource getDataSource() {
 		return this.dataSource;
 	}

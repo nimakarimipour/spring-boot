@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -51,13 +53,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ReactiveWebServerFactory} that can be used to create a {@link TomcatWebServer}.
- *
- * @author Brian Clozel
- * @author HaiTao Zhang
- * @since 2.0.0
- */
 public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFactory
 		implements ConfigurableTomcatWebServerFactory {
 
@@ -68,6 +63,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	 */
 	public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
 
+	@Nullable
 	private File baseDirectory;
 
 	private final List<Valve> engineValves = new ArrayList<>();

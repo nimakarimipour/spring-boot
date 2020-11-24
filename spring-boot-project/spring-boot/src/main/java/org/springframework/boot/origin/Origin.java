@@ -16,6 +16,8 @@
 
 package org.springframework.boot.origin;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,20 +25,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Interface that uniquely represents the origin of an item. For example, an item loaded
- * from a {@link File} may have an origin made up of the file name along with line/column
- * numbers.
- * <p>
- * Implementations must provide sensible {@code hashCode()}, {@code equals(...)} and
- * {@code #toString()} implementations.
- *
- * @author Madhura Bhave
- * @author Phillip Webb
- * @since 2.0.0
- * @see OriginProvider
- * @see TextResourceOrigin
- */
 public interface Origin {
 
 	/**
@@ -46,6 +34,7 @@ public interface Origin {
 	 * @since 2.4.0
 	 * @see Origin#parentsFrom(Object)
 	 */
+	@Nullable
 	default Origin getParent() {
 		return null;
 	}
@@ -56,7 +45,8 @@ public interface Origin {
 	 * @param source the source object or {@code null}
 	 * @return an optional {@link Origin}
 	 */
-	static Origin from(Object source) {
+	@Nullable
+	static Origin from(@Nullable Object source) {
 		if (source instanceof Origin) {
 			return (Origin) source;
 		}

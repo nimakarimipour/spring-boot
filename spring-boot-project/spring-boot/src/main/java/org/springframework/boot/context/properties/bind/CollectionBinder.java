@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,19 +27,13 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
 
-/**
- * {@link AggregateBinder} for collections.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 
 	CollectionBinder(Context context) {
 		super(context);
 	}
 
-	@Override
+	@Override@Nullable
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		Class<?> collectionType = (target.getValue() != null) ? List.class : target.getType().resolve(Object.class);
@@ -69,6 +65,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 		}
 	}
 
+	@Nullable
 	private Collection<Object> getExistingIfPossible(Supplier<Collection<Object>> existing) {
 		try {
 			return existing.get();

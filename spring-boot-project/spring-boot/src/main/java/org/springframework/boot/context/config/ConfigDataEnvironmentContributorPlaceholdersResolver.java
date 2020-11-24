@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.context.properties.bind.PlaceholdersResolver;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
@@ -23,13 +25,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
 
-/**
- * {@link PlaceholdersResolver} backed by one or more
- * {@link ConfigDataEnvironmentContributor} instances.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataEnvironmentContributorPlaceholdersResolver implements PlaceholdersResolver {
 
 	private final Iterable<ConfigDataEnvironmentContributor> contributors;
@@ -41,7 +36,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 	private final PropertyPlaceholderHelper helper;
 
 	ConfigDataEnvironmentContributorPlaceholdersResolver(Iterable<ConfigDataEnvironmentContributor> contributors,
-			ConfigDataActivationContext activationContext, boolean failOnResolveFromInactiveContributor) {
+			@Nullable ConfigDataActivationContext activationContext, boolean failOnResolveFromInactiveContributor) {
 		this.contributors = contributors;
 		this.activationContext = activationContext;
 		this.failOnResolveFromInactiveContributor = failOnResolveFromInactiveContributor;
@@ -57,6 +52,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 		return value;
 	}
 
+	@Nullable
 	private String resolvePlaceholder(String placeholder) {
 		Object result = null;
 		for (ConfigDataEnvironmentContributor contributor : this.contributors) {

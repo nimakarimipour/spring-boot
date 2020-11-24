@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,11 +31,6 @@ import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.ReflectionUtils;
 
-/**
- * A collection of {@link SpringApplicationRunListener}.
- *
- * @author Phillip Webb
- */
 class SpringApplicationRunListeners {
 
 	private final Log log;
@@ -49,7 +46,7 @@ class SpringApplicationRunListeners {
 		this.applicationStartup = applicationStartup;
 	}
 
-	void starting(ConfigurableBootstrapContext bootstrapContext, Class<?> mainApplicationClass) {
+	void starting(ConfigurableBootstrapContext bootstrapContext, @Nullable Class<?> mainApplicationClass) {
 		doWithListeners("spring.boot.application.starting", (listener) -> listener.starting(bootstrapContext),
 				(step) -> {
 					if (mainApplicationClass != null) {
@@ -79,7 +76,7 @@ class SpringApplicationRunListeners {
 		doWithListeners("spring.boot.application.running", (listener) -> listener.running(context));
 	}
 
-	void failed(ConfigurableApplicationContext context, Throwable exception) {
+	void failed(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 		doWithListeners("spring.boot.application.failed",
 				(listener) -> callFailedListener(listener, context, exception), (step) -> {
 					step.tag("exception", exception.getClass().toString());
@@ -87,7 +84,7 @@ class SpringApplicationRunListeners {
 				});
 	}
 
-	private void callFailedListener(SpringApplicationRunListener listener, ConfigurableApplicationContext context,
+	private void callFailedListener(SpringApplicationRunListener listener, @Nullable ConfigurableApplicationContext context,
 			Throwable exception) {
 		try {
 			listener.failed(context, exception);
@@ -112,7 +109,7 @@ class SpringApplicationRunListeners {
 	}
 
 	private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction,
-			Consumer<StartupStep> stepAction) {
+			@Nullable Consumer<StartupStep> stepAction) {
 		StartupStep step = this.applicationStartup.start(stepName);
 		this.listeners.forEach(listenerAction);
 		if (stepAction != null) {

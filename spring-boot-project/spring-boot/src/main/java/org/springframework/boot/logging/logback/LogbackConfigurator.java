@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.logback;
 
+import javax.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +33,6 @@ import ch.qos.logback.core.spi.LifeCycle;
 
 import org.springframework.util.Assert;
 
-/**
- * Allows programmatic configuration of logback which is usually faster than parsing XML.
- *
- * @author Phillip Webb
- */
 class LogbackConfigurator {
 
 	private LoggerContext context;
@@ -79,7 +76,7 @@ class LogbackConfigurator {
 		logger(name, level, additive, null);
 	}
 
-	void logger(String name, Level level, boolean additive, Appender<ILoggingEvent> appender) {
+	void logger(String name, Level level, boolean additive, @Nullable Appender<ILoggingEvent> appender) {
 		Logger logger = this.context.getLogger(name);
 		if (level != null) {
 			logger.setLevel(level);

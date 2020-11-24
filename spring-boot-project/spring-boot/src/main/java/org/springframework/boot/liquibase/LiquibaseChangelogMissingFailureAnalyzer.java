@@ -16,6 +16,8 @@
 
 package org.springframework.boot.liquibase;
 
+import javax.annotation.Nullable;
+
 import java.io.FileNotFoundException;
 
 import liquibase.exception.ChangeLogParseException;
@@ -24,15 +26,9 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.StringUtils;
 
-/**
- * An {@link AbstractFailureAnalyzer} that analyzes exceptions of type
- * {@link ChangeLogParseException} caused by a Liquibase changelog not being present.
- *
- * @author Sebastiaan Fernandez
- */
 class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<ChangeLogParseException> {
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, ChangeLogParseException cause) {
 		FileNotFoundException fileNotFound = findCause(cause, FileNotFoundException.class);
 		if (fileNotFound != null) {

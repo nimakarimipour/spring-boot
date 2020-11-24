@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.client;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -50,27 +52,6 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
 
-/**
- * Builder that can be used to configure and create a {@link RestTemplate}. Provides
- * convenience methods to register {@link #messageConverters(HttpMessageConverter...)
- * converters}, {@link #errorHandler(ResponseErrorHandler) error handlers} and
- * {@link #uriTemplateHandler(UriTemplateHandler) UriTemplateHandlers}.
- * <p>
- * By default the built {@link RestTemplate} will attempt to use the most suitable
- * {@link ClientHttpRequestFactory}, call {@link #detectRequestFactory(boolean)
- * detectRequestFactory(false)} if you prefer to keep the default. In a typical
- * auto-configured Spring Boot application this builder is available as a bean and can be
- * injected whenever a {@link RestTemplate} is needed.
- *
- * @author Stephane Nicoll
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @author Brian Clozel
- * @author Dmytro Nosan
- * @author Kevin Strijbos
- * @author Ilya Lukyanovich
- * @since 1.4.0
- */
 public class RestTemplateBuilder {
 
 	private final RequestFactoryCustomizer requestFactoryCustomizer;
@@ -387,7 +368,7 @@ public class RestTemplateBuilder {
 	 * @return a new builder instance
 	 * @since 2.2.0
 	 */
-	public RestTemplateBuilder basicAuthentication(String username, String password, Charset charset) {
+	public RestTemplateBuilder basicAuthentication(String username, String password, @Nullable Charset charset) {
 		return new RestTemplateBuilder(this.requestFactoryCustomizer, this.detectRequestFactory, this.rootUri,
 				this.messageConverters, this.interceptors, this.requestFactory, this.uriTemplateHandler,
 				this.errorHandler, new BasicAuthentication(username, password, charset), this.defaultHeaders,
@@ -643,6 +624,7 @@ public class RestTemplateBuilder {
 	 * @return a {@link ClientHttpRequestFactory} or {@code null}
 	 * @since 2.2.0
 	 */
+	@Nullable
 	public ClientHttpRequestFactory buildRequestFactory() {
 		ClientHttpRequestFactory requestFactory = null;
 		if (this.requestFactory != null) {
@@ -711,7 +693,7 @@ public class RestTemplateBuilder {
 			this(null, null, null);
 		}
 
-		private RequestFactoryCustomizer(Duration connectTimeout, Duration readTimeout, Boolean bufferRequestBody) {
+		private RequestFactoryCustomizer(@Nullable Duration connectTimeout, @Nullable Duration readTimeout, @Nullable Boolean bufferRequestBody) {
 			this.connectTimeout = connectTimeout;
 			this.readTimeout = readTimeout;
 			this.bufferRequestBody = bufferRequestBody;

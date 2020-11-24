@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.reactive.error;
 
+import javax.annotation.Nullable;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -36,29 +38,6 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
-/**
- * Default implementation of {@link ErrorAttributes}. Provides the following attributes
- * when possible:
- * <ul>
- * <li>timestamp - The time that the errors were extracted</li>
- * <li>status - The status code</li>
- * <li>error - The error reason</li>
- * <li>exception - The class name of the root exception (if configured)</li>
- * <li>message - The exception message (if configured)</li>
- * <li>errors - Any {@link ObjectError}s from a {@link BindingResult} exception (if
- * configured)</li>
- * <li>trace - The exception stack trace (if configured)</li>
- * <li>path - The URL path when the exception was raised</li>
- * <li>requestId - Unique ID associated with the current request</li>
- * </ul>
- *
- * @author Brian Clozel
- * @author Stephane Nicoll
- * @author Michele Mancioppi
- * @author Scott Frederick
- * @since 2.0.0
- * @see ErrorAttributes
- */
 public class DefaultErrorAttributes implements ErrorAttributes {
 
 	private static final String ERROR_ATTRIBUTE = DefaultErrorAttributes.class.getName() + ".ERROR";
@@ -129,6 +108,7 @@ public class DefaultErrorAttributes implements ErrorAttributes {
 		return responseStatusAnnotation.getValue("code", HttpStatus.class).orElse(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@Nullable
 	private String determineMessage(Throwable error, MergedAnnotation<ResponseStatus> responseStatusAnnotation) {
 		if (error instanceof BindingResult) {
 			return error.getMessage();

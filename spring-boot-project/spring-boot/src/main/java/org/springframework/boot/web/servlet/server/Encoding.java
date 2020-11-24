@@ -16,19 +16,13 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import javax.annotation.Nullable;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * Configuration properties for server HTTP encoding.
- *
- * @author Phillip Webb
- * @author Stephane Nicoll
- * @author Brian Clozel
- * @since 2.3.0
- */
 public class Encoding {
 
 	/**
@@ -46,22 +40,26 @@ public class Encoding {
 	 * Whether to force the encoding to the configured charset on HTTP requests and
 	 * responses.
 	 */
+	@Nullable
 	private Boolean force;
 
 	/**
 	 * Whether to force the encoding to the configured charset on HTTP requests. Defaults
 	 * to true when "force" has not been specified.
 	 */
+	@Nullable
 	private Boolean forceRequest;
 
 	/**
 	 * Whether to force the encoding to the configured charset on HTTP responses.
 	 */
+	@Nullable
 	private Boolean forceResponse;
 
 	/**
 	 * Locale in which to encode mapping.
 	 */
+	@Nullable
 	private Map<Locale, Charset> mapping;
 
 	public Charset getCharset() {
@@ -96,6 +94,7 @@ public class Encoding {
 		this.forceResponse = forceResponse;
 	}
 
+	@Nullable
 	public Map<Locale, Charset> getMapping() {
 		return this.mapping;
 	}

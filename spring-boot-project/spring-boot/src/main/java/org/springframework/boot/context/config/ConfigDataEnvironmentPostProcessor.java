@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,14 +37,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.log.LogMessage;
 
-/**
- * {@link EnvironmentPostProcessor} that loads and apply {@link ConfigData} to Spring's
- * {@link Environment}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.4.0
- */
 public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
 	/**
@@ -80,7 +74,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 		postProcessEnvironment(environment, application.getResourceLoader(), application.getAdditionalProfiles());
 	}
 
-	void postProcessEnvironment(ConfigurableEnvironment environment, ResourceLoader resourceLoader,
+	void postProcessEnvironment(ConfigurableEnvironment environment, @Nullable ResourceLoader resourceLoader,
 			Collection<String> additionalProfiles) {
 		try {
 			this.logger.trace("Post-processing environment to add config data");
@@ -101,7 +95,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 	}
 
 	private void postProcessUsingLegacyApplicationListener(ConfigurableEnvironment environment,
-			ResourceLoader resourceLoader) {
+			@Nullable ResourceLoader resourceLoader) {
 		getLegacyListener().addPropertySources(environment, resourceLoader);
 	}
 
@@ -145,8 +139,8 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 	 * throw-away context
 	 * @param additionalProfiles any additional profiles that should be applied
 	 */
-	public static void applyTo(ConfigurableEnvironment environment, ResourceLoader resourceLoader,
-			ConfigurableBootstrapContext bootstrapContext, Collection<String> additionalProfiles) {
+	public static void applyTo(ConfigurableEnvironment environment, @Nullable ResourceLoader resourceLoader,
+			@Nullable ConfigurableBootstrapContext bootstrapContext, Collection<String> additionalProfiles) {
 		DeferredLogFactory logFactory = Supplier::get;
 		bootstrapContext = (bootstrapContext != null) ? bootstrapContext : new DefaultBootstrapContext();
 		ConfigDataEnvironmentPostProcessor postProcessor = new ConfigDataEnvironmentPostProcessor(logFactory,
@@ -162,7 +156,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 		}
 
 		@Override
-		public void addPropertySources(ConfigurableEnvironment environment, ResourceLoader resourceLoader) {
+		public void addPropertySources(ConfigurableEnvironment environment, @Nullable ResourceLoader resourceLoader) {
 			super.addPropertySources(environment, resourceLoader);
 		}
 

@@ -16,24 +16,20 @@
 
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
+
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Provides utilities around SSL.
- *
- * @author Chris Bono
- * @since 2.1.13
- */
 public final class SslConfigurationValidator {
 
 	private SslConfigurationValidator() {
 	}
 
-	public static void validateKeyAlias(KeyStore keyStore, String keyAlias) {
+	public static void validateKeyAlias(KeyStore keyStore, @Nullable String keyAlias) {
 		if (StringUtils.hasLength(keyAlias)) {
 			try {
 				Assert.state(keyStore.containsAlias(keyAlias),

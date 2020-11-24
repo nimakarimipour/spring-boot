@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jdbc;
 
+import javax.annotation.Nullable;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -32,16 +34,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
-/**
- * Connection details for {@link EmbeddedDatabaseType embedded databases}.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Stephane Nicoll
- * @author Nidhi Desai
- * @since 1.0.0
- * @see #get(ClassLoader)
- */
 public enum EmbeddedDatabaseConnection {
 
 	/**
@@ -86,12 +78,12 @@ public enum EmbeddedDatabaseConnection {
 
 	private final Predicate<String> embeddedUrl;
 
-	EmbeddedDatabaseConnection(EmbeddedDatabaseType type, String driverClass, String url,
+	EmbeddedDatabaseConnection(@Nullable EmbeddedDatabaseType type, @Nullable String driverClass, @Nullable String url,
 			Predicate<String> embeddedUrl) {
 		this(type, driverClass, null, url, embeddedUrl);
 	}
 
-	EmbeddedDatabaseConnection(EmbeddedDatabaseType type, String driverClass, String fallbackDriverClass, String url,
+	EmbeddedDatabaseConnection(@Nullable EmbeddedDatabaseType type, @Nullable String driverClass, @Nullable String fallbackDriverClass, @Nullable String url,
 			Predicate<String> embeddedUrl) {
 		this.type = type;
 		this.driverClass = driverClass;
@@ -121,6 +113,7 @@ public enum EmbeddedDatabaseConnection {
 	 * @param databaseName the name of the database
 	 * @return the connection URL
 	 */
+	@Nullable
 	public String getUrl(String databaseName) {
 		Assert.hasText(databaseName, "DatabaseName must not be empty");
 		return (this.url != null) ? String.format(this.url, databaseName) : null;
@@ -155,7 +148,7 @@ public enum EmbeddedDatabaseConnection {
 	 * @return true if the driver class and url refer to an embedded database
 	 * @since 2.4.0
 	 */
-	public static boolean isEmbedded(String driverClass, String url) {
+	public static boolean isEmbedded(String driverClass, @Nullable String url) {
 		if (driverClass == null) {
 			return false;
 		}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,30 +48,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link PropertySource} backed by a directory tree that contains files for each value.
- * The {@link PropertySource} will recursively scan a given source directory and expose a
- * property for each file found. The property name will be the filename, and the property
- * value will be the contents of the file.
- * <p>
- * Directories are only scanned when the source is first created. The directory is not
- * monitored for updates, so files should not be added or removed. However, the contents
- * of a file can be updated as long as the property source was created with a
- * {@link Option#ALWAYS_READ} option. Nested directories are included in the source, but
- * with a {@code '.'} rather than {@code '/'} used as the path separator.
- * <p>
- * Property values are returned as {@link Value} instances which allows them to be treated
- * either as an {@link InputStreamSource} or as a {@link CharSequence}. In addition, if
- * used with an {@link Environment} configured with an
- * {@link ApplicationConversionService}, property values can be converted to a
- * {@code String} or {@code byte[]}.
- * <p>
- * This property source is typically used to read Kubernetes {@code configMap} volume
- * mounts.
- *
- * @author Phillip Webb
- * @since 2.4.0
- */
 public class ConfigTreePropertySource extends EnumerablePropertySource<Path> implements OriginLookup<String> {
 
 	private static final int MAX_DEPTH = 100;
@@ -113,13 +91,13 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 		return this.names.clone();
 	}
 
-	@Override
+	@Override@Nullable
 	public Value getProperty(String name) {
 		PropertyFile propertyFile = this.propertyFiles.get(name);
 		return (propertyFile != null) ? propertyFile.getContent() : null;
 	}
 
-	@Override
+	@Override@Nullable
 	public Origin getOrigin(String name) {
 		PropertyFile propertyFile = this.propertyFiles.get(name);
 		return (propertyFile != null) ? propertyFile.getOrigin() : null;
@@ -263,6 +241,7 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 
 		private final boolean autoTrimTrailingNewLine;
 
+		@Nullable
 		private volatile byte[] content;
 
 		private PropertyFileContent(Path path, Resource resource, Origin origin, boolean cacheContent,

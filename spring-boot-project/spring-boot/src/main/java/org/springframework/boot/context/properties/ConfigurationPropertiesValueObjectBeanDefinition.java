@@ -16,19 +16,12 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 
-/**
- * {@link BeanDefinition} that is used for registering
- * {@link ConfigurationProperties @ConfigurationProperties} value object beans that are
- * bound at creation time.
- *
- * @author Stephane Nicoll
- * @author Madhura Bhave
- * @author Phillip Webb
- */
 final class ConfigurationPropertiesValueObjectBeanDefinition extends GenericBeanDefinition {
 
 	private final BeanFactory beanFactory;
@@ -42,6 +35,7 @@ final class ConfigurationPropertiesValueObjectBeanDefinition extends GenericBean
 		setInstanceSupplier(this::createBean);
 	}
 
+	@Nullable
 	private Object createBean() {
 		ConfigurationPropertiesBean bean = ConfigurationPropertiesBean.forValueObject(getBeanClass(), this.beanName);
 		ConfigurationPropertiesBinder binder = ConfigurationPropertiesBinder.get(this.beanFactory);

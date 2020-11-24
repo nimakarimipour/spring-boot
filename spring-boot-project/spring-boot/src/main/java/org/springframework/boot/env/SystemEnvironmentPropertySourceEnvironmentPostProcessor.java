@@ -16,6 +16,8 @@
 
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
@@ -28,15 +30,6 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 
-/**
- * An {@link EnvironmentPostProcessor} that replaces the systemEnvironment
- * {@link SystemEnvironmentPropertySource} with an
- * {@link OriginAwareSystemEnvironmentPropertySource} that can track the
- * {@link SystemEnvironmentOrigin} for every system environment property.
- *
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
 	/**
@@ -83,7 +76,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			super(name, source);
 		}
 
-		@Override
+		@Override@Nullable
 		public Origin getOrigin(String key) {
 			String property = resolvePropertyName(key);
 			if (super.containsProperty(property)) {

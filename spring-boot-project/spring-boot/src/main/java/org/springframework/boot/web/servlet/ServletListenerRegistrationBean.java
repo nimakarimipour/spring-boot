@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashSet;
@@ -32,27 +34,6 @@ import javax.servlet.http.HttpSessionListener;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
-/**
- * A {@link ServletContextInitializer} to register {@link EventListener}s in a Servlet
- * 3.0+ container. Similar to the {@link ServletContext#addListener(EventListener)
- * registration} features provided by {@link ServletContext} but with a Spring Bean
- * friendly design.
- *
- * This bean can be used to register the following types of listener:
- * <ul>
- * <li>{@link ServletContextAttributeListener}</li>
- * <li>{@link ServletRequestListener}</li>
- * <li>{@link ServletRequestAttributeListener}</li>
- * <li>{@link HttpSessionAttributeListener}</li>
- * <li>{@link HttpSessionListener}</li>
- * <li>{@link ServletContextListener}</li>
- * </ul>
- *
- * @param <T> the type of listener
- * @author Dave Syer
- * @author Phillip Webb
- * @since 1.4.0
- */
 public class ServletListenerRegistrationBean<T extends EventListener> extends RegistrationBean {
 
 	private static final Set<Class<?>> SUPPORTED_TYPES;
@@ -68,6 +49,7 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 		SUPPORTED_TYPES = Collections.unmodifiableSet(types);
 	}
 
+	@Nullable
 	private T listener;
 
 	/**
@@ -100,6 +82,7 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 	 * Return the listener to be registered.
 	 * @return the listener to be registered
 	 */
+	@Nullable
 	public T getListener() {
 		return this.listener;
 	}

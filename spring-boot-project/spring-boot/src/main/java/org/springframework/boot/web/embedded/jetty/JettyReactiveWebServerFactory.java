@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
+import javax.annotation.Nullable;
+
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,12 +49,6 @@ import org.springframework.http.server.reactive.JettyHttpHandlerAdapter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ReactiveWebServerFactory} that can be used to create {@link JettyWebServer}s.
- *
- * @author Brian Clozel
- * @since 2.0.0
- */
 public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFactory
 		implements ConfigurableJettyWebServerFactory {
 
@@ -72,8 +68,10 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private Set<JettyServerCustomizer> jettyServerCustomizers = new LinkedHashSet<>();
 
+	@Nullable
 	private JettyResourceFactory resourceFactory;
 
+	@Nullable
 	private ThreadPool threadPool;
 
 	/**
@@ -137,6 +135,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	 * Returns a Jetty {@link ThreadPool} that should be used by the {@link Server}.
 	 * @return a Jetty {@link ThreadPool} or {@code null}
 	 */
+	@Nullable
 	public ThreadPool getThreadPool() {
 		return this.threadPool;
 	}
@@ -160,6 +159,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 		this.resourceFactory = resourceFactory;
 	}
 
+	@Nullable
 	protected JettyResourceFactory getResourceFactory() {
 		return this.resourceFactory;
 	}

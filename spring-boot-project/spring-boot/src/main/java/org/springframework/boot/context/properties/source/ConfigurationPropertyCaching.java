@@ -16,17 +16,13 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 
-/**
- * Interface that can be used to control configuration property source caches.
- *
- * @author Phillip Webb
- * @since 2.3.0
- */
 public interface ConfigurationPropertyCaching {
 
 	/**
@@ -68,7 +64,7 @@ public interface ConfigurationPropertyCaching {
 	 * must match
 	 * @return a caching instance that controls the matching source
 	 */
-	static ConfigurationPropertyCaching get(Environment environment, Object underlyingSource) {
+	static ConfigurationPropertyCaching get(Environment environment, @Nullable Object underlyingSource) {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		return get(sources, underlyingSource);
 	}
@@ -91,7 +87,7 @@ public interface ConfigurationPropertyCaching {
 	 * must match
 	 * @return a caching instance that controls the matching source
 	 */
-	static ConfigurationPropertyCaching get(Iterable<ConfigurationPropertySource> sources, Object underlyingSource) {
+	static ConfigurationPropertyCaching get(Iterable<ConfigurationPropertySource> sources, @Nullable Object underlyingSource) {
 		Assert.notNull(sources, "Sources must not be null");
 		if (underlyingSource == null) {
 			return new ConfigurationPropertySourcesCaching(sources);

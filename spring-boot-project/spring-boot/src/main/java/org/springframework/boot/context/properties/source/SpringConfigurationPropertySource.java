@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 import java.util.Random;
 
@@ -28,28 +30,6 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.Assert;
 
-/**
- * {@link ConfigurationPropertySource} backed by a non-enumerable Spring
- * {@link PropertySource} or a restricted {@link EnumerablePropertySource} implementation
- * (such as a security restricted {@code systemEnvironment} source). A
- * {@link PropertySource} is adapted with the help of a {@link PropertyMapper} which
- * provides the mapping rules for individual properties.
- * <p>
- * Each {@link ConfigurationPropertySource#getConfigurationProperty
- * getConfigurationProperty} call attempts to
- * {@link PropertyMapper#map(ConfigurationPropertyName) map} the
- * {@link ConfigurationPropertyName} to one or more {@code String} based names. This
- * allows fast property resolution for well formed property sources.
- * <p>
- * When possible the {@link SpringIterableConfigurationPropertySource} will be used in
- * preference to this implementation since it supports full "relaxed" style resolution.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @see #from(PropertySource)
- * @see PropertyMapper
- * @see SpringIterableConfigurationPropertySource
- */
 class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 
 	private static final PropertyMapper[] DEFAULT_MAPPERS = { DefaultPropertyMapper.INSTANCE };
@@ -73,7 +53,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 		this.mappers = mappers;
 	}
 
-	@Override
+	@Override@Nullable
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;

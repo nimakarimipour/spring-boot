@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.UpgradeProtocol;
@@ -25,17 +27,11 @@ import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link TomcatConnectorCustomizer} that configures compression support on the given
- * Connector.
- *
- * @author Brian Clozel
- */
 class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 
 	private final Compression compression;
 
-	CompressionConnectorCustomizer(Compression compression) {
+	CompressionConnectorCustomizer(@Nullable Compression compression) {
 		this.compression = compression;
 	}
 

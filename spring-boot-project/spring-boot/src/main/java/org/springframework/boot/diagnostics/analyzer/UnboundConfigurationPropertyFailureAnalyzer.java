@@ -16,18 +16,14 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.boot.context.properties.bind.UnboundConfigurationPropertiesException;
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
-/**
- * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by any
- * {@link UnboundConfigurationPropertiesException}.
- *
- * @author Madhura Bhave
- */
 class UnboundConfigurationPropertyFailureAnalyzer
 		extends AbstractFailureAnalyzer<UnboundConfigurationPropertiesException> {
 
@@ -37,7 +33,7 @@ class UnboundConfigurationPropertyFailureAnalyzer
 		return analyzeUnboundConfigurationPropertiesException(exception, cause);
 	}
 
-	private FailureAnalysis analyzeUnboundConfigurationPropertiesException(BindException cause,
+	private FailureAnalysis analyzeUnboundConfigurationPropertiesException(@Nullable BindException cause,
 			UnboundConfigurationPropertiesException exception) {
 		StringBuilder description = new StringBuilder(
 				String.format("Binding to target %s failed:%n", cause.getTarget()));

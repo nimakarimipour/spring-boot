@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.metrics.buffering;
 
+import javax.annotation.Nullable;
+
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -29,26 +31,9 @@ import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
 
-/**
- * {@link ApplicationStartup} implementation that buffers {@link StartupStep steps} and
- * records their timestamp as well as their processing time.
- * <p>
- * Once recording has been {@link #startRecording() started}, steps are buffered up until
- * the configured {@link #BufferingApplicationStartup(int) capacity}; after that, new
- * steps are not recorded.
- * <p>
- * There are several ways to keep the buffer size low:
- * <ul>
- * <li>configuring {@link #addFilter(Predicate) filters} to only record steps that are
- * relevant to us.
- * <li>{@link #drainBufferedTimeline() draining} the buffered steps.
- * </ul>
- *
- * @author Brian Clozel
- * @since 2.4.0
- */
 public class BufferingApplicationStartup implements ApplicationStartup {
 
+	@Nullable
 	private Instant recordingStartTime;
 
 	private long recordingStartNanos;

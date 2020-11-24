@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -32,11 +34,6 @@ import org.xnio.XnioWorker;
 
 import org.springframework.util.Assert;
 
-/**
- * A {@link HttpHandlerFactory} for an {@link AccessLogHandler}.
- *
- * @author Andy Wilkinson
- */
 class AccessLogHttpHandlerFactory implements HttpHandlerFactory {
 
 	private final File directory;
@@ -49,7 +46,7 @@ class AccessLogHttpHandlerFactory implements HttpHandlerFactory {
 
 	private final boolean rotate;
 
-	AccessLogHttpHandlerFactory(File directory, String pattern, String prefix, String suffix, boolean rotate) {
+	AccessLogHttpHandlerFactory(@Nullable File directory, @Nullable String pattern, @Nullable String prefix, @Nullable String suffix, boolean rotate) {
 		this.directory = directory;
 		this.pattern = pattern;
 		this.prefix = prefix;

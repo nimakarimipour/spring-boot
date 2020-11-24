@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -26,34 +28,28 @@ import java.util.Set;
 
 import org.springframework.util.Assert;
 
-/**
- * Abstract base class for {@link ConfigurableWebServerFactory} implementations.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @author Stephane Nicoll
- * @author Ivan Sopov
- * @author Eddú Meléndez
- * @author Brian Clozel
- * @since 2.0.0
- */
 public abstract class AbstractConfigurableWebServerFactory implements ConfigurableWebServerFactory {
 
 	private int port = 8080;
 
+	@Nullable
 	private InetAddress address;
 
 	private Set<ErrorPage> errorPages = new LinkedHashSet<>();
 
+	@Nullable
 	private Ssl ssl;
 
+	@Nullable
 	private SslStoreProvider sslStoreProvider;
 
+	@Nullable
 	private Http2 http2;
 
+	@Nullable
 	private Compression compression;
 
+	@Nullable
 	private String serverHeader;
 
 	private Shutdown shutdown = Shutdown.IMMEDIATE;
@@ -90,6 +86,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * Return the address that the web server binds to.
 	 * @return the address
 	 */
+	@Nullable
 	public InetAddress getAddress() {
 		return this.address;
 	}
@@ -120,6 +117,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.errorPages.addAll(Arrays.asList(errorPages));
 	}
 
+	@Nullable
 	public Ssl getSsl() {
 		return this.ssl;
 	}
@@ -129,6 +127,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.ssl = ssl;
 	}
 
+	@Nullable
 	public SslStoreProvider getSslStoreProvider() {
 		return this.sslStoreProvider;
 	}
@@ -138,6 +137,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.sslStoreProvider = sslStoreProvider;
 	}
 
+	@Nullable
 	public Http2 getHttp2() {
 		return this.http2;
 	}
@@ -147,6 +147,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.http2 = http2;
 	}
 
+	@Nullable
 	public Compression getCompression() {
 		return this.compression;
 	}
@@ -156,6 +157,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.compression = compression;
 	}
 
+	@Nullable
 	public String getServerHeader() {
 		return this.serverHeader;
 	}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,14 +35,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ApplicationListener} that delegates to other listeners that are specified under
- * a {@literal context.listener.classes} environment property.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @since 1.0.0
- */
 public class DelegatingApplicationListener implements ApplicationListener<ApplicationEvent>, Ordered {
 
 	// NOTE: Similar to org.springframework.web.context.ContextLoader
@@ -49,6 +43,7 @@ public class DelegatingApplicationListener implements ApplicationListener<Applic
 
 	private int order = 0;
 
+	@Nullable
 	private SimpleApplicationEventMulticaster multicaster;
 
 	@Override

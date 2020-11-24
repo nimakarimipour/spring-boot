@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -27,15 +29,10 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * An {@link AbstractInjectionFailureAnalyzer} that performs analysis of failures caused
- * by a {@link NoUniqueBeanDefinitionException}.
- *
- * @author Andy Wilkinson
- */
 class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyzer<NoUniqueBeanDefinitionException>
 		implements BeanFactoryAware {
 
+	@Nullable
 	private ConfigurableBeanFactory beanFactory;
 
 	@Override
@@ -44,7 +41,7 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
 		this.beanFactory = (ConfigurableBeanFactory) beanFactory;
 	}
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, NoUniqueBeanDefinitionException cause,
 			String description) {
 		if (description == null) {
@@ -84,6 +81,7 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
 		return String.format("\t- %s: defined in %s%n", beanName, definition.getResourceDescription());
 	}
 
+	@Nullable
 	private String[] extractBeanNames(NoUniqueBeanDefinitionException cause) {
 		if (cause.getMessage().contains("but found")) {
 			return StringUtils.commaDelimitedListToStringArray(

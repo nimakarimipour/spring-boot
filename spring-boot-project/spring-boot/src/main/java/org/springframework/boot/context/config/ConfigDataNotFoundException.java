@@ -16,14 +16,10 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.origin.OriginProvider;
 
-/**
- * {@link ConfigDataNotFoundException} thrown when a {@link ConfigData} cannot be found.
- *
- * @author Phillip Webb
- * @since 2.4.0
- */
 public abstract class ConfigDataNotFoundException extends ConfigDataException implements OriginProvider {
 
 	/**
@@ -31,7 +27,7 @@ public abstract class ConfigDataNotFoundException extends ConfigDataException im
 	 * @param message the exception message
 	 * @param cause the exception cause
 	 */
-	ConfigDataNotFoundException(String message, Throwable cause) {
+	ConfigDataNotFoundException(String message, @Nullable Throwable cause) {
 		super(message, cause);
 	}
 

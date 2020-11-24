@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jdbc;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,15 +26,6 @@ import java.util.Locale;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Enumeration of common database drivers.
- *
- * @author Phillip Webb
- * @author Maciej Walkowiak
- * @author Marten Deinum
- * @author Stephane Nicoll
- * @since 1.4.0
- */
 public enum DatabaseDriver {
 
 	/**
@@ -218,15 +211,15 @@ public enum DatabaseDriver {
 
 	private final String validationQuery;
 
-	DatabaseDriver(String productName, String driverClassName) {
+	DatabaseDriver(@Nullable String productName, @Nullable String driverClassName) {
 		this(productName, driverClassName, null);
 	}
 
-	DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName) {
+	DatabaseDriver(@Nullable String productName, @Nullable String driverClassName, @Nullable String xaDataSourceClassName) {
 		this(productName, driverClassName, xaDataSourceClassName, null);
 	}
 
-	DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName, String validationQuery) {
+	DatabaseDriver(@Nullable String productName, @Nullable String driverClassName, @Nullable String xaDataSourceClassName, @Nullable String validationQuery) {
 		this.productName = productName;
 		this.driverClassName = driverClassName;
 		this.xaDataSourceClassName = xaDataSourceClassName;

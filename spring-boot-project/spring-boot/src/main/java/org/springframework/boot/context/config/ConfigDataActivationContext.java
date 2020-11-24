@@ -16,17 +16,13 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.style.ToStringCreator;
 
-/**
- * Context information used when determining when to activate
- * {@link ConfigDataEnvironmentContributor contributed} {@link ConfigData}.
- *
- * @author Phillip Webb
- */
 class ConfigDataActivationContext {
 
 	private final CloudPlatform cloudPlatform;
@@ -55,6 +51,7 @@ class ConfigDataActivationContext {
 		this.profiles = profiles;
 	}
 
+	@Nullable
 	private CloudPlatform deduceCloudPlatform(Environment environment, Binder binder) {
 		for (CloudPlatform candidate : CloudPlatform.values()) {
 			if (candidate.isEnforced(binder)) {

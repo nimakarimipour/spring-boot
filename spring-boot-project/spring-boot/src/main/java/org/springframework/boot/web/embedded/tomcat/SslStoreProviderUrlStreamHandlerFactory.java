@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,12 +30,6 @@ import java.security.KeyStore;
 
 import org.springframework.boot.web.server.SslStoreProvider;
 
-/**
- * A {@link URLStreamHandlerFactory} that provides a {@link URLStreamHandler} for
- * accessing an {@link SslStoreProvider}'s key store and trust store from a URL.
- *
- * @author Andy Wilkinson
- */
 class SslStoreProviderUrlStreamHandlerFactory implements URLStreamHandlerFactory {
 
 	private static final String PROTOCOL = "springbootssl";
@@ -52,7 +48,7 @@ class SslStoreProviderUrlStreamHandlerFactory implements URLStreamHandlerFactory
 		this.sslStoreProvider = sslStoreProvider;
 	}
 
-	@Override
+	@Override@Nullable
 	public URLStreamHandler createURLStreamHandler(String protocol) {
 		if (PROTOCOL.equals(protocol)) {
 			return new URLStreamHandler() {

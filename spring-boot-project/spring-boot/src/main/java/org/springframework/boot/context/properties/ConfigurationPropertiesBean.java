@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -44,19 +46,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * Provides access to {@link ConfigurationProperties @ConfigurationProperties} bean
- * details, regardless of if the annotation was used directly or on a {@link Bean @Bean}
- * factory method. This class can be used to access {@link #getAll(ApplicationContext)
- * all} configuration properties beans in an ApplicationContext, or
- * {@link #get(ApplicationContext, Object, String) individual beans} on a case-by-case
- * basis (for example, in a {@link BeanPostProcessor}).
- *
- * @author Phillip Webb
- * @since 2.2.0
- * @see #getAll(ApplicationContext)
- * @see #get(ApplicationContext, Object, String)
- */
 public final class ConfigurationPropertiesBean {
 
 	private final String name;
@@ -69,7 +58,7 @@ public final class ConfigurationPropertiesBean {
 
 	private final BindMethod bindMethod;
 
-	private ConfigurationPropertiesBean(String name, Object instance, ConfigurationProperties annotation,
+	private ConfigurationPropertiesBean(String name, @Nullable Object instance, ConfigurationProperties annotation,
 			Bindable<?> bindTarget) {
 		this.name = name;
 		this.instance = instance;
@@ -196,22 +185,26 @@ public final class ConfigurationPropertiesBean {
 	 * factory method are annotated with
 	 * {@link ConfigurationProperties @ConfigurationProperties}
 	 */
-	public static ConfigurationPropertiesBean get(ApplicationContext applicationContext, Object bean, String beanName) {
+	@Nullable
+	public static ConfigurationPropertiesBean get(@Nullable ApplicationContext applicationContext, Object bean, String beanName) {
 		Method factoryMethod = findFactoryMethod(applicationContext, beanName);
 		return create(beanName, bean, bean.getClass(), factoryMethod);
 	}
 
-	private static Method findFactoryMethod(ApplicationContext applicationContext, String beanName) {
+	@Nullable
+	private static Method findFactoryMethod(@Nullable ApplicationContext applicationContext, String beanName) {
 		if (applicationContext instanceof ConfigurableApplicationContext) {
 			return findFactoryMethod((ConfigurableApplicationContext) applicationContext, beanName);
 		}
 		return null;
 	}
 
+	@Nullable
 	private static Method findFactoryMethod(ConfigurableApplicationContext applicationContext, String beanName) {
 		return findFactoryMethod(applicationContext.getBeanFactory(), beanName);
 	}
 
+	@Nullable
 	private static Method findFactoryMethod(ConfigurableListableBeanFactory beanFactory, String beanName) {
 		if (beanFactory.containsBeanDefinition(beanName)) {
 			BeanDefinition beanDefinition = beanFactory.getMergedBeanDefinition(beanName);
@@ -226,6 +219,7 @@ public final class ConfigurationPropertiesBean {
 		return null;
 	}
 
+	@Nullable
 	private static Method findFactoryMethodUsingReflection(ConfigurableListableBeanFactory beanFactory,
 			BeanDefinition beanDefinition) {
 		String factoryMethodName = beanDefinition.getFactoryMethodName();
@@ -246,6 +240,7 @@ public final class ConfigurationPropertiesBean {
 		return factoryMethod.get();
 	}
 
+	@Nullable
 	static ConfigurationPropertiesBean forValueObject(Class<?> beanClass, String beanName) {
 		ConfigurationPropertiesBean propertiesBean = create(beanName, null, beanClass, null);
 		Assert.state(propertiesBean != null && propertiesBean.getBindMethod() == BindMethod.VALUE_OBJECT,
@@ -253,7 +248,8 @@ public final class ConfigurationPropertiesBean {
 		return propertiesBean;
 	}
 
-	private static ConfigurationPropertiesBean create(String name, Object instance, Class<?> type, Method factory) {
+	@Nullable
+	private static ConfigurationPropertiesBean create(String name, @Nullable Object instance, Class<?> type, @Nullable Method factory) {
 		ConfigurationProperties annotation = findAnnotation(instance, type, factory, ConfigurationProperties.class);
 		if (annotation == null) {
 			return null;
@@ -270,7 +266,8 @@ public final class ConfigurationPropertiesBean {
 		return new ConfigurationPropertiesBean(name, instance, annotation, bindTarget);
 	}
 
-	private static <A extends Annotation> A findAnnotation(Object instance, Class<?> type, Method factory,
+	@Nullable
+	private static <A extends Annotation> A findAnnotation(@Nullable Object instance, Class<?> type, @Nullable Method factory,
 			Class<A> annotationType) {
 		MergedAnnotation<A> annotation = MergedAnnotation.missing();
 		if (factory != null) {
@@ -286,7 +283,7 @@ public final class ConfigurationPropertiesBean {
 		return annotation.isPresent() ? annotation.synthesize() : null;
 	}
 
-	private static <A extends Annotation> MergedAnnotation<A> findMergedAnnotation(AnnotatedElement element,
+	private static <A extends Annotation> MergedAnnotation<A> findMergedAnnotation(@Nullable AnnotatedElement element,
 			Class<A> annotationType) {
 		return (element != null) ? MergedAnnotations.from(element, SearchStrategy.TYPE_HIERARCHY).get(annotationType)
 				: MergedAnnotation.missing();

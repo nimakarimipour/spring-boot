@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -43,18 +45,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link WebServer} that can be used to control a Jetty web server.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author David Liu
- * @author Eddú Meléndez
- * @author Brian Clozel
- * @author Kristine Jetzke
- * @since 2.0.0
- * @see JettyReactiveWebServerFactory
- */
 public class JettyWebServer implements WebServer {
 
 	private static final Log logger = LogFactory.getLog(JettyWebServer.class);
@@ -92,6 +82,7 @@ public class JettyWebServer implements WebServer {
 		initialize();
 	}
 
+	@Nullable
 	private GracefulShutdown createGracefulShutdown(Server server) {
 		StatisticsHandler statisticsHandler = findStatisticsHandler(server);
 		if (statisticsHandler == null) {
@@ -100,10 +91,12 @@ public class JettyWebServer implements WebServer {
 		return new GracefulShutdown(server, statisticsHandler::getRequestsActive);
 	}
 
+	@Nullable
 	private StatisticsHandler findStatisticsHandler(Server server) {
 		return findStatisticsHandler(server.getHandler());
 	}
 
+	@Nullable
 	private StatisticsHandler findStatisticsHandler(Handler handler) {
 		if (handler instanceof StatisticsHandler) {
 			return (StatisticsHandler) handler;
@@ -229,6 +222,7 @@ public class JettyWebServer implements WebServer {
 				.map(ContextHandler::getContextPath).collect(Collectors.joining(" "));
 	}
 
+	@Nullable
 	private ContextHandler findContextHandler(Handler handler) {
 		while (handler instanceof HandlerWrapper) {
 			if (handler instanceof ContextHandler) {

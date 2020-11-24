@@ -16,14 +16,8 @@
 
 package org.springframework.boot.origin;
 
-/**
- * An interface that may be implemented by an object that can lookup {@link Origin}
- * information from a given key. Can be used to add origin support to existing classes.
- *
- * @param <K> the lookup key type
- * @author Phillip Webb
- * @since 2.0.0
- */
+import javax.annotation.Nullable;
+
 @FunctionalInterface
 public interface OriginLookup<K> {
 
@@ -54,7 +48,7 @@ public interface OriginLookup<K> {
 	 * @param <K> the key type
 	 * @return an {@link Origin} or {@code null}
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	static <K> Origin getOrigin(Object source, K key) {
 		if (!(source instanceof OriginLookup)) {
 			return null;

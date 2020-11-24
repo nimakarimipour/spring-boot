@@ -16,22 +16,20 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.util.Assert;
 
-/**
- * Manages a session store directory.
- *
- * @author Phillip Webb
- * @see AbstractServletWebServerFactory
- */
 class SessionStoreDirectory {
 
+	@Nullable
 	private File directory;
 
+	@Nullable
 	File getDirectory() {
 		return this.directory;
 	}

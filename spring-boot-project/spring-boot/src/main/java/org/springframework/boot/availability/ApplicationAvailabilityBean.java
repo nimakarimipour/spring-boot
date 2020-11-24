@@ -16,21 +16,14 @@
 
 package org.springframework.boot.availability;
 
+import javax.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.Assert;
 
-/**
- * Bean that provides an {@link ApplicationAvailability} implementation by listening for
- * {@link AvailabilityChangeEvent change events}.
- *
- * @author Brian Clozel
- * @author Phillip Webb
- * @since 2.3.0
- * @see ApplicationAvailability
- */
 public class ApplicationAvailabilityBean
 		implements ApplicationAvailability, ApplicationListener<AvailabilityChangeEvent<?>> {
 
@@ -44,14 +37,14 @@ public class ApplicationAvailabilityBean
 		return (state != null) ? state : defaultState;
 	}
 
-	@Override
+	@Override@Nullable
 	public <S extends AvailabilityState> S getState(Class<S> stateType) {
 		AvailabilityChangeEvent<S> event = getLastChangeEvent(stateType);
 		return (event != null) ? event.getState() : null;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	public <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType) {
 		return (AvailabilityChangeEvent<S>) this.events.get(stateType);
 	}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind.validation;
 
+import javax.annotation.Nullable;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -35,13 +37,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.AbstractBindingResult;
 import org.springframework.validation.Validator;
 
-/**
- * {@link BindHandler} to apply {@link Validator Validators} to bound results.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class ValidationBindHandler extends AbstractBindHandler {
 
 	private final Validator[] validators;
@@ -52,6 +47,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 
 	private final Set<ConfigurationProperty> boundProperties = new LinkedHashSet<>();
 
+	@Nullable
 	private BindValidationException exception;
 
 	public ValidationBindHandler(Validator... validators) {
@@ -117,6 +113,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 		}
 	}
 
+	@Nullable
 	private Object getValidationTarget(Bindable<?> target, BindContext context, Object result) {
 		if (result != null) {
 			return result;
@@ -175,11 +172,12 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			return super.getFieldType(field);
 		}
 
-		@Override
+		@Override@Nullable
 		protected Object getActualFieldValue(String field) {
 			return getBoundField(ValidationBindHandler.this.boundResults, field);
 		}
 
+		@Nullable
 		private <T> T getBoundField(Map<ConfigurationPropertyName, T> boundFields, String field) {
 			try {
 				ConfigurationPropertyName name = getName(field);

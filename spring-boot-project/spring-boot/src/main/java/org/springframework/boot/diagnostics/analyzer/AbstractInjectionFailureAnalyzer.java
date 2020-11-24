@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
@@ -24,15 +26,6 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.util.ClassUtils;
 
-/**
- * Abstract base class for a {@link FailureAnalyzer} that handles some kind of injection
- * failure.
- *
- * @param <T> the type of exception to analyze
- * @author Andy Wilkinson
- * @author Stephane Nicoll
- * @since 1.4.1
- */
 public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> extends AbstractFailureAnalyzer<T> {
 
 	@Override
@@ -40,6 +33,7 @@ public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> exte
 		return analyze(rootFailure, cause, getDescription(rootFailure));
 	}
 
+	@Nullable
 	private String getDescription(Throwable rootFailure) {
 		UnsatisfiedDependencyException unsatisfiedDependency = findMostNestedCause(rootFailure,
 				UnsatisfiedDependencyException.class);
@@ -54,7 +48,7 @@ public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> exte
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	private <C extends Exception> C findMostNestedCause(Throwable root, Class<C> type) {
 		Throwable candidate = root;
 		C result = null;
@@ -109,6 +103,6 @@ public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> exte
 	 * @param description the description of the injection point or {@code null}
 	 * @return the analysis or {@code null}
 	 */
-	protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause, String description);
+	protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause, @Nullable String description);
 
 }

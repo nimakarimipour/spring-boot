@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.java;
 
+import javax.annotation.Nullable;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -43,15 +45,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link LoggingSystem} for {@link Logger java.util.logging}.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @author Ben Hale
- * @since 1.0.0
- */
 public class JavaLoggingSystem extends AbstractLoggingSystem {
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
@@ -142,7 +135,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		return Collections.unmodifiableList(result);
 	}
 
-	@Override
+	@Override@Nullable
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		Logger logger = Logger.getLogger(loggerName);
 		if (logger == null) {
@@ -190,7 +183,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		private static final boolean PRESENT = ClassUtils.isPresent("java.util.logging.LogManager",
 				Factory.class.getClassLoader());
 
-		@Override
+		@Override@Nullable
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new JavaLoggingSystem(classLoader);

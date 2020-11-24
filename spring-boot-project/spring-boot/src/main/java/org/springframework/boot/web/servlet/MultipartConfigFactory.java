@@ -16,24 +16,24 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import javax.servlet.MultipartConfigElement;
 
 import org.springframework.util.unit.DataSize;
 
-/**
- * Factory that can be used to create a {@link MultipartConfigElement}.
- *
- * @author Phillip Webb
- * @since 1.4.0
- */
 public class MultipartConfigFactory {
 
+	@Nullable
 	private String location;
 
+	@Nullable
 	private DataSize maxFileSize;
 
+	@Nullable
 	private DataSize maxRequestSize;
 
+	@Nullable
 	private DataSize fileSizeThreshold;
 
 	/**
@@ -87,7 +87,7 @@ public class MultipartConfigFactory {
 	 * @param defaultValue the default value if the size is {@code null} or negative
 	 * @return the amount of bytes to use
 	 */
-	private long convertToBytes(DataSize size, int defaultValue) {
+	private long convertToBytes(@Nullable DataSize size, int defaultValue) {
 		if (size != null && !size.isNegative()) {
 			return size.toBytes();
 		}

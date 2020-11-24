@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jdbc;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,23 +37,9 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 import org.springframework.util.ClassUtils;
 
-/**
- * Convenience class for building a {@link DataSource} with common implementations and
- * properties. If HikariCP, Tomcat, Commons DBCP or Oracle UCP are on the classpath one of
- * them will be selected (in that order with Hikari first). In the interest of a uniform
- * interface, and so that there can be a fallback to an embedded database if one can be
- * detected on the classpath, only a small set of common configuration properties are
- * supported. To inject additional properties into the result you can downcast it, or use
- * {@code @ConfigurationProperties}.
- *
- * @param <T> type of DataSource produced by the builder
- * @author Dave Syer
- * @author Madhura Bhave
- * @author Fabio Grassi
- * @since 2.0.0
- */
 public final class DataSourceBuilder<T extends DataSource> {
 
+	@Nullable
 	private Class<? extends DataSource> type;
 
 	private final DataSourceSettingsResolver settingsResolver;
@@ -66,7 +54,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 		return new DataSourceBuilder<>(classLoader);
 	}
 
-	private DataSourceBuilder(ClassLoader classLoader) {
+	private DataSourceBuilder(@Nullable ClassLoader classLoader) {
 		this.settingsResolver = new DataSourceSettingsResolver(classLoader);
 	}
 
@@ -121,6 +109,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 		return this;
 	}
 
+	@Nullable
 	public static Class<? extends DataSource> findType(ClassLoader classLoader) {
 		DataSourceSettings preferredDataSourceSettings = new DataSourceSettingsResolver(classLoader)
 				.getPreferredDataSourceSettings();
@@ -173,7 +162,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			super(type, (aliases) -> aliases.addAliases("username", "user"));
 		}
 
-		@Override
+		@Override@Nullable
 		public Class<? extends DataSource> getType() {
 			return null; // Base interface
 		}
@@ -186,7 +175,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 
 		private final List<DataSourceSettings> allDataSourceSettings;
 
-		DataSourceSettingsResolver(ClassLoader classLoader) {
+		DataSourceSettingsResolver(@Nullable ClassLoader classLoader) {
 			List<DataSourceSettings> supportedProviders = resolveAvailableDataSourceSettings(classLoader);
 			this.preferredDataSourceSettings = (!supportedProviders.isEmpty()) ? supportedProviders.get(0) : null;
 			this.allDataSourceSettings = new ArrayList<>(supportedProviders);
@@ -198,7 +187,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 					create(classLoader, "oracle.jdbc.datasource.OracleDataSource", OracleDataSourceSettings::new));
 		}
 
-		private static List<DataSourceSettings> resolveAvailableDataSourceSettings(ClassLoader classLoader) {
+		private static List<DataSourceSettings> resolveAvailableDataSourceSettings(@Nullable ClassLoader classLoader) {
 			List<DataSourceSettings> providers = new ArrayList<>();
 			addIfAvailable(providers, create(classLoader, "com.zaxxer.hikari.HikariDataSource",
 					(type) -> new DataSourceSettings(type, (aliases) -> aliases.addAliases("url", "jdbc-url"))));
@@ -219,8 +208,8 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return providers;
 		}
 
-		@SuppressWarnings("unchecked")
-		private static DataSourceSettings create(ClassLoader classLoader, String target,
+		@SuppressWarnings("unchecked")@Nullable
+		private static DataSourceSettings create(@Nullable ClassLoader classLoader, String target,
 				Function<Class<? extends DataSource>, DataSourceSettings> factory) {
 			if (ClassUtils.isPresent(target, classLoader)) {
 				try {
@@ -235,7 +224,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return null;
 		}
 
-		private static void addIfAvailable(Collection<DataSourceSettings> list, DataSourceSettings dataSourceSettings) {
+		private static void addIfAvailable(Collection<DataSourceSettings> list, @Nullable DataSourceSettings dataSourceSettings) {
 			if (dataSourceSettings != null) {
 				list.add(dataSourceSettings);
 			}

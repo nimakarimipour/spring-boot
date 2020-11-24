@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jdbc.metadata;
 
+import javax.annotation.Nullable;
+
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -24,19 +26,13 @@ import oracle.ucp.jdbc.PoolDataSource;
 
 import org.springframework.util.StringUtils;
 
-/**
- * {@link DataSourcePoolMetadata} for an Oracle UCP {@link DataSource}.
- *
- * @author Fabio Grassi
- * @since 2.4.0
- */
 public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata<PoolDataSource> {
 
 	public OracleUcpDataSourcePoolMetadata(PoolDataSource dataSource) {
 		super(dataSource);
 	}
 
-	@Override
+	@Override@Nullable
 	public Integer getActive() {
 		try {
 			return getDataSource().getBorrowedConnectionsCount();
@@ -46,7 +42,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		}
 	}
 
-	@Override
+	@Override@Nullable
 	public Integer getIdle() {
 		try {
 			return getDataSource().getAvailableConnectionsCount();
@@ -71,7 +67,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		return getDataSource().getSQLForValidateConnection();
 	}
 
-	@Override
+	@Override@Nullable
 	public Boolean getDefaultAutoCommit() {
 		String autoCommit = getDataSource().getConnectionProperty("autoCommit");
 		return StringUtils.hasText(autoCommit) ? Boolean.valueOf(autoCommit) : null;

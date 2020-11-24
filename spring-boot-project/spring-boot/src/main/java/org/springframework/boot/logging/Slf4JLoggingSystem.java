@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
@@ -26,12 +28,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
-/**
- * Abstract base class for {@link LoggingSystem} implementations that utilize SLF4J.
- *
- * @author Andy Wilkinson
- * @since 1.2.0
- */
 public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 
 	private static final String BRIDGE_HANDLER = "org.slf4j.bridge.SLF4JBridgeHandler";
@@ -54,8 +50,8 @@ public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 	}
 
 	@Override
-	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+	protected void loadConfiguration(LoggingInitializationContext initializationContext, @Nullable String location,
+			@Nullable LogFile logFile) {
 		Assert.notNull(location, "Location must not be null");
 		if (initializationContext != null) {
 			applySystemProperties(initializationContext.getEnvironment(), logFile);

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.ansi;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -27,22 +29,6 @@ import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link PropertyResolver} for {@link AnsiStyle}, {@link AnsiColor},
- * {@link AnsiBackground} and {@link Ansi8BitColor} elements. Supports properties of the
- * form {@code AnsiStyle.BOLD}, {@code AnsiColor.RED} or {@code AnsiBackground.GREEN}.
- * Also supports a prefix of {@code Ansi.} which is an aggregation of everything (with
- * background colors prefixed {@code BG_}).
- * <p>
- * ANSI 8-bit color codes can be used with {@code AnsiColor} and {@code AnsiBackground}.
- * For example, {@code AnsiColor.208} will render orange text.
- * <a href="https://en.wikipedia.org/wiki/ANSI_escape_code">Wikipedia</a> has a complete
- * list of the 8-bit color codes that can be used.
- *
- * @author Phillip Webb
- * @author Toshiaki Maki
- * @since 1.3.0
- */
 public class AnsiPropertySource extends PropertySource<AnsiElement> {
 
 	private static final Iterable<Mapping> MAPPINGS;
@@ -72,7 +58,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 		this.encode = encode;
 	}
 
-	@Override
+	@Override@Nullable
 	public Object getProperty(String name) {
 		if (StringUtils.hasLength(name)) {
 			for (Mapping mapping : MAPPINGS) {
@@ -120,7 +106,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 			this.enums = EnumSet.allOf(enumType);
 		}
 
-		@Override
+		@Override@Nullable
 		AnsiElement getElement(String postfix) {
 			for (Enum<?> candidate : this.enums) {
 				if (candidate.name().equals(postfix)) {
@@ -144,7 +130,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 			this.factory = factory;
 		}
 
-		@Override
+		@Override@Nullable
 		AnsiElement getElement(String postfix) {
 			if (containsOnlyDigits(postfix)) {
 				try {

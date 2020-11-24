@@ -16,17 +16,12 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.origin.Origin;
 
-/**
- * An implementation of {@link AbstractFailureAnalyzer} to analyze failures caused by
- * {@link ConfigDataNotFoundException}.
- *
- * @author Michal Mlak
- * @author Phillip Webb
- */
 class ConfigDataNotFoundFailureAnalyzer extends AbstractFailureAnalyzer<ConfigDataNotFoundException> {
 
 	@Override
@@ -48,6 +43,7 @@ class ConfigDataNotFoundFailureAnalyzer extends AbstractFailureAnalyzer<ConfigDa
 		return new FailureAnalysis(message, action.toString(), cause);
 	}
 
+	@Nullable
 	private ConfigDataLocation getLocation(ConfigDataNotFoundException cause) {
 		if (cause instanceof ConfigDataLocationNotFoundException) {
 			return ((ConfigDataLocationNotFoundException) cause).getLocation();

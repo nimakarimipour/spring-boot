@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -31,12 +33,6 @@ import org.springframework.boot.context.properties.source.IterableConfigurationP
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
 
-/**
- * {@link AggregateBinder} for Maps.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class MapBinder extends AggregateBinder<Map<Object, Object>> {
 
 	private static final Bindable<Map<String, String>> STRING_STRING_MAP = Bindable.mapOf(String.class, String.class);
@@ -50,7 +46,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		return true;
 	}
 
-	@Override
+	@Override@Nullable
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		Map<Object, Object> map = CollectionFactory
@@ -104,6 +100,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		}
 	}
 
+	@Nullable
 	private Map<Object, Object> getExistingIfPossible(Supplier<Map<Object, Object>> existing) {
 		try {
 			return existing.get();

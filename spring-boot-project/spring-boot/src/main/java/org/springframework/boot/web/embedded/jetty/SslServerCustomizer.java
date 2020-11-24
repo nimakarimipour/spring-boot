@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -45,13 +47,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
 
-/**
- * {@link JettyServerCustomizer} that configures SSL on the given Jetty server instance.
- *
- * @author Brian Clozel
- * @author Olivier Lamy
- * @author Chris Bono
- */
 class SslServerCustomizer implements JettyServerCustomizer {
 
 	private final InetSocketAddress address;
@@ -62,7 +57,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 
 	private final Http2 http2;
 
-	SslServerCustomizer(InetSocketAddress address, Ssl ssl, SslStoreProvider sslStoreProvider, Http2 http2) {
+	SslServerCustomizer(InetSocketAddress address, @Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider, @Nullable Http2 http2) {
 		this.address = address;
 		this.ssl = ssl;
 		this.sslStoreProvider = sslStoreProvider;
@@ -246,14 +241,14 @@ class SslServerCustomizer implements JettyServerCustomizer {
 
 		private final String keyAlias;
 
-		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, String keyAlias,
+		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, @Nullable String keyAlias,
 				SslConnectionFactory sslConnectionFactory, HttpConnectionFactory connectionFactory) {
 			super(server, sslConnectionFactory, connectionFactory);
 			this.sslContextFactory = sslContextFactory;
 			this.keyAlias = keyAlias;
 		}
 
-		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, String keyAlias,
+		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, @Nullable String keyAlias,
 				ConnectionFactory... factories) {
 			super(server, factories);
 			this.sslContextFactory = sslContextFactory;

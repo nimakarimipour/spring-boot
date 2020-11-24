@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -27,12 +29,6 @@ import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.util.Assert;
 
-/**
- * Default {@link ConfigurableBootstrapContext} implementation.
- *
- * @author Phillip Webb
- * @since 2.4.0
- */
 public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 
 	private final Map<Class<?>, InstanceSupplier<?>> instanceSuppliers = new HashMap<>();
@@ -71,7 +67,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	public <T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type) {
 		synchronized (this.instanceSuppliers) {
 			return (InstanceSupplier<T>) this.instanceSuppliers.get(type);
@@ -83,17 +79,17 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		this.events.addApplicationListener(listener);
 	}
 
-	@Override
+	@Override@Nullable
 	public <T> T get(Class<T> type) throws IllegalStateException {
 		return getOrElseThrow(type, () -> new IllegalStateException(type.getName() + " has not been registered"));
 	}
 
-	@Override
+	@Override@Nullable
 	public <T> T getOrElse(Class<T> type, T other) {
 		return getOrElseSupply(type, () -> other);
 	}
 
-	@Override
+	@Override@Nullable
 	public <T> T getOrElseSupply(Class<T> type, Supplier<T> other) {
 		synchronized (this.instanceSuppliers) {
 			InstanceSupplier<?> instanceSupplier = this.instanceSuppliers.get(type);
@@ -101,7 +97,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	@Override
+	@Override@Nullable
 	public <T, X extends Throwable> T getOrElseThrow(Class<T> type, Supplier<? extends X> exceptionSupplier) throws X {
 		synchronized (this.instanceSuppliers) {
 			InstanceSupplier<?> instanceSupplier = this.instanceSuppliers.get(type);
@@ -112,7 +108,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	private <T> T getInstance(Class<T> type, InstanceSupplier<?> instanceSupplier) {
 		T instance = (T) this.instances.get(type);
 		if (instance == null) {

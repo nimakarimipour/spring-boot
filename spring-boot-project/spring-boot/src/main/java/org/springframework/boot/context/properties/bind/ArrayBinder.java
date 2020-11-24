@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +27,13 @@ import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.ResolvableType;
 
-/**
- * {@link AggregateBinder} for arrays.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ArrayBinder extends IndexedElementsBinder<Object> {
 
 	ArrayBinder(Context context) {
 		super(context);
 	}
 
-	@Override
+	@Override@Nullable
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		IndexedCollectionSupplier result = new IndexedCollectionSupplier(ArrayList::new);

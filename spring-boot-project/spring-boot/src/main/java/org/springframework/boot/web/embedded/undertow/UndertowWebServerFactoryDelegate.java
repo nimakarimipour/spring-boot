@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -38,31 +40,32 @@ import org.springframework.boot.web.server.Ssl;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Delegate class used by {@link UndertowServletWebServerFactory} and
- * {@link UndertowReactiveWebServerFactory}.
- *
- * @author Phillip Webb
- * @author Andy Wilkinson
- */
 class UndertowWebServerFactoryDelegate {
 
 	private Set<UndertowBuilderCustomizer> builderCustomizers = new LinkedHashSet<>();
 
+	@Nullable
 	private Integer bufferSize;
 
+	@Nullable
 	private Integer ioThreads;
 
+	@Nullable
 	private Integer workerThreads;
 
+	@Nullable
 	private Boolean directBuffers;
 
+	@Nullable
 	private File accessLogDirectory;
 
+	@Nullable
 	private String accessLogPattern;
 
+	@Nullable
 	private String accessLogPrefix;
 
+	@Nullable
 	private String accessLogSuffix;
 
 	private boolean accessLogEnabled = false;
@@ -113,6 +116,7 @@ class UndertowWebServerFactoryDelegate {
 		this.accessLogPrefix = accessLogPrefix;
 	}
 
+	@Nullable
 	String getAccessLogPrefix() {
 		return this.accessLogPrefix;
 	}
@@ -187,8 +191,8 @@ class UndertowWebServerFactoryDelegate {
 		return factories;
 	}
 
-	static List<HttpHandlerFactory> createHttpHandlerFactories(Compression compression, boolean useForwardHeaders,
-			String serverHeader, Shutdown shutdown, HttpHandlerFactory... initialHttpHandlerFactories) {
+	static List<HttpHandlerFactory> createHttpHandlerFactories(@Nullable Compression compression, boolean useForwardHeaders,
+			@Nullable String serverHeader, @Nullable Shutdown shutdown, HttpHandlerFactory... initialHttpHandlerFactories) {
 		List<HttpHandlerFactory> factories = new ArrayList<>(Arrays.asList(initialHttpHandlerFactories));
 		if (compression != null && compression.getEnabled()) {
 			factories.add(new CompressionHttpHandlerFactory(compression));

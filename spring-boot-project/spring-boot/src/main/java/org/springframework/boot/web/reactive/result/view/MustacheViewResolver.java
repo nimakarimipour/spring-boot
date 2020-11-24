@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.reactive.result.view;
 
+import javax.annotation.Nullable;
+
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
 
@@ -23,16 +25,11 @@ import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.UrlBasedViewResolver;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
-/**
- * Spring WebFlux {@link ViewResolver} for Mustache.
- *
- * @author Brian Clozel
- * @since 2.0.0
- */
 public class MustacheViewResolver extends UrlBasedViewResolver {
 
 	private final Compiler compiler;
 
+	@Nullable
 	private String charset;
 
 	/**

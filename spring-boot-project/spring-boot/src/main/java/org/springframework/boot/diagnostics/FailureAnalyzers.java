@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,19 +36,6 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
-/**
- * Utility to trigger {@link FailureAnalyzer} and {@link FailureAnalysisReporter}
- * instances loaded from {@code spring.factories}.
- * <p>
- * A {@code FailureAnalyzer} that requires access to the {@link BeanFactory} in order to
- * perform its analysis can implement {@code BeanFactoryAware} to have the
- * {@code BeanFactory} injected prior to {@link FailureAnalyzer#analyze(Throwable)} being
- * called.
- *
- * @author Andy Wilkinson
- * @author Phillip Webb
- * @author Stephane Nicoll
- */
 final class FailureAnalyzers implements SpringBootExceptionReporter {
 
 	private static final Log logger = LogFactory.getLog(FailureAnalyzers.class);
@@ -59,11 +48,12 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		this(context, null);
 	}
 
-	FailureAnalyzers(ConfigurableApplicationContext context, ClassLoader classLoader) {
+	FailureAnalyzers(ConfigurableApplicationContext context, @Nullable ClassLoader classLoader) {
 		this.classLoader = (classLoader != null) ? classLoader : getClassLoader(context);
 		this.analyzers = loadFailureAnalyzers(context, this.classLoader);
 	}
 
+	@Nullable
 	private ClassLoader getClassLoader(ConfigurableApplicationContext context) {
 		return (context != null) ? context.getClassLoader() : null;
 	}
@@ -87,6 +77,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return analyzers;
 	}
 
+	@Nullable
 	private FailureAnalyzer createAnalyzer(ConfigurableApplicationContext context, String className) throws Exception {
 		Constructor<?> constructor = ClassUtils.forName(className, this.classLoader).getDeclaredConstructor();
 		ReflectionUtils.makeAccessible(constructor);
@@ -112,6 +103,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return report(analysis, this.classLoader);
 	}
 
+	@Nullable
 	private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
 		for (FailureAnalyzer analyzer : analyzers) {
 			try {
@@ -127,7 +119,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return null;
 	}
 
-	private boolean report(FailureAnalysis analysis, ClassLoader classLoader) {
+	private boolean report(@Nullable FailureAnalysis analysis, ClassLoader classLoader) {
 		List<FailureAnalysisReporter> reporters = SpringFactoriesLoader.loadFactories(FailureAnalysisReporter.class,
 				classLoader);
 		if (analysis == null || reporters.isEmpty()) {

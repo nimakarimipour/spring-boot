@@ -16,6 +16,8 @@
 
 package org.springframework.boot.builder;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,38 +47,14 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.util.StringUtils;
 
-/**
- * Builder for {@link SpringApplication} and {@link ApplicationContext} instances with
- * convenient fluent API and context hierarchy support. Simple example of a context
- * hierarchy:
- *
- * <pre class="code">
- * new SpringApplicationBuilder(ParentConfig.class).child(ChildConfig.class).run(args);
- * </pre>
- *
- * Another common use case is setting active profiles and default properties to set up the
- * environment for an application:
- *
- * <pre class="code">
- * new SpringApplicationBuilder(Application.class).profiles(&quot;server&quot;)
- * 		.properties(&quot;transport=local&quot;).run(args);
- * </pre>
- *
- * <p>
- * If your needs are simpler, consider using the static convenience methods in
- * SpringApplication instead.
- *
- * @author Dave Syer
- * @author Andy Wilkinson
- * @since 1.0.0
- * @see SpringApplication
- */
 public class SpringApplicationBuilder {
 
 	private final SpringApplication application;
 
+	@Nullable
 	private ConfigurableApplicationContext context;
 
+	@Nullable
 	private SpringApplicationBuilder parent;
 
 	private final AtomicBoolean running = new AtomicBoolean();
@@ -85,6 +63,7 @@ public class SpringApplicationBuilder {
 
 	private final Map<String, Object> defaultProperties = new LinkedHashMap<>();
 
+	@Nullable
 	private ConfigurableEnvironment environment;
 
 	private Set<String> additionalProfiles = new LinkedHashSet<>();
@@ -113,6 +92,7 @@ public class SpringApplicationBuilder {
 	 * Accessor for the current application context.
 	 * @return the current application context (or null if not yet running)
 	 */
+	@Nullable
 	public ConfigurableApplicationContext context() {
 		return this.context;
 	}
@@ -132,6 +112,7 @@ public class SpringApplicationBuilder {
 	 * @param args the command line arguments
 	 * @return an application context created from the current state
 	 */
+	@Nullable
 	public ConfigurableApplicationContext run(String... args) {
 		if (this.running.get()) {
 			// If already created we just return the existing context
@@ -528,7 +509,7 @@ public class SpringApplicationBuilder {
 	 * @param environment the environment to set.
 	 * @return the current builder
 	 */
-	public SpringApplicationBuilder environment(ConfigurableEnvironment environment) {
+	public SpringApplicationBuilder environment(@Nullable ConfigurableEnvironment environment) {
 		this.application.setEnvironment(environment);
 		this.environment = environment;
 		return this;

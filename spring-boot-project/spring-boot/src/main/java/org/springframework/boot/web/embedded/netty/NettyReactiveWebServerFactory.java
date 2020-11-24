@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.netty;
 
+import javax.annotation.Nullable;
+
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -38,24 +40,21 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
 
-/**
- * {@link ReactiveWebServerFactory} that can be used to create {@link NettyWebServer}s.
- *
- * @author Brian Clozel
- * @since 2.0.0
- */
 public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFactory {
 
 	private Set<NettyServerCustomizer> serverCustomizers = new LinkedHashSet<>();
 
 	private List<NettyRouteProvider> routeProviders = new ArrayList<>();
 
+	@Nullable
 	private Duration lifecycleTimeout;
 
 	private boolean useForwardHeaders;
 
+	@Nullable
 	private ReactorResourceFactory resourceFactory;
 
+	@Nullable
 	private Shutdown shutdown;
 
 	public NettyReactiveWebServerFactory() {
@@ -144,7 +143,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 		this.shutdown = shutdown;
 	}
 
-	@Override
+	@Override@Nullable
 	public Shutdown getShutdown() {
 		return this.shutdown;
 	}

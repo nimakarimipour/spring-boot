@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.metrics.buffering;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -24,21 +26,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.metrics.StartupStep;
 
-/**
- * Represent the timeline of {@link StartupStep steps} recorded by
- * {@link BufferingApplicationStartup}. Each {@link TimelineEvent} has a start and end
- * time as well as a duration measured with nanosecond precision.
- *
- * @author Brian Clozel
- * @since 2.4.0
- */
 public class StartupTimeline {
 
 	private final Instant startTime;
 
 	private final List<TimelineEvent> events;
 
-	StartupTimeline(Instant startTime, long startNanoTime, Collection<BufferedStartupStep> events) {
+	StartupTimeline(@Nullable Instant startTime, long startNanoTime, Collection<BufferedStartupStep> events) {
 		this.startTime = startTime;
 		this.events = events.stream().map((event) -> new TimelineEvent(event, startTime, startNanoTime))
 				.collect(Collectors.toList());
@@ -75,7 +69,7 @@ public class StartupTimeline {
 
 		private final Duration duration;
 
-		TimelineEvent(BufferedStartupStep startupStep, Instant startupDate, long startupNanoTime) {
+		TimelineEvent(BufferedStartupStep startupStep, @Nullable Instant startupDate, long startupNanoTime) {
 			this.startupStep = startupStep;
 			this.startTime = startupDate.plus(Duration.ofNanos(startupStep.getStartTime() - startupNanoTime));
 			this.endTime = startupDate.plus(Duration.ofNanos(startupStep.getEndTime() - startupNanoTime));

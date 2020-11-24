@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -30,17 +32,6 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
 
-/**
- * {@link BeanPostProcessor} to bind {@link PropertySources} to beans annotated with
- * {@link ConfigurationProperties @ConfigurationProperties}.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Christian Dupuis
- * @author Stephane Nicoll
- * @author Madhura Bhave
- * @since 1.0.0
- */
 public class ConfigurationPropertiesBindingPostProcessor
 		implements BeanPostProcessor, PriorityOrdered, ApplicationContextAware, InitializingBean {
 
@@ -49,10 +40,13 @@ public class ConfigurationPropertiesBindingPostProcessor
 	 */
 	public static final String BEAN_NAME = ConfigurationPropertiesBindingPostProcessor.class.getName();
 
+	@Nullable
 	private ApplicationContext applicationContext;
 
+	@Nullable
 	private BeanDefinitionRegistry registry;
 
+	@Nullable
 	private ConfigurationPropertiesBinder binder;
 
 	@Override
@@ -79,7 +73,7 @@ public class ConfigurationPropertiesBindingPostProcessor
 		return bean;
 	}
 
-	private void bind(ConfigurationPropertiesBean bean) {
+	private void bind(@Nullable ConfigurationPropertiesBean bean) {
 		if (bean == null || hasBoundValueObject(bean.getName())) {
 			return;
 		}

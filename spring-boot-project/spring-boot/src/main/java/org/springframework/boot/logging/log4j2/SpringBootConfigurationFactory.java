@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.log4j2;
 
+import javax.annotation.Nullable;
+
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationFactory;
@@ -24,23 +26,6 @@ import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 
-/**
- * Spring Boot {@link ConfigurationFactory} that customizes Log4J2's default configuration
- * to:
- *
- * <ol>
- * <li>Prevent logger warnings from being printed when the application first starts.
- * <li>Disable its shutdown hook
- * </ol>
- *
- * This factory is ordered last and is triggered by a {@code log4j2.springboot} classpath
- * resource (which is bundled in this jar). If the {@link Log4J2LoggingSystem} is active,
- * a custom {@link DefaultConfiguration} is returned with the expectation that the system
- * will later re-initialize Log4J2 with the correct configuration file.
- *
- * @author Phillip Webb
- * @since 1.5.0
- */
 @Plugin(name = "SpringBootConfigurationFactory", category = ConfigurationFactory.CATEGORY)
 @Order(0)
 public class SpringBootConfigurationFactory extends ConfigurationFactory {
@@ -52,7 +37,7 @@ public class SpringBootConfigurationFactory extends ConfigurationFactory {
 		return TYPES;
 	}
 
-	@Override
+	@Override@Nullable
 	public Configuration getConfiguration(LoggerContext loggerContext, ConfigurationSource source) {
 		if (source == null || source == ConfigurationSource.NULL_SOURCE) {
 			return null;

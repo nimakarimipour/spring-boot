@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,13 +35,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
-/**
- * A collection of {@link ConfigDataLocationResolver} instances loaded via
- * {@code spring.factories}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataLocationResolvers {
 
 	private final List<ConfigDataLocationResolver<?>> resolvers;
@@ -97,7 +92,7 @@ class ConfigDataLocationResolvers {
 	}
 
 	List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext context, ConfigDataLocation location,
-			Profiles profiles) {
+			@Nullable Profiles profiles) {
 		if (location == null) {
 			return Collections.emptyList();
 		}
@@ -110,7 +105,7 @@ class ConfigDataLocationResolvers {
 	}
 
 	private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolver<?> resolver,
-			ConfigDataLocationResolverContext context, ConfigDataLocation location, Profiles profiles) {
+			ConfigDataLocationResolverContext context, ConfigDataLocation location, @Nullable Profiles profiles) {
 		List<ConfigDataResolutionResult> resolved = resolve(location, () -> resolver.resolve(context, location));
 		if (profiles == null) {
 			return resolved;

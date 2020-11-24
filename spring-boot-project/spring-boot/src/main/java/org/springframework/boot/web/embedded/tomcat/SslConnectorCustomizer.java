@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.io.FileNotFoundException;
 
 import org.apache.catalina.connector.Connector;
@@ -32,18 +34,13 @@ import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link TomcatConnectorCustomizer} that configures SSL support on the given connector.
- *
- * @author Brian Clozel
- */
 class SslConnectorCustomizer implements TomcatConnectorCustomizer {
 
 	private final Ssl ssl;
 
 	private final SslStoreProvider sslStoreProvider;
 
-	SslConnectorCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+	SslConnectorCustomizer(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		Assert.notNull(ssl, "Ssl configuration should not be null");
 		this.ssl = ssl;
 		this.sslStoreProvider = sslStoreProvider;

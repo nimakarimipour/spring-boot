@@ -16,6 +16,8 @@
 
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
+
 import java.util.Random;
 import java.util.UUID;
 
@@ -30,29 +32,6 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link PropertySource} that returns a random value for any property that starts with
- * {@literal "random."}. Where the "unqualified property name" is the portion of the
- * requested property name beyond the "random." prefix, this {@link PropertySource}
- * returns:
- * <ul>
- * <li>When {@literal "int"}, a random {@link Integer} value, restricted by an optionally
- * specified range.</li>
- * <li>When {@literal "long"}, a random {@link Long} value, restricted by an optionally
- * specified range.</li>
- * <li>Otherwise, a {@code byte[]}.</li>
- * </ul>
- * The {@literal "random.int"} and {@literal "random.long"} properties supports a range
- * suffix whose syntax is:
- * <p>
- * {@code OPEN value (,max) CLOSE} where the {@code OPEN,CLOSE} are any character and
- * {@code value,max} are integers. If {@code max} is provided then {@code value} is the
- * minimum value and {@code max} is the maximum (exclusive).
- *
- * @author Dave Syer
- * @author Matt Benson
- * @since 1.0.0
- */
 public class RandomValuePropertySource extends PropertySource<Random> {
 
 	/**
@@ -72,7 +51,7 @@ public class RandomValuePropertySource extends PropertySource<Random> {
 		super(name, new Random());
 	}
 
-	@Override
+	@Override@Nullable
 	public Object getProperty(String name) {
 		if (!name.startsWith(PREFIX)) {
 			return null;
@@ -102,6 +81,7 @@ public class RandomValuePropertySource extends PropertySource<Random> {
 		return getRandomBytes();
 	}
 
+	@Nullable
 	private String getRange(String type, String prefix) {
 		if (type.startsWith(prefix)) {
 			int startIndex = prefix.length() + 1;

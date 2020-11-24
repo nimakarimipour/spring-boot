@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -30,12 +32,6 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Bound properties used when working with {@link ConfigData}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataProperties {
 
 	private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
@@ -56,11 +52,11 @@ class ConfigDataProperties {
 	 * @param imports the imports requested
 	 * @param activate the activate properties
 	 */
-	ConfigDataProperties(@Name("import") List<ConfigDataLocation> imports, Activate activate) {
+	ConfigDataProperties(@Name("import")@Nullable List<ConfigDataLocation> imports, @Nullable Activate activate) {
 		this(imports, activate, Collections.emptyList());
 	}
 
-	private ConfigDataProperties(List<ConfigDataLocation> imports, Activate activate,
+	private ConfigDataProperties(@Nullable List<ConfigDataLocation> imports, @Nullable Activate activate,
 			List<ConfigurationProperty> boundProperties) {
 		this.imports = (imports != null) ? imports : Collections.emptyList();
 		this.activate = activate;
@@ -80,7 +76,7 @@ class ConfigDataProperties {
 	 * @param activationContext the activation context
 	 * @return {@code true} if the config data property source is active
 	 */
-	boolean isActive(ConfigDataActivationContext activationContext) {
+	boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 		return this.activate == null || this.activate.isActive(activationContext);
 	}
 
@@ -92,7 +88,7 @@ class ConfigDataProperties {
 		return new ConfigDataProperties(null, this.activate);
 	}
 
-	ConfigDataProperties withLegacyProfiles(String[] legacyProfiles, ConfigurationProperty property) {
+	ConfigDataProperties withLegacyProfiles(@Nullable String[] legacyProfiles, @Nullable ConfigurationProperty property) {
 		if (this.activate != null && !ObjectUtils.isEmpty(this.activate.onProfile)) {
 			throw new InvalidConfigDataPropertyException(property, NAME.append("activate.on-profile"), null);
 		}
@@ -105,6 +101,7 @@ class ConfigDataProperties {
 	 * @param binder the binder used to bind the properties
 	 * @return a {@link ConfigDataProperties} instance or {@code null}
 	 */
+	@Nullable
 	static ConfigDataProperties get(Binder binder) {
 		LegacyProfilesBindHandler legacyProfilesBindHandler = new LegacyProfilesBindHandler();
 		String[] legacyProfiles = binder.bind(LEGACY_PROFILES_NAME, BINDABLE_STRING_ARRAY, legacyProfilesBindHandler)
@@ -124,6 +121,7 @@ class ConfigDataProperties {
 	 */
 	private static class LegacyProfilesBindHandler implements BindHandler {
 
+		@Nullable
 		private ConfigurationProperty property;
 
 		@Override
@@ -133,6 +131,7 @@ class ConfigDataProperties {
 			return result;
 		}
 
+		@Nullable
 		ConfigurationProperty getProperty() {
 			return this.property;
 		}
@@ -153,7 +152,7 @@ class ConfigDataProperties {
 		 * @param onCloudPlatform the cloud platform required for activation
 		 * @param onProfile the profile expression required for activation
 		 */
-		Activate(CloudPlatform onCloudPlatform, String[] onProfile) {
+		Activate(@Nullable CloudPlatform onCloudPlatform, @Nullable String[] onProfile) {
 			this.onProfile = onProfile;
 			this.onCloudPlatform = onCloudPlatform;
 		}
@@ -164,7 +163,7 @@ class ConfigDataProperties {
 		 * @param activationContext the activation context
 		 * @return {@code true} if the config data property source is active
 		 */
-		boolean isActive(ConfigDataActivationContext activationContext) {
+		boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 			if (activationContext == null) {
 				return false;
 			}

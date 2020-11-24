@@ -16,19 +16,13 @@
 
 package org.springframework.boot.diagnostics;
 
+import javax.annotation.Nullable;
+
 import org.springframework.core.ResolvableType;
 
-/**
- * Abstract base class for most {@code FailureAnalyzer} implementations.
- *
- * @param <T> the type of exception to analyze
- * @author Andy Wilkinson
- * @author Phillip Webb
- * @since 1.4.0
- */
 public abstract class AbstractFailureAnalyzer<T extends Throwable> implements FailureAnalyzer {
 
-	@Override
+	@Override@Nullable
 	public FailureAnalysis analyze(Throwable failure) {
 		T cause = findCause(failure, getCauseType());
 		if (cause != null) {
@@ -56,7 +50,7 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 		return (Class<? extends T>) ResolvableType.forClass(AbstractFailureAnalyzer.class, getClass()).resolveGeneric();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	protected final <E extends Throwable> E findCause(Throwable failure, Class<E> type) {
 		while (failure != null) {
 			if (type.isInstance(failure)) {

@@ -16,18 +16,13 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 
-/**
- * Exception thrown when binding fails.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class BindException extends RuntimeException implements OriginProvider {
 
 	private final Bindable<?> target;
@@ -36,7 +31,7 @@ public class BindException extends RuntimeException implements OriginProvider {
 
 	private final ConfigurationPropertyName name;
 
-	BindException(ConfigurationPropertyName name, Bindable<?> target, ConfigurationProperty property, Throwable cause) {
+	BindException(@Nullable ConfigurationPropertyName name, Bindable<?> target, @Nullable ConfigurationProperty property, Throwable cause) {
 		super(buildMessage(name, target), cause);
 		this.name = name;
 		this.target = target;
@@ -67,12 +62,12 @@ public class BindException extends RuntimeException implements OriginProvider {
 		return this.property;
 	}
 
-	@Override
+	@Override@Nullable
 	public Origin getOrigin() {
 		return Origin.from(this.name);
 	}
 
-	private static String buildMessage(ConfigurationPropertyName name, Bindable<?> target) {
+	private static String buildMessage(@Nullable ConfigurationPropertyName name, Bindable<?> target) {
 		StringBuilder message = new StringBuilder();
 		message.append("Failed to bind properties");
 		message.append((name != null) ? " under '" + name + "'" : "");

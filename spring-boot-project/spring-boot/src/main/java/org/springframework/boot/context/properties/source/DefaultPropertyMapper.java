@@ -16,27 +16,21 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.util.ObjectUtils;
 
-/**
- * Default {@link PropertyMapper} implementation. Names are mapped by removing invalid
- * characters and converting to lower case. For example "{@code my.server_name.PORT}" is
- * mapped to "{@code my.servername.port}".
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @see PropertyMapper
- * @see SpringConfigurationPropertySource
- */
 final class DefaultPropertyMapper implements PropertyMapper {
 
 	public static final PropertyMapper INSTANCE = new DefaultPropertyMapper();
 
+	@Nullable
 	private LastMapping<ConfigurationPropertyName, List<String>> lastMappedConfigurationPropertyName;
 
+	@Nullable
 	private LastMapping<String, ConfigurationPropertyName> lastMappedPropertyName;
 
 	private DefaultPropertyMapper() {

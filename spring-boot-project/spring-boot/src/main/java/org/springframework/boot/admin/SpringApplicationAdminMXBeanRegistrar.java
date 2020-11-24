@@ -16,6 +16,8 @@
 
 package org.springframework.boot.admin;
 
+import javax.annotation.Nullable;
+
 import java.lang.management.ManagementFactory;
 
 import javax.management.MBeanServer;
@@ -42,19 +44,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.Assert;
 
-/**
- * Register a {@link SpringApplicationAdminMXBean} implementation to the platform
- * {@link MBeanServer}.
- *
- * @author Stephane Nicoll
- * @author Andy Wilkinson
- * @since 1.3.0
- */
 public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContextAware, GenericApplicationListener,
 		EnvironmentAware, InitializingBean, DisposableBean {
 
 	private static final Log logger = LogFactory.getLog(SpringApplicationAdmin.class);
 
+	@Nullable
 	private ConfigurableApplicationContext applicationContext;
 
 	private Environment environment = new StandardEnvironment();

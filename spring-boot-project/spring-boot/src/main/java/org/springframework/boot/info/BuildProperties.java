@@ -16,17 +16,13 @@
 
 package org.springframework.boot.info;
 
+import javax.annotation.Nullable;
+
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
-/**
- * Provide build-related information such as group and artifact.
- *
- * @author Stephane Nicoll
- * @since 1.4.0
- */
 public class BuildProperties extends InfoProperties {
 
 	/**
@@ -77,6 +73,7 @@ public class BuildProperties extends InfoProperties {
 	 * @return the build time
 	 * @see #get(String)
 	 */
+	@Nullable
 	public Instant getTime() {
 		return getInstant("time");
 	}

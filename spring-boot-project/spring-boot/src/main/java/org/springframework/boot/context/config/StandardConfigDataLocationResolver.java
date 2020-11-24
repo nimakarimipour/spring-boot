@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -38,14 +40,6 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ConfigDataLocationResolver} for standard locations.
- *
- * @author Madhura Bhave
- * @author Phillip Webb
- * @author Scott Frederick
- * @since 2.4.0
- */
 public class StandardConfigDataLocationResolver
 		implements ConfigDataLocationResolver<StandardConfigDataResource>, Ordered {
 
@@ -83,6 +77,7 @@ public class StandardConfigDataLocationResolver
 		this.resourceLoader = new LocationResourceLoader(resourceLoader);
 	}
 
+	@Nullable
 	private String[] getConfigNames(Binder binder) {
 		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
 		for (String configName : configNames) {
@@ -200,6 +195,7 @@ public class StandardConfigDataLocationResolver
 				+ "If the location is meant to reference a directory, it must end in '/'");
 	}
 
+	@Nullable
 	private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
 		for (String fileExtension : loader.getFileExtensions()) {
 			if (StringUtils.endsWithIgnoreCase(file, fileExtension)) {

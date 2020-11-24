@@ -16,29 +16,26 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.lang.ref.SoftReference;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-/**
- * Simple cache that uses a {@link SoftReference} to cache a value for as long as
- * possible.
- *
- * @param <T> the value type
- * @author Phillip Webb
- */
 class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropertyCaching {
 
 	private static final Duration UNLIMITED = Duration.ZERO;
 
 	private final boolean neverExpire;
 
+	@Nullable
 	private volatile Duration timeToLive;
 
 	private volatile SoftReference<T> value = new SoftReference<>(null);
 
+	@Nullable
 	private volatile Instant lastAccessed = now();
 
 	SoftReferenceConfigurationPropertyCache(boolean neverExpire) {
@@ -103,6 +100,7 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 		return Instant.now();
 	}
 
+	@Nullable
 	protected T getValue() {
 		return this.value.get();
 	}

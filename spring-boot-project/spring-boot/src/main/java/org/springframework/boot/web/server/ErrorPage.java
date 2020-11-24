@@ -16,16 +16,11 @@
 
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Simple server-independent abstraction for error pages. Roughly equivalent to the
- * {@literal &lt;error-page&gt;} element traditionally found in web.xml.
- *
- * @author Dave Syer
- * @since 2.0.0
- */
 public class ErrorPage {
 
 	private final HttpStatus status;
@@ -91,6 +86,7 @@ public class ErrorPage {
 	 * The exception type name.
 	 * @return the exception type name (or {@code null} if there is none)
 	 */
+	@Nullable
 	public String getExceptionName() {
 		return (this.exception != null) ? this.exception.getName() : null;
 	}

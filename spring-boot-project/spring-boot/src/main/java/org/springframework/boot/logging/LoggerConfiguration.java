@@ -16,15 +16,11 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Immutable class that represents the configuration of a {@link LoggingSystem}'s logger.
- *
- * @author Ben Hale
- * @since 1.5.0
- */
 public final class LoggerConfiguration {
 
 	private final String name;
@@ -39,7 +35,7 @@ public final class LoggerConfiguration {
 	 * @param configuredLevel the configured level of the logger
 	 * @param effectiveLevel the effective level of the logger
 	 */
-	public LoggerConfiguration(String name, LogLevel configuredLevel, LogLevel effectiveLevel) {
+	public LoggerConfiguration(String name, @Nullable LogLevel configuredLevel, @Nullable LogLevel effectiveLevel) {
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(effectiveLevel, "EffectiveLevel must not be null");
 		this.name = name;

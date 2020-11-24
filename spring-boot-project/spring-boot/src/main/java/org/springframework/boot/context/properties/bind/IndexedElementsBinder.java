@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
@@ -34,14 +36,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
-/**
- * Base class for {@link AggregateBinder AggregateBinders} that read a sequential run of
- * indexed items.
- *
- * @param <T> the type being bound
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 
 	private static final String INDEX_ZERO = "[0]";
@@ -138,7 +132,8 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 		}
 	}
 
-	private <C> C convert(Object value, ResolvableType type, Annotation... annotations) {
+	@Nullable
+	private <C> C convert(@Nullable Object value, ResolvableType type, Annotation... annotations) {
 		value = getContext().getPlaceholdersResolver().resolvePlaceholders(value);
 		return getContext().getConverter().convert(value, type, annotations);
 	}

@@ -16,16 +16,12 @@
 
 package org.springframework.boot.context.properties.bind.validation;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 import org.springframework.validation.FieldError;
 
-/**
- * {@link FieldError} implementation that tracks the source {@link Origin}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 final class OriginTrackedFieldError extends FieldError implements OriginProvider {
 
 	private final Origin origin;
@@ -50,7 +46,7 @@ final class OriginTrackedFieldError extends FieldError implements OriginProvider
 		return super.toString() + "; origin " + this.origin;
 	}
 
-	static FieldError of(FieldError fieldError, Origin origin) {
+	static FieldError of(FieldError fieldError, @Nullable Origin origin) {
 		if (fieldError == null || origin == null) {
 			return fieldError;
 		}

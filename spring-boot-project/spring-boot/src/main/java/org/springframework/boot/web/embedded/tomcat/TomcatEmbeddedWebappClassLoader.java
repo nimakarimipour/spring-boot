@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -26,16 +28,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tomcat.util.compat.JreCompat;
 
-/**
- * Extension of Tomcat's {@link ParallelWebappClassLoader} that does not consider the
- * {@link ClassLoader#getSystemClassLoader() system classloader}. This is required to
- * ensure that any custom context class loader is always used (as is the case with some
- * executable archives).
- *
- * @author Phillip Webb
- * @author Andy Clement
- * @since 2.0.0
- */
 public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 
 	private static final Log logger = LogFactory.getLog(TomcatEmbeddedWebappClassLoader.class);
@@ -53,7 +45,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		super(parent);
 	}
 
-	@Override
+	@Override@Nullable
 	public URL findResource(String name) {
 		return null;
 	}
@@ -81,6 +73,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		return resultClass;
 	}
 
+	@Nullable
 	private Class<?> doLoadClass(String name) throws ClassNotFoundException {
 		checkPackageAccess(name);
 		if ((this.delegate || filter(name, true))) {
@@ -106,6 +99,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		}
 	}
 
+	@Nullable
 	private Class<?> loadFromParent(String name) {
 		if (this.parent == null) {
 			return null;
@@ -118,6 +112,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		}
 	}
 
+	@Nullable
 	private Class<?> findClassIgnoringNotFound(String name) {
 		try {
 			return findClass(name);

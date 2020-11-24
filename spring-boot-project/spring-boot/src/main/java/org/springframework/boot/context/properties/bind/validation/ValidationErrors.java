@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind.validation;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,14 +33,6 @@ import org.springframework.util.Assert;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-/**
- * A collection of {@link ObjectError ObjectErrors} caused by bind validation failures.
- * Where possible, included {@link FieldError FieldErrors} will be OriginProvider.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class ValidationErrors implements Iterable<ObjectError> {
 
 	private final ConfigurationPropertyName name;
@@ -82,6 +76,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return OriginTrackedFieldError.of(error, findFieldErrorOrigin(name, boundProperties, error));
 	}
 
+	@Nullable
 	private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			FieldError error) {
 		for (ConfigurationProperty boundProperty : boundProperties) {

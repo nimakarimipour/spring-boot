@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
@@ -47,17 +49,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * Loads bean definitions from underlying sources, including XML and JavaConfig. Acts as a
- * simple facade over {@link AnnotatedBeanDefinitionReader},
- * {@link XmlBeanDefinitionReader} and {@link ClassPathBeanDefinitionScanner}. See
- * {@link SpringApplication} for the types of sources that are supported.
- *
- * @author Phillip Webb
- * @author Vladislav Kisel
- * @author Sebastien Deleuze
- * @see #setBeanNameGenerator(BeanNameGenerator)
- */
 class BeanDefinitionLoader {
 
 	// Static final field to facilitate code removal by Graal
@@ -73,6 +64,7 @@ class BeanDefinitionLoader {
 
 	private final ClassPathBeanDefinitionScanner scanner;
 
+	@Nullable
 	private ResourceLoader resourceLoader;
 
 	/**

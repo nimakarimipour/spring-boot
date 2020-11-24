@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,19 +32,12 @@ import org.springframework.boot.util.LambdaSafe;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 
-/**
- * {@link BeanPostProcessor} that applies all {@link WebServerFactoryCustomizer} beans
- * from the bean factory to {@link WebServerFactory} beans.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Stephane Nicoll
- * @since 2.0.0
- */
 public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
+	@Nullable
 	private ListableBeanFactory beanFactory;
 
+	@Nullable
 	private List<WebServerFactoryCustomizer<?>> customizers;
 
 	@Override

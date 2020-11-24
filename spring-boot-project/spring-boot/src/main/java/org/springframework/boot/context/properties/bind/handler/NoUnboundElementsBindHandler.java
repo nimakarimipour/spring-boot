@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind.handler;
 
+import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -31,14 +33,6 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
 
-/**
- * {@link BindHandler} to enforce that all configuration properties under the root name
- * have been bound.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 
 	private final Set<ConfigurationPropertyName> boundNames = new HashSet<>();
@@ -142,6 +136,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		return this.attemptedNames.contains(ConfigurationPropertyName.of(nestedZeroethProperty));
 	}
 
+	@Nullable
 	private Indexed getIndexed(ConfigurationPropertyName candidate) {
 		for (int i = 0; i < candidate.getNumberOfElements(); i++) {
 			if (candidate.isNumericIndex(i)) {

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 
 import org.springframework.beans.factory.InjectionPoint;
@@ -28,13 +30,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 
-/**
- * An {@AbstractInjectionFailureAnalyzer} for
- * {@link ConfigurationProperties @ConfigurationProperties} that are intended to use
- * {@link ConstructorBinding constructor binding} but did not.
- *
- * @author Andy Wilkinson
- */
 class NotConstructorBoundInjectionFailureAnalyzer
 		extends AbstractInjectionFailureAnalyzer<NoSuchBeanDefinitionException> implements Ordered {
 
@@ -43,7 +38,7 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return 0;
 	}
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, NoSuchBeanDefinitionException cause, String description) {
 		InjectionPoint injectionPoint = findInjectionPoint(rootFailure);
 		if (isConstructorBindingConfigurationProperties(injectionPoint)) {
@@ -59,7 +54,7 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return null;
 	}
 
-	private boolean isConstructorBindingConfigurationProperties(InjectionPoint injectionPoint) {
+	private boolean isConstructorBindingConfigurationProperties(@Nullable InjectionPoint injectionPoint) {
 		if (injectionPoint != null && injectionPoint.getMember() instanceof Constructor) {
 			Constructor<?> constructor = (Constructor<?>) injectionPoint.getMember();
 			Class<?> declaringClass = constructor.getDeclaringClass();
@@ -71,6 +66,7 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return false;
 	}
 
+	@Nullable
 	private InjectionPoint findInjectionPoint(Throwable failure) {
 		UnsatisfiedDependencyException unsatisfiedDependencyException = findCause(failure,
 				UnsatisfiedDependencyException.class);

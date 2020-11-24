@@ -16,14 +16,11 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * {@link LoggingSystemFactory} that delegates to other factories.
- *
- * @author Phillip Webb
- */
 class DelegatingLoggingSystemFactory implements LoggingSystemFactory {
 
 	private final Function<ClassLoader, List<LoggingSystemFactory>> delegates;
@@ -36,7 +33,7 @@ class DelegatingLoggingSystemFactory implements LoggingSystemFactory {
 		this.delegates = delegates;
 	}
 
-	@Override
+	@Override@Nullable
 	public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 		List<LoggingSystemFactory> delegates = (this.delegates != null) ? this.delegates.apply(classLoader) : null;
 		if (delegates != null) {

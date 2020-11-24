@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -77,27 +79,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link AbstractServletWebServerFactory} that can be used to create
- * {@link TomcatWebServer}s. Can be initialized using Spring's
- * {@link ServletContextInitializer}s or Tomcat {@link LifecycleListener}s.
- * <p>
- * Unless explicitly configured otherwise this factory will create containers that listen
- * for HTTP requests on port 8080.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Brock Mills
- * @author Stephane Nicoll
- * @author Andy Wilkinson
- * @author Eddú Meléndez
- * @author Christoffer Sawicki
- * @author Dawid Antecki
- * @since 2.0.0
- * @see #setPort(int)
- * @see #setContextLifecycleListeners(Collection)
- * @see TomcatWebServer
- */
 public class TomcatServletWebServerFactory extends AbstractServletWebServerFactory
 		implements ConfigurableTomcatWebServerFactory, ResourceLoaderAware {
 
@@ -112,6 +93,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 
 	private static final boolean IN_NATIVE_IMAGE = System.getProperty("org.graalvm.nativeimage.imagecode") != null;
 
+	@Nullable
 	private File baseDirectory;
 
 	private List<Valve> engineValves = new ArrayList<>();
@@ -128,6 +110,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 
 	private final List<Connector> additionalTomcatConnectors = new ArrayList<>();
 
+	@Nullable
 	private ResourceLoader resourceLoader;
 
 	private String protocol = DEFAULT_PROTOCOL;

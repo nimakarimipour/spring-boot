@@ -16,6 +16,8 @@
 
 package org.springframework.boot.builder;
 
+import javax.annotation.Nullable;
+
 import java.lang.ref.WeakReference;
 
 import org.springframework.beans.BeansException;
@@ -28,20 +30,12 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Listener that closes the application context if its parent is closed. It listens for
- * refresh events and grabs the current context from there, and then listens for closed
- * events and propagates it down the hierarchy.
- *
- * @author Dave Syer
- * @author Eric Bottard
- * @since 1.0.0
- */
 public class ParentContextCloserApplicationListener
 		implements ApplicationListener<ParentContextAvailableEvent>, ApplicationContextAware, Ordered {
 
 	private int order = Ordered.LOWEST_PRECEDENCE - 10;
 
+	@Nullable
 	private ApplicationContext context;
 
 	@Override

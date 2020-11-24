@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import java.util.List;
 
 import org.springframework.boot.context.properties.bind.BindException;
@@ -26,16 +28,9 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-/**
- * An {@link AbstractFailureAnalyzer} that performs analysis of any bind validation
- * failures caused by {@link BindValidationException} or
- * {@link org.springframework.validation.BindException}.
- *
- * @author Madhura Bhave
- */
 class BindValidationFailureAnalyzer extends AbstractFailureAnalyzer<Throwable> {
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, Throwable cause) {
 		ExceptionDetails details = getBindValidationExceptionDetails(rootFailure);
 		if (details == null) {
@@ -44,6 +39,7 @@ class BindValidationFailureAnalyzer extends AbstractFailureAnalyzer<Throwable> {
 		return analyzeBindValidationException(details);
 	}
 
+	@Nullable
 	private ExceptionDetails getBindValidationExceptionDetails(Throwable rootFailure) {
 		BindValidationException validationException = findCause(rootFailure, BindValidationException.class);
 		if (validationException != null) {
@@ -89,16 +85,18 @@ class BindValidationFailureAnalyzer extends AbstractFailureAnalyzer<Throwable> {
 
 		private List<ObjectError> errors;
 
+		@Nullable
 		private Object target;
 
 		private Throwable cause;
 
-		ExceptionDetails(List<ObjectError> errors, Object target, Throwable cause) {
+		ExceptionDetails(List<ObjectError> errors, @Nullable Object target, Throwable cause) {
 			this.errors = errors;
 			this.target = target;
 			this.cause = cause;
 		}
 
+		@Nullable
 		Object getTarget() {
 			return this.target;
 		}

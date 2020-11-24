@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 
 import javax.servlet.MultipartConfigElement;
@@ -28,11 +30,6 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
 
-/**
- * Handler for {@link WebServlet @WebServlet}-annotated classes.
- *
- * @author Andy Wilkinson
- */
 class WebServletHandler extends ServletComponentHandler {
 
 	WebServletHandler() {
@@ -54,11 +51,13 @@ class WebServletHandler extends ServletComponentHandler {
 		registry.registerBeanDefinition(name, builder.getBeanDefinition());
 	}
 
+	@Nullable
 	private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
 		return (String) (StringUtils.hasText((String) attributes.get("name")) ? attributes.get("name")
 				: beanDefinition.getBeanClassName());
 	}
 
+	@Nullable
 	private MultipartConfigElement determineMultipartConfig(AnnotatedBeanDefinition beanDefinition) {
 		Map<String, Object> attributes = beanDefinition.getMetadata()
 				.getAnnotationAttributes(MultipartConfig.class.getName());

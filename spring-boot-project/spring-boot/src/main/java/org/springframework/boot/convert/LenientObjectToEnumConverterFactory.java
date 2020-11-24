@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -28,13 +30,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-/**
- * Abstract base class for converting from a type to a {@link java.lang.Enum}.
- *
- * @param <T> the source type
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 @SuppressWarnings("rawtypes")
 abstract class LenientObjectToEnumConverterFactory<T> implements ConverterFactory<T, Enum<?>> {
 
@@ -67,7 +62,7 @@ abstract class LenientObjectToEnumConverterFactory<T> implements ConverterFactor
 			this.enumType = enumType;
 		}
 
-		@Override
+		@Override@Nullable
 		public E convert(T source) {
 			String value = source.toString().trim();
 			if (value.isEmpty()) {

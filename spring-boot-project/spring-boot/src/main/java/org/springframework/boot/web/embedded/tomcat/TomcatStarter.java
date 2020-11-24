@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.util.Set;
 
 import javax.servlet.ServletContainerInitializer;
@@ -27,19 +29,13 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
-/**
- * {@link ServletContainerInitializer} used to trigger {@link ServletContextInitializer
- * ServletContextInitializers} and track startup errors.
- *
- * @author Phillip Webb
- * @author Andy Wilkinson
- */
 class TomcatStarter implements ServletContainerInitializer {
 
 	private static final Log logger = LogFactory.getLog(TomcatStarter.class);
 
 	private final ServletContextInitializer[] initializers;
 
+	@Nullable
 	private volatile Exception startUpException;
 
 	TomcatStarter(ServletContextInitializer[] initializers) {
@@ -64,6 +60,7 @@ class TomcatStarter implements ServletContainerInitializer {
 		}
 	}
 
+	@Nullable
 	Exception getStartUpException() {
 		return this.startUpException;
 	}

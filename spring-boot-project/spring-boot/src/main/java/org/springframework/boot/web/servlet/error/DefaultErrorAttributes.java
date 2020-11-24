@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.error;
 
+import javax.annotation.Nullable;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -42,29 +44,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * Default implementation of {@link ErrorAttributes}. Provides the following attributes
- * when possible:
- * <ul>
- * <li>timestamp - The time that the errors were extracted</li>
- * <li>status - The status code</li>
- * <li>error - The error reason</li>
- * <li>exception - The class name of the root exception (if configured)</li>
- * <li>message - The exception message (if configured)</li>
- * <li>errors - Any {@link ObjectError}s from a {@link BindingResult} exception (if
- * configured)</li>
- * <li>trace - The exception stack trace (if configured)</li>
- * <li>path - The URL path when the exception was raised</li>
- * </ul>
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Stephane Nicoll
- * @author Vedran Pavic
- * @author Scott Frederick
- * @since 2.0.0
- * @see ErrorAttributes
- */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class DefaultErrorAttributes implements ErrorAttributes, HandlerExceptionResolver, Ordered {
 
@@ -95,7 +74,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
-	@Override
+	@Override@Nullable
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
 		storeErrorAttributes(request, ex);
@@ -198,6 +177,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 	 * @return message to include in the error attributes
 	 * @since 2.4.0
 	 */
+	@Nullable
 	protected String getMessage(WebRequest webRequest, Throwable error) {
 		Object message = getAttribute(webRequest, RequestDispatcher.ERROR_MESSAGE);
 		if (!ObjectUtils.isEmpty(message)) {
@@ -215,6 +195,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 		errorAttributes.put("errors", result.getAllErrors());
 	}
 
+	@Nullable
 	private BindingResult extractBindingResult(Throwable error) {
 		if (error instanceof BindingResult) {
 			return (BindingResult) error;

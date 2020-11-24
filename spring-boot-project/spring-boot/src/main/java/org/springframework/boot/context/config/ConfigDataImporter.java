@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,14 +31,6 @@ import org.apache.commons.logging.Log;
 
 import org.springframework.boot.logging.DeferredLogFactory;
 
-/**
- * Imports {@link ConfigData} by {@link ConfigDataLocationResolver resolving} and
- * {@link ConfigDataLoader loading} locations. {@link ConfigDataResource resources} are
- * tracked to ensure that they are not imported multiple times.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataImporter {
 
 	private final Log logger;
@@ -73,7 +67,7 @@ class ConfigDataImporter {
 	 * @param locations the locations to resolve
 	 * @return a map of the loaded locations and data
 	 */
-	Map<ConfigDataResource, ConfigData> resolveAndLoad(ConfigDataActivationContext activationContext,
+	Map<ConfigDataResource, ConfigData> resolveAndLoad(@Nullable ConfigDataActivationContext activationContext,
 			ConfigDataLocationResolverContext locationResolverContext, ConfigDataLoaderContext loaderContext,
 			List<ConfigDataLocation> locations) {
 		try {
@@ -87,7 +81,7 @@ class ConfigDataImporter {
 	}
 
 	private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
-			Profiles profiles, List<ConfigDataLocation> locations) {
+			@Nullable Profiles profiles, List<ConfigDataLocation> locations) {
 		List<ConfigDataResolutionResult> resolved = new ArrayList<>(locations.size());
 		for (ConfigDataLocation location : locations) {
 			resolved.addAll(resolve(locationResolverContext, profiles, location));
@@ -96,7 +90,7 @@ class ConfigDataImporter {
 	}
 
 	private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
-			Profiles profiles, ConfigDataLocation location) {
+			@Nullable Profiles profiles, ConfigDataLocation location) {
 		try {
 			return this.resolvers.resolve(locationResolverContext, location, profiles);
 		}

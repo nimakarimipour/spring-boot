@@ -16,16 +16,10 @@
 
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
+
 import org.springframework.util.unit.DataSize;
 
-/**
- * Simple server-independent abstraction for compression configuration.
- *
- * @author Ivan Sopov
- * @author Andy Wilkinson
- * @author Stephane Nicoll
- * @since 2.0.0
- */
 public class Compression {
 
 	private boolean enabled = false;
@@ -33,6 +27,7 @@ public class Compression {
 	private String[] mimeTypes = new String[] { "text/html", "text/xml", "text/plain", "text/css", "text/javascript",
 			"application/javascript", "application/json", "application/xml" };
 
+	@Nullable
 	private String[] excludedUserAgents = null;
 
 	private DataSize minResponseSize = DataSize.ofKilobytes(2);
@@ -61,6 +56,7 @@ public class Compression {
 		this.mimeTypes = mimeTypes;
 	}
 
+	@Nullable
 	public String[] getExcludedUserAgents() {
 		return this.excludedUserAgents;
 	}

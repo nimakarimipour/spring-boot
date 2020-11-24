@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -26,33 +28,6 @@ import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Utility that can be used to map values from a supplied source to a destination.
- * Primarily intended to be help when mapping from
- * {@link ConfigurationProperties @ConfigurationProperties} to third-party classes.
- * <p>
- * Can filter values based on predicates and adapt values if needed. For example:
- * <pre class="code">
- * PropertyMapper map = PropertyMapper.get();
- * map.from(source::getName)
- *   .to(destination::setName);
- * map.from(source::getTimeout)
- *   .whenNonNull()
- *   .asInt(Duration::getSeconds)
- *   .to(destination::setTimeoutSecs);
- * map.from(source::isEnabled)
- *   .whenFalse().
- *   .toCall(destination::disable);
- * </pre>
- * <p>
- * Mappings can ultimately be applied to a {@link Source#to(Consumer) setter}, trigger a
- * {@link Source#toCall(Runnable) method call} or create a
- * {@link Source#toInstance(Function) new instance}.
- *
- * @author Phillip Webb
- * @author Artsiom Yudovin
- * @since 2.0.0
- */
 public final class PropertyMapper {
 
 	private static final Predicate<?> ALWAYS = (t) -> true;
@@ -63,7 +38,7 @@ public final class PropertyMapper {
 
 	private final SourceOperator sourceOperator;
 
-	private PropertyMapper(PropertyMapper parent, SourceOperator sourceOperator) {
+	private PropertyMapper(@Nullable PropertyMapper parent, @Nullable SourceOperator sourceOperator) {
 		this.parent = parent;
 		this.sourceOperator = sourceOperator;
 	}
@@ -116,7 +91,7 @@ public final class PropertyMapper {
 	 * @param value the value
 	 * @return a {@link Source} that can be used to complete the mapping
 	 */
-	public <T> Source<T> from(T value) {
+	public <T> Source<T> from(@Nullable T value) {
 		return from(() -> value);
 	}
 
@@ -145,13 +120,14 @@ public final class PropertyMapper {
 
 		private boolean hasResult;
 
+		@Nullable
 		private T result;
 
 		CachingSupplier(Supplier<T> supplier) {
 			this.supplier = supplier;
 		}
 
-		@Override
+		@Override@Nullable
 		public T get() {
 			if (!this.hasResult) {
 				this.result = this.supplier.get();
@@ -359,7 +335,7 @@ public final class PropertyMapper {
 			this.supplier = supplier;
 		}
 
-		@Override
+		@Override@Nullable
 		public T get() {
 			try {
 				return this.supplier.get();

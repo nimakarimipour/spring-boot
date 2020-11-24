@@ -16,15 +16,10 @@
 
 package org.springframework.boot.jdbc.metadata;
 
+import javax.annotation.Nullable;
+
 import javax.sql.DataSource;
 
-/**
- * A base {@link DataSourcePoolMetadata} implementation.
- *
- * @param <T> the data source type
- * @author Stephane Nicoll
- * @since 2.0.0
- */
 public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> implements DataSourcePoolMetadata {
 
 	private final T dataSource;
@@ -37,7 +32,7 @@ public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> imple
 		this.dataSource = dataSource;
 	}
 
-	@Override
+	@Override@Nullable
 	public Float getUsage() {
 		Integer maxSize = getMax();
 		Integer currentSize = getActive();

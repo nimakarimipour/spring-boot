@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,26 +74,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ServletWebServerFactory} that can be used to create a {@link JettyWebServer}.
- * Can be initialized using Spring's {@link ServletContextInitializer}s or Jetty
- * {@link Configuration}s.
- * <p>
- * Unless explicitly configured otherwise this factory will create servers that listen for
- * HTTP requests on port 8080.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andrey Hihlovskiy
- * @author Andy Wilkinson
- * @author Eddú Meléndez
- * @author Venil Noronha
- * @author Henri Kerola
- * @since 2.0.0
- * @see #setPort(int)
- * @see #setConfigurations(Collection)
- * @see JettyWebServer
- */
 public class JettyServletWebServerFactory extends AbstractServletWebServerFactory
 		implements ConfigurableJettyWebServerFactory, ResourceLoaderAware {
 
@@ -111,8 +93,10 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 
 	private Set<JettyServerCustomizer> jettyServerCustomizers = new LinkedHashSet<>();
 
+	@Nullable
 	private ResourceLoader resourceLoader;
 
+	@Nullable
 	private ThreadPool threadPool;
 
 	/**
@@ -258,6 +242,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 				.forEach((locale, charset) -> context.addLocaleEncoding(locale.toString(), charset.toString()));
 	}
 
+	@Nullable
 	private File getTempDirectory() {
 		String temp = System.getProperty("java.io.tmpdir");
 		return (temp != null) ? new File(temp) : null;
@@ -492,6 +477,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 	 * Returns a Jetty {@link ThreadPool} that should be used by the {@link Server}.
 	 * @return a Jetty {@link ThreadPool} or {@code null}
 	 */
+	@Nullable
 	public ThreadPool getThreadPool() {
 		return this.threadPool;
 	}
@@ -528,7 +514,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 			this.delegate = delegate;
 		}
 
-		@Override
+		@Override@Nullable
 		public Resource addPath(String path) throws IOException {
 			if (path.startsWith("/org/springframework/boot")) {
 				return null;

@@ -16,16 +16,10 @@
 
 package org.springframework.boot.jdbc.metadata;
 
+import javax.annotation.Nullable;
+
 import javax.sql.DataSource;
 
-/**
- * Provides access meta-data that is commonly available from most pooled
- * {@link DataSource} implementations.
- *
- * @author Stephane Nicoll
- * @author Artsiom Yudovin
- * @since 2.0.0
- */
 public interface DataSourcePoolMetadata {
 
 	/**
@@ -57,6 +51,7 @@ public interface DataSourcePoolMetadata {
 	 * @since 2.2.0
 	 * @see #getActive()
 	 */
+	@Nullable
 	default Integer getIdle() {
 		return null;
 	}

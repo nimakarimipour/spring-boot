@@ -16,21 +16,14 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.env.PropertySource;
 
-/**
- * Exception thrown when an attempt is made to resolve a property against an inactive
- * {@link ConfigData} property source. Used to ensure that a user doesn't accidentally
- * attempt to specify a properties that can never be resolved.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.4.0
- */
 public class InactiveConfigDataAccessException extends ConfigDataException {
 
 	private final PropertySource<?> propertySource;
@@ -50,7 +43,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param origin the origin or the property or {@code null}
 	 */
 	InactiveConfigDataAccessException(PropertySource<?> propertySource, ConfigDataResource location,
-			String propertyName, Origin origin) {
+			String propertyName, @Nullable Origin origin) {
 		super(getMessage(propertySource, location, propertyName, origin), null);
 		this.propertySource = propertySource;
 		this.location = location;
@@ -59,7 +52,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	}
 
 	private static String getMessage(PropertySource<?> propertySource, ConfigDataResource location, String propertyName,
-			Origin origin) {
+			@Nullable Origin origin) {
 		StringBuilder message = new StringBuilder("Inactive property source '");
 		message.append(propertySource.getName());
 		if (location != null) {

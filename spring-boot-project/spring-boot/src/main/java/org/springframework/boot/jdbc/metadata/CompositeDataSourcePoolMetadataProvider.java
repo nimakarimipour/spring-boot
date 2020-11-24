@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jdbc.metadata;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,13 +25,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-/**
- * A {@link DataSourcePoolMetadataProvider} implementation that returns the first
- * {@link DataSourcePoolMetadata} that is found by one of its delegate.
- *
- * @author Stephane Nicoll
- * @since 2.0.0
- */
 public class CompositeDataSourcePoolMetadataProvider implements DataSourcePoolMetadataProvider {
 
 	private final List<DataSourcePoolMetadataProvider> providers;
@@ -44,7 +39,7 @@ public class CompositeDataSourcePoolMetadataProvider implements DataSourcePoolMe
 				: Collections.emptyList();
 	}
 
-	@Override
+	@Override@Nullable
 	public DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource) {
 		for (DataSourcePoolMetadataProvider provider : this.providers) {
 			DataSourcePoolMetadata metadata = provider.getDataSourcePoolMetadata(dataSource);

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -43,18 +45,6 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
-/**
- * Abstract base class for {@link ConfigurableServletWebServerFactory} implementations.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @author Stephane Nicoll
- * @author Ivan Sopov
- * @author Eddú Meléndez
- * @author Brian Clozel
- * @since 2.0.0
- */
 public abstract class AbstractServletWebServerFactory extends AbstractConfigurableWebServerFactory
 		implements ConfigurableServletWebServerFactory {
 
@@ -62,6 +52,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	private String contextPath = "";
 
+	@Nullable
 	private String displayName;
 
 	private Session session = new Session();
@@ -138,6 +129,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 		}
 	}
 
+	@Nullable
 	public String getDisplayName() {
 		return this.displayName;
 	}
@@ -178,6 +170,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	 * files.
 	 * @return the document root
 	 */
+	@Nullable
 	public File getDocumentRoot() {
 		return this.documentRoot.getDirectory();
 	}
@@ -270,6 +263,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	 * warning and returning {@code null} otherwise.
 	 * @return the valid document root
 	 */
+	@Nullable
 	protected final File getValidDocumentRoot() {
 		return this.documentRoot.getValidDirectory();
 	}
@@ -340,6 +334,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 			}
 		}
 
+		@Nullable
 		private Set<javax.servlet.SessionTrackingMode> unwrap(Set<Session.SessionTrackingMode> modes) {
 			if (modes == null) {
 				return null;

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.util.Properties;
 
@@ -24,17 +26,6 @@ import org.springframework.core.env.PropertyResolver;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * A reference to a log output file. Log output files are specified using
- * {@code logging.file.name} or {@code logging.file.path} {@link Environment} properties.
- * If the {@code logging.file.name} property is not specified {@code "spring.log"} will be
- * written in the {@code logging.file.path} directory.
- *
- * @author Phillip Webb
- * @author Christian Carriere-Tisseur
- * @since 1.2.1
- * @see #get(PropertyResolver)
- */
 public class LogFile {
 
 	/**
@@ -68,7 +59,7 @@ public class LogFile {
 	 * @param file a reference to the file to write
 	 * @param path a reference to the logging path to use if {@code file} is not specified
 	 */
-	LogFile(String file, String path) {
+	LogFile(String file, @Nullable String path) {
 		Assert.isTrue(StringUtils.hasLength(file) || StringUtils.hasLength(path), "File or Path must not be empty");
 		this.file = file;
 		this.path = path;
@@ -111,6 +102,7 @@ public class LogFile {
 	 * @return a {@link LogFile} or {@code null} if the environment didn't contain any
 	 * suitable properties
 	 */
+	@Nullable
 	public static LogFile get(PropertyResolver propertyResolver) {
 		String file = propertyResolver.getProperty(FILE_NAME_PROPERTY);
 		String path = propertyResolver.getProperty(FILE_PATH_PROPERTY);

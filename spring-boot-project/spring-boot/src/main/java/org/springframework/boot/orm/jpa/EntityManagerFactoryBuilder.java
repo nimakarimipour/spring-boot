@@ -16,6 +16,8 @@
 
 package org.springframework.boot.orm.jpa;
 
+import javax.annotation.Nullable;
+
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,19 +35,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * Convenient builder for JPA EntityManagerFactory instances. Collects common
- * configuration when constructed and then allows you to create one or more
- * {@link LocalContainerEntityManagerFactoryBean} through a fluent builder pattern. The
- * most common options are covered in the builder, but you can always manipulate the
- * product of the builder if you need more control, before returning it from a
- * {@code @Bean} definition.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Stephane Nicoll
- * @since 1.3.0
- */
 public class EntityManagerFactoryBuilder {
 
 	private final JpaVendorAdapter jpaVendorAdapter;
@@ -56,6 +45,7 @@ public class EntityManagerFactoryBuilder {
 
 	private final URL persistenceUnitRootLocation;
 
+	@Nullable
 	private AsyncTaskExecutor bootstrapExecutor;
 
 	/**
@@ -83,7 +73,7 @@ public class EntityManagerFactoryBuilder {
 	 * @since 1.4.1
 	 */
 	public EntityManagerFactoryBuilder(JpaVendorAdapter jpaVendorAdapter, Map<String, ?> jpaProperties,
-			PersistenceUnitManager persistenceUnitManager, URL persistenceUnitRootLocation) {
+			PersistenceUnitManager persistenceUnitManager, @Nullable URL persistenceUnitRootLocation) {
 		this.jpaVendorAdapter = jpaVendorAdapter;
 		this.persistenceUnitManager = persistenceUnitManager;
 		this.jpaProperties = new LinkedHashMap<>(jpaProperties);
@@ -111,12 +101,15 @@ public class EntityManagerFactoryBuilder {
 
 		private DataSource dataSource;
 
+		@Nullable
 		private String[] packagesToScan;
 
+		@Nullable
 		private String persistenceUnit;
 
 		private Map<String, Object> properties = new HashMap<>();
 
+		@Nullable
 		private String[] mappingResources;
 
 		private boolean jta;

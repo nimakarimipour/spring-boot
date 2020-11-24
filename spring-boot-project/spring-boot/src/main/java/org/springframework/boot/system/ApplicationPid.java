@@ -16,6 +16,8 @@
 
 package org.springframework.boot.system;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -28,12 +30,6 @@ import java.util.Set;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-/**
- * An application process ID.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
 public class ApplicationPid {
 
 	private static final PosixFilePermission[] WRITE_PERMISSIONS = { PosixFilePermission.OWNER_WRITE,
@@ -49,6 +45,7 @@ public class ApplicationPid {
 		this.pid = pid;
 	}
 
+	@Nullable
 	private String getPid() {
 		try {
 			String jvmName = ManagementFactory.getRuntimeMXBean().getName();

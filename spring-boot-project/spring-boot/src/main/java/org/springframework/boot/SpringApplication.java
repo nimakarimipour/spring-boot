@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.security.AccessControlException;
 import java.util.ArrayList;
@@ -84,81 +86,6 @@ import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.StandardServletEnvironment;
 
-/**
- * Class that can be used to bootstrap and launch a Spring application from a Java main
- * method. By default class will perform the following steps to bootstrap your
- * application:
- *
- * <ul>
- * <li>Create an appropriate {@link ApplicationContext} instance (depending on your
- * classpath)</li>
- * <li>Register a {@link CommandLinePropertySource} to expose command line arguments as
- * Spring properties</li>
- * <li>Refresh the application context, loading all singleton beans</li>
- * <li>Trigger any {@link CommandLineRunner} beans</li>
- * </ul>
- *
- * In most circumstances the static {@link #run(Class, String[])} method can be called
- * directly from your {@literal main} method to bootstrap your application:
- *
- * <pre class="code">
- * &#064;Configuration
- * &#064;EnableAutoConfiguration
- * public class MyApplication  {
- *
- *   // ... Bean definitions
- *
- *   public static void main(String[] args) {
- *     SpringApplication.run(MyApplication.class, args);
- *   }
- * }
- * </pre>
- *
- * <p>
- * For more advanced configuration a {@link SpringApplication} instance can be created and
- * customized before being run:
- *
- * <pre class="code">
- * public static void main(String[] args) {
- *   SpringApplication application = new SpringApplication(MyApplication.class);
- *   // ... customize application settings here
- *   application.run(args)
- * }
- * </pre>
- *
- * {@link SpringApplication}s can read beans from a variety of different sources. It is
- * generally recommended that a single {@code @Configuration} class is used to bootstrap
- * your application, however, you may also set {@link #getSources() sources} from:
- * <ul>
- * <li>The fully qualified class name to be loaded by
- * {@link AnnotatedBeanDefinitionReader}</li>
- * <li>The location of an XML resource to be loaded by {@link XmlBeanDefinitionReader}, or
- * a groovy script to be loaded by {@link GroovyBeanDefinitionReader}</li>
- * <li>The name of a package to be scanned by {@link ClassPathBeanDefinitionScanner}</li>
- * </ul>
- *
- * Configuration properties are also bound to the {@link SpringApplication}. This makes it
- * possible to set {@link SpringApplication} properties dynamically, like additional
- * sources ("spring.main.sources" - a CSV list) the flag to indicate a web environment
- * ("spring.main.web-application-type=none") or the flag to switch off the banner
- * ("spring.main.banner-mode=off").
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @author Christian Dupuis
- * @author Stephane Nicoll
- * @author Jeremy Rickard
- * @author Craig Burke
- * @author Michael Simons
- * @author Madhura Bhave
- * @author Brian Clozel
- * @author Ethan Rubinson
- * @since 1.0.0
- * @see #run(Class, String[])
- * @see #run(Class[], String[])
- * @see #SpringApplication(Class...)
- */
 public class SpringApplication {
 
 	/**
@@ -206,6 +133,7 @@ public class SpringApplication {
 
 	private Set<String> sources = new LinkedHashSet<>();
 
+	@Nullable
 	private Class<?> mainApplicationClass;
 
 	private Banner.Mode bannerMode = Banner.Mode.CONSOLE;
@@ -216,12 +144,16 @@ public class SpringApplication {
 
 	private boolean addConversionService = true;
 
+	@Nullable
 	private Banner banner;
 
+	@Nullable
 	private ResourceLoader resourceLoader;
 
+	@Nullable
 	private BeanNameGenerator beanNameGenerator;
 
+	@Nullable
 	private ConfigurableEnvironment environment;
 
 	private WebApplicationType webApplicationType;
@@ -230,10 +162,13 @@ public class SpringApplication {
 
 	private boolean registerShutdownHook = true;
 
+	@Nullable
 	private List<ApplicationContextInitializer<?>> initializers;
 
+	@Nullable
 	private List<ApplicationListener<?>> listeners;
 
+	@Nullable
 	private Map<String, Object> defaultProperties;
 
 	private List<Bootstrapper> bootstrappers;
@@ -275,7 +210,7 @@ public class SpringApplication {
 	 * @see #setSources(Set)
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
+	public SpringApplication(@Nullable ResourceLoader resourceLoader, Class<?>... primarySources) {
 		this.resourceLoader = resourceLoader;
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
@@ -286,6 +221,7 @@ public class SpringApplication {
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
+	@Nullable
 	private Class<?> deduceMainApplicationClass() {
 		try {
 			StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
@@ -384,7 +320,7 @@ public class SpringApplication {
 
 	private void prepareContext(DefaultBootstrapContext bootstrapContext, ConfigurableApplicationContext context,
 			ConfigurableEnvironment environment, SpringApplicationRunListeners listeners,
-			ApplicationArguments applicationArguments, Banner printedBanner) {
+			ApplicationArguments applicationArguments, @Nullable Banner printedBanner) {
 		context.setEnvironment(environment);
 		postProcessApplicationContext(context);
 		applyInitializers(context);
@@ -442,7 +378,7 @@ public class SpringApplication {
 		return getSpringFactoriesInstances(type, new Class<?>[] {});
 	}
 
-	private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, Object... args) {
+	private <T> Collection<T> getSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, @Nullable Object... args) {
 		ClassLoader classLoader = getClassLoader();
 		// Use names and ensure unique to protect against duplicates
 		Set<String> names = new LinkedHashSet<>(SpringFactoriesLoader.loadFactoryNames(type, classLoader));
@@ -453,7 +389,7 @@ public class SpringApplication {
 
 	@SuppressWarnings("unchecked")
 	private <T> List<T> createSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes,
-			ClassLoader classLoader, Object[] args, Set<String> names) {
+			ClassLoader classLoader, @Nullable Object[] args, Set<String> names) {
 		List<T> instances = new ArrayList<>(names.size());
 		for (String name : names) {
 			try {
@@ -572,6 +508,7 @@ public class SpringApplication {
 		}
 	}
 
+	@Nullable
 	private Banner printBanner(ConfigurableEnvironment environment) {
 		if (this.bannerMode == Banner.Mode.OFF) {
 			return null;
@@ -705,6 +642,7 @@ public class SpringApplication {
 	 * @return the resourceLoader the resource loader that will be used in the
 	 * ApplicationContext (or null if the default)
 	 */
+	@Nullable
 	public ResourceLoader getResourceLoader() {
 		return this.resourceLoader;
 	}
@@ -808,8 +746,8 @@ public class SpringApplication {
 		}
 	}
 
-	private void handleRunFailure(ConfigurableApplicationContext context, Throwable exception,
-			SpringApplicationRunListeners listeners) {
+	private void handleRunFailure(@Nullable ConfigurableApplicationContext context, Throwable exception,
+			@Nullable SpringApplicationRunListeners listeners) {
 		try {
 			try {
 				handleExitCode(context, exception);
@@ -830,7 +768,7 @@ public class SpringApplication {
 		ReflectionUtils.rethrowRuntimeException(exception);
 	}
 
-	private Collection<SpringBootExceptionReporter> getExceptionReporters(ConfigurableApplicationContext context) {
+	private Collection<SpringBootExceptionReporter> getExceptionReporters(@Nullable ConfigurableApplicationContext context) {
 		try {
 			return getSpringFactoriesInstances(SpringBootExceptionReporter.class,
 					new Class<?>[] { ConfigurableApplicationContext.class }, context);
@@ -870,7 +808,7 @@ public class SpringApplication {
 		}
 	}
 
-	private void handleExitCode(ConfigurableApplicationContext context, Throwable exception) {
+	private void handleExitCode(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 		int exitCode = getExitCodeFromException(context, exception);
 		if (exitCode != 0) {
 			if (context != null) {
@@ -883,7 +821,7 @@ public class SpringApplication {
 		}
 	}
 
-	private int getExitCodeFromException(ConfigurableApplicationContext context, Throwable exception) {
+	private int getExitCodeFromException(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 		int exitCode = getExitCodeFromMappedException(context, exception);
 		if (exitCode == 0) {
 			exitCode = getExitCodeFromExitCodeGeneratorException(exception);
@@ -891,7 +829,7 @@ public class SpringApplication {
 		return exitCode;
 	}
 
-	private int getExitCodeFromMappedException(ConfigurableApplicationContext context, Throwable exception) {
+	private int getExitCodeFromMappedException(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 		if (context == null || !context.isActive()) {
 			return 0;
 		}
@@ -911,6 +849,7 @@ public class SpringApplication {
 		return getExitCodeFromExitCodeGeneratorException(exception.getCause());
 	}
 
+	@Nullable
 	SpringBootExceptionHandler getSpringBootExceptionHandler() {
 		if (isMainThread(Thread.currentThread())) {
 			return SpringBootExceptionHandler.forCurrentThread();
@@ -927,6 +866,7 @@ public class SpringApplication {
 	 * Returns the main application class that has been deduced or explicitly configured.
 	 * @return the main application class or {@code null}
 	 */
+	@Nullable
 	public Class<?> getMainApplicationClass() {
 		return this.mainApplicationClass;
 	}
@@ -1108,7 +1048,7 @@ public class SpringApplication {
 	 * context.
 	 * @param environment the environment
 	 */
-	public void setEnvironment(ConfigurableEnvironment environment) {
+	public void setEnvironment(@Nullable ConfigurableEnvironment environment) {
 		this.isCustomEnvironment = true;
 		this.environment = environment;
 	}
@@ -1368,7 +1308,7 @@ public class SpringApplication {
 		}
 	}
 
-	private static <E> Set<E> asUnmodifiableOrderedSet(Collection<E> elements) {
+	private static <E> Set<E> asUnmodifiableOrderedSet(@Nullable Collection<E> elements) {
 		List<E> list = new ArrayList<>(elements);
 		list.sort(AnnotationAwareOrderComparator.INSTANCE);
 		return new LinkedHashSet<>(list);

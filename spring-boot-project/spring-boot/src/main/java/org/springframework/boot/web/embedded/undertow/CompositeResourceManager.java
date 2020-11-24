@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -25,11 +27,6 @@ import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
 
-/**
- * A {@link ResourceManager} that delegates to multiple {@code ResourceManager} instances.
- *
- * @author Andy Wilkinson
- */
 class CompositeResourceManager implements ResourceManager {
 
 	private final List<ResourceManager> resourceManagers;
@@ -45,7 +42,7 @@ class CompositeResourceManager implements ResourceManager {
 		}
 	}
 
-	@Override
+	@Override@Nullable
 	public Resource getResource(String path) throws IOException {
 		for (ResourceManager resourceManager : this.resourceManagers) {
 			Resource resource = resourceManager.getResource(path);

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
@@ -31,17 +33,9 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.util.StringUtils;
 
-/**
- * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
- * {@link BindException} excluding {@link BindValidationException} and
- * {@link UnboundConfigurationPropertiesException}.
- *
- * @author Andy Wilkinson
- * @author Madhura Bhave
- */
 class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, BindException cause) {
 		Throwable rootCause = cause.getCause();
 		if (rootCause instanceof BindValidationException
@@ -67,6 +61,7 @@ class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 		}
 	}
 
+	@Nullable
 	private String getMessage(BindException cause) {
 		ConversionFailedException conversionFailure = findCause(cause, ConversionFailedException.class);
 		if (conversionFailure != null) {

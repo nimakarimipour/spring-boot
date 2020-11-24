@@ -16,16 +16,11 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 
-/**
- * Binder that can be used by {@link AggregateBinder} implementations to recursively bind
- * elements.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 @FunctionalInterface
 interface AggregateElementBinder {
 
@@ -47,6 +42,6 @@ interface AggregateElementBinder {
 	 * @param source the source of the elements or {@code null} to use all sources
 	 * @return a bound object or {@code null}
 	 */
-	Object bind(ConfigurationPropertyName name, Bindable<?> target, ConfigurationPropertySource source);
+	Object bind(ConfigurationPropertyName name, Bindable<?> target, @Nullable ConfigurationPropertySource source);
 
 }

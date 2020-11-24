@@ -16,19 +16,14 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.util.function.Supplier;
 
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 
-/**
- * Internal strategy used by {@link Binder} to bind aggregates (Maps, Lists, Arrays).
- *
- * @param <T> the type being bound
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 abstract class AggregateBinder<T> {
 
 	private final Context context;
@@ -42,7 +37,7 @@ abstract class AggregateBinder<T> {
 	 * @param source the configuration property source or {@code null} for all sources.
 	 * @return if recursive binding is supported
 	 */
-	protected abstract boolean isAllowRecursiveBinding(ConfigurationPropertySource source);
+	protected abstract boolean isAllowRecursiveBinding(@Nullable ConfigurationPropertySource source);
 
 	/**
 	 * Perform binding for the aggregate.
@@ -52,7 +47,7 @@ abstract class AggregateBinder<T> {
 	 * @return the bound aggregate or null
 	 */
 	@SuppressWarnings("unchecked")
-	final Object bind(ConfigurationPropertyName name, Bindable<?> target, AggregateElementBinder elementBinder) {
+	final Object bind(@Nullable ConfigurationPropertyName name, Bindable<?> target, AggregateElementBinder elementBinder) {
 		Object result = bindAggregate(name, target, elementBinder);
 		Supplier<?> value = target.getValue();
 		if (result == null || value == null) {
@@ -68,7 +63,7 @@ abstract class AggregateBinder<T> {
 	 * @param elementBinder an element binder
 	 * @return the bound result
 	 */
-	protected abstract Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
+	protected abstract Object bindAggregate(@Nullable ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder);
 
 	/**
@@ -96,6 +91,7 @@ abstract class AggregateBinder<T> {
 
 		private final Supplier<T> supplier;
 
+		@Nullable
 		private T supplied;
 
 		public AggregateSupplier(Supplier<T> supplier) {

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,11 +31,6 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Converts a {@link Delimiter delimited} String to a Collection.
- *
- * @author Phillip Webb
- */
 final class DelimitedStringToCollectionConverter implements ConditionalGenericConverter {
 
 	private final ConversionService conversionService;
@@ -54,7 +51,7 @@ final class DelimitedStringToCollectionConverter implements ConditionalGenericCo
 				|| this.conversionService.canConvert(sourceType, targetType.getElementTypeDescriptor());
 	}
 
-	@Override
+	@Override@Nullable
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;

@@ -16,16 +16,12 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.function.Predicate;
 
 import org.springframework.util.Assert;
 
-/**
- * A filtered {@link ConfigurationPropertySource}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class FilteredConfigurationPropertiesSource implements ConfigurationPropertySource {
 
 	private final ConfigurationPropertySource source;
@@ -40,7 +36,7 @@ class FilteredConfigurationPropertiesSource implements ConfigurationPropertySour
 		this.filter = filter;
 	}
 
-	@Override
+	@Override@Nullable
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		boolean filtered = getFilter().test(name);
 		return filtered ? getSource().getConfigurationProperty(name) : null;
@@ -56,7 +52,7 @@ class FilteredConfigurationPropertiesSource implements ConfigurationPropertySour
 		return result;
 	}
 
-	@Override
+	@Override@Nullable
 	public Object getUnderlyingSource() {
 		return this.source.getUnderlyingSource();
 	}

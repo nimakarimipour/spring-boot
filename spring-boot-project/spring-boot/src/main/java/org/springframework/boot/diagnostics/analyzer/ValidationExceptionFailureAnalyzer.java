@@ -16,18 +16,14 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import javax.validation.ValidationException;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 
-/**
- * A {@link FailureAnalyzer} that performs analysis of failures caused by a
- * {@link ValidationException}.
- *
- * @author Andy Wilkinson
- */
 class ValidationExceptionFailureAnalyzer extends AbstractFailureAnalyzer<ValidationException> {
 
 	private static final String JAVAX_MISSING_IMPLEMENTATION_MESSAGE = "Unable to create a "
@@ -36,7 +32,7 @@ class ValidationExceptionFailureAnalyzer extends AbstractFailureAnalyzer<Validat
 	private static final String JAKARTA_MISSING_IMPLEMENTATION_MESSAGE = "Unable to create a "
 			+ "Configuration, because no Jakarta Bean Validation provider could be found";
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, ValidationException cause) {
 		if (cause.getMessage().startsWith(JAVAX_MISSING_IMPLEMENTATION_MESSAGE)
 				|| cause.getMessage().startsWith(JAKARTA_MISSING_IMPLEMENTATION_MESSAGE)) {

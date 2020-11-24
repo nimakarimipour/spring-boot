@@ -16,14 +16,10 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import org.springframework.util.Assert;
 
-/**
- * A {@link ConfigurationPropertySource} supporting name aliases.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class AliasedConfigurationPropertySource implements ConfigurationPropertySource {
 
 	private final ConfigurationPropertySource source;
@@ -73,7 +69,7 @@ class AliasedConfigurationPropertySource implements ConfigurationPropertySource 
 		return ConfigurationPropertyState.ABSENT;
 	}
 
-	@Override
+	@Override@Nullable
 	public Object getUnderlyingSource() {
 		return this.source.getUnderlyingSource();
 	}

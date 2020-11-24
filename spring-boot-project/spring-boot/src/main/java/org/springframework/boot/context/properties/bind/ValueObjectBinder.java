@@ -15,6 +15,8 @@
  */
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -41,13 +43,6 @@ import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.convert.ConversionException;
 import org.springframework.util.Assert;
 
-/**
- * {@link DataObjectBinder} for immutable value objects.
- *
- * @author Madhura Bhave
- * @author Stephane Nicoll
- * @author Phillip Webb
- */
 class ValueObjectBinder implements DataObjectBinder {
 
 	private final BindConstructorProvider constructorProvider;
@@ -56,7 +51,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		this.constructorProvider = constructorProvider;
 	}
 
-	@Override
+	@Override@Nullable
 	public <T> T bind(ConfigurationPropertyName name, Bindable<T> target, Binder.Context context,
 			DataObjectPropertyBinder propertyBinder) {
 		ValueObject<T> valueObject = ValueObject.get(target, this.constructorProvider, context);
@@ -78,7 +73,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return bound ? valueObject.instantiate(args) : null;
 	}
 
-	@Override
+	@Override@Nullable
 	public <T> T create(Bindable<T> target, Binder.Context context) {
 		ValueObject<T> valueObject = ValueObject.get(target, this.constructorProvider, context);
 		if (valueObject == null) {
@@ -92,6 +87,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return valueObject.instantiate(args);
 	}
 
+	@Nullable
 	private <T> T getDefaultValue(Binder.Context context, ConstructorParameter parameter) {
 		ResolvableType type = parameter.getType();
 		Annotation[] annotations = parameter.getAnnotations();
@@ -107,6 +103,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return null;
 	}
 
+	@Nullable
 	private <T> T convertDefaultValue(BindConverter converter, String[] defaultValue, ResolvableType type,
 			Annotation[] annotations) {
 		try {
@@ -121,7 +118,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")@Nullable
 	private <T> T getNewInstanceIfPossible(Binder.Context context, ResolvableType type) {
 		Class<T> resolved = (Class<T>) type.resolve();
 		Assert.state(resolved == null || isEmptyDefaultValueAllowed(resolved),
@@ -163,7 +160,7 @@ class ValueObjectBinder implements DataObjectBinder {
 
 		abstract List<ConstructorParameter> getConstructorParameters();
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked")@Nullable
 		static <T> ValueObject<T> get(Bindable<T> bindable, BindConstructorProvider constructorProvider,
 				Binder.Context context) {
 			Class<T> type = (Class<T>) bindable.getType().resolve();
@@ -286,6 +283,7 @@ class ValueObjectBinder implements DataObjectBinder {
 			this.annotations = annotations;
 		}
 
+		@Nullable
 		Object bind(DataObjectPropertyBinder propertyBinder) {
 			return propertyBinder.bindProperty(this.name, Bindable.of(this.type).withAnnotations(this.annotations));
 		}

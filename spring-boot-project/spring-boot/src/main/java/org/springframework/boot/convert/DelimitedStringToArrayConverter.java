@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.Set;
@@ -26,11 +28,6 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Converts a {@link Delimiter delimited} String to an Array.
- *
- * @author Phillip Webb
- */
 final class DelimitedStringToArrayConverter implements ConditionalGenericConverter {
 
 	private final ConversionService conversionService;
@@ -51,7 +48,7 @@ final class DelimitedStringToArrayConverter implements ConditionalGenericConvert
 				|| this.conversionService.canConvert(sourceType, targetType.getElementTypeDescriptor());
 	}
 
-	@Override
+	@Override@Nullable
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;

@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -26,14 +28,6 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.CollectionUtils;
 
-/**
- * {@link MapPropertySource} containing default properties contributed directly to a
- * {@code SpringApplication}. By convention, the {@link DefaultPropertiesPropertySource}
- * is always the last property source in the {@link Environment}.
- *
- * @author Phillip Webb
- * @since 2.4.0
- */
 public class DefaultPropertiesPropertySource extends MapPropertySource {
 
 	/**
@@ -46,7 +40,7 @@ public class DefaultPropertiesPropertySource extends MapPropertySource {
 	 * source.
 	 * @param source the source map
 	 */
-	public DefaultPropertiesPropertySource(Map<String, Object> source) {
+	public DefaultPropertiesPropertySource(@Nullable Map<String, Object> source) {
 		super(NAME, source);
 	}
 
@@ -66,7 +60,7 @@ public class DefaultPropertiesPropertySource extends MapPropertySource {
 	 * @param action the action used to consume the
 	 * {@link DefaultPropertiesPropertySource}
 	 */
-	public static void ifNotEmpty(Map<String, Object> source, Consumer<DefaultPropertiesPropertySource> action) {
+	public static void ifNotEmpty(@Nullable Map<String, Object> source, Consumer<DefaultPropertiesPropertySource> action) {
 		if (!CollectionUtils.isEmpty(source) && action != null) {
 			action.accept(new DefaultPropertiesPropertySource(source));
 		}

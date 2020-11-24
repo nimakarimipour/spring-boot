@@ -16,15 +16,11 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.util.StringUtils;
 
-/**
- * An reference expanded from the original {@link ConfigDataLocation} that can ultimately
- * be resolved to one or more {@link StandardConfigDataResource resources}.
- *
- * @author Phillip Webb
- */
 class StandardConfigDataReference {
 
 	private final ConfigDataLocation configDataLocation;
@@ -48,8 +44,8 @@ class StandardConfigDataReference {
 	 * @param propertySourceLoader the property source loader that should be used for this
 	 * reference
 	 */
-	StandardConfigDataReference(ConfigDataLocation configDataLocation, String directory, String root, String profile,
-			String extension, PropertySourceLoader propertySourceLoader) {
+	StandardConfigDataReference(ConfigDataLocation configDataLocation, @Nullable String directory, String root, String profile,
+			@Nullable String extension, PropertySourceLoader propertySourceLoader) {
 		this.configDataLocation = configDataLocation;
 		String profileSuffix = (StringUtils.hasText(profile)) ? "-" + profile : "";
 		this.resourceLocation = root + profileSuffix + ((extension != null) ? "." + extension : "");

@@ -16,17 +16,13 @@
 
 package org.springframework.boot.info;
 
+import javax.annotation.Nullable;
+
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Properties;
 
-/**
- * Provide git-related information such as commit id and time.
- *
- * @author Stephane Nicoll
- * @since 1.4.0
- */
 public class GitProperties extends InfoProperties {
 
 	public GitProperties(Properties entries) {
@@ -53,6 +49,7 @@ public class GitProperties extends InfoProperties {
 	 * Return the abbreviated id of the commit or {@code null}.
 	 * @return the short commit id
 	 */
+	@Nullable
 	public String getShortCommitId() {
 		String shortId = get("commit.id.abbrev");
 		if (shortId != null) {
@@ -73,6 +70,7 @@ public class GitProperties extends InfoProperties {
 	 * @return the commit time
 	 * @see #get(String)
 	 */
+	@Nullable
 	public Instant getCommitTime() {
 		return getInstant("commit.time");
 	}
@@ -117,6 +115,7 @@ public class GitProperties extends InfoProperties {
 		}
 	}
 
+	@Nullable
 	private static Long parseEpochSecond(String s) {
 		try {
 			return Long.parseLong(s) * 1000;

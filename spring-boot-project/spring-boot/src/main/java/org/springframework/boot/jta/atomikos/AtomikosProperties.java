@@ -16,28 +16,20 @@
 
 package org.springframework.boot.jta.atomikos;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 import java.util.Properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * Bean friendly variant of
- * <a href="https://www.atomikos.com/Documentation/JtaProperties">Atomikos configuration
- * properties</a>. Allows for setter based configuration and is amiable to relaxed data
- * binding.
- *
- * @author Phillip Webb
- * @author Stephane Nicoll
- * @since 1.2.0
- * @see #asProperties()
- */
 @ConfigurationProperties(prefix = "spring.jta.atomikos.properties")
 public class AtomikosProperties {
 
 	/**
 	 * Transaction manager implementation that should be started.
 	 */
+	@Nullable
 	private String service;
 
 	/**
@@ -65,6 +57,7 @@ public class AtomikosProperties {
 	 * plan to run more than one transaction manager against one database you must set
 	 * this property to a unique value.
 	 */
+	@Nullable
 	private String transactionManagerUniqueName;
 
 	/**
@@ -96,6 +89,7 @@ public class AtomikosProperties {
 	 * Directory in which the log files should be stored. Defaults to the current working
 	 * directory.
 	 */
+	@Nullable
 	private String logBaseDir;
 
 	/**
@@ -124,6 +118,7 @@ public class AtomikosProperties {
 		this.service = service;
 	}
 
+	@Nullable
 	public String getService() {
 		return this.service;
 	}
@@ -201,6 +196,7 @@ public class AtomikosProperties {
 		this.transactionManagerUniqueName = uniqueName;
 	}
 
+	@Nullable
 	public String getTransactionManagerUniqueName() {
 		return this.transactionManagerUniqueName;
 	}
@@ -281,6 +277,7 @@ public class AtomikosProperties {
 		this.logBaseDir = logBaseDir;
 	}
 
+	@Nullable
 	public String getLogBaseDir() {
 		return this.logBaseDir;
 	}
@@ -348,7 +345,7 @@ public class AtomikosProperties {
 		return properties;
 	}
 
-	private void set(Properties properties, String key, Object value) {
+	private void set(Properties properties, String key, @Nullable Object value) {
 		String id = "com.atomikos.icatch." + key;
 		if (value != null && !properties.containsKey(id)) {
 			properties.setProperty(id, asString(value));

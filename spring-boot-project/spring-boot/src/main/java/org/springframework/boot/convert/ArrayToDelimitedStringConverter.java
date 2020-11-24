@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +28,6 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.util.ObjectUtils;
 
-/**
- * Converts an array to a delimited String.
- *
- * @author Phillip Webb
- */
 final class ArrayToDelimitedStringConverter implements ConditionalGenericConverter {
 
 	private final CollectionToDelimitedStringConverter delegate;
@@ -49,7 +46,7 @@ final class ArrayToDelimitedStringConverter implements ConditionalGenericConvert
 		return this.delegate.matches(sourceType, targetType);
 	}
 
-	@Override
+	@Override@Nullable
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		List<Object> list = Arrays.asList(ObjectUtils.toObjectArray(source));
 		return this.delegate.convert(list, sourceType, targetType);

@@ -16,13 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
-/**
- * Binder that can be used by {@link DataObjectBinder} implementations to bind the data
- * object properties.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
+import javax.annotation.Nullable;
+
 interface DataObjectPropertyBinder {
 
 	/**
@@ -32,6 +27,7 @@ interface DataObjectPropertyBinder {
 	 * @param target the target bindable
 	 * @return the bound value or {@code null}
 	 */
+	@Nullable
 	Object bindProperty(String propertyName, Bindable<?> target);
 
 }

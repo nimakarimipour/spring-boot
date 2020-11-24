@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
@@ -32,12 +34,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ConcurrentReferenceHashMap.ReferenceType;
 
-/**
- * Adapter to convert Spring's {@link MutablePropertySources} to
- * {@link ConfigurationPropertySource ConfigurationPropertySources}.
- *
- * @author Phillip Webb
- */
 class SpringConfigurationPropertySources implements Iterable<ConfigurationPropertySource> {
 
 	private final Iterable<PropertySource<?>> sources;
@@ -71,6 +67,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 
 		private final Deque<Iterator<PropertySource<?>>> iterators;
 
+		@Nullable
 		private ConfigurationPropertySource next;
 
 		private final Function<PropertySource<?>, ConfigurationPropertySource> adapter;
@@ -97,6 +94,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 			return next;
 		}
 
+		@Nullable
 		private ConfigurationPropertySource fetchNext() {
 			if (this.next == null) {
 				if (this.iterators.isEmpty()) {

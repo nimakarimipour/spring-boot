@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,24 +33,6 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
-/**
- * A single element that may directly or indirectly contribute configuration data to the
- * {@link Environment}. There are several different {@link Kind kinds} of contributor, all
- * are immutable and will be replaced with new versions as imports are processed.
- * <p>
- * Contributors may provide a set of imports that should be processed and ultimately
- * turned into children. There are two distinct import phases:
- * <ul>
- * <li>{@link ImportPhase#BEFORE_PROFILE_ACTIVATION Before} profiles have been
- * activated.</li>
- * <li>{@link ImportPhase#AFTER_PROFILE_ACTIVATION After} profiles have been
- * activated.</li>
- * </ul>
- * In each phase <em>all</em> imports will be resolved before they are loaded.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironmentContributor> {
 
 	private final ConfigDataResource resource;
@@ -76,9 +60,9 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param ignoreImports if import properties should be ignored
 	 * @param children the children of this contributor at each {@link ImportPhase}
 	 */
-	ConfigDataEnvironmentContributor(Kind kind, ConfigDataResource resource, PropertySource<?> propertySource,
-			ConfigurationPropertySource configurationPropertySource, ConfigDataProperties properties,
-			boolean ignoreImports, Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children) {
+	ConfigDataEnvironmentContributor(Kind kind, @Nullable ConfigDataResource resource, @Nullable PropertySource<?> propertySource,
+			@Nullable ConfigurationPropertySource configurationPropertySource, @Nullable ConfigDataProperties properties,
+			boolean ignoreImports, @Nullable Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children) {
 		this.kind = kind;
 		this.resource = resource;
 		this.properties = properties;
@@ -101,7 +85,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param activationContext the activation context
 	 * @return if the contributor is active
 	 */
-	boolean isActive(ConfigDataActivationContext activationContext) {
+	boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 		return this.properties == null || this.properties.isActive(activationContext);
 	}
 
@@ -343,7 +327,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 		 * @param activationContext the activation context
 		 * @return the import phase
 		 */
-		static ImportPhase get(ConfigDataActivationContext activationContext) {
+		static ImportPhase get(@Nullable ConfigDataActivationContext activationContext) {
 			if (activationContext != null && activationContext.getProfiles() != null) {
 				return AFTER_PROFILE_ACTIVATION;
 			}
@@ -357,12 +341,14 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 */
 	private final class ContributorIterator implements Iterator<ConfigDataEnvironmentContributor> {
 
+		@Nullable
 		private ImportPhase phase;
 
 		private Iterator<ConfigDataEnvironmentContributor> children;
 
 		private Iterator<ConfigDataEnvironmentContributor> current;
 
+		@Nullable
 		private ConfigDataEnvironmentContributor next;
 
 		private ContributorIterator() {
@@ -386,6 +372,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 			return next;
 		}
 
+		@Nullable
 		private ConfigDataEnvironmentContributor fetchIfNecessary() {
 			if (this.next != null) {
 				return this.next;

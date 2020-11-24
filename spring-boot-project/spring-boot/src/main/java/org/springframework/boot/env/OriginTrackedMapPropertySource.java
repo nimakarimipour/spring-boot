@@ -16,6 +16,8 @@
 
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 
 import org.springframework.boot.origin.Origin;
@@ -23,15 +25,6 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.MapPropertySource;
 
-/**
- * {@link OriginLookup} backed by a {@link Map} containing {@link OriginTrackedValue
- * OriginTrackedValues}.
- *
- * @author Madhura Bhave
- * @author Phillip Webb
- * @since 2.0.0
- * @see OriginTrackedValue
- */
 public final class OriginTrackedMapPropertySource extends MapPropertySource implements OriginLookup<String> {
 
 	private final boolean immutable;
@@ -68,7 +61,7 @@ public final class OriginTrackedMapPropertySource extends MapPropertySource impl
 		return value;
 	}
 
-	@Override
+	@Override@Nullable
 	public Origin getOrigin(String name) {
 		Object value = super.getProperty(name);
 		if (value instanceof OriginTrackedValue) {

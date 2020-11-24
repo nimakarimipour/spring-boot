@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 import org.springframework.boot.origin.OriginTrackedValue;
@@ -23,15 +25,6 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-/**
- * A single configuration property obtained from a {@link ConfigurationPropertySource}
- * consisting of a {@link #getName() name}, {@link #getValue() value} and optional
- * {@link #getOrigin() origin}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public final class ConfigurationProperty implements OriginProvider, Comparable<ConfigurationProperty> {
 
 	private final ConfigurationPropertyName name;
@@ -94,6 +87,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		return this.name.compareTo(other.name);
 	}
 
+	@Nullable
 	static ConfigurationProperty of(ConfigurationPropertyName name, OriginTrackedValue value) {
 		if (value == null) {
 			return null;
@@ -101,6 +95,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		return new ConfigurationProperty(name, value.getValue(), value.getOrigin());
 	}
 
+	@Nullable
 	static ConfigurationProperty of(ConfigurationPropertyName name, Object value, Origin origin) {
 		if (value == null) {
 			return null;

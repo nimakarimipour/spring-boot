@@ -16,47 +16,42 @@
 
 package org.springframework.boot.orm.jpa.hibernate;
 
+import javax.annotation.Nullable;
+
 import java.util.Locale;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
-/**
- * Hibernate {@link PhysicalNamingStrategy} that follows Spring recommended naming
- * conventions.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 1.4.0
- */
 public class SpringPhysicalNamingStrategy implements PhysicalNamingStrategy {
 
-	@Override
+	@Override@Nullable
 	public Identifier toPhysicalCatalogName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 		return apply(name, jdbcEnvironment);
 	}
 
-	@Override
+	@Override@Nullable
 	public Identifier toPhysicalSchemaName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 		return apply(name, jdbcEnvironment);
 	}
 
-	@Override
+	@Override@Nullable
 	public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 		return apply(name, jdbcEnvironment);
 	}
 
-	@Override
+	@Override@Nullable
 	public Identifier toPhysicalSequenceName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 		return apply(name, jdbcEnvironment);
 	}
 
-	@Override
+	@Override@Nullable
 	public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment jdbcEnvironment) {
 		return apply(name, jdbcEnvironment);
 	}
 
+	@Nullable
 	private Identifier apply(Identifier name, JdbcEnvironment jdbcEnvironment) {
 		if (name == null) {
 			return null;

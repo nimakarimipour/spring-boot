@@ -16,24 +16,20 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-/**
- * A single logger group.
- *
- * @author Madhura Bhave
- * @author Phillip Webb
- * @since 2.2.0
- */
 public final class LoggerGroup {
 
 	private final String name;
 
 	private final List<String> members;
 
+	@Nullable
 	private LogLevel configuredLevel;
 
 	LoggerGroup(String name, List<String> members) {
@@ -53,6 +49,7 @@ public final class LoggerGroup {
 		return !this.members.isEmpty();
 	}
 
+	@Nullable
 	public LogLevel getConfiguredLevel() {
 		return this.configuredLevel;
 	}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.util.concurrent.Callable;
@@ -32,21 +34,15 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
-/**
- * Logs application information on startup.
- *
- * @author Phillip Webb
- * @author Dave Syer
- */
 class StartupInfoLogger {
 
 	private static final Log logger = LogFactory.getLog(StartupInfoLogger.class);
 
 	private static final long HOST_NAME_RESOLVE_THRESHOLD = 200;
 
-	private final Class<?> sourceClass;
+	@Nullable private final Class<?> sourceClass;
 
-	StartupInfoLogger(Class<?> sourceClass) {
+	StartupInfoLogger(@Nullable Class<?> sourceClass) {
 		this.sourceClass = sourceClass;
 	}
 
@@ -169,6 +165,7 @@ class StartupInfoLogger {
 		}
 	}
 
+	@Nullable
 	private Object callIfPossible(Callable<Object> call) {
 		try {
 			return call.call();

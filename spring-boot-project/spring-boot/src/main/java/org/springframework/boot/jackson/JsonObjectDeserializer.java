@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jackson;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,15 +33,6 @@ import com.fasterxml.jackson.databind.node.NullNode;
 
 import org.springframework.util.Assert;
 
-/**
- * Helper base class for {@link JsonDeserializer} implementations that deserialize
- * objects.
- *
- * @param <T> the supported object type
- * @author Phillip Webb
- * @since 1.4.0
- * @see JsonObjectSerializer
- */
 public abstract class JsonObjectDeserializer<T> extends com.fasterxml.jackson.databind.JsonDeserializer<T> {
 
 	@Override
@@ -82,7 +75,7 @@ public abstract class JsonObjectDeserializer<T> extends com.fasterxml.jackson.da
 	 * @param <D> the data type requested
 	 * @return the node value or {@code null}
 	 */
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({ "unchecked" })@Nullable
 	protected final <D> D nullSafeValue(JsonNode jsonNode, Class<D> type) {
 		Assert.notNull(type, "Type must not be null");
 		if (jsonNode == null) {

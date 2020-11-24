@@ -16,6 +16,8 @@
 
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 
 import org.springframework.beans.BeansException;
@@ -26,18 +28,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.core.Ordered;
 
-/**
- * {@link BeanFactoryPostProcessor} to set lazy-init on bean definitions that are not
- * {@link LazyInitializationExcludeFilter excluded} and have not already had a value
- * explicitly set.
- *
- * @author Andy Wilkinson
- * @author Madhura Bhave
- * @author Tyler Van Gorder
- * @author Phillip Webb
- * @since 2.2.0
- * @see LazyInitializationExcludeFilter
- */
 public final class LazyInitializationBeanFactoryPostProcessor implements BeanFactoryPostProcessor, Ordered {
 
 	@Override
@@ -66,6 +56,7 @@ public final class LazyInitializationBeanFactoryPostProcessor implements BeanFac
 		}
 	}
 
+	@Nullable
 	private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
 		try {
 			return beanFactory.getType(beanName, false);
@@ -76,7 +67,7 @@ public final class LazyInitializationBeanFactoryPostProcessor implements BeanFac
 	}
 
 	private boolean isExcluded(Collection<LazyInitializationExcludeFilter> filters, String beanName,
-			AbstractBeanDefinition beanDefinition, Class<?> beanType) {
+			AbstractBeanDefinition beanDefinition, @Nullable Class<?> beanType) {
 		if (beanType != null) {
 			for (LazyInitializationExcludeFilter filter : filters) {
 				if (filter.isExcluded(beanName, beanDefinition, beanType)) {

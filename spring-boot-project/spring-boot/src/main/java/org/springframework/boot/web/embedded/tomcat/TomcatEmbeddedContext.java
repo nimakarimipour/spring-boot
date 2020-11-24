@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +37,9 @@ import org.apache.catalina.session.ManagerBase;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ClassUtils;
 
-/**
- * Tomcat {@link StandardContext} used by {@link TomcatWebServer} to support deferred
- * initialization.
- *
- * @author Phillip Webb
- * @author Andy Wilkinson
- */
 class TomcatEmbeddedContext extends StandardContext {
 
+	@Nullable
 	private TomcatStarter starter;
 
 	@Override
@@ -116,6 +112,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		this.starter = starter;
 	}
 
+	@Nullable
 	TomcatStarter getStarter() {
 		return this.starter;
 	}

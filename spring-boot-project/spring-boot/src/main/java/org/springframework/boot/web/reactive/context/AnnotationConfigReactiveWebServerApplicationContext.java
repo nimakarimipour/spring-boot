@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.reactive.context;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -36,26 +38,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
-/**
- * {@link ReactiveWebServerApplicationContext} that accepts annotated classes as input -
- * in particular
- * {@link org.springframework.context.annotation.Configuration @Configuration}-annotated
- * classes, but also plain {@link Component @Component} classes and JSR-330 compliant
- * classes using {@code javax.inject} annotations. Allows for registering classes one by
- * one (specifying class names as config location) as well as for classpath scanning
- * (specifying base packages as config location).
- * <p>
- * Note: In case of multiple {@code @Configuration} classes, later {@code @Bean}
- * definitions will override ones defined in earlier loaded files. This can be leveraged
- * to deliberately override certain bean definitions via an extra Configuration class.
- *
- * @author Phillip Webb
- * @since 2.0.0
- * @see #register(Class...)
- * @see #scan(String...)
- * @see ReactiveWebServerApplicationContext
- * @see AnnotationConfigApplicationContext
- */
 public class AnnotationConfigReactiveWebServerApplicationContext extends ReactiveWebServerApplicationContext
 		implements AnnotationConfigRegistry {
 
@@ -65,6 +47,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
+	@Nullable
 	private String[] basePackages;
 
 	/**

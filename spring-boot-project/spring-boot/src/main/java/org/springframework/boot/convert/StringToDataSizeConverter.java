@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.Set;
 
@@ -26,13 +28,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
 
-/**
- * {@link Converter} to convert from a {@link String} to a {@link DataSize}. Supports
- * {@link DataSize#parse(CharSequence)}.
- *
- * @author Stephane Nicoll
- * @see DataSizeUnit
- */
 final class StringToDataSizeConverter implements GenericConverter {
 
 	@Override
@@ -40,20 +35,21 @@ final class StringToDataSizeConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(String.class, DataSize.class));
 	}
 
-	@Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+	@Override@Nullable
+	public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (ObjectUtils.isEmpty(source)) {
 			return null;
 		}
 		return convert(source.toString(), getDataUnit(targetType));
 	}
 
+	@Nullable
 	private DataUnit getDataUnit(TypeDescriptor targetType) {
 		DataSizeUnit annotation = targetType.getAnnotation(DataSizeUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
 
-	private DataSize convert(String source, DataUnit unit) {
+	private DataSize convert(String source, @Nullable DataUnit unit) {
 		return DataSize.parse(source, unit);
 	}
 

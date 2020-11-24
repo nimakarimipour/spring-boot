@@ -16,6 +16,8 @@
 
 package org.springframework.boot.jdbc;
 
+import javax.annotation.Nullable;
+
 import java.sql.Wrapper;
 
 import javax.sql.DataSource;
@@ -25,14 +27,6 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.util.ClassUtils;
 
-/**
- * Unwraps a {@link DataSource} that may have been proxied or wrapped in a custom
- * {@link Wrapper} such as {@link DelegatingDataSource}.
- *
- * @author Tadaya Tsuyukubo
- * @author Stephane Nicoll
- * @since 2.0.7
- */
 public final class DataSourceUnwrapper {
 
 	private static final boolean DELEGATING_DATA_SOURCE_PRESENT = ClassUtils.isPresent(
@@ -49,6 +43,7 @@ public final class DataSourceUnwrapper {
 	 * @param <T> the target type
 	 * @return an object that implements the target type or {@code null}
 	 */
+	@Nullable
 	public static <T> T unwrap(DataSource dataSource, Class<T> target) {
 		if (target.isInstance(dataSource)) {
 			return target.cast(dataSource);
@@ -72,6 +67,7 @@ public final class DataSourceUnwrapper {
 		return null;
 	}
 
+	@Nullable
 	private static <S> S safeUnwrap(Wrapper wrapper, Class<S> target) {
 		try {
 			if (target.isInterface() && wrapper.isWrapperFor(target)) {
@@ -86,6 +82,7 @@ public final class DataSourceUnwrapper {
 
 	private static class DelegatingDataSourceUnwrapper {
 
+		@Nullable
 		private static DataSource getTargetDataSource(DataSource dataSource) {
 			if (dataSource instanceof DelegatingDataSource) {
 				return ((DelegatingDataSource) dataSource).getTargetDataSource();

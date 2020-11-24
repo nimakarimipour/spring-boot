@@ -16,18 +16,13 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Logger groups configured via the Spring Environment.
- *
- * @author HaiTao Zhang
- * @author Phillip Webb
- * @since 2.2.0 #see {@link LoggerGroup}
- */
 public final class LoggerGroups implements Iterable<LoggerGroup> {
 
 	private final Map<String, LoggerGroup> groups = new ConcurrentHashMap<>();
@@ -51,6 +46,7 @@ public final class LoggerGroups implements Iterable<LoggerGroup> {
 		this.groups.put(loggerGroup.getName(), loggerGroup);
 	}
 
+	@Nullable
 	public LoggerGroup get(String name) {
 		return this.groups.get(name);
 	}

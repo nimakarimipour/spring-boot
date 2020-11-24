@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.view;
 
+import javax.annotation.Nullable;
+
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
 
@@ -23,16 +25,11 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 
-/**
- * Spring MVC {@link ViewResolver} for Mustache.
- *
- * @author Brian Clozel
- * @since 2.0.0
- */
 public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 	private final Mustache.Compiler compiler;
 
+	@Nullable
 	private String charset;
 
 	/**

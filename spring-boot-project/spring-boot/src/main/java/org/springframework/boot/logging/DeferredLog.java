@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,15 +28,9 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.util.Assert;
 
-/**
- * Deferred {@link Log} that can be used to store messages that shouldn't be written until
- * the logging system is fully initialized.
- *
- * @author Phillip Webb
- * @since 1.3.0
- */
 public class DeferredLog implements Log {
 
+	@Nullable
 	private volatile Log destination;
 
 	private final Supplier<Log> destinationSupplier;
@@ -163,7 +159,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.FATAL, message, t);
 	}
 
-	private void log(LogLevel level, Object message, Throwable t) {
+	private void log(LogLevel level, Object message, @Nullable Throwable t) {
 		synchronized (this.lines) {
 			if (this.destination != null) {
 				logTo(this.destination, level, message, t);
@@ -243,7 +239,7 @@ public class DeferredLog implements Log {
 		return destination;
 	}
 
-	static void logTo(Log log, LogLevel level, Object message, Throwable throwable) {
+	static void logTo(Log log, LogLevel level, Object message, @Nullable Throwable throwable) {
 		switch (level) {
 		case TRACE:
 			log.trace(message, throwable);
@@ -269,7 +265,7 @@ public class DeferredLog implements Log {
 
 		private final List<Line> lines = new ArrayList<>();
 
-		void add(Supplier<Log> destinationSupplier, LogLevel level, Object message, Throwable throwable) {
+		void add(Supplier<Log> destinationSupplier, LogLevel level, Object message, @Nullable Throwable throwable) {
 			this.lines.add(new Line(destinationSupplier, level, message, throwable));
 		}
 
@@ -294,7 +290,7 @@ public class DeferredLog implements Log {
 
 		private final Throwable throwable;
 
-		Line(Supplier<Log> destinationSupplier, LogLevel level, Object message, Throwable throwable) {
+		Line(Supplier<Log> destinationSupplier, LogLevel level, Object message, @Nullable Throwable throwable) {
 			this.destinationSupplier = destinationSupplier;
 			this.level = level;
 			this.message = message;

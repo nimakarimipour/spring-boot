@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -31,13 +33,6 @@ import java.util.List;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
-/**
- * Logic to extract URLs of static resource jars (those containing
- * {@code "META-INF/resources"} directories).
- *
- * @author Andy Wilkinson
- * @author Phillip Webb
- */
 class StaticResourceJars {
 
 	List<URL> getUrls() {
@@ -68,6 +63,7 @@ class StaticResourceJars {
 		}
 	}
 
+	@Nullable
 	private File toFile(URL url) {
 		try {
 			return new File(url.toURI());

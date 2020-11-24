@@ -16,6 +16,8 @@
 
 package org.springframework.boot.rsocket.context;
 
+import javax.annotation.Nullable;
+
 import io.rsocket.SocketAcceptor;
 
 import org.springframework.boot.rsocket.server.RSocketServer;
@@ -25,16 +27,11 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.Assert;
 
-/**
- * Bootstrap an {@link RSocketServer} and start it with the application context.
- *
- * @author Brian Clozel
- * @since 2.2.0
- */
 public class RSocketServerBootstrap implements ApplicationEventPublisherAware, SmartLifecycle {
 
 	private final RSocketServer server;
 
+	@Nullable
 	private ApplicationEventPublisher eventPublisher;
 
 	public RSocketServerBootstrap(RSocketServerFactory serverFactory, SocketAcceptor socketAcceptor) {

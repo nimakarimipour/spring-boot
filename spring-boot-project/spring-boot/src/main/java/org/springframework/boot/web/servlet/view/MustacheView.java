@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.view;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -32,18 +34,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractTemplateView;
 
-/**
- * Spring MVC {@link View} using the Mustache template engine.
- *
- * @author Brian Clozel
- * @author Dave Syer
- * @author Phillip Webb
- * @since 2.0.0
- */
 public class MustacheView extends AbstractTemplateView {
 
+	@Nullable
 	private Compiler compiler;
 
+	@Nullable
 	private String charset;
 
 	/**
@@ -62,7 +58,7 @@ public class MustacheView extends AbstractTemplateView {
 	 * Set the charset used for reading Mustache template files.
 	 * @param charset the charset to use for reading template files
 	 */
-	public void setCharset(String charset) {
+	public void setCharset(@Nullable String charset) {
 		this.charset = charset;
 	}
 

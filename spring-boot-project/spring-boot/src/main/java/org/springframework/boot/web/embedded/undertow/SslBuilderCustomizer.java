@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -45,12 +47,6 @@ import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
 
-/**
- * {@link UndertowBuilderCustomizer} that configures SSL on the given builder instance.
- *
- * @author Brian Clozel
- * @author Raheela Aslam
- */
 class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 
 	private final int port;
@@ -61,7 +57,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 
 	private final SslStoreProvider sslStoreProvider;
 
-	SslBuilderCustomizer(int port, InetAddress address, Ssl ssl, SslStoreProvider sslStoreProvider) {
+	SslBuilderCustomizer(int port, @Nullable InetAddress address, Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		this.port = port;
 		this.address = address;
 		this.ssl = ssl;
@@ -157,6 +153,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		}
 	}
 
+	@Nullable
 	private KeyStore getTrustStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getTrustStore();
@@ -165,18 +162,19 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 				ssl.getTrustStorePassword());
 	}
 
-	private KeyStore loadKeyStore(String type, String provider, String resource, String password) throws Exception {
+	private KeyStore loadKeyStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
+	@Nullable
+	private KeyStore loadTrustStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		if (resource == null) {
 			return null;
 		}
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadStore(String type, String provider, String resource, String password) throws Exception {
+	private KeyStore loadStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		type = (type != null) ? type : "JKS";
 		KeyStore store = (provider != null) ? KeyStore.getInstance(type, provider) : KeyStore.getInstance(type);
 		try {
@@ -198,7 +196,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 
 		private final String alias;
 
-		ConfigurableAliasKeyManager(X509ExtendedKeyManager keyManager, String alias) {
+		ConfigurableAliasKeyManager(X509ExtendedKeyManager keyManager, @Nullable String alias) {
 			this.keyManager = keyManager;
 			this.alias = alias;
 		}

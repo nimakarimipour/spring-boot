@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -29,21 +31,17 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
 
-/**
- * Utility to deduce the {@link PropertySources} to use for configuration binding.
- *
- * @author Phillip Webb
- */
 class PropertySourcesDeducer {
 
 	private static final Log logger = LogFactory.getLog(PropertySourcesDeducer.class);
 
 	private final ApplicationContext applicationContext;
 
-	PropertySourcesDeducer(ApplicationContext applicationContext) {
+	PropertySourcesDeducer(@Nullable ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
+	@Nullable
 	PropertySources getPropertySources() {
 		PropertySourcesPlaceholderConfigurer configurer = getSinglePropertySourcesPlaceholderConfigurer();
 		if (configurer != null) {
@@ -55,6 +53,7 @@ class PropertySourcesDeducer {
 		return sources;
 	}
 
+	@Nullable
 	private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
 		// Take care not to cause early instantiation of all FactoryBeans
 		Map<String, PropertySourcesPlaceholderConfigurer> beans = this.applicationContext
@@ -69,6 +68,7 @@ class PropertySourcesDeducer {
 		return null;
 	}
 
+	@Nullable
 	private MutablePropertySources extractEnvironmentPropertySources() {
 		Environment environment = this.applicationContext.getEnvironment();
 		if (environment instanceof ConfigurableEnvironment) {

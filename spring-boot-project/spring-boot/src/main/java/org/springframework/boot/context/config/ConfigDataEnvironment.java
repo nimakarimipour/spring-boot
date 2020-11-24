@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,19 +46,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
 
-/**
- * Wrapper around a {@link ConfigurableEnvironment} that can be used to import and apply
- * {@link ConfigData}. Configures the initial set of
- * {@link ConfigDataEnvironmentContributors} by wrapping property sources from the Spring
- * {@link Environment} and adding the initial set of locations.
- * <p>
- * The initial locations can be influenced via the {@link #LOCATION_PROPERTY},
- * {@value #ADDITIONAL_LOCATION_PROPERTY} and {@value #IMPORT_PROPERTY} properties. If no
- * explicit properties are set, the {@link #DEFAULT_SEARCH_LOCATIONS} will be used.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- */
 class ConfigDataEnvironment {
 
 	/**
@@ -189,12 +178,13 @@ class ConfigDataEnvironment {
 		return initialContributors;
 	}
 
+	@Nullable
 	private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
 		return binder.bind(propertyName, CONFIG_DATA_LOCATION_ARRAY).orElse(other);
 	}
 
 	private void addInitialImportContributors(List<ConfigDataEnvironmentContributor> initialContributors,
-			ConfigDataLocation[] locations) {
+			@Nullable ConfigDataLocation[] locations) {
 		for (int i = locations.length - 1; i >= 0; i--) {
 			initialContributors.add(createInitialImportContributor(locations[i]));
 		}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Proxy;
@@ -24,20 +26,13 @@ import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
-/**
- * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
- * {@link BeanNotOfRequiredTypeException}.
- *
- * @author Andy Wilkinson
- * @since 1.4.0
- */
 public class BeanNotOfRequiredTypeFailureAnalyzer extends AbstractFailureAnalyzer<BeanNotOfRequiredTypeException> {
 
 	private static final String ACTION = "Consider injecting the bean as one of its "
 			+ "interfaces or forcing the use of CGLib-based "
 			+ "proxies by setting proxyTargetClass=true on @EnableAsync and/or @EnableCaching.";
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, BeanNotOfRequiredTypeException cause) {
 		if (!Proxy.isProxyClass(cause.getActualType())) {
 			return null;

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.netty;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -34,13 +36,6 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * Configure the HTTP compression on a Reactor Netty request/response handler.
- *
- * @author Stephane Maldini
- * @author Phillip Webb
- * @author Brian Clozel
- */
 final class CompressionCustomizer implements NettyServerCustomizer {
 
 	private static final CompressionPredicate ALWAYS_COMPRESS = (request, response) -> true;
@@ -84,7 +79,7 @@ final class CompressionCustomizer implements NettyServerCustomizer {
 		};
 	}
 
-	private CompressionPredicate getExcludedUserAgentsPredicate(String[] excludedUserAgents) {
+	private CompressionPredicate getExcludedUserAgentsPredicate(@Nullable String[] excludedUserAgents) {
 		if (ObjectUtils.isEmpty(excludedUserAgents)) {
 			return ALWAYS_COMPRESS;
 		}

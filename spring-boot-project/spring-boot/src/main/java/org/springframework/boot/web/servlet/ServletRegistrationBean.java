@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -30,28 +32,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * A {@link ServletContextInitializer} to register {@link Servlet}s in a Servlet 3.0+
- * container. Similar to the {@link ServletContext#addServlet(String, Servlet)
- * registration} features provided by {@link ServletContext} but with a Spring Bean
- * friendly design.
- * <p>
- * The {@link #setServlet(Servlet) servlet} must be specified before calling
- * {@link #onStartup}. URL mapping can be configured used {@link #setUrlMappings} or
- * omitted when mapping to '/*' (unless
- * {@link #ServletRegistrationBean(Servlet, boolean, String...) alwaysMapUrl} is set to
- * {@code false}). The servlet name will be deduced if not specified.
- *
- * @param <T> the type of the {@link Servlet} to register
- * @author Phillip Webb
- * @since 1.4.0
- * @see ServletContextInitializer
- * @see ServletContext#addServlet(String, Servlet)
- */
 public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrationBean<ServletRegistration.Dynamic> {
 
 	private static final String[] DEFAULT_MAPPINGS = { "/*" };
 
+	@Nullable
 	private T servlet;
 
 	private Set<String> urlMappings = new LinkedHashSet<>();
@@ -60,6 +45,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 
 	private int loadOnStartup = -1;
 
+	@Nullable
 	private MultipartConfigElement multipartConfig;
 
 	/**
@@ -106,6 +92,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 	 * Return the servlet being registered.
 	 * @return the servlet
 	 */
+	@Nullable
 	public T getServlet() {
 		return this.servlet;
 	}
@@ -162,6 +149,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 	 * or {@code null}.
 	 * @return the multipart config
 	 */
+	@Nullable
 	public MultipartConfigElement getMultipartConfig() {
 		return this.multipartConfig;
 	}

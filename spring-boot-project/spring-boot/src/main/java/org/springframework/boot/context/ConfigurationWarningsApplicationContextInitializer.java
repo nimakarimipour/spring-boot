@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,13 +44,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link ApplicationContextInitializer} to report warnings for common misconfiguration
- * mistakes.
- *
- * @author Phillip Webb
- * @since 1.2.0
- */
 public class ConfigurationWarningsApplicationContextInitializer
 		implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
@@ -136,7 +131,7 @@ public class ConfigurationWarningsApplicationContextInitializer
 			PROBLEM_PACKAGES = Collections.unmodifiableSet(packages);
 		}
 
-		@Override
+		@Override@Nullable
 		public String getWarning(BeanDefinitionRegistry registry) {
 			Set<String> scannedPackages = getComponentScanningPackages(registry);
 			List<String> problematicPackages = getProblematicPackages(scannedPackages);

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,15 +35,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
 
-/**
- * A {@link FailureAnalyzer} that performs analysis of failures caused by an
- * {@link InvalidConfigurationPropertyValueException}.
- *
- * @author Stephane Nicoll
- */
 class InvalidConfigurationPropertyValueFailureAnalyzer
 		extends AbstractFailureAnalyzer<InvalidConfigurationPropertyValueException> implements EnvironmentAware {
 
+	@Nullable
 	private ConfigurableEnvironment environment;
 
 	@Override
@@ -49,7 +46,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	@Override
+	@Override@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, InvalidConfigurationPropertyValueException cause) {
 		List<Descriptor> descriptors = getDescriptors(cause.getName());
 		if (descriptors.isEmpty()) {
@@ -127,7 +124,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 
 		private final Origin origin;
 
-		private Descriptor(String propertySource, Object value, Origin origin) {
+		private Descriptor(String propertySource, Object value, @Nullable Origin origin) {
 			this.propertySource = propertySource;
 			this.value = value;
 			this.origin = origin;

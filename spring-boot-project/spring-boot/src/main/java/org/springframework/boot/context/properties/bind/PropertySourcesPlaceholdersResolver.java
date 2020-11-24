@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
@@ -24,13 +26,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
 
-/**
- * {@link PlaceholdersResolver} to resolve placeholders from {@link PropertySources}.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- */
 public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver {
 
 	private final Iterable<PropertySource<?>> sources;
@@ -45,7 +40,7 @@ public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver
 		this(sources, null);
 	}
 
-	public PropertySourcesPlaceholdersResolver(Iterable<PropertySource<?>> sources, PropertyPlaceholderHelper helper) {
+	public PropertySourcesPlaceholdersResolver(Iterable<PropertySource<?>> sources, @Nullable PropertyPlaceholderHelper helper) {
 		this.sources = sources;
 		this.helper = (helper != null) ? helper : new PropertyPlaceholderHelper(SystemPropertyUtils.PLACEHOLDER_PREFIX,
 				SystemPropertyUtils.PLACEHOLDER_SUFFIX, SystemPropertyUtils.VALUE_SEPARATOR, true);
@@ -59,6 +54,7 @@ public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver
 		return value;
 	}
 
+	@Nullable
 	protected String resolvePlaceholder(String placeholder) {
 		if (this.sources != null) {
 			for (PropertySource<?> source : this.sources) {

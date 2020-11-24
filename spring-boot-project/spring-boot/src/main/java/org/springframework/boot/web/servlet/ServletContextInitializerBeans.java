@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,21 +46,6 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-/**
- * A collection {@link ServletContextInitializer}s obtained from a
- * {@link ListableBeanFactory}. Includes all {@link ServletContextInitializer} beans and
- * also adapts {@link Servlet}, {@link Filter} and certain {@link EventListener} beans.
- * <p>
- * Items are sorted so that adapted beans are top ({@link Servlet}, {@link Filter} then
- * {@link EventListener}) and direct {@link ServletContextInitializer} beans are at the
- * end. Further sorting is applied within these groups using the
- * {@link AnnotationAwareOrderComparator}.
- *
- * @author Dave Syer
- * @author Phillip Webb
- * @author Brian Clozel
- * @since 1.4.0
- */
 public class ServletContextInitializerBeans extends AbstractCollection<ServletContextInitializer> {
 
 	private static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
@@ -126,7 +113,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 	}
 
 	private void addServletContextInitializerBean(Class<?> type, String beanName, ServletContextInitializer initializer,
-			ListableBeanFactory beanFactory, Object source) {
+			ListableBeanFactory beanFactory, @Nullable Object source) {
 		this.initializers.add(type, initializer);
 		if (source != null) {
 			// Mark the underlying source as seen in case it wraps an existing bean
@@ -159,6 +146,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		}
 	}
 
+	@Nullable
 	private MultipartConfigElement getMultipartConfig(ListableBeanFactory beanFactory) {
 		List<Entry<String, MultipartConfigElement>> beans = getOrderedBeansOfType(beanFactory,
 				MultipartConfigElement.class);
@@ -266,7 +254,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 
 		private final MultipartConfigElement multipartConfig;
 
-		ServletRegistrationBeanAdapter(MultipartConfigElement multipartConfig) {
+		ServletRegistrationBeanAdapter(@Nullable MultipartConfigElement multipartConfig) {
 			this.multipartConfig = multipartConfig;
 		}
 

@@ -16,12 +16,8 @@
 
 package org.springframework.boot.diagnostics;
 
-/**
- * The result of analyzing a failure.
- *
- * @author Andy Wilkinson
- * @since 1.4.0
- */
+import javax.annotation.Nullable;
+
 public class FailureAnalysis {
 
 	private final String description;
@@ -38,7 +34,7 @@ public class FailureAnalysis {
 	 * @param action the action
 	 * @param cause the cause
 	 */
-	public FailureAnalysis(String description, String action, Throwable cause) {
+	public FailureAnalysis(@Nullable String description, @Nullable String action, Throwable cause) {
 		this.description = description;
 		this.action = action;
 		this.cause = cause;

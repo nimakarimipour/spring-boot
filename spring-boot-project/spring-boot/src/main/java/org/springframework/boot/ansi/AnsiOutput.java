@@ -16,25 +16,22 @@
 
 package org.springframework.boot.ansi;
 
+import javax.annotation.Nullable;
+
 import java.util.Locale;
 
 import org.springframework.util.Assert;
 
-/**
- * Generates ANSI encoded output, automatically attempting to detect if the terminal
- * supports ANSI.
- *
- * @author Phillip Webb
- * @since 1.0.0
- */
 public abstract class AnsiOutput {
 
 	private static final String ENCODE_JOIN = ";";
 
 	private static Enabled enabled = Enabled.DETECT;
 
+	@Nullable
 	private static Boolean consoleAvailable;
 
+	@Nullable
 	private static Boolean ansiCapable;
 
 	private static final String OPERATING_SYSTEM_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
@@ -76,7 +73,7 @@ public abstract class AnsiOutput {
 	 * @param element the element to encode
 	 * @return the encoded element or an empty string
 	 */
-	public static String encode(AnsiElement element) {
+	public static String encode(@Nullable AnsiElement element) {
 		if (isEnabled()) {
 			return ENCODE_START + element + ENCODE_END;
 		}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.context;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EventListener;
@@ -60,39 +62,6 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.context.support.ServletContextScope;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-/**
- * A {@link WebApplicationContext} that can be used to bootstrap itself from a contained
- * {@link ServletWebServerFactory} bean.
- * <p>
- * This context will create, initialize and run an {@link WebServer} by searching for a
- * single {@link ServletWebServerFactory} bean within the {@link ApplicationContext}
- * itself. The {@link ServletWebServerFactory} is free to use standard Spring concepts
- * (such as dependency injection, lifecycle callbacks and property placeholder variables).
- * <p>
- * In addition, any {@link Servlet} or {@link Filter} beans defined in the context will be
- * automatically registered with the web server. In the case of a single Servlet bean, the
- * '/' mapping will be used. If multiple Servlet beans are found then the lowercase bean
- * name will be used as a mapping prefix. Any Servlet named 'dispatcherServlet' will
- * always be mapped to '/'. Filter beans will be mapped to all URLs ('/*').
- * <p>
- * For more advanced configuration, the context can instead define beans that implement
- * the {@link ServletContextInitializer} interface (most often
- * {@link ServletRegistrationBean}s and/or {@link FilterRegistrationBean}s). To prevent
- * double registration, the use of {@link ServletContextInitializer} beans will disable
- * automatic Servlet and Filter bean registration.
- * <p>
- * Although this context can be used directly, most developers should consider using the
- * {@link AnnotationConfigServletWebServerApplicationContext} or
- * {@link XmlServletWebServerApplicationContext} variants.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Scott Frederick
- * @since 2.0.0
- * @see AnnotationConfigServletWebServerApplicationContext
- * @see XmlServletWebServerApplicationContext
- * @see ServletWebServerFactory
- */
 public class ServletWebServerApplicationContext extends GenericWebApplicationContext
 		implements ConfigurableWebServerApplicationContext {
 
@@ -106,10 +75,13 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 */
 	public static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
 
+	@Nullable
 	private volatile WebServer webServer;
 
+	@Nullable
 	private ServletConfig servletConfig;
 
+	@Nullable
 	private String serverNamespace;
 
 	/**
@@ -304,7 +276,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		return new ServletContextResource(getServletContext(), path);
 	}
 
-	@Override
+	@Override@Nullable
 	public String getServerNamespace() {
 		return this.serverNamespace;
 	}
@@ -319,7 +291,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		this.servletConfig = servletConfig;
 	}
 
-	@Override
+	@Override@Nullable
 	public ServletConfig getServletConfig() {
 		return this.servletConfig;
 	}
@@ -329,7 +301,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 * the server has not yet been created.
 	 * @return the embedded web server
 	 */
-	@Override
+	@Override@Nullable
 	public WebServer getWebServer() {
 		return this.webServer;
 	}

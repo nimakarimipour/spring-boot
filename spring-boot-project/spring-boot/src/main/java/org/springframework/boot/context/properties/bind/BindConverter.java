@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 import java.beans.PropertyEditor;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -40,13 +42,6 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.util.Assert;
 
-/**
- * Utility to handle any conversion needed during binding. This class is not thread-safe
- * and so a new instance is created for each top-level bind.
- *
- * @author Phillip Webb
- * @author Andy Wilkinson
- */
 final class BindConverter {
 
 	private static final Set<Class<?>> EXCLUDED_EDITORS;
@@ -56,6 +51,7 @@ final class BindConverter {
 		EXCLUDED_EDITORS = Collections.unmodifiableSet(excluded);
 	}
 
+	@Nullable
 	private static BindConverter sharedInstance;
 
 	private final ConversionService conversionService;
@@ -79,17 +75,18 @@ final class BindConverter {
 		return services;
 	}
 
-	boolean canConvert(Object value, ResolvableType type, Annotation... annotations) {
+	boolean canConvert(@Nullable Object value, ResolvableType type, Annotation... annotations) {
 		return this.conversionService.canConvert(TypeDescriptor.forObject(value),
 				new ResolvableTypeDescriptor(type, annotations));
 	}
 
-	<T> T convert(Object result, Bindable<T> target) {
+	@Nullable
+	<T> T convert(@Nullable Object result, Bindable<T> target) {
 		return convert(result, target.getType(), target.getAnnotations());
 	}
 
-	@SuppressWarnings("unchecked")
-	<T> T convert(Object value, ResolvableType type, Annotation... annotations) {
+	@SuppressWarnings("unchecked")@Nullable
+	<T> T convert(@Nullable Object value, ResolvableType type, Annotation... annotations) {
 		if (value == null) {
 			return null;
 		}
@@ -139,7 +136,7 @@ final class BindConverter {
 		}
 
 		@Override
-		public boolean canConvert(TypeDescriptor sourceType, TypeDescriptor targetType) {
+		public boolean canConvert(@Nullable TypeDescriptor sourceType, TypeDescriptor targetType) {
 			for (ConversionService service : this.delegates) {
 				if (service.canConvert(sourceType, targetType)) {
 					return true;
@@ -230,6 +227,7 @@ final class BindConverter {
 			return typeConverter.convertIfNecessary(source, targetType.getType());
 		}
 
+		@Nullable
 		private PropertyEditor getPropertyEditor(Class<?> type) {
 			if (type == null || type == Object.class || Collection.class.isAssignableFrom(type)
 					|| Map.class.isAssignableFrom(type)) {

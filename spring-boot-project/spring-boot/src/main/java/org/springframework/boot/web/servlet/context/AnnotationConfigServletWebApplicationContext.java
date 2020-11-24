@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.context;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -39,23 +41,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
-/**
- * {@link GenericWebApplicationContext}that accepts annotated classes as input - in
- * particular {@link Configuration @Configuration}-annotated classes, but also plain
- * {@link Component @Component} classes and JSR-330 compliant classes using
- * {@code javax.inject} annotations. Allows for registering classes one by one (specifying
- * class names as config location) as well as for classpath scanning (specifying base
- * packages as config location).
- * <p>
- * Note: In case of multiple {@code @Configuration} classes, later {@code @Bean}
- * definitions will override ones defined in earlier loaded files. This can be leveraged
- * to deliberately override certain bean definitions via an extra Configuration class.
- *
- * @author Stephane Nicoll
- * @since 2.2.0
- * @see #register(Class...)
- * @see #scan(String...)
- */
 public class AnnotationConfigServletWebApplicationContext extends GenericWebApplicationContext
 		implements AnnotationConfigRegistry {
 
@@ -65,6 +50,7 @@ public class AnnotationConfigServletWebApplicationContext extends GenericWebAppl
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
+	@Nullable
 	private String[] basePackages;
 
 	/**

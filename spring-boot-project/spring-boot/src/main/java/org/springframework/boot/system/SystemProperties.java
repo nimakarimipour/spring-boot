@@ -16,17 +16,14 @@
 
 package org.springframework.boot.system;
 
-/**
- * Access to system properties.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
+import javax.annotation.Nullable;
+
 public final class SystemProperties {
 
 	private SystemProperties() {
 	}
 
+	@Nullable
 	public static String get(String... properties) {
 		for (String property : properties) {
 			try {

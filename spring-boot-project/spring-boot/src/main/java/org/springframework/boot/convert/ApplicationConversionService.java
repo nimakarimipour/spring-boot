@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -34,27 +36,16 @@ import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.StringValueResolver;
 
-/**
- * A specialization of {@link FormattingConversionService} configured by default with
- * converters and formatters appropriate for most Spring Boot applications.
- * <p>
- * Designed for direct instantiation but also exposes the static
- * {@link #addApplicationConverters} and
- * {@link #addApplicationFormatters(FormatterRegistry)} utility methods for ad-hoc use
- * against registry instance.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
 public class ApplicationConversionService extends FormattingConversionService {
 
+	@Nullable
 	private static volatile ApplicationConversionService sharedInstance;
 
 	public ApplicationConversionService() {
 		this(null);
 	}
 
-	public ApplicationConversionService(StringValueResolver embeddedValueResolver) {
+	public ApplicationConversionService(@Nullable StringValueResolver embeddedValueResolver) {
 		if (embeddedValueResolver != null) {
 			setEmbeddedValueResolver(embeddedValueResolver);
 		}

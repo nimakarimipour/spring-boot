@@ -16,18 +16,13 @@
 
 package org.springframework.boot.context.event;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 
-/**
- * Event published when a {@link SpringApplication} is starting up and the
- * {@link Environment} is first available for inspection and modification.
- *
- * @author Dave Syer
- * @since 1.0.0
- */
 @SuppressWarnings("serial")
 public class ApplicationEnvironmentPreparedEvent extends SpringApplicationEvent {
 
@@ -56,7 +51,7 @@ public class ApplicationEnvironmentPreparedEvent extends SpringApplicationEvent 
 	 * @param args the arguments the application is running with
 	 * @param environment the environment that was just created
 	 */
-	public ApplicationEnvironmentPreparedEvent(ConfigurableBootstrapContext bootstrapContext,
+	public ApplicationEnvironmentPreparedEvent(@Nullable ConfigurableBootstrapContext bootstrapContext,
 			SpringApplication application, String[] args, ConfigurableEnvironment environment) {
 		super(application, args);
 		this.bootstrapContext = bootstrapContext;

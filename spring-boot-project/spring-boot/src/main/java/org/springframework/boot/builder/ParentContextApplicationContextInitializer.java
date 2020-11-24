@@ -16,6 +16,8 @@
 
 package org.springframework.boot.builder;
 
+import javax.annotation.Nullable;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationEvent;
@@ -24,22 +26,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
 
-/**
- * {@link ApplicationContextInitializer} for setting the parent context. Also publishes
- * {@link ParentContextAvailableEvent} when the context is refreshed to signal to other
- * listeners that the context is available and has a parent.
- *
- * @author Dave Syer
- * @since 1.0.0
- */
 public class ParentContextApplicationContextInitializer
 		implements ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {
 
 	private int order = Ordered.HIGHEST_PRECEDENCE;
 
-	private final ApplicationContext parent;
+	@Nullable private final ApplicationContext parent;
 
-	public ParentContextApplicationContextInitializer(ApplicationContext parent) {
+	public ParentContextApplicationContextInitializer(@Nullable ApplicationContext parent) {
 		this.parent = parent;
 	}
 

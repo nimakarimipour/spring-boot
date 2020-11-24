@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -24,13 +26,6 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
-/**
- * Simple server-independent abstraction for mime mappings. Roughly equivalent to the
- * {@literal &lt;mime-mapping&gt;} element traditionally found in web.xml.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
 public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
@@ -276,6 +271,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param mimeType the mime type to map
 	 * @return any previous mapping or {@code null}
 	 */
+	@Nullable
 	public String add(String extension, String mimeType) {
 		Mapping previous = this.map.put(extension, new Mapping(extension, mimeType));
 		return (previous != null) ? previous.getMimeType() : null;
@@ -286,6 +282,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param extension the file extension (excluding '.')
 	 * @return a mime mapping or {@code null}
 	 */
+	@Nullable
 	public String get(String extension) {
 		Mapping mapping = this.map.get(extension);
 		return (mapping != null) ? mapping.getMimeType() : null;
@@ -296,6 +293,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param extension the file extension (excluding '.')
 	 * @return the removed mime mapping or {@code null} if no item was removed
 	 */
+	@Nullable
 	public String remove(String extension) {
 		Mapping previous = this.map.remove(extension);
 		return (previous != null) ? previous.getMimeType() : null;

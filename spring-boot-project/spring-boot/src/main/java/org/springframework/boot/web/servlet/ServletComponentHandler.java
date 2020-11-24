@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,12 +29,6 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.Assert;
 
-/**
- * Abstract base class for handlers of Servlet components discovered via classpath
- * scanning.
- *
- * @author Andy Wilkinson
- */
 abstract class ServletComponentHandler {
 
 	private final Class<? extends Annotation> annotationType;
@@ -48,6 +44,7 @@ abstract class ServletComponentHandler {
 		return this.typeFilter;
 	}
 
+	@Nullable
 	protected String[] extractUrlPatterns(Map<String, Object> attributes) {
 		String[] value = (String[]) attributes.get("value");
 		String[] urlPatterns = (String[]) attributes.get("urlPatterns");
@@ -68,7 +65,7 @@ abstract class ServletComponentHandler {
 		return initParameters;
 	}
 
-	void handle(AnnotatedBeanDefinition beanDefinition, BeanDefinitionRegistry registry) {
+	void handle(AnnotatedBeanDefinition beanDefinition, @Nullable BeanDefinitionRegistry registry) {
 		Map<String, Object> attributes = beanDefinition.getMetadata()
 				.getAnnotationAttributes(this.annotationType.getName());
 		if (attributes != null) {
@@ -77,6 +74,6 @@ abstract class ServletComponentHandler {
 	}
 
 	protected abstract void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry);
+			@Nullable BeanDefinitionRegistry registry);
 
 }

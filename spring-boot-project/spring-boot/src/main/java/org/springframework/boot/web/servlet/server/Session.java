@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -23,17 +25,12 @@ import java.util.Set;
 
 import org.springframework.boot.convert.DurationUnit;
 
-/**
- * Session properties.
- *
- * @author Andy Wilkinson
- * @since 2.0.0
- */
 public class Session {
 
 	@DurationUnit(ChronoUnit.SECONDS)
 	private Duration timeout = Duration.ofMinutes(30);
 
+	@Nullable
 	private Set<Session.SessionTrackingMode> trackingModes;
 
 	private boolean persistent;
@@ -41,6 +38,7 @@ public class Session {
 	/**
 	 * Directory used to store session data.
 	 */
+	@Nullable
 	private File storeDir;
 
 	private final Cookie cookie = new Cookie();
@@ -63,6 +61,7 @@ public class Session {
 	 * Return the {@link SessionTrackingMode session tracking modes}.
 	 * @return the session tracking modes
 	 */
+	@Nullable
 	public Set<Session.SessionTrackingMode> getTrackingModes() {
 		return this.trackingModes;
 	}
@@ -87,6 +86,7 @@ public class Session {
 	 * Return the directory used to store session data.
 	 * @return the session data store directory
 	 */
+	@Nullable
 	public File getStoreDir() {
 		return this.storeDir;
 	}
@@ -105,25 +105,32 @@ public class Session {
 	 */
 	public static class Cookie {
 
+		@Nullable
 		private String name;
 
+		@Nullable
 		private String domain;
 
+		@Nullable
 		private String path;
 
+		@Nullable
 		private String comment;
 
+		@Nullable
 		private Boolean httpOnly;
 
+		@Nullable
 		private Boolean secure;
 
-		@DurationUnit(ChronoUnit.SECONDS)
+		@DurationUnit(ChronoUnit.SECONDS)@Nullable
 		private Duration maxAge;
 
 		/**
 		 * Return the session cookie name.
 		 * @return the session cookie name
 		 */
+		@Nullable
 		public String getName() {
 			return this.name;
 		}
@@ -136,6 +143,7 @@ public class Session {
 		 * Return the domain for the session cookie.
 		 * @return the session cookie domain
 		 */
+		@Nullable
 		public String getDomain() {
 			return this.domain;
 		}
@@ -148,6 +156,7 @@ public class Session {
 		 * Return the path of the session cookie.
 		 * @return the session cookie path
 		 */
+		@Nullable
 		public String getPath() {
 			return this.path;
 		}
@@ -160,6 +169,7 @@ public class Session {
 		 * Return the comment for the session cookie.
 		 * @return the session cookie comment
 		 */
+		@Nullable
 		public String getComment() {
 			return this.comment;
 		}
@@ -172,6 +182,7 @@ public class Session {
 		 * Return whether to use "HttpOnly" cookies for session cookies.
 		 * @return {@code true} to use "HttpOnly" cookies for session cookies.
 		 */
+		@Nullable
 		public Boolean getHttpOnly() {
 			return this.httpOnly;
 		}
@@ -185,6 +196,7 @@ public class Session {
 		 * @return {@code true} to mark the session cookie as secure even if the request
 		 * that initiated the corresponding session is using plain HTTP
 		 */
+		@Nullable
 		public Boolean getSecure() {
 			return this.secure;
 		}
@@ -197,6 +209,7 @@ public class Session {
 		 * Return the maximum age of the session cookie.
 		 * @return the maximum age of the session cookie
 		 */
+		@Nullable
 		public Duration getMaxAge() {
 			return this.maxAge;
 		}

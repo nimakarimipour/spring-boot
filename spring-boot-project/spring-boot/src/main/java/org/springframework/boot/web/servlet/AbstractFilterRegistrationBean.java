@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,15 +36,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * Abstract base {@link ServletContextInitializer} to register {@link Filter}s in a
- * Servlet 3.0+ container.
- *
- * @param <T> the type of {@link Filter} to register
- * @author Phillip Webb
- * @author Brian Clozel
- * @since 1.5.22
- */
 public abstract class AbstractFilterRegistrationBean<T extends Filter> extends DynamicRegistrationBean<Dynamic> {
 
 	private static final String[] DEFAULT_URL_MAPPINGS = { "/*" };
@@ -53,6 +46,7 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
 
 	private Set<String> urlPatterns = new LinkedHashSet<>();
 
+	@Nullable
 	private EnumSet<DispatcherType> dispatcherTypes;
 
 	private boolean matchAfter = false;

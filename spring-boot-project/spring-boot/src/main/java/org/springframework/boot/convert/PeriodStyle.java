@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.function.Function;
@@ -24,14 +26,6 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
 
-/**
- * A standard set of {@link Period} units.
- *
- * @author Eddú Meléndez
- * @author Edson Chávez
- * @since 2.3.0
- * @see Period
- */
 public enum PeriodStyle {
 
 	/**
@@ -153,7 +147,7 @@ public enum PeriodStyle {
 	 * will default to d)
 	 * @return a period
 	 */
-	public abstract Period parse(String value, ChronoUnit unit);
+	public abstract Period parse(String value, @Nullable ChronoUnit unit);
 
 	/**
 	 * Print the specified period.
@@ -170,7 +164,7 @@ public enum PeriodStyle {
 	 * @param unit the value to use for printing
 	 * @return the printed result
 	 */
-	public abstract String print(Period value, ChronoUnit unit);
+	public abstract String print(Period value, @Nullable ChronoUnit unit);
 
 	/**
 	 * Detect the style then parse the value to return a period.
@@ -192,7 +186,7 @@ public enum PeriodStyle {
 	 * @throws IllegalArgumentException if the value is not a known style or cannot be
 	 * parsed
 	 */
-	public static Period detectAndParse(String value, ChronoUnit unit) {
+	public static Period detectAndParse(String value, @Nullable ChronoUnit unit) {
 		return detect(value).parse(value, unit);
 	}
 
@@ -238,11 +232,11 @@ public enum PeriodStyle {
 
 		private final String suffix;
 
-		private final Function<Period, Integer> intValue;
+		@Nullable private final Function<Period, Integer> intValue;
 
 		private final Function<Integer, Period> factory;
 
-		Unit(ChronoUnit chronoUnit, String suffix, Function<Period, Integer> intValue,
+		Unit(ChronoUnit chronoUnit, String suffix, @Nullable Function<Period, Integer> intValue,
 				Function<Integer, Period> factory) {
 			this.chronoUnit = chronoUnit;
 			this.suffix = suffix;

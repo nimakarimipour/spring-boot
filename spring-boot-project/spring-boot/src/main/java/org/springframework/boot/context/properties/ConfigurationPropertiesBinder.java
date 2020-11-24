@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -50,13 +52,6 @@ import org.springframework.core.env.PropertySources;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * Internal class used by the {@link ConfigurationPropertiesBindingPostProcessor} to
- * handle the actual {@link ConfigurationProperties @ConfigurationProperties} binding.
- *
- * @author Stephane Nicoll
- * @author Phillip Webb
- */
 class ConfigurationPropertiesBinder {
 
 	private static final String BEAN_NAME = "org.springframework.boot.context.internalConfigurationPropertiesBinder";
@@ -73,11 +68,13 @@ class ConfigurationPropertiesBinder {
 
 	private final boolean jsr303Present;
 
+	@Nullable
 	private volatile Validator jsr303Validator;
 
+	@Nullable
 	private volatile Binder binder;
 
-	ConfigurationPropertiesBinder(ApplicationContext applicationContext) {
+	ConfigurationPropertiesBinder(@Nullable ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 		this.propertySources = new PropertySourcesDeducer(applicationContext).getPropertySources();
 		this.configurationPropertiesValidator = getConfigurationPropertiesValidator(applicationContext);
@@ -91,14 +88,16 @@ class ConfigurationPropertiesBinder {
 		return getBinder().bind(annotation.prefix(), target, bindHandler);
 	}
 
-	Object bindOrCreate(ConfigurationPropertiesBean propertiesBean) {
+	@Nullable
+	Object bindOrCreate(@Nullable ConfigurationPropertiesBean propertiesBean) {
 		Bindable<?> target = propertiesBean.asBindTarget();
 		ConfigurationProperties annotation = propertiesBean.getAnnotation();
 		BindHandler bindHandler = getBindHandler(target, annotation);
 		return getBinder().bindOrCreate(annotation.prefix(), target, bindHandler);
 	}
 
-	private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext) {
+	@Nullable
+	private Validator getConfigurationPropertiesValidator(@Nullable ApplicationContext applicationContext) {
 		if (applicationContext.containsBean(VALIDATOR_BEAN_NAME)) {
 			return applicationContext.getBean(VALIDATOR_BEAN_NAME, Validator.class);
 		}
@@ -178,6 +177,7 @@ class ConfigurationPropertiesBinder {
 		return new ConversionServiceDeducer(this.applicationContext).getConversionService();
 	}
 
+	@Nullable
 	private Consumer<PropertyEditorRegistry> getPropertyEditorInitializer() {
 		if (this.applicationContext instanceof ConfigurableApplicationContext) {
 			return ((ConfigurableApplicationContext) this.applicationContext).getBeanFactory()::copyRegisteredEditorsTo;
@@ -217,6 +217,7 @@ class ConfigurationPropertiesBinder {
 	 */
 	static class Factory implements ApplicationContextAware {
 
+		@Nullable
 		private ApplicationContext applicationContext;
 
 		@Override

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,30 +27,6 @@ import java.util.function.Function;
 
 import org.springframework.util.Assert;
 
-/**
- * A configuration property name composed of elements separated by dots. User created
- * names may contain the characters "{@code a-z}" "{@code 0-9}") and "{@code -}", they
- * must be lower-case and must start with an alpha-numeric character. The "{@code -}" is
- * used purely for formatting, i.e. "{@code foo-bar}" and "{@code foobar}" are considered
- * equivalent.
- * <p>
- * The "{@code [}" and "{@code ]}" characters may be used to indicate an associative
- * index(i.e. a {@link Map} key or a {@link Collection} index. Indexes names are not
- * restricted and are considered case-sensitive.
- * <p>
- * Here are some typical examples:
- * <ul>
- * <li>{@code spring.main.banner-mode}</li>
- * <li>{@code server.hosts[0].name}</li>
- * <li>{@code log[org.springboot].level}</li>
- * </ul>
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.0.0
- * @see #of(CharSequence)
- * @see ConfigurationPropertySource
- */
 public final class ConfigurationPropertyName implements Comparable<ConfigurationPropertyName> {
 
 	private static final String EMPTY_STRING = "";
@@ -62,6 +40,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 	private final CharSequence[] uniformElements;
 
+	@Nullable
 	private String string;
 
 	private int hashCode;
@@ -287,7 +266,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return 0;
 	}
 
-	private int compare(String e1, ElementType type1, String e2, ElementType type2) {
+	private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
 		if (e1 == null) {
 			return -1;
 		}
@@ -518,6 +497,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @return a {@link ConfigurationPropertyName} instance
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid
 	 */
+	@Nullable
 	public static ConfigurationPropertyName of(CharSequence name) {
 		return of(name, false);
 	}
@@ -529,6 +509,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @return a {@link ConfigurationPropertyName} instance
 	 * @since 2.3.1
 	 */
+	@Nullable
 	public static ConfigurationPropertyName ofIfValid(CharSequence name) {
 		return of(name, true);
 	}
@@ -541,19 +522,23 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid and
 	 * {@code returnNullIfInvalid} is {@code false}
 	 */
+	@Nullable
 	static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
 		Elements elements = elementsOf(name, returnNullIfInvalid);
 		return (elements != null) ? new ConfigurationPropertyName(elements) : null;
 	}
 
+	@Nullable
 	private static Elements probablySingleElementOf(CharSequence name) {
 		return elementsOf(name, false, 1);
 	}
 
+	@Nullable
 	private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid) {
 		return elementsOf(name, returnNullIfInvalid, ElementsParser.DEFAULT_CAPACITY);
 	}
 
+	@Nullable
 	private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
 		if (name == null) {
 			Assert.isTrue(returnNullIfInvalid, "Name must not be null");
@@ -616,7 +601,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @return a {@link ConfigurationPropertyName}
 	 */
 	static ConfigurationPropertyName adapt(CharSequence name, char separator,
-			Function<CharSequence, CharSequence> elementValueProcessor) {
+			@Nullable Function<CharSequence, CharSequence> elementValueProcessor) {
 		Assert.notNull(name, "Name must not be null");
 		if (name.length() == 0) {
 			return EMPTY;
@@ -703,7 +688,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		 */
 		private final CharSequence[] resolved;
 
-		Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, CharSequence[] resolved) {
+		Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, @Nullable CharSequence[] resolved) {
 			super();
 			this.source = source;
 			this.size = size;
@@ -713,7 +698,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			this.resolved = resolved;
 		}
 
-		Elements append(Elements additional) {
+		Elements append(@Nullable Elements additional) {
 			int size = this.size + additional.size;
 			ElementType[] type = new ElementType[size];
 			System.arraycopy(this.type, 0, type, 0, this.size);
@@ -830,6 +815,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 		private ElementType[] type;
 
+		@Nullable
 		private CharSequence[] resolved;
 
 		ElementsParser(CharSequence source, char separator) {
@@ -848,7 +834,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			return parse(null);
 		}
 
-		Elements parse(Function<CharSequence, CharSequence> valueProcessor) {
+		Elements parse(@Nullable Function<CharSequence, CharSequence> valueProcessor) {
 			int length = this.source.length();
 			int openBracketCount = 0;
 			int start = 0;
@@ -909,7 +895,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			return existingType;
 		}
 
-		private void add(int start, int end, ElementType type, Function<CharSequence, CharSequence> valueProcessor) {
+		private void add(int start, int end, ElementType type, @Nullable Function<CharSequence, CharSequence> valueProcessor) {
 			if ((end - start) < 1 || type == ElementType.EMPTY) {
 				return;
 			}
@@ -947,7 +933,8 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			return dest;
 		}
 
-		private CharSequence[] expand(CharSequence[] src) {
+		@Nullable
+		private CharSequence[] expand(@Nullable CharSequence[] src) {
 			if (src == null) {
 				return null;
 			}

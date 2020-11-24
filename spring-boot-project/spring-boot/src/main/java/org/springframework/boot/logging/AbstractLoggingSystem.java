@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -29,13 +31,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
 
-/**
- * Abstract base class for {@link LoggingSystem} implementations.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @since 1.0.0
- */
 public abstract class AbstractLoggingSystem extends LoggingSystem {
 
 	protected static final Comparator<LoggerConfiguration> CONFIGURATION_COMPARATOR = new LoggerConfigurationComparator(
@@ -89,6 +84,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	 * will have been applied.
 	 * @return the self initialization config or {@code null}
 	 */
+	@Nullable
 	protected String getSelfInitializationConfig() {
 		return findConfig(getStandardConfigLocations());
 	}
@@ -98,10 +94,12 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	 * this method checks {@link #getSpringConfigLocations()}.
 	 * @return the spring initialization config or {@code null}
 	 */
+	@Nullable
 	protected String getSpringInitializationConfig() {
 		return findConfig(getSpringConfigLocations());
 	}
 
+	@Nullable
 	private String findConfig(String[] locations) {
 		for (String location : locations) {
 			ClassPathResource resource = new ClassPathResource(location, this.classLoader);
@@ -173,7 +171,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 		return defaultPath;
 	}
 
-	protected final void applySystemProperties(Environment environment, LogFile logFile) {
+	protected final void applySystemProperties(Environment environment, @Nullable LogFile logFile) {
 		new LoggingSystemProperties(environment).apply(logFile);
 	}
 
@@ -198,10 +196,12 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 			this.nativeToSystem.putIfAbsent(nativeLevel, system);
 		}
 
+		@Nullable
 		public LogLevel convertNativeToSystem(T level) {
 			return this.nativeToSystem.get(level);
 		}
 
+		@Nullable
 		public T convertSystemToNative(LogLevel level) {
 			return this.systemToNative.get(level);
 		}

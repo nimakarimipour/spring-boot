@@ -16,26 +16,21 @@
 
 package org.springframework.boot.system;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.security.MessageDigest;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-/**
- * Provides access to an application specific temporary directory. Generally speaking
- * different Spring Boot applications will get different locations, however, simply
- * restarting an application will give the same location.
- *
- * @author Phillip Webb
- * @since 2.0.0
- */
 public class ApplicationTemp {
 
 	private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
-	private final Class<?> sourceClass;
+	@Nullable private final Class<?> sourceClass;
 
+	@Nullable
 	private volatile File dir;
 
 	/**
@@ -49,7 +44,7 @@ public class ApplicationTemp {
 	 * Create a new {@link ApplicationTemp} instance for the specified source class.
 	 * @param sourceClass the source class or {@code null}
 	 */
-	public ApplicationTemp(Class<?> sourceClass) {
+	public ApplicationTemp(@Nullable Class<?> sourceClass) {
 		this.sourceClass = sourceClass;
 	}
 

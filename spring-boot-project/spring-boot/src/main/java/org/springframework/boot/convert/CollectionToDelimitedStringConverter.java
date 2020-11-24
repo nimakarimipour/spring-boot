@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -25,11 +27,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 
-/**
- * Converts a Collection to a delimited String.
- *
- * @author Phillip Webb
- */
 final class CollectionToDelimitedStringConverter implements ConditionalGenericConverter {
 
 	private final ConversionService conversionService;
@@ -53,7 +50,7 @@ final class CollectionToDelimitedStringConverter implements ConditionalGenericCo
 				|| sourceElementType.getType().isAssignableFrom(targetType.getType());
 	}
 
-	@Override
+	@Override@Nullable
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;

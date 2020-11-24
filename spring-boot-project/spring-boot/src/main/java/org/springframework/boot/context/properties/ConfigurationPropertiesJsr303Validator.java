@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
+
 import org.springframework.boot.validation.MessageInterpolatorFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
@@ -24,12 +26,6 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-/**
- * Validator that supports configuration classes annotated with
- * {@link Validated @Validated}.
- *
- * @author Phillip Webb
- */
 final class ConfigurationPropertiesJsr303Validator implements Validator {
 
 	private static final String[] VALIDATOR_CLASSES = { "javax.validation.Validator",
@@ -51,7 +47,7 @@ final class ConfigurationPropertiesJsr303Validator implements Validator {
 		this.delegate.validate(target, errors);
 	}
 
-	static boolean isJsr303Present(ApplicationContext applicationContext) {
+	static boolean isJsr303Present(@Nullable ApplicationContext applicationContext) {
 		ClassLoader classLoader = applicationContext.getClassLoader();
 		for (String validatorClass : VALIDATOR_CLASSES) {
 			if (!ClassUtils.isPresent(validatorClass, classLoader)) {

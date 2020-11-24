@@ -16,6 +16,8 @@
 
 package org.springframework.boot.rsocket.netty;
 
+import javax.annotation.Nullable;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -45,32 +47,30 @@ import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.unit.DataSize;
 
-/**
- * {@link RSocketServerFactory} that can be used to create {@link RSocketServer}s backed
- * by Netty.
- *
- * @author Brian Clozel
- * @author Chris Bono
- * @since 2.2.0
- */
 public class NettyRSocketServerFactory implements RSocketServerFactory, ConfigurableRSocketServerFactory {
 
 	private int port = 9898;
 
+	@Nullable
 	private DataSize fragmentSize;
 
+	@Nullable
 	private InetAddress address;
 
 	private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
 
+	@Nullable
 	private ReactorResourceFactory resourceFactory;
 
+	@Nullable
 	private Duration lifecycleTimeout;
 
 	private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
 
+	@Nullable
 	private Ssl ssl;
 
+	@Nullable
 	private SslStoreProvider sslStoreProvider;
 
 	@Override
@@ -198,7 +198,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 
 	private static final class TcpSslServerCustomizer extends SslServerCustomizer {
 
-		private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+		private TcpSslServerCustomizer(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 			super(ssl, null, sslStoreProvider);
 		}
 

@@ -16,13 +16,8 @@
 
 package org.springframework.boot.context.config;
 
-/**
- * Abstract base class for configuration data exceptions.
- *
- * @author Phillip Webb
- * @author Madhura Bhave
- * @since 2.4.0
- */
+import javax.annotation.Nullable;
+
 public abstract class ConfigDataException extends RuntimeException {
 
 	/**
@@ -30,7 +25,7 @@ public abstract class ConfigDataException extends RuntimeException {
 	 * @param message the exception message
 	 * @param cause the exception cause
 	 */
-	protected ConfigDataException(String message, Throwable cause) {
+	protected ConfigDataException(String message, @Nullable Throwable cause) {
 		super(message, cause);
 	}
 

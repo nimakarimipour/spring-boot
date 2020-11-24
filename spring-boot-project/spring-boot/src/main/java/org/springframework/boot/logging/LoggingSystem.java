@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
+
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -27,15 +29,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * Common abstraction over logging systems.
- *
- * @author Phillip Webb
- * @author Dave Syer
- * @author Andy Wilkinson
- * @author Ben Hale
- * @since 1.0.0
- */
 public abstract class LoggingSystem {
 
 	/**
@@ -83,7 +76,7 @@ public abstract class LoggingSystem {
 	 * @param logFile the log output file that should be written or {@code null} for
 	 * console only output
 	 */
-	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
+	public void initialize(LoggingInitializationContext initializationContext, @Nullable String configLocation, @Nullable LogFile logFile) {
 	}
 
 	/**
@@ -99,6 +92,7 @@ public abstract class LoggingSystem {
 	 * shutdown is required.
 	 * @return the shutdown handler, or {@code null}
 	 */
+	@Nullable
 	public Runnable getShutdownHandler() {
 		return null;
 	}
@@ -119,7 +113,7 @@ public abstract class LoggingSystem {
 	 * @param level the log level ({@code null} can be used to remove any custom level for
 	 * the logger and use the default configuration instead)
 	 */
-	public void setLogLevel(String loggerName, LogLevel level) {
+	public void setLogLevel(@Nullable String loggerName, LogLevel level) {
 		throw new UnsupportedOperationException("Unable to set log level");
 	}
 
@@ -193,7 +187,7 @@ public abstract class LoggingSystem {
 			return Collections.emptyList();
 		}
 
-		@Override
+		@Override@Nullable
 		public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 			return null;
 		}

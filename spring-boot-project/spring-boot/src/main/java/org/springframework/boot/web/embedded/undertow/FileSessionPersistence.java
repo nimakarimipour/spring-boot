@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,13 +34,6 @@ import io.undertow.servlet.api.SessionPersistenceManager;
 
 import org.springframework.core.ConfigurableObjectInputStream;
 
-/**
- * {@link SessionPersistenceManager} that stores session information in a file.
- *
- * @author Phillip Webb
- * @author Peter Leibiger
- * @author Raja Kolli
- */
 class FileSessionPersistence implements SessionPersistenceManager {
 
 	private final File dir;
@@ -69,7 +64,7 @@ class FileSessionPersistence implements SessionPersistenceManager {
 		stream.writeObject(session);
 	}
 
-	@Override
+	@Override@Nullable
 	public Map<String, PersistentSession> loadSessionAttributes(String deploymentName, final ClassLoader classLoader) {
 		try {
 			File file = getSessionFile(deploymentName);

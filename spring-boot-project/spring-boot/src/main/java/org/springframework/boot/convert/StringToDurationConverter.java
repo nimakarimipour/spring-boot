@@ -16,6 +16,8 @@
 
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -26,14 +28,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ObjectUtils;
 
-/**
- * {@link Converter} to convert from a {@link String} to a {@link Duration}. Supports
- * {@link Duration#parse(CharSequence)} as well a more readable {@code 10s} form.
- *
- * @author Phillip Webb
- * @see DurationFormat
- * @see DurationUnit
- */
 final class StringToDurationConverter implements GenericConverter {
 
 	@Override
@@ -41,25 +35,27 @@ final class StringToDurationConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(String.class, Duration.class));
 	}
 
-	@Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+	@Override@Nullable
+	public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (ObjectUtils.isEmpty(source)) {
 			return null;
 		}
 		return convert(source.toString(), getStyle(targetType), getDurationUnit(targetType));
 	}
 
+	@Nullable
 	private DurationStyle getStyle(TypeDescriptor targetType) {
 		DurationFormat annotation = targetType.getAnnotation(DurationFormat.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
 
+	@Nullable
 	private ChronoUnit getDurationUnit(TypeDescriptor targetType) {
 		DurationUnit annotation = targetType.getAnnotation(DurationUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
 
-	private Duration convert(String source, DurationStyle style, ChronoUnit unit) {
+	private Duration convert(String source, @Nullable DurationStyle style, @Nullable ChronoUnit unit) {
 		style = (style != null) ? style : DurationStyle.detect(source);
 		return style.parse(source, unit);
 	}

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.context;
 
+import javax.annotation.Nullable;
+
 import java.io.File;
 import java.util.Locale;
 
@@ -30,17 +32,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * An {@link ApplicationListener} that saves embedded server port and management port into
- * file. This application listener will be triggered whenever the server starts, and the
- * file name can be overridden at runtime with a System property or environment variable
- * named "PORTFILE" or "portfile".
- *
- * @author David Liu
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @since 2.0.0
- */
 public class WebServerPortFileWriter implements ApplicationListener<WebServerInitializedEvent> {
 
 	private static final String DEFAULT_FILE_NAME = "application.port";
@@ -123,6 +114,7 @@ public class WebServerPortFileWriter implements ApplicationListener<WebServerIni
 		return new File(this.file.getParentFile(), name);
 	}
 
+	@Nullable
 	private String getServerNamespace(ApplicationContext applicationContext) {
 		if (applicationContext instanceof WebServerApplicationContext) {
 			return ((WebServerApplicationContext) applicationContext).getServerNamespace();

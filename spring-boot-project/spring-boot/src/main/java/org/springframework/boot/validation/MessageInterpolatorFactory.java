@@ -16,6 +16,8 @@
 
 package org.springframework.boot.validation;
 
+import javax.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,14 +31,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.ClassUtils;
 
-/**
- * {@link ObjectFactory} that can be used to create a {@link MessageInterpolator}.
- * Attempts to pick the most appropriate {@link MessageInterpolator} based on the
- * classpath.
- *
- * @author Phillip Webb
- * @since 1.5.0
- */
 public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpolator> {
 
 	private static final Set<String> FALLBACKS;
@@ -61,6 +55,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 		}
 	}
 
+	@Nullable
 	private MessageInterpolator getFallback() {
 		for (String fallback : FALLBACKS) {
 			try {

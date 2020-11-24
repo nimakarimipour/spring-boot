@@ -16,6 +16,8 @@
 
 package org.springframework.boot.logging.log4j2;
 
+import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -56,15 +58,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
- *
- * @author Daniel Fullarton
- * @author Andy Wilkinson
- * @author Alexander Heusingfeld
- * @author Ben Hale
- * @since 1.2.0
- */
 public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 
 	private static final String FILE_PROTOCOL = "file";
@@ -234,7 +227,7 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		return result;
 	}
 
-	@Override
+	@Override@Nullable
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		LoggerConfig loggerConfig = getAllLoggers().get(loggerName);
 		return (loggerConfig != null) ? convertLoggerConfig(loggerName, loggerConfig) : null;
@@ -257,6 +250,7 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		}
 	}
 
+	@Nullable
 	private String getSubName(String name) {
 		if (!StringUtils.hasLength(name)) {
 			return null;
@@ -265,6 +259,7 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		return (nested != -1) ? name.substring(0, nested) : NameUtil.getSubName(name);
 	}
 
+	@Nullable
 	private LoggerConfiguration convertLoggerConfig(String name, LoggerConfig loggerConfig) {
 		if (loggerConfig == null) {
 			return null;
@@ -291,11 +286,13 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		loggerContext.getConfiguration().removeFilter(FILTER);
 	}
 
+	@Nullable
 	private LoggerConfig getLogger(String name) {
 		boolean isRootLogger = !StringUtils.hasLength(name) || ROOT_LOGGER_NAME.equals(name);
 		return findLogger(isRootLogger ? LogManager.ROOT_LOGGER_NAME : name);
 	}
 
+	@Nullable
 	private LoggerConfig findLogger(String name) {
 		Configuration configuration = getLoggerContext().getConfiguration();
 		if (configuration instanceof AbstractConfiguration) {
@@ -338,7 +335,7 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		private static final boolean PRESENT = ClassUtils
 				.isPresent("org.apache.logging.log4j.core.impl.Log4jContextFactory", Factory.class.getClassLoader());
 
-		@Override
+		@Override@Nullable
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new Log4J2LoggingSystem(classLoader);

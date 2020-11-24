@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.embedded.netty;
 
+import javax.annotation.Nullable;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -44,16 +46,6 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
 
-/**
- * {@link WebServer} that can be used to control a Reactor Netty web server. Usually this
- * class should be created using the {@link NettyReactiveWebServerFactory} and not
- * directly.
- *
- * @author Brian Clozel
- * @author Madhura Bhave
- * @author Andy Wilkinson
- * @since 2.0.0
- */
 public class NettyWebServer implements WebServer {
 
 	/**
@@ -75,10 +67,11 @@ public class NettyWebServer implements WebServer {
 
 	private List<NettyRouteProvider> routeProviders = Collections.emptyList();
 
+	@Nullable
 	private volatile DisposableServer disposableServer;
 
-	public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
-			Shutdown shutdown) {
+	public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, @Nullable Duration lifecycleTimeout,
+			@Nullable Shutdown shutdown) {
 		Assert.notNull(httpServer, "HttpServer must not be null");
 		Assert.notNull(handlerAdapter, "HandlerAdapter must not be null");
 		this.lifecycleTimeout = lifecycleTimeout;

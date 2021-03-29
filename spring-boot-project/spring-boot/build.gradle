@@ -131,6 +131,11 @@ dependencies {
 	errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
 }
 
+
+autoFixMode {
+	fixPath = "/tmp/NullAwayFix"
+}
+
 diagnoseMode {
 	fixPath = "/tmp/NullAwayFix/diagnose.json"
 }

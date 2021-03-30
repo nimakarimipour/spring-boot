@@ -148,7 +148,6 @@ tasks.withType(JavaCompile) {
 											  "-Xep:NullAway:ERROR",
 											  "-XepOpt:NullAway:AnnotatedPackages=org.springframework.boot",
 											  "-XepOpt:NullAway:AutoFix=true",
-											  "-XepOpt:NullAway:FixAnnotations=androidx.annotation.NonNull,androidx.annotation.Nullable",
 											  "-XepDisableAllWarnings"]
 		options.compilerArgs << "-Xmaxerrs" << "100000"
 

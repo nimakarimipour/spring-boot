@@ -1,6 +1,5 @@
 plugins {
 	id "java-library"
-	id "org.jetbrains.kotlin.jvm"
 	id "org.springframework.boot.conventions"
 	id "org.springframework.boot.configuration-properties"
 	id "org.springframework.boot.deployed"
@@ -130,20 +129,4 @@ tasks.withType(JavaCompile) {
 		options.compilerArgs << "-Xmaxerrs" << "100000"
 
 	}
-}
-
-compileKotlin {
-	kotlinOptions {
-		jvmTarget = 1.8
-	}
-}
-
-compileTestKotlin {
-	kotlinOptions {
-		jvmTarget = 1.8
-	}
-}
-
-compileJava {
-	doLast new org.springframework.boot.build.log4j2.ReproducibleLog4j2PluginsDatAction()
 }

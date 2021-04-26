@@ -1,5 +1,4 @@
 plugins {
-	id "org.jetbrains.kotlin.jvm" apply false // https://youtrack.jetbrains.com/issue/KT-30276
 	id "io.spring.nohttp" version "0.0.3.RELEASE"
 }
 
@@ -23,9 +22,5 @@ allprojects {
 		if (version.endsWith('-SNAPSHOT')) {
 			maven { url "https://repo.spring.io/snapshot" }
 		}
-	}
-
-	configurations.all {
-		resolutionStrategy.cacheChangingModulesFor 0, "minutes"
 	}
 }

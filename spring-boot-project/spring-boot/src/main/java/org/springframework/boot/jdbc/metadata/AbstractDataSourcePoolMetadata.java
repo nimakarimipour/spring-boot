@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.jdbc.metadata;
 
 import javax.sql.DataSource;
+import javax.annotation.Nullable;
 
 /**
  * A base {@link DataSourcePoolMetadata} implementation.
@@ -27,34 +27,34 @@ import javax.sql.DataSource;
  */
 public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> implements DataSourcePoolMetadata {
 
-	private final T dataSource;
+    private final T dataSource;
 
-	/**
-	 * Create an instance with the data source to use.
-	 * @param dataSource the data source
-	 */
-	protected AbstractDataSourcePoolMetadata(T dataSource) {
-		this.dataSource = dataSource;
-	}
+    /**
+     * Create an instance with the data source to use.
+     * @param dataSource the data source
+     */
+    protected AbstractDataSourcePoolMetadata(T dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	@Override
-	public Float getUsage() {
-		Integer maxSize = getMax();
-		Integer currentSize = getActive();
-		if (maxSize == null || currentSize == null) {
-			return null;
-		}
-		if (maxSize < 0) {
-			return -1f;
-		}
-		if (currentSize == 0) {
-			return 0f;
-		}
-		return (float) currentSize / (float) maxSize;
-	}
+    @Override
+    @Nullable()
+    public Float getUsage() {
+        Integer maxSize = getMax();
+        Integer currentSize = getActive();
+        if (maxSize == null || currentSize == null) {
+            return null;
+        }
+        if (maxSize < 0) {
+            return -1f;
+        }
+        if (currentSize == 0) {
+            return 0f;
+        }
+        return (float) currentSize / (float) maxSize;
+    }
 
-	protected final T getDataSource() {
-		return this.dataSource;
-	}
-
+    protected final T getDataSource() {
+        return this.dataSource;
+    }
 }

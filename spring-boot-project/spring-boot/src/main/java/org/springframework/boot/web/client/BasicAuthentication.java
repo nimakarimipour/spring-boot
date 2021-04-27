@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.client;
 
 import java.nio.charset.Charset;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Basic authentication details to be applied to {@link HttpHeaders}.
@@ -29,24 +28,23 @@ import org.springframework.util.Assert;
  */
 class BasicAuthentication {
 
-	private final String username;
+    private final String username;
 
-	private final String password;
+    private final String password;
 
-	private final Charset charset;
+    private final Charset charset;
 
-	BasicAuthentication(String username, String password, Charset charset) {
-		Assert.notNull(username, "Username must not be null");
-		Assert.notNull(password, "Password must not be null");
-		this.username = username;
-		this.password = password;
-		this.charset = charset;
-	}
+    BasicAuthentication(String username, String password, @Nullable() Charset charset) {
+        Assert.notNull(username, "Username must not be null");
+        Assert.notNull(password, "Password must not be null");
+        this.username = username;
+        this.password = password;
+        this.charset = charset;
+    }
 
-	void applyTo(HttpHeaders headers) {
-		if (!headers.containsKey(HttpHeaders.AUTHORIZATION)) {
-			headers.setBasicAuth(this.username, this.password, this.charset);
-		}
-	}
-
+    void applyTo(HttpHeaders headers) {
+        if (!headers.containsKey(HttpHeaders.AUTHORIZATION)) {
+            headers.setBasicAuth(this.username, this.password, this.charset);
+        }
+    }
 }

@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.convert;
 
 import java.util.Collections;
 import java.util.Set;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.unit.DataSize;
+import javax.annotation.Nullable;
 
 /**
  * {@link Converter} to convert from a {@link Number} to a {@link DataSize}.
@@ -32,17 +31,16 @@ import org.springframework.util.unit.DataSize;
  */
 final class NumberToDataSizeConverter implements GenericConverter {
 
-	private final StringToDataSizeConverter delegate = new StringToDataSizeConverter();
+    private final StringToDataSizeConverter delegate = new StringToDataSizeConverter();
 
-	@Override
-	public Set<ConvertiblePair> getConvertibleTypes() {
-		return Collections.singleton(new ConvertiblePair(Number.class, DataSize.class));
-	}
+    @Override
+    public Set<ConvertiblePair> getConvertibleTypes() {
+        return Collections.singleton(new ConvertiblePair(Number.class, DataSize.class));
+    }
 
-	@Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-		return this.delegate.convert((source != null) ? source.toString() : null, TypeDescriptor.valueOf(String.class),
-				targetType);
-	}
-
+    @Override
+    @Nullable()
+    public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+        return this.delegate.convert((source != null) ? source.toString() : null, TypeDescriptor.valueOf(String.class), targetType);
+    }
 }

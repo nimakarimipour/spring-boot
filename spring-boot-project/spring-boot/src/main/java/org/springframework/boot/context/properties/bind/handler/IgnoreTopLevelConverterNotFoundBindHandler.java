@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind.handler;
 
 import org.springframework.boot.context.properties.bind.AbstractBindHandler;
@@ -22,6 +21,7 @@ import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.convert.ConverterNotFoundException;
+import javax.annotation.Nullable;
 
 /**
  * {@link BindHandler} that can be used to ignore top-level
@@ -32,28 +32,27 @@ import org.springframework.core.convert.ConverterNotFoundException;
  */
 public class IgnoreTopLevelConverterNotFoundBindHandler extends AbstractBindHandler {
 
-	/**
-	 * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance.
-	 */
-	public IgnoreTopLevelConverterNotFoundBindHandler() {
-	}
+    /**
+     * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance.
+     */
+    public IgnoreTopLevelConverterNotFoundBindHandler() {
+    }
 
-	/**
-	 * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance with a
-	 * specific parent.
-	 * @param parent the parent handler
-	 */
-	public IgnoreTopLevelConverterNotFoundBindHandler(BindHandler parent) {
-		super(parent);
-	}
+    /**
+     * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance with a
+     * specific parent.
+     * @param parent the parent handler
+     */
+    public IgnoreTopLevelConverterNotFoundBindHandler(BindHandler parent) {
+        super(parent);
+    }
 
-	@Override
-	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
-			throws Exception {
-		if (context.getDepth() == 0 && error instanceof ConverterNotFoundException) {
-			return null;
-		}
-		throw error;
-	}
-
+    @Override
+    @Nullable()
+    public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error) throws Exception {
+        if (context.getDepth() == 0 && error instanceof ConverterNotFoundException) {
+            return null;
+        }
+        throw error;
+    }
 }

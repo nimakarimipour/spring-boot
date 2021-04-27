@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.jdbc.metadata;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import javax.sql.DataSource;
+import javax.annotation.Nullable;
 
 /**
  * A {@link DataSourcePoolMetadataProvider} implementation that returns the first
@@ -32,27 +31,26 @@ import javax.sql.DataSource;
  */
 public class CompositeDataSourcePoolMetadataProvider implements DataSourcePoolMetadataProvider {
 
-	private final List<DataSourcePoolMetadataProvider> providers;
+    private final List<DataSourcePoolMetadataProvider> providers;
 
-	/**
-	 * Create a {@link CompositeDataSourcePoolMetadataProvider} instance with an initial
-	 * collection of delegates to use.
-	 * @param providers the data source pool metadata providers
-	 */
-	public CompositeDataSourcePoolMetadataProvider(Collection<? extends DataSourcePoolMetadataProvider> providers) {
-		this.providers = (providers != null) ? Collections.unmodifiableList(new ArrayList<>(providers))
-				: Collections.emptyList();
-	}
+    /**
+     * Create a {@link CompositeDataSourcePoolMetadataProvider} instance with an initial
+     * collection of delegates to use.
+     * @param providers the data source pool metadata providers
+     */
+    public CompositeDataSourcePoolMetadataProvider(Collection<? extends DataSourcePoolMetadataProvider> providers) {
+        this.providers = (providers != null) ? Collections.unmodifiableList(new ArrayList<>(providers)) : Collections.emptyList();
+    }
 
-	@Override
-	public DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource) {
-		for (DataSourcePoolMetadataProvider provider : this.providers) {
-			DataSourcePoolMetadata metadata = provider.getDataSourcePoolMetadata(dataSource);
-			if (metadata != null) {
-				return metadata;
-			}
-		}
-		return null;
-	}
-
+    @Override
+    @Nullable()
+    public DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource) {
+        for (DataSourcePoolMetadataProvider provider : this.providers) {
+            DataSourcePoolMetadata metadata = provider.getDataSourcePoolMetadata(dataSource);
+            if (metadata != null) {
+                return metadata;
+            }
+        }
+        return null;
+    }
 }

@@ -56,6 +56,7 @@ import io.undertow.servlet.core.DeploymentImpl;
 import io.undertow.servlet.handlers.DefaultServlet;
 import io.undertow.servlet.util.ImmediateInstanceFactory;
 
+import org.springframework.boot.Initializer;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.MimeMappings.Mapping;
 import org.springframework.boot.web.server.WebServer;
@@ -381,8 +382,8 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 	private void registerServletContainerInitializerToDriveServletContextInitializers(DeploymentInfo deployment,
 			ServletContextInitializer... initializers) {
 		ServletContextInitializer[] mergedInitializers = mergeInitializers(initializers);
-		Initializer initializer = new Initializer(mergedInitializers);
-		deployment.addServletContainerInitializer(new ServletContainerInitializerInfo(Initializer.class,
+		Initializerr initializer = new Initializerr(mergedInitializers);
+		deployment.addServletContainerInitializer(new ServletContainerInitializerInfo(Initializerr.class,
 				new ImmediateInstanceFactory<ServletContainerInitializer>(initializer), NO_CLASSES));
 	}
 
@@ -490,11 +491,11 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 	 * {@link ServletContainerInitializer} to initialize {@link ServletContextInitializer
 	 * ServletContextInitializers}.
 	 */
-	private static class Initializer implements ServletContainerInitializer {
+	private static class Initializerr implements ServletContainerInitializer {
 
 		private final ServletContextInitializer[] initializers;
 
-		Initializer(ServletContextInitializer[] initializers) {
+		Initializerr(ServletContextInitializer[] initializers) {
 			this.initializers = initializers;
 		}
 

@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.server;
+
+import javax.annotation.Nullable;
+import org.springframework.boot.Initializer;
 
 /**
  * Simple server-independent abstraction for SSL configuration.
@@ -26,238 +28,247 @@ package org.springframework.boot.web.server;
  */
 public class Ssl {
 
-	private boolean enabled = true;
+    private boolean enabled = true;
 
-	private ClientAuth clientAuth;
+    private ClientAuth clientAuth;
 
-	private String[] ciphers;
+    private String[] ciphers;
 
-	private String[] enabledProtocols;
+    private String[] enabledProtocols;
 
-	private String keyAlias;
+    private String keyAlias;
 
-	private String keyPassword;
+    private String keyPassword;
 
-	private String keyStore;
+    @Nullable
+    private String keyStore;
 
-	private String keyStorePassword;
+    private String keyStorePassword;
 
-	private String keyStoreType;
+    private String keyStoreType;
 
-	private String keyStoreProvider;
+    private String keyStoreProvider;
 
-	private String trustStore;
+    @Nullable
+    private String trustStore;
 
-	private String trustStorePassword;
+    private String trustStorePassword;
 
-	private String trustStoreType;
+    private String trustStoreType;
 
-	private String trustStoreProvider;
+    private String trustStoreProvider;
 
-	private String protocol = "TLS";
+    private String protocol = "TLS";
 
-	/**
-	 * Return whether to enable SSL support.
-	 * @return whether to enable SSL support
-	 */
-	public boolean isEnabled() {
-		return this.enabled;
-	}
+    /**
+     * Return whether to enable SSL support.
+     * @return whether to enable SSL support
+     */
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	/**
-	 * Return Whether client authentication is not wanted ("none"), wanted ("want") or
-	 * needed ("need"). Requires a trust store.
-	 * @return the {@link ClientAuth} to use
-	 */
-	public ClientAuth getClientAuth() {
-		return this.clientAuth;
-	}
+    /**
+     * Return Whether client authentication is not wanted ("none"), wanted ("want") or
+     * needed ("need"). Requires a trust store.
+     * @return the {@link ClientAuth} to use
+     */
+    public ClientAuth getClientAuth() {
+        return this.clientAuth;
+    }
 
-	public void setClientAuth(ClientAuth clientAuth) {
-		this.clientAuth = clientAuth;
-	}
+    @Initializer
+    public void setClientAuth(ClientAuth clientAuth) {
+        this.clientAuth = clientAuth;
+    }
 
-	/**
-	 * Return the supported SSL ciphers.
-	 * @return the supported SSL ciphers
-	 */
-	public String[] getCiphers() {
-		return this.ciphers;
-	}
+    /**
+     * Return the supported SSL ciphers.
+     * @return the supported SSL ciphers
+     */
+    public String[] getCiphers() {
+        return this.ciphers;
+    }
 
-	public void setCiphers(String[] ciphers) {
-		this.ciphers = ciphers;
-	}
+    @Initializer
+    public void setCiphers(String[] ciphers) {
+        this.ciphers = ciphers;
+    }
 
-	/**
-	 * Return the enabled SSL protocols.
-	 * @return the enabled SSL protocols.
-	 */
-	public String[] getEnabledProtocols() {
-		return this.enabledProtocols;
-	}
+    /**
+     * Return the enabled SSL protocols.
+     * @return the enabled SSL protocols.
+     */
+    public String[] getEnabledProtocols() {
+        return this.enabledProtocols;
+    }
 
-	public void setEnabledProtocols(String[] enabledProtocols) {
-		this.enabledProtocols = enabledProtocols;
-	}
+    @Initializer
+    public void setEnabledProtocols(String[] enabledProtocols) {
+        this.enabledProtocols = enabledProtocols;
+    }
 
-	/**
-	 * Return the alias that identifies the key in the key store.
-	 * @return the key alias
-	 */
-	public String getKeyAlias() {
-		return this.keyAlias;
-	}
+    /**
+     * Return the alias that identifies the key in the key store.
+     * @return the key alias
+     */
+    public String getKeyAlias() {
+        return this.keyAlias;
+    }
 
-	public void setKeyAlias(String keyAlias) {
-		this.keyAlias = keyAlias;
-	}
+    @Initializer
+    public void setKeyAlias(String keyAlias) {
+        this.keyAlias = keyAlias;
+    }
 
-	/**
-	 * Return the password used to access the key in the key store.
-	 * @return the key password
-	 */
-	public String getKeyPassword() {
-		return this.keyPassword;
-	}
+    /**
+     * Return the password used to access the key in the key store.
+     * @return the key password
+     */
+    public String getKeyPassword() {
+        return this.keyPassword;
+    }
 
-	public void setKeyPassword(String keyPassword) {
-		this.keyPassword = keyPassword;
-	}
+    @Initializer
+    public void setKeyPassword(String keyPassword) {
+        this.keyPassword = keyPassword;
+    }
 
-	/**
-	 * Return the path to the key store that holds the SSL certificate (typically a jks
-	 * file).
-	 * @return the path to the key store
-	 */
-	public String getKeyStore() {
-		return this.keyStore;
-	}
+    /**
+     * Return the path to the key store that holds the SSL certificate (typically a jks
+     * file).
+     * @return the path to the key store
+     */
+    public String getKeyStore() {
+        return this.keyStore;
+    }
 
-	public void setKeyStore(String keyStore) {
-		this.keyStore = keyStore;
-	}
+    public void setKeyStore(String keyStore) {
+        this.keyStore = keyStore;
+    }
 
-	/**
-	 * Return the password used to access the key store.
-	 * @return the key store password
-	 */
-	public String getKeyStorePassword() {
-		return this.keyStorePassword;
-	}
+    /**
+     * Return the password used to access the key store.
+     * @return the key store password
+     */
+    public String getKeyStorePassword() {
+        return this.keyStorePassword;
+    }
 
-	public void setKeyStorePassword(String keyStorePassword) {
-		this.keyStorePassword = keyStorePassword;
-	}
+    @Initializer
+    public void setKeyStorePassword(String keyStorePassword) {
+        this.keyStorePassword = keyStorePassword;
+    }
 
-	/**
-	 * Return the type of the key store.
-	 * @return the key store type
-	 */
-	public String getKeyStoreType() {
-		return this.keyStoreType;
-	}
+    /**
+     * Return the type of the key store.
+     * @return the key store type
+     */
+    public String getKeyStoreType() {
+        return this.keyStoreType;
+    }
 
-	public void setKeyStoreType(String keyStoreType) {
-		this.keyStoreType = keyStoreType;
-	}
+    @Initializer
+    public void setKeyStoreType(String keyStoreType) {
+        this.keyStoreType = keyStoreType;
+    }
 
-	/**
-	 * Return the provider for the key store.
-	 * @return the key store provider
-	 */
-	public String getKeyStoreProvider() {
-		return this.keyStoreProvider;
-	}
+    /**
+     * Return the provider for the key store.
+     * @return the key store provider
+     */
+    public String getKeyStoreProvider() {
+        return this.keyStoreProvider;
+    }
 
-	public void setKeyStoreProvider(String keyStoreProvider) {
-		this.keyStoreProvider = keyStoreProvider;
-	}
+    @Initializer
+    public void setKeyStoreProvider(String keyStoreProvider) {
+        this.keyStoreProvider = keyStoreProvider;
+    }
 
-	/**
-	 * Return the trust store that holds SSL certificates.
-	 * @return the trust store
-	 */
-	public String getTrustStore() {
-		return this.trustStore;
-	}
+    /**
+     * Return the trust store that holds SSL certificates.
+     * @return the trust store
+     */
+    public String getTrustStore() {
+        return this.trustStore;
+    }
 
-	public void setTrustStore(String trustStore) {
-		this.trustStore = trustStore;
-	}
+    public void setTrustStore(String trustStore) {
+        this.trustStore = trustStore;
+    }
 
-	/**
-	 * Return the password used to access the trust store.
-	 * @return the trust store password
-	 */
-	public String getTrustStorePassword() {
-		return this.trustStorePassword;
-	}
+    /**
+     * Return the password used to access the trust store.
+     * @return the trust store password
+     */
+    public String getTrustStorePassword() {
+        return this.trustStorePassword;
+    }
 
-	public void setTrustStorePassword(String trustStorePassword) {
-		this.trustStorePassword = trustStorePassword;
-	}
+    @Initializer
+    public void setTrustStorePassword(String trustStorePassword) {
+        this.trustStorePassword = trustStorePassword;
+    }
 
-	/**
-	 * Return the type of the trust store.
-	 * @return the trust store type
-	 */
-	public String getTrustStoreType() {
-		return this.trustStoreType;
-	}
+    /**
+     * Return the type of the trust store.
+     * @return the trust store type
+     */
+    public String getTrustStoreType() {
+        return this.trustStoreType;
+    }
 
-	public void setTrustStoreType(String trustStoreType) {
-		this.trustStoreType = trustStoreType;
-	}
+    @Initializer
+    public void setTrustStoreType(String trustStoreType) {
+        this.trustStoreType = trustStoreType;
+    }
 
-	/**
-	 * Return the provider for the trust store.
-	 * @return the trust store provider
-	 */
-	public String getTrustStoreProvider() {
-		return this.trustStoreProvider;
-	}
+    /**
+     * Return the provider for the trust store.
+     * @return the trust store provider
+     */
+    public String getTrustStoreProvider() {
+        return this.trustStoreProvider;
+    }
 
-	public void setTrustStoreProvider(String trustStoreProvider) {
-		this.trustStoreProvider = trustStoreProvider;
-	}
+    @Initializer
+    public void setTrustStoreProvider(String trustStoreProvider) {
+        this.trustStoreProvider = trustStoreProvider;
+    }
 
-	/**
-	 * Return the SSL protocol to use.
-	 * @return the SSL protocol
-	 */
-	public String getProtocol() {
-		return this.protocol;
-	}
+    /**
+     * Return the SSL protocol to use.
+     * @return the SSL protocol
+     */
+    public String getProtocol() {
+        return this.protocol;
+    }
 
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 
-	/**
-	 * Client authentication types.
-	 */
-	public enum ClientAuth {
+    /**
+     * Client authentication types.
+     */
+    public enum ClientAuth {
 
-		/**
-		 * Client authentication is not wanted.
-		 */
-		NONE,
-
-		/**
-		 * Client authentication is wanted but not mandatory.
-		 */
-		WANT,
-
-		/**
-		 * Client authentication is needed and mandatory.
-		 */
-		NEED
-
-	}
-
+        /**
+         * Client authentication is not wanted.
+         */
+        NONE,
+        /**
+         * Client authentication is wanted but not mandatory.
+         */
+        WANT,
+        /**
+         * Client authentication is needed and mandatory.
+         */
+        NEED
+    }
 }

@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.builder;
+import javax.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -75,8 +76,10 @@ public class SpringApplicationBuilder {
 
 	private final SpringApplication application;
 
+	@Nullable
 	private ConfigurableApplicationContext context;
 
+	@Nullable
 	private SpringApplicationBuilder parent;
 
 	private final AtomicBoolean running = new AtomicBoolean();
@@ -85,6 +88,7 @@ public class SpringApplicationBuilder {
 
 	private final Map<String, Object> defaultProperties = new LinkedHashMap<>();
 
+	@Nullable
 	private ConfigurableEnvironment environment;
 
 	private Set<String> additionalProfiles = new LinkedHashSet<>();

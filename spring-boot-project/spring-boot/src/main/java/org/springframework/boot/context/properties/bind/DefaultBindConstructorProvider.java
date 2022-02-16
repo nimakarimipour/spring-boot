@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.context.properties.bind;
+import javax.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -31,6 +32,7 @@ import org.springframework.core.KotlinDetector;
 class DefaultBindConstructorProvider implements BindConstructorProvider {
 
 	@Override
+	@Nullable
 	public Constructor<?> getBindConstructor(Bindable<?> bindable, boolean isNestedConstructorBinding) {
 		Class<?> type = bindable.getType().resolve();
 		if (bindable.getValue() != null || type == null) {

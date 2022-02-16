@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.context.properties.bind;
+import javax.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 
@@ -41,6 +42,7 @@ public interface BindConstructorProvider {
 	 * binding
 	 * @return the bind constructor or {@code null}
 	 */
+	@Nullable
 	Constructor<?> getBindConstructor(Bindable<?> bindable, boolean isNestedConstructorBinding);
 
 }

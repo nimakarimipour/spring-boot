@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.convert;
+import javax.annotation.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -41,7 +42,7 @@ final class StringToDataSizeConverter implements GenericConverter {
 	}
 
 	@Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+	public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (ObjectUtils.isEmpty(source)) {
 			return null;
 		}

@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.diagnostics;
+import javax.annotation.Nullable;
 
 import org.springframework.core.ResolvableType;
 
@@ -29,6 +30,7 @@ import org.springframework.core.ResolvableType;
 public abstract class AbstractFailureAnalyzer<T extends Throwable> implements FailureAnalyzer {
 
 	@Override
+	@Nullable
 	public FailureAnalysis analyze(Throwable failure) {
 		T cause = findCause(failure, getCauseType());
 		if (cause != null) {
@@ -44,6 +46,7 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 	 * @param cause the actual found cause
 	 * @return the analysis or {@code null}
 	 */
+	@Nullable
 	protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause);
 
 	/**

@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.diagnostics.analyzer;
+import javax.annotation.Nullable;
 
 import javax.validation.ValidationException;
 
@@ -37,6 +38,7 @@ class ValidationExceptionFailureAnalyzer extends AbstractFailureAnalyzer<Validat
 			+ "Configuration, because no Jakarta Bean Validation provider could be found";
 
 	@Override
+	@Nullable
 	protected FailureAnalysis analyze(Throwable rootFailure, ValidationException cause) {
 		if (cause.getMessage().startsWith(JAVAX_MISSING_IMPLEMENTATION_MESSAGE)
 				|| cause.getMessage().startsWith(JAKARTA_MISSING_IMPLEMENTATION_MESSAGE)) {

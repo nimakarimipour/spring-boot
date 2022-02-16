@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.logging;
+import javax.annotation.Nullable;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -149,12 +150,12 @@ public class LoggingSystemProperties {
 		apply(null);
 	}
 
-	public final void apply(LogFile logFile) {
+	public final void apply(@Nullable LogFile logFile) {
 		PropertyResolver resolver = getPropertyResolver();
 		apply(logFile, resolver);
 	}
 
-	protected void apply(LogFile logFile, PropertyResolver resolver) {
+	protected void apply(@Nullable LogFile logFile, PropertyResolver resolver) {
 		setSystemProperty(resolver, EXCEPTION_CONVERSION_WORD, "logging.exception-conversion-word");
 		setSystemProperty(PID_KEY, new ApplicationPid().toString());
 		setSystemProperty(resolver, CONSOLE_LOG_PATTERN, "logging.pattern.console");

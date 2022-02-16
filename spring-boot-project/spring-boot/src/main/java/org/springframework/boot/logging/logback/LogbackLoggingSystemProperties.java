@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.logging.logback;
+import javax.annotation.Nullable;
 
 import java.nio.charset.Charset;
 
@@ -72,7 +73,7 @@ public class LogbackLoggingSystemProperties extends LoggingSystemProperties {
 	}
 
 	@Override
-	protected void apply(LogFile logFile, PropertyResolver resolver) {
+	protected void apply(@Nullable LogFile logFile, PropertyResolver resolver) {
 		super.apply(logFile, resolver);
 		applyRollingPolicy(resolver, ROLLINGPOLICY_FILE_NAME_PATTERN, "logging.logback.rollingpolicy.file-name-pattern",
 				"logging.pattern.rolling-file-name");

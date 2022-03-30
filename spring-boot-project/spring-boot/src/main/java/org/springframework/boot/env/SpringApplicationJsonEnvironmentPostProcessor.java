@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -23,7 +23,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
@@ -56,170 +55,157 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  */
 public class SpringApplicationJsonEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-	/**
-	 * Name of the {@code spring.application.json} property.
-	 */
-	public static final String SPRING_APPLICATION_JSON_PROPERTY = "spring.application.json";
+    /**
+     * Name of the {@code spring.application.json} property.
+     */
+    public static final String SPRING_APPLICATION_JSON_PROPERTY = "spring.application.json";
 
-	/**
-	 * Name of the {@code SPRING_APPLICATION_JSON} environment variable.
-	 */
-	public static final String SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE = "SPRING_APPLICATION_JSON";
+    /**
+     * Name of the {@code SPRING_APPLICATION_JSON} environment variable.
+     */
+    public static final String SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE = "SPRING_APPLICATION_JSON";
 
-	private static final String SERVLET_ENVIRONMENT_CLASS = "org.springframework.web."
-			+ "context.support.StandardServletEnvironment";
+    private static final String SERVLET_ENVIRONMENT_CLASS = "org.springframework.web." + "context.support.StandardServletEnvironment";
 
-	private static final Set<String> SERVLET_ENVIRONMENT_PROPERTY_SOURCES = new LinkedHashSet<>(
-			Arrays.asList(StandardServletEnvironment.JNDI_PROPERTY_SOURCE_NAME,
-					StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME,
-					StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME));
+    private static final Set<String> SERVLET_ENVIRONMENT_PROPERTY_SOURCES = new LinkedHashSet<>(Arrays.asList(StandardServletEnvironment.JNDI_PROPERTY_SOURCE_NAME, StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME, StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME));
 
-	/**
-	 * The default order for the processor.
-	 */
-	public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 5;
+    /**
+     * The default order for the processor.
+     */
+    public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 5;
 
-	private int order = DEFAULT_ORDER;
+    private int order = DEFAULT_ORDER;
 
-	@Override
-	public int getOrder() {
-		return this.order;
-	}
+    @Override
+    public int getOrder() {
+        return this.order;
+    }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
-	@Override
-	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-		MutablePropertySources propertySources = environment.getPropertySources();
-		propertySources.stream().map(JsonPropertyValue::get).filter(Objects::nonNull).findFirst()
-				.ifPresent((v) -> processJson(environment, v));
-	}
+    @Override
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        MutablePropertySources propertySources = environment.getPropertySources();
+        propertySources.stream().map(JsonPropertyValue::get).filter(Objects::nonNull).findFirst().ifPresent((v) -> processJson(environment, v));
+    }
 
-	private void processJson(ConfigurableEnvironment environment, JsonPropertyValue propertyValue) {
-		JsonParser parser = JsonParserFactory.getJsonParser();
-		Map<String, Object> map = parser.parseMap(propertyValue.getJson());
-		if (!map.isEmpty()) {
-			addJsonPropertySource(environment, new JsonPropertySource(propertyValue, flatten(map)));
-		}
-	}
+    private void processJson(ConfigurableEnvironment environment, JsonPropertyValue propertyValue) {
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map<String, Object> map = parser.parseMap(propertyValue.getJson());
+        if (!map.isEmpty()) {
+            addJsonPropertySource(environment, new JsonPropertySource(propertyValue, flatten(map)));
+        }
+    }
 
-	/**
-	 * Flatten the map keys using period separator.
-	 * @param map the map that should be flattened
-	 * @return the flattened map
-	 */
-	private Map<String, Object> flatten(Map<String, Object> map) {
-		Map<String, Object> result = new LinkedHashMap<>();
-		flatten(null, result, map);
-		return result;
-	}
+    /**
+     * Flatten the map keys using period separator.
+     * @param map the map that should be flattened
+     * @return the flattened map
+     */
+    private Map<String, Object> flatten(Map<String, Object> map) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        flatten(null, result, map);
+        return result;
+    }
 
-	private void flatten(String prefix, Map<String, Object> result, Map<String, Object> map) {
-		String namePrefix = (prefix != null) ? prefix + "." : "";
-		map.forEach((key, value) -> extract(namePrefix + key, result, value));
-	}
+    private void flatten(@Nullable String prefix, Map<String, Object> result, Map<String, Object> map) {
+        String namePrefix = (prefix != null) ? prefix + "." : "";
+        map.forEach((key, value) -> extract(namePrefix + key, result, value));
+    }
 
-	@SuppressWarnings("unchecked")
-	private void extract(String name, Map<String, Object> result, Object value) {
-		if (value instanceof Map) {
-			if (CollectionUtils.isEmpty((Map<?, ?>) value)) {
-				result.put(name, value);
-				return;
-			}
-			flatten(name, result, (Map<String, Object>) value);
-		}
-		else if (value instanceof Collection) {
-			if (CollectionUtils.isEmpty((Collection<?>) value)) {
-				result.put(name, value);
-				return;
-			}
-			int index = 0;
-			for (Object object : (Collection<Object>) value) {
-				extract(name + "[" + index + "]", result, object);
-				index++;
-			}
-		}
-		else {
-			result.put(name, value);
-		}
-	}
+    @SuppressWarnings("unchecked")
+    private void extract(String name, Map<String, Object> result, Object value) {
+        if (value instanceof Map) {
+            if (CollectionUtils.isEmpty((Map<?, ?>) value)) {
+                result.put(name, value);
+                return;
+            }
+            flatten(name, result, (Map<String, Object>) value);
+        } else if (value instanceof Collection) {
+            if (CollectionUtils.isEmpty((Collection<?>) value)) {
+                result.put(name, value);
+                return;
+            }
+            int index = 0;
+            for (Object object : (Collection<Object>) value) {
+                extract(name + "[" + index + "]", result, object);
+                index++;
+            }
+        } else {
+            result.put(name, value);
+        }
+    }
 
-	private void addJsonPropertySource(ConfigurableEnvironment environment, PropertySource<?> source) {
-		MutablePropertySources sources = environment.getPropertySources();
-		String name = findPropertySource(sources);
-		if (sources.contains(name)) {
-			sources.addBefore(name, source);
-		}
-		else {
-			sources.addFirst(source);
-		}
-	}
+    private void addJsonPropertySource(ConfigurableEnvironment environment, PropertySource<?> source) {
+        MutablePropertySources sources = environment.getPropertySources();
+        String name = findPropertySource(sources);
+        if (sources.contains(name)) {
+            sources.addBefore(name, source);
+        } else {
+            sources.addFirst(source);
+        }
+    }
 
-	private String findPropertySource(MutablePropertySources sources) {
-		if (ClassUtils.isPresent(SERVLET_ENVIRONMENT_CLASS, null)) {
-			PropertySource<?> servletPropertySource = sources.stream()
-					.filter((source) -> SERVLET_ENVIRONMENT_PROPERTY_SOURCES.contains(source.getName())).findFirst()
-					.orElse(null);
-			if (servletPropertySource != null) {
-				return servletPropertySource.getName();
-			}
-		}
-		return StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME;
-	}
+    private String findPropertySource(MutablePropertySources sources) {
+        if (ClassUtils.isPresent(SERVLET_ENVIRONMENT_CLASS, null)) {
+            PropertySource<?> servletPropertySource = sources.stream().filter((source) -> SERVLET_ENVIRONMENT_PROPERTY_SOURCES.contains(source.getName())).findFirst().orElse(null);
+            if (servletPropertySource != null) {
+                return servletPropertySource.getName();
+            }
+        }
+        return StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME;
+    }
 
-	private static class JsonPropertySource extends MapPropertySource implements OriginLookup<String> {
+    private static class JsonPropertySource extends MapPropertySource implements OriginLookup<String> {
 
-		private final JsonPropertyValue propertyValue;
+        private final JsonPropertyValue propertyValue;
 
-		JsonPropertySource(JsonPropertyValue propertyValue, Map<String, Object> source) {
-			super(SPRING_APPLICATION_JSON_PROPERTY, source);
-			this.propertyValue = propertyValue;
-		}
+        JsonPropertySource(JsonPropertyValue propertyValue, Map<String, Object> source) {
+            super(SPRING_APPLICATION_JSON_PROPERTY, source);
+            this.propertyValue = propertyValue;
+        }
 
-		@Override
-		public Origin getOrigin(String key) {
-			return this.propertyValue.getOrigin();
-		}
+        @Override
+        public Origin getOrigin(String key) {
+            return this.propertyValue.getOrigin();
+        }
+    }
 
-	}
+    private static class JsonPropertyValue {
 
-	private static class JsonPropertyValue {
+        private static final String[] CANDIDATES = { SPRING_APPLICATION_JSON_PROPERTY, SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE };
 
-		private static final String[] CANDIDATES = { SPRING_APPLICATION_JSON_PROPERTY,
-				SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE };
+        private final PropertySource<?> propertySource;
 
-		private final PropertySource<?> propertySource;
+        private final String propertyName;
 
-		private final String propertyName;
+        private final String json;
 
-		private final String json;
+        JsonPropertyValue(PropertySource<?> propertySource, String propertyName, String json) {
+            this.propertySource = propertySource;
+            this.propertyName = propertyName;
+            this.json = json;
+        }
 
-		JsonPropertyValue(PropertySource<?> propertySource, String propertyName, String json) {
-			this.propertySource = propertySource;
-			this.propertyName = propertyName;
-			this.json = json;
-		}
+        String getJson() {
+            return this.json;
+        }
 
-		String getJson() {
-			return this.json;
-		}
+        Origin getOrigin() {
+            return PropertySourceOrigin.get(this.propertySource, this.propertyName);
+        }
 
-		Origin getOrigin() {
-			return PropertySourceOrigin.get(this.propertySource, this.propertyName);
-		}
-
-		static JsonPropertyValue get(PropertySource<?> propertySource) {
-			for (String candidate : CANDIDATES) {
-				Object value = propertySource.getProperty(candidate);
-				if (value instanceof String && StringUtils.hasLength((String) value)) {
-					return new JsonPropertyValue(propertySource, candidate, (String) value);
-				}
-			}
-			return null;
-		}
-
-	}
-
+        @Nullable
+        static JsonPropertyValue get(PropertySource<?> propertySource) {
+            for (String candidate : CANDIDATES) {
+                Object value = propertySource.getProperty(candidate);
+                if (value instanceof String && StringUtils.hasLength((String) value)) {
+                    return new JsonPropertyValue(propertySource, candidate, (String) value);
+                }
+            }
+            return null;
+        }
+    }
 }

@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.availability;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.Assert;
 
@@ -31,43 +30,43 @@ import org.springframework.util.Assert;
  * @since 2.3.0
  * @see ApplicationAvailability
  */
-public class ApplicationAvailabilityBean
-		implements ApplicationAvailability, ApplicationListener<AvailabilityChangeEvent<?>> {
+public class ApplicationAvailabilityBean implements ApplicationAvailability, ApplicationListener<AvailabilityChangeEvent<?>> {
 
-	private final Map<Class<? extends AvailabilityState>, AvailabilityChangeEvent<?>> events = new HashMap<>();
+    private final Map<Class<? extends AvailabilityState>, AvailabilityChangeEvent<?>> events = new HashMap<>();
 
-	@Override
-	public <S extends AvailabilityState> S getState(Class<S> stateType, S defaultState) {
-		Assert.notNull(stateType, "StateType must not be null");
-		Assert.notNull(defaultState, "DefaultState must not be null");
-		S state = getState(stateType);
-		return (state != null) ? state : defaultState;
-	}
+    @Override
+    public <S extends AvailabilityState> S getState(Class<S> stateType, S defaultState) {
+        Assert.notNull(stateType, "StateType must not be null");
+        Assert.notNull(defaultState, "DefaultState must not be null");
+        S state = getState(stateType);
+        return (state != null) ? state : defaultState;
+    }
 
-	@Override
-	public <S extends AvailabilityState> S getState(Class<S> stateType) {
-		AvailabilityChangeEvent<S> event = getLastChangeEvent(stateType);
-		return (event != null) ? event.getState() : null;
-	}
+    @Override
+    @Nullable
+    public <S extends AvailabilityState> S getState(Class<S> stateType) {
+        AvailabilityChangeEvent<S> event = getLastChangeEvent(stateType);
+        return (event != null) ? event.getState() : null;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType) {
-		return (AvailabilityChangeEvent<S>) this.events.get(stateType);
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType) {
+        return (AvailabilityChangeEvent<S>) this.events.get(stateType);
+    }
 
-	@Override
-	public void onApplicationEvent(AvailabilityChangeEvent<?> event) {
-		Class<? extends AvailabilityState> stateType = getStateType(event.getState());
-		this.events.put(stateType, event);
-	}
+    @Override
+    public void onApplicationEvent(AvailabilityChangeEvent<?> event) {
+        Class<? extends AvailabilityState> stateType = getStateType(event.getState());
+        this.events.put(stateType, event);
+    }
 
-	@SuppressWarnings("unchecked")
-	private Class<? extends AvailabilityState> getStateType(AvailabilityState state) {
-		if (state instanceof Enum) {
-			return (Class<? extends AvailabilityState>) ((Enum<?>) state).getDeclaringClass();
-		}
-		return state.getClass();
-	}
-
+    @SuppressWarnings("unchecked")
+    private Class<? extends AvailabilityState> getStateType(AvailabilityState state) {
+        if (state instanceof Enum) {
+            return (Class<? extends AvailabilityState>) ((Enum<?>) state).getDeclaringClass();
+        }
+        return state.getClass();
+    }
 }

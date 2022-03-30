@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
 import org.springframework.util.unit.DataSize;
 
 /**
@@ -28,58 +28,58 @@ import org.springframework.util.unit.DataSize;
  */
 public class Compression {
 
-	private boolean enabled = false;
+    private boolean enabled = false;
 
-	private String[] mimeTypes = new String[] { "text/html", "text/xml", "text/plain", "text/css", "text/javascript",
-			"application/javascript", "application/json", "application/xml" };
+    private String[] mimeTypes = new String[] { "text/html", "text/xml", "text/plain", "text/css", "text/javascript", "application/javascript", "application/json", "application/xml" };
 
-	private String[] excludedUserAgents = null;
+    @Nullable
+    private String[] excludedUserAgents = null;
 
-	private DataSize minResponseSize = DataSize.ofKilobytes(2);
+    private DataSize minResponseSize = DataSize.ofKilobytes(2);
 
-	/**
-	 * Return whether response compression is enabled.
-	 * @return {@code true} if response compression is enabled
-	 */
-	public boolean getEnabled() {
-		return this.enabled;
-	}
+    /**
+     * Return whether response compression is enabled.
+     * @return {@code true} if response compression is enabled
+     */
+    public boolean getEnabled() {
+        return this.enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	/**
-	 * Return the MIME types that should be compressed.
-	 * @return the MIME types that should be compressed
-	 */
-	public String[] getMimeTypes() {
-		return this.mimeTypes;
-	}
+    /**
+     * Return the MIME types that should be compressed.
+     * @return the MIME types that should be compressed
+     */
+    public String[] getMimeTypes() {
+        return this.mimeTypes;
+    }
 
-	public void setMimeTypes(String[] mimeTypes) {
-		this.mimeTypes = mimeTypes;
-	}
+    public void setMimeTypes(String[] mimeTypes) {
+        this.mimeTypes = mimeTypes;
+    }
 
-	public String[] getExcludedUserAgents() {
-		return this.excludedUserAgents;
-	}
+    @Nullable
+    public String[] getExcludedUserAgents() {
+        return this.excludedUserAgents;
+    }
 
-	public void setExcludedUserAgents(String[] excludedUserAgents) {
-		this.excludedUserAgents = excludedUserAgents;
-	}
+    public void setExcludedUserAgents(String[] excludedUserAgents) {
+        this.excludedUserAgents = excludedUserAgents;
+    }
 
-	/**
-	 * Return the minimum "Content-Length" value that is required for compression to be
-	 * performed.
-	 * @return the minimum content size in bytes that is required for compression
-	 */
-	public DataSize getMinResponseSize() {
-		return this.minResponseSize;
-	}
+    /**
+     * Return the minimum "Content-Length" value that is required for compression to be
+     * performed.
+     * @return the minimum content size in bytes that is required for compression
+     */
+    public DataSize getMinResponseSize() {
+        return this.minResponseSize;
+    }
 
-	public void setMinResponseSize(DataSize minSize) {
-		this.minResponseSize = minSize;
-	}
-
+    public void setMinResponseSize(DataSize minSize) {
+        this.minResponseSize = minSize;
+    }
 }

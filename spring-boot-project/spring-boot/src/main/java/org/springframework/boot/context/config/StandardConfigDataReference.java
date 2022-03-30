@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.util.StringUtils;
 
@@ -27,81 +27,82 @@ import org.springframework.util.StringUtils;
  */
 class StandardConfigDataReference {
 
-	private final ConfigDataLocation configDataLocation;
+    private final ConfigDataLocation configDataLocation;
 
-	private final String resourceLocation;
+    private final String resourceLocation;
 
-	private final String directory;
+    @Nullable
+    private final String directory;
 
-	private final String profile;
+    @Nullable
+    private final String profile;
 
-	private final PropertySourceLoader propertySourceLoader;
+    private final PropertySourceLoader propertySourceLoader;
 
-	/**
-	 * Create a new {@link StandardConfigDataReference} instance.
-	 * @param configDataLocation the original location passed to the resolver
-	 * @param directory the directory of the resource or {@code null} if the reference is
-	 * to a file
-	 * @param root the root of the resource location
-	 * @param profile the profile being loaded
-	 * @param extension the file extension for the resource
-	 * @param propertySourceLoader the property source loader that should be used for this
-	 * reference
-	 */
-	StandardConfigDataReference(ConfigDataLocation configDataLocation, String directory, String root, String profile,
-			String extension, PropertySourceLoader propertySourceLoader) {
-		this.configDataLocation = configDataLocation;
-		String profileSuffix = (StringUtils.hasText(profile)) ? "-" + profile : "";
-		this.resourceLocation = root + profileSuffix + ((extension != null) ? "." + extension : "");
-		this.directory = directory;
-		this.profile = profile;
-		this.propertySourceLoader = propertySourceLoader;
-	}
+    /**
+     * Create a new {@link StandardConfigDataReference} instance.
+     * @param configDataLocation the original location passed to the resolver
+     * @param directory the directory of the resource or {@code null} if the reference is
+     * to a file
+     * @param root the root of the resource location
+     * @param profile the profile being loaded
+     * @param extension the file extension for the resource
+     * @param propertySourceLoader the property source loader that should be used for this
+     * reference
+     */
+    StandardConfigDataReference(ConfigDataLocation configDataLocation, @Nullable String directory, String root, @Nullable String profile, @Nullable String extension, PropertySourceLoader propertySourceLoader) {
+        this.configDataLocation = configDataLocation;
+        String profileSuffix = (StringUtils.hasText(profile)) ? "-" + profile : "";
+        this.resourceLocation = root + profileSuffix + ((extension != null) ? "." + extension : "");
+        this.directory = directory;
+        this.profile = profile;
+        this.propertySourceLoader = propertySourceLoader;
+    }
 
-	ConfigDataLocation getConfigDataLocation() {
-		return this.configDataLocation;
-	}
+    ConfigDataLocation getConfigDataLocation() {
+        return this.configDataLocation;
+    }
 
-	String getResourceLocation() {
-		return this.resourceLocation;
-	}
+    String getResourceLocation() {
+        return this.resourceLocation;
+    }
 
-	boolean isNonOptionalDirectory() {
-		return !this.configDataLocation.isOptional() && this.directory != null;
-	}
+    boolean isNonOptionalDirectory() {
+        return !this.configDataLocation.isOptional() && this.directory != null;
+    }
 
-	String getDirectory() {
-		return this.directory;
-	}
+    @Nullable
+    String getDirectory() {
+        return this.directory;
+    }
 
-	boolean isSkippable() {
-		return this.configDataLocation.isOptional() || this.directory != null || this.profile != null;
-	}
+    boolean isSkippable() {
+        return this.configDataLocation.isOptional() || this.directory != null || this.profile != null;
+    }
 
-	PropertySourceLoader getPropertySourceLoader() {
-		return this.propertySourceLoader;
-	}
+    PropertySourceLoader getPropertySourceLoader() {
+        return this.propertySourceLoader;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
-			return false;
-		}
-		StandardConfigDataReference other = (StandardConfigDataReference) obj;
-		return this.resourceLocation.equals(other.resourceLocation);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if ((obj == null) || (getClass() != obj.getClass())) {
+            return false;
+        }
+        StandardConfigDataReference other = (StandardConfigDataReference) obj;
+        return this.resourceLocation.equals(other.resourceLocation);
+    }
 
-	@Override
-	public int hashCode() {
-		return this.resourceLocation.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return this.resourceLocation.hashCode();
+    }
 
-	@Override
-	public String toString() {
-		return this.resourceLocation;
-	}
-
+    @Override
+    public String toString() {
+        return this.resourceLocation;
+    }
 }

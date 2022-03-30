@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
 import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -36,45 +34,44 @@ import org.springframework.util.Assert;
  */
 class PropertySourcesDeducer {
 
-	private static final Log logger = LogFactory.getLog(PropertySourcesDeducer.class);
+    private static final Log logger = LogFactory.getLog(PropertySourcesDeducer.class);
 
-	private final ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-	PropertySourcesDeducer(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
+    PropertySourcesDeducer(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
-	PropertySources getPropertySources() {
-		PropertySourcesPlaceholderConfigurer configurer = getSinglePropertySourcesPlaceholderConfigurer();
-		if (configurer != null) {
-			return configurer.getAppliedPropertySources();
-		}
-		MutablePropertySources sources = extractEnvironmentPropertySources();
-		Assert.state(sources != null,
-				"Unable to obtain PropertySources from PropertySourcesPlaceholderConfigurer or Environment");
-		return sources;
-	}
+    @Nullable
+    PropertySources getPropertySources() {
+        PropertySourcesPlaceholderConfigurer configurer = getSinglePropertySourcesPlaceholderConfigurer();
+        if (configurer != null) {
+            return configurer.getAppliedPropertySources();
+        }
+        MutablePropertySources sources = extractEnvironmentPropertySources();
+        Assert.state(sources != null, "Unable to obtain PropertySources from PropertySourcesPlaceholderConfigurer or Environment");
+        return sources;
+    }
 
-	private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
-		// Take care not to cause early instantiation of all FactoryBeans
-		Map<String, PropertySourcesPlaceholderConfigurer> beans = this.applicationContext
-				.getBeansOfType(PropertySourcesPlaceholderConfigurer.class, false, false);
-		if (beans.size() == 1) {
-			return beans.values().iterator().next();
-		}
-		if (beans.size() > 1 && logger.isWarnEnabled()) {
-			logger.warn("Multiple PropertySourcesPlaceholderConfigurer beans registered " + beans.keySet()
-					+ ", falling back to Environment");
-		}
-		return null;
-	}
+    @Nullable
+    private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
+        // Take care not to cause early instantiation of all FactoryBeans
+        Map<String, PropertySourcesPlaceholderConfigurer> beans = this.applicationContext.getBeansOfType(PropertySourcesPlaceholderConfigurer.class, false, false);
+        if (beans.size() == 1) {
+            return beans.values().iterator().next();
+        }
+        if (beans.size() > 1 && logger.isWarnEnabled()) {
+            logger.warn("Multiple PropertySourcesPlaceholderConfigurer beans registered " + beans.keySet() + ", falling back to Environment");
+        }
+        return null;
+    }
 
-	private MutablePropertySources extractEnvironmentPropertySources() {
-		Environment environment = this.applicationContext.getEnvironment();
-		if (environment instanceof ConfigurableEnvironment) {
-			return ((ConfigurableEnvironment) environment).getPropertySources();
-		}
-		return null;
-	}
-
+    @Nullable
+    private MutablePropertySources extractEnvironmentPropertySources() {
+        Environment environment = this.applicationContext.getEnvironment();
+        if (environment instanceof ConfigurableEnvironment) {
+            return ((ConfigurableEnvironment) environment).getPropertySources();
+        }
+        return null;
+    }
 }

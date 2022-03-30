@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet.server;
 
+import org.springframework.boot.Initializer;
 import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
-
 import org.springframework.boot.convert.DurationUnit;
 
 /**
@@ -31,203 +30,207 @@ import org.springframework.boot.convert.DurationUnit;
  */
 public class Session {
 
-	@DurationUnit(ChronoUnit.SECONDS)
-	private Duration timeout = Duration.ofMinutes(30);
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration timeout = Duration.ofMinutes(30);
 
-	private Set<Session.SessionTrackingMode> trackingModes;
+    private Set<Session.SessionTrackingMode> trackingModes;
 
-	private boolean persistent;
+    private boolean persistent;
 
-	/**
-	 * Directory used to store session data.
-	 */
-	private File storeDir;
+    /**
+     * Directory used to store session data.
+     */
+    private File storeDir;
 
-	private final Cookie cookie = new Cookie();
+    private final Cookie cookie = new Cookie();
 
-	private final SessionStoreDirectory sessionStoreDirectory = new SessionStoreDirectory();
+    private final SessionStoreDirectory sessionStoreDirectory = new SessionStoreDirectory();
 
-	public Cookie getCookie() {
-		return this.cookie;
-	}
+    public Cookie getCookie() {
+        return this.cookie;
+    }
 
-	public Duration getTimeout() {
-		return this.timeout;
-	}
+    public Duration getTimeout() {
+        return this.timeout;
+    }
 
-	public void setTimeout(Duration timeout) {
-		this.timeout = timeout;
-	}
+    public void setTimeout(Duration timeout) {
+        this.timeout = timeout;
+    }
 
-	/**
-	 * Return the {@link SessionTrackingMode session tracking modes}.
-	 * @return the session tracking modes
-	 */
-	public Set<Session.SessionTrackingMode> getTrackingModes() {
-		return this.trackingModes;
-	}
+    /**
+     * Return the {@link SessionTrackingMode session tracking modes}.
+     * @return the session tracking modes
+     */
+    public Set<Session.SessionTrackingMode> getTrackingModes() {
+        return this.trackingModes;
+    }
 
-	public void setTrackingModes(Set<Session.SessionTrackingMode> trackingModes) {
-		this.trackingModes = trackingModes;
-	}
+    @Initializer
+    public void setTrackingModes(Set<Session.SessionTrackingMode> trackingModes) {
+        this.trackingModes = trackingModes;
+    }
 
-	/**
-	 * Return whether to persist session data between restarts.
-	 * @return {@code true} to persist session data between restarts.
-	 */
-	public boolean isPersistent() {
-		return this.persistent;
-	}
+    /**
+     * Return whether to persist session data between restarts.
+     * @return {@code true} to persist session data between restarts.
+     */
+    public boolean isPersistent() {
+        return this.persistent;
+    }
 
-	public void setPersistent(boolean persistent) {
-		this.persistent = persistent;
-	}
+    public void setPersistent(boolean persistent) {
+        this.persistent = persistent;
+    }
 
-	/**
-	 * Return the directory used to store session data.
-	 * @return the session data store directory
-	 */
-	public File getStoreDir() {
-		return this.storeDir;
-	}
+    /**
+     * Return the directory used to store session data.
+     * @return the session data store directory
+     */
+    public File getStoreDir() {
+        return this.storeDir;
+    }
 
-	public void setStoreDir(File storeDir) {
-		this.sessionStoreDirectory.setDirectory(storeDir);
-		this.storeDir = storeDir;
-	}
+    @Initializer
+    public void setStoreDir(File storeDir) {
+        this.sessionStoreDirectory.setDirectory(storeDir);
+        this.storeDir = storeDir;
+    }
 
-	SessionStoreDirectory getSessionStoreDirectory() {
-		return this.sessionStoreDirectory;
-	}
+    SessionStoreDirectory getSessionStoreDirectory() {
+        return this.sessionStoreDirectory;
+    }
 
-	/**
-	 * Cookie properties.
-	 */
-	public static class Cookie {
+    /**
+     * Cookie properties.
+     */
+    public static class Cookie {
 
-		private String name;
+        private String name;
 
-		private String domain;
+        private String domain;
 
-		private String path;
+        private String path;
 
-		private String comment;
+        private String comment;
 
-		private Boolean httpOnly;
+        private Boolean httpOnly;
 
-		private Boolean secure;
+        private Boolean secure;
 
-		@DurationUnit(ChronoUnit.SECONDS)
-		private Duration maxAge;
+        @DurationUnit(ChronoUnit.SECONDS)
+        private Duration maxAge;
 
-		/**
-		 * Return the session cookie name.
-		 * @return the session cookie name
-		 */
-		public String getName() {
-			return this.name;
-		}
+        /**
+         * Return the session cookie name.
+         * @return the session cookie name
+         */
+        public String getName() {
+            return this.name;
+        }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+        @Initializer
+        public void setName(String name) {
+            this.name = name;
+        }
 
-		/**
-		 * Return the domain for the session cookie.
-		 * @return the session cookie domain
-		 */
-		public String getDomain() {
-			return this.domain;
-		}
+        /**
+         * Return the domain for the session cookie.
+         * @return the session cookie domain
+         */
+        public String getDomain() {
+            return this.domain;
+        }
 
-		public void setDomain(String domain) {
-			this.domain = domain;
-		}
+        @Initializer
+        public void setDomain(String domain) {
+            this.domain = domain;
+        }
 
-		/**
-		 * Return the path of the session cookie.
-		 * @return the session cookie path
-		 */
-		public String getPath() {
-			return this.path;
-		}
+        /**
+         * Return the path of the session cookie.
+         * @return the session cookie path
+         */
+        public String getPath() {
+            return this.path;
+        }
 
-		public void setPath(String path) {
-			this.path = path;
-		}
+        @Initializer
+        public void setPath(String path) {
+            this.path = path;
+        }
 
-		/**
-		 * Return the comment for the session cookie.
-		 * @return the session cookie comment
-		 */
-		public String getComment() {
-			return this.comment;
-		}
+        /**
+         * Return the comment for the session cookie.
+         * @return the session cookie comment
+         */
+        public String getComment() {
+            return this.comment;
+        }
 
-		public void setComment(String comment) {
-			this.comment = comment;
-		}
+        @Initializer
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
 
-		/**
-		 * Return whether to use "HttpOnly" cookies for session cookies.
-		 * @return {@code true} to use "HttpOnly" cookies for session cookies.
-		 */
-		public Boolean getHttpOnly() {
-			return this.httpOnly;
-		}
+        /**
+         * Return whether to use "HttpOnly" cookies for session cookies.
+         * @return {@code true} to use "HttpOnly" cookies for session cookies.
+         */
+        public Boolean getHttpOnly() {
+            return this.httpOnly;
+        }
 
-		public void setHttpOnly(Boolean httpOnly) {
-			this.httpOnly = httpOnly;
-		}
+        @Initializer
+        public void setHttpOnly(Boolean httpOnly) {
+            this.httpOnly = httpOnly;
+        }
 
-		/**
-		 * Return whether to always mark the session cookie as secure.
-		 * @return {@code true} to mark the session cookie as secure even if the request
-		 * that initiated the corresponding session is using plain HTTP
-		 */
-		public Boolean getSecure() {
-			return this.secure;
-		}
+        /**
+         * Return whether to always mark the session cookie as secure.
+         * @return {@code true} to mark the session cookie as secure even if the request
+         * that initiated the corresponding session is using plain HTTP
+         */
+        public Boolean getSecure() {
+            return this.secure;
+        }
 
-		public void setSecure(Boolean secure) {
-			this.secure = secure;
-		}
+        @Initializer
+        public void setSecure(Boolean secure) {
+            this.secure = secure;
+        }
 
-		/**
-		 * Return the maximum age of the session cookie.
-		 * @return the maximum age of the session cookie
-		 */
-		public Duration getMaxAge() {
-			return this.maxAge;
-		}
+        /**
+         * Return the maximum age of the session cookie.
+         * @return the maximum age of the session cookie
+         */
+        public Duration getMaxAge() {
+            return this.maxAge;
+        }
 
-		public void setMaxAge(Duration maxAge) {
-			this.maxAge = maxAge;
-		}
+        @Initializer
+        public void setMaxAge(Duration maxAge) {
+            this.maxAge = maxAge;
+        }
+    }
 
-	}
+    /**
+     * Available session tracking modes (mirrors
+     * {@link javax.servlet.SessionTrackingMode}.
+     */
+    public enum SessionTrackingMode {
 
-	/**
-	 * Available session tracking modes (mirrors
-	 * {@link javax.servlet.SessionTrackingMode}.
-	 */
-	public enum SessionTrackingMode {
-
-		/**
-		 * Send a cookie in response to the client's first request.
-		 */
-		COOKIE,
-
-		/**
-		 * Rewrite the URL to append a session ID.
-		 */
-		URL,
-
-		/**
-		 * Use SSL build-in mechanism to track the session.
-		 */
-		SSL
-
-	}
-
+        /**
+         * Send a cookie in response to the client's first request.
+         */
+        COOKIE,
+        /**
+         * Rewrite the URL to append a session ID.
+         */
+        URL,
+        /**
+         * Use SSL build-in mechanism to track the session.
+         */
+        SSL
+    }
 }

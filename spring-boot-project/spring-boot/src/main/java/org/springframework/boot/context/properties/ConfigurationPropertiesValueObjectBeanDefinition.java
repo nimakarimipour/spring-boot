@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
@@ -31,26 +31,25 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
  */
 final class ConfigurationPropertiesValueObjectBeanDefinition extends GenericBeanDefinition {
 
-	private final BeanFactory beanFactory;
+    private final BeanFactory beanFactory;
 
-	private final String beanName;
+    private final String beanName;
 
-	ConfigurationPropertiesValueObjectBeanDefinition(BeanFactory beanFactory, String beanName, Class<?> beanClass) {
-		this.beanFactory = beanFactory;
-		this.beanName = beanName;
-		setBeanClass(beanClass);
-		setInstanceSupplier(this::createBean);
-	}
+    ConfigurationPropertiesValueObjectBeanDefinition(BeanFactory beanFactory, String beanName, Class<?> beanClass) {
+        this.beanFactory = beanFactory;
+        this.beanName = beanName;
+        setBeanClass(beanClass);
+        setInstanceSupplier(this::createBean);
+    }
 
-	private Object createBean() {
-		ConfigurationPropertiesBean bean = ConfigurationPropertiesBean.forValueObject(getBeanClass(), this.beanName);
-		ConfigurationPropertiesBinder binder = ConfigurationPropertiesBinder.get(this.beanFactory);
-		try {
-			return binder.bindOrCreate(bean);
-		}
-		catch (Exception ex) {
-			throw new ConfigurationPropertiesBindException(bean, ex);
-		}
-	}
-
+    @Nullable
+    private Object createBean() {
+        ConfigurationPropertiesBean bean = ConfigurationPropertiesBean.forValueObject(getBeanClass(), this.beanName);
+        ConfigurationPropertiesBinder binder = ConfigurationPropertiesBinder.get(this.beanFactory);
+        try {
+            return binder.bindOrCreate(bean);
+        } catch (Exception ex) {
+            throw new ConfigurationPropertiesBindException(bean, ex);
+        }
+    }
 }

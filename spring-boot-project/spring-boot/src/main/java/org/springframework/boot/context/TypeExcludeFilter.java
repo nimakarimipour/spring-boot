@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context;
 
+import javax.annotation.Nullable;
+import org.springframework.boot.Initializer;
 import java.io.IOException;
 import java.util.Collection;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -49,45 +49,45 @@ import org.springframework.core.type.filter.TypeFilter;
  */
 public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 
-	private BeanFactory beanFactory;
+    private BeanFactory beanFactory;
 
-	private Collection<TypeExcludeFilter> delegates;
+    @Nullable
+    private Collection<TypeExcludeFilter> delegates;
 
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
-	}
+    @Override
+    @Initializer
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
 
-	@Override
-	public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
-			throws IOException {
-		if (this.beanFactory instanceof ListableBeanFactory && getClass() == TypeExcludeFilter.class) {
-			for (TypeExcludeFilter delegate : getDelegates()) {
-				if (delegate.match(metadataReader, metadataReaderFactory)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
+        if (this.beanFactory instanceof ListableBeanFactory && getClass() == TypeExcludeFilter.class) {
+            for (TypeExcludeFilter delegate : getDelegates()) {
+                if (delegate.match(metadataReader, metadataReaderFactory)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	private Collection<TypeExcludeFilter> getDelegates() {
-		Collection<TypeExcludeFilter> delegates = this.delegates;
-		if (delegates == null) {
-			delegates = ((ListableBeanFactory) this.beanFactory).getBeansOfType(TypeExcludeFilter.class).values();
-			this.delegates = delegates;
-		}
-		return delegates;
-	}
+    private Collection<TypeExcludeFilter> getDelegates() {
+        Collection<TypeExcludeFilter> delegates = this.delegates;
+        if (delegates == null) {
+            delegates = ((ListableBeanFactory) this.beanFactory).getBeansOfType(TypeExcludeFilter.class).values();
+            this.delegates = delegates;
+        }
+        return delegates;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		throw new IllegalStateException("TypeExcludeFilter " + getClass() + " has not implemented equals");
-	}
+    @Override
+    public boolean equals(Object obj) {
+        throw new IllegalStateException("TypeExcludeFilter " + getClass() + " has not implemented equals");
+    }
 
-	@Override
-	public int hashCode() {
-		throw new IllegalStateException("TypeExcludeFilter " + getClass() + " has not implemented hashCode");
-	}
-
+    @Override
+    public int hashCode() {
+        throw new IllegalStateException("TypeExcludeFilter " + getClass() + " has not implemented hashCode");
+    }
 }

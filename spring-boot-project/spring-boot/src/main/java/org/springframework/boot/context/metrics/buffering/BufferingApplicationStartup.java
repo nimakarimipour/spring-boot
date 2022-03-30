@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.metrics.buffering;
 
+import javax.annotation.Nullable;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Predicate;
-
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
@@ -49,97 +48,95 @@ import org.springframework.util.Assert;
  */
 public class BufferingApplicationStartup implements ApplicationStartup {
 
-	private Instant recordingStartTime;
+    private Instant recordingStartTime;
 
-	private long recordingStartNanos;
+    private long recordingStartNanos;
 
-	private long currentSequenceId = 0;
+    private long currentSequenceId = 0;
 
-	private final Deque<Long> currentSteps;
+    private final Deque<Long> currentSteps;
 
-	private final BlockingQueue<BufferedStartupStep> recordedSteps;
+    private final BlockingQueue<BufferedStartupStep> recordedSteps;
 
-	private Predicate<StartupStep> stepFilters = (step) -> true;
+    private Predicate<StartupStep> stepFilters = (step) -> true;
 
-	/**
-	 * Create a new buffered {@link ApplicationStartup} with a limited capacity and starts
-	 * the recording of steps.
-	 * @param capacity the configured capacity; once reached, new steps are not recorded.
-	 */
-	public BufferingApplicationStartup(int capacity) {
-		this.currentSteps = new ArrayDeque<>();
-		this.currentSteps.offerFirst(this.currentSequenceId);
-		this.recordedSteps = new LinkedBlockingQueue<>(capacity);
-		startRecording();
-	}
+    /**
+     * Create a new buffered {@link ApplicationStartup} with a limited capacity and starts
+     * the recording of steps.
+     * @param capacity the configured capacity; once reached, new steps are not recorded.
+     */
+    public BufferingApplicationStartup(int capacity) {
+        this.currentSteps = new ArrayDeque<>();
+        this.currentSteps.offerFirst(this.currentSequenceId);
+        this.recordedSteps = new LinkedBlockingQueue<>(capacity);
+        startRecording();
+    }
 
-	/**
-	 * Start the recording of steps and mark the beginning of the {@link StartupTimeline}.
-	 * The class constructor already implicitly calls this, but it is possible to reset it
-	 * as long as steps have not been recorded already.
-	 * @throws IllegalStateException if called and {@link StartupStep} have been recorded
-	 * already.
-	 */
-	public void startRecording() {
-		Assert.state(this.recordedSteps.isEmpty(), "Cannot restart recording once steps have been buffered.");
-		this.recordingStartTime = Instant.now();
-		this.recordingStartNanos = getCurrentTime();
-	}
+    /**
+     * Start the recording of steps and mark the beginning of the {@link StartupTimeline}.
+     * The class constructor already implicitly calls this, but it is possible to reset it
+     * as long as steps have not been recorded already.
+     * @throws IllegalStateException if called and {@link StartupStep} have been recorded
+     * already.
+     */
+    public void startRecording() {
+        Assert.state(this.recordedSteps.isEmpty(), "Cannot restart recording once steps have been buffered.");
+        this.recordingStartTime = Instant.now();
+        this.recordingStartNanos = getCurrentTime();
+    }
 
-	/**
-	 * Add a predicate filter to the list of existing ones.
-	 * <p>
-	 * A {@link StartupStep step} that doesn't match all filters will not be recorded.
-	 * @param filter the predicate filter to add.
-	 */
-	public void addFilter(Predicate<StartupStep> filter) {
-		this.stepFilters = this.stepFilters.and(filter);
-	}
+    /**
+     * Add a predicate filter to the list of existing ones.
+     * <p>
+     * A {@link StartupStep step} that doesn't match all filters will not be recorded.
+     * @param filter the predicate filter to add.
+     */
+    public void addFilter(Predicate<StartupStep> filter) {
+        this.stepFilters = this.stepFilters.and(filter);
+    }
 
-	/**
-	 * Return the {@link StartupTimeline timeline} as a snapshot of currently buffered
-	 * steps.
-	 * <p>
-	 * This will not remove steps from the buffer, see {@link #drainBufferedTimeline()}
-	 * for its counterpart.
-	 * @return a snapshot of currently buffered steps.
-	 */
-	public StartupTimeline getBufferedTimeline() {
-		return new StartupTimeline(this.recordingStartTime, this.recordingStartNanos, this.recordedSteps);
-	}
+    /**
+     * Return the {@link StartupTimeline timeline} as a snapshot of currently buffered
+     * steps.
+     * <p>
+     * This will not remove steps from the buffer, see {@link #drainBufferedTimeline()}
+     * for its counterpart.
+     * @return a snapshot of currently buffered steps.
+     */
+    public StartupTimeline getBufferedTimeline() {
+        return new StartupTimeline(this.recordingStartTime, this.recordingStartNanos, this.recordedSteps);
+    }
 
-	/**
-	 * Return the {@link StartupTimeline timeline} by pulling steps from the buffer.
-	 * <p>
-	 * This removes steps from the buffer, see {@link #getBufferedTimeline()} for its
-	 * read-only counterpart.
-	 * @return buffered steps drained from the buffer.
-	 */
-	public StartupTimeline drainBufferedTimeline() {
-		List<BufferedStartupStep> steps = new ArrayList<>(this.recordedSteps.size());
-		this.recordedSteps.drainTo(steps);
-		return new StartupTimeline(this.recordingStartTime, this.recordingStartNanos, steps);
-	}
+    /**
+     * Return the {@link StartupTimeline timeline} by pulling steps from the buffer.
+     * <p>
+     * This removes steps from the buffer, see {@link #getBufferedTimeline()} for its
+     * read-only counterpart.
+     * @return buffered steps drained from the buffer.
+     */
+    public StartupTimeline drainBufferedTimeline() {
+        List<BufferedStartupStep> steps = new ArrayList<>(this.recordedSteps.size());
+        this.recordedSteps.drainTo(steps);
+        return new StartupTimeline(this.recordingStartTime, this.recordingStartNanos, steps);
+    }
 
-	@Override
-	public StartupStep start(String name) {
-		BufferedStartupStep step = new BufferedStartupStep(++this.currentSequenceId, name,
-				this.currentSteps.peekFirst(), this::record);
-		step.recordStartTime(getCurrentTime());
-		this.currentSteps.offerFirst(this.currentSequenceId);
-		return step;
-	}
+    @Override
+    public StartupStep start(String name) {
+        BufferedStartupStep step = new BufferedStartupStep(++this.currentSequenceId, name, this.currentSteps.peekFirst(), this::record);
+        step.recordStartTime(getCurrentTime());
+        this.currentSteps.offerFirst(this.currentSequenceId);
+        return step;
+    }
 
-	private void record(BufferedStartupStep step) {
-		step.recordEndTime(getCurrentTime());
-		if (this.stepFilters.test(step)) {
-			this.recordedSteps.offer(step);
-		}
-		this.currentSteps.removeFirst();
-	}
+    private void record(BufferedStartupStep step) {
+        step.recordEndTime(getCurrentTime());
+        if (this.stepFilters.test(step)) {
+            this.recordedSteps.offer(step);
+        }
+        this.currentSteps.removeFirst();
+    }
 
-	private long getCurrentTime() {
-		return System.nanoTime();
-	}
-
+    private long getCurrentTime() {
+        return System.nanoTime();
+    }
 }

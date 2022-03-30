@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.availability;
 
+import javax.annotation.Nullable;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -32,50 +32,51 @@ import org.springframework.context.ApplicationContext;
  */
 public interface ApplicationAvailability {
 
-	/**
-	 * Return the {@link LivenessState} of the application.
-	 * @return the liveness state
-	 */
-	default LivenessState getLivenessState() {
-		return getState(LivenessState.class, LivenessState.BROKEN);
-	}
+    /**
+     * Return the {@link LivenessState} of the application.
+     * @return the liveness state
+     */
+    default LivenessState getLivenessState() {
+        return getState(LivenessState.class, LivenessState.BROKEN);
+    }
 
-	/**
-	 * Return the {@link ReadinessState} of the application.
-	 * @return the readiness state
-	 */
-	default ReadinessState getReadinessState() {
-		return getState(ReadinessState.class, ReadinessState.REFUSING_TRAFFIC);
-	}
+    /**
+     * Return the {@link ReadinessState} of the application.
+     * @return the readiness state
+     */
+    default ReadinessState getReadinessState() {
+        return getState(ReadinessState.class, ReadinessState.REFUSING_TRAFFIC);
+    }
 
-	/**
-	 * Return {@link AvailabilityState} information for the application.
-	 * @param <S> the state type
-	 * @param stateType the state type
-	 * @param defaultState the default state to return if no event of the given type has
-	 * been published yet (must not be {@code null}.
-	 * @return the readiness state
-	 * @see #getState(Class)
-	 */
-	<S extends AvailabilityState> S getState(Class<S> stateType, S defaultState);
+    /**
+     * Return {@link AvailabilityState} information for the application.
+     * @param <S> the state type
+     * @param stateType the state type
+     * @param defaultState the default state to return if no event of the given type has
+     * been published yet (must not be {@code null}.
+     * @return the readiness state
+     * @see #getState(Class)
+     */
+    <S extends AvailabilityState> S getState(Class<S> stateType, S defaultState);
 
-	/**
-	 * Return {@link AvailabilityState} information for the application.
-	 * @param <S> the state type
-	 * @param stateType the state type
-	 * @return the readiness state or {@code null} if no event of the given type has been
-	 * published yet
-	 * @see #getState(Class, AvailabilityState)
-	 */
-	<S extends AvailabilityState> S getState(Class<S> stateType);
+    /**
+     * Return {@link AvailabilityState} information for the application.
+     * @param <S> the state type
+     * @param stateType the state type
+     * @return the readiness state or {@code null} if no event of the given type has been
+     * published yet
+     * @see #getState(Class, AvailabilityState)
+     */
+    @Nullable
+    <S extends AvailabilityState> S getState(Class<S> stateType);
 
-	/**
-	 * Return the last {@link AvailabilityChangeEvent} received for a given state type.
-	 * @param <S> the state type
-	 * @param stateType the state type
-	 * @return the readiness state or {@code null} if no event of the given type has been
-	 * published yet
-	 */
-	<S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType);
-
+    /**
+     * Return the last {@link AvailabilityChangeEvent} received for a given state type.
+     * @param <S> the state type
+     * @param stateType the state type
+     * @return the readiness state or {@code null} if no event of the given type has been
+     * published yet
+     */
+    @Nullable
+    <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType);
 }

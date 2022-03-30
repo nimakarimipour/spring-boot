@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.json;
+
+import javax.annotation.Nullable;
 
 /**
  * {@link IllegalArgumentException} thrown when source JSON is invalid.
@@ -25,12 +26,11 @@ package org.springframework.boot.json;
  */
 public class JsonParseException extends IllegalArgumentException {
 
-	public JsonParseException() {
-		this(null);
-	}
+    public JsonParseException() {
+        this(null);
+    }
 
-	public JsonParseException(Throwable cause) {
-		super("Cannot parse JSON", cause);
-	}
-
+    public JsonParseException(@Nullable Throwable cause) {
+        super("Cannot parse JSON", cause);
+    }
 }

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.Set;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
@@ -33,47 +32,46 @@ import org.springframework.util.StringUtils;
  */
 final class DelimitedStringToArrayConverter implements ConditionalGenericConverter {
 
-	private final ConversionService conversionService;
+    private final ConversionService conversionService;
 
-	DelimitedStringToArrayConverter(ConversionService conversionService) {
-		Assert.notNull(conversionService, "ConversionService must not be null");
-		this.conversionService = conversionService;
-	}
+    DelimitedStringToArrayConverter(ConversionService conversionService) {
+        Assert.notNull(conversionService, "ConversionService must not be null");
+        this.conversionService = conversionService;
+    }
 
-	@Override
-	public Set<ConvertiblePair> getConvertibleTypes() {
-		return Collections.singleton(new ConvertiblePair(String.class, Object[].class));
-	}
+    @Override
+    public Set<ConvertiblePair> getConvertibleTypes() {
+        return Collections.singleton(new ConvertiblePair(String.class, Object[].class));
+    }
 
-	@Override
-	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-		return targetType.getElementTypeDescriptor() == null
-				|| this.conversionService.canConvert(sourceType, targetType.getElementTypeDescriptor());
-	}
+    @Override
+    public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
+        return targetType.getElementTypeDescriptor() == null || this.conversionService.canConvert(sourceType, targetType.getElementTypeDescriptor());
+    }
 
-	@Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-		if (source == null) {
-			return null;
-		}
-		return convert((String) source, sourceType, targetType);
-	}
+    @Override
+    @Nullable
+    public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+        if (source == null) {
+            return null;
+        }
+        return convert((String) source, sourceType, targetType);
+    }
 
-	private Object convert(String source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-		Delimiter delimiter = targetType.getAnnotation(Delimiter.class);
-		String[] elements = getElements(source, (delimiter != null) ? delimiter.value() : ",");
-		TypeDescriptor elementDescriptor = targetType.getElementTypeDescriptor();
-		Object target = Array.newInstance(elementDescriptor.getType(), elements.length);
-		for (int i = 0; i < elements.length; i++) {
-			String sourceElement = elements[i];
-			Object targetElement = this.conversionService.convert(sourceElement.trim(), sourceType, elementDescriptor);
-			Array.set(target, i, targetElement);
-		}
-		return target;
-	}
+    private Object convert(String source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+        Delimiter delimiter = targetType.getAnnotation(Delimiter.class);
+        String[] elements = getElements(source, (delimiter != null) ? delimiter.value() : ",");
+        TypeDescriptor elementDescriptor = targetType.getElementTypeDescriptor();
+        Object target = Array.newInstance(elementDescriptor.getType(), elements.length);
+        for (int i = 0; i < elements.length; i++) {
+            String sourceElement = elements[i];
+            Object targetElement = this.conversionService.convert(sourceElement.trim(), sourceType, elementDescriptor);
+            Array.set(target, i, targetElement);
+        }
+        return target;
+    }
 
-	private String[] getElements(String source, String delimiter) {
-		return StringUtils.delimitedListToStringArray(source, Delimiter.NONE.equals(delimiter) ? null : delimiter);
-	}
-
+    private String[] getElements(String source, String delimiter) {
+        return StringUtils.delimitedListToStringArray(source, Delimiter.NONE.equals(delimiter) ? null : delimiter);
+    }
 }

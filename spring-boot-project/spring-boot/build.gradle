@@ -111,7 +111,12 @@ dependencies {
 		exclude group: "javax.xml.bind", module: "jaxb-api"
 	}
 
+<<<<<<< HEAD
 	annotationProcessor "ucr.uber.nullaway:nullaway:0.9.3-SNAPSHOT"
+=======
+	annotationProcessor "com.uber.nullaway:nullaway:0.9.6"
+	annotationProcessor "edu.ucr.cs.riple.nullawayannotator:css:1.1.1-LOCAL"
+>>>>>>> 97e31e0165f25336a6d43730e62bf44cd2129042
 
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	errorprone "com.google.errorprone:error_prone_core:2.3.2"
@@ -124,8 +129,15 @@ tasks.withType(JavaCompile) {
 		options.errorprone.errorproneArgs += ["-XepDisableAllChecks",
 											  "-Xep:NullAway:ERROR",
 											  "-XepOpt:NullAway:AnnotatedPackages=org.springframework.boot",
+<<<<<<< HEAD
 											  "-XepOpt:NullAway:AutoFix=true",
 											  "-XepOpt:NullAway:AutoFixOutPutDirectory=/tmp/NullAwayFix",
+=======
+											  "-XepOpt:NullAway:SerializeFixMetadata=true",
+											  "-XepOpt:NullAway:FixSerializationConfigPath=/tmp/NullAwayFix/config.xml",
+											  "-Xep:CSS:ERROR",
+											  "-XepOpt:CSS:ConfigPath=/tmp/NullAwayFix/css.xml",
+>>>>>>> 97e31e0165f25336a6d43730e62bf44cd2129042
 											  "-XepDisableAllWarnings"]
 		options.compilerArgs << "-Xmaxerrs" << "100000"
 

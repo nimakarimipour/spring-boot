@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.diagnostics;
 import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import org.springframework.core.ResolvableType;
 
 /**
@@ -29,6 +29,7 @@ import org.springframework.core.ResolvableType;
  */
 public abstract class AbstractFailureAnalyzer<T extends Throwable> implements FailureAnalyzer {
 
+<<<<<<< HEAD
 	@Override
 	@Nullable
 	public FailureAnalysis analyze(Throwable failure) {
@@ -48,26 +49,47 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 	 */
 	@Nullable
 	protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause);
+=======
+    @Override
+    @Nullable
+    public FailureAnalysis analyze(Throwable failure) {
+        T cause = findCause(failure, getCauseType());
+        if (cause != null) {
+            return analyze(failure, cause);
+        }
+        return null;
+    }
+>>>>>>> 97e31e0165f25336a6d43730e62bf44cd2129042
 
-	/**
-	 * Return the cause type being handled by the analyzer. By default the class generic
-	 * is used.
-	 * @return the cause type
-	 */
-	@SuppressWarnings("unchecked")
-	protected Class<? extends T> getCauseType() {
-		return (Class<? extends T>) ResolvableType.forClass(AbstractFailureAnalyzer.class, getClass()).resolveGeneric();
-	}
+    /**
+     * Returns an analysis of the given {@code rootFailure}, or {@code null} if no
+     * analysis was possible.
+     * @param rootFailure the root failure passed to the analyzer
+     * @param cause the actual found cause
+     * @return the analysis or {@code null}
+     */
+    @Nullable
+    protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause);
 
-	@SuppressWarnings("unchecked")
-	protected final <E extends Throwable> E findCause(Throwable failure, Class<E> type) {
-		while (failure != null) {
-			if (type.isInstance(failure)) {
-				return (E) failure;
-			}
-			failure = failure.getCause();
-		}
-		return null;
-	}
+    /**
+     * Return the cause type being handled by the analyzer. By default the class generic
+     * is used.
+     * @return the cause type
+     */
+    @SuppressWarnings("unchecked")
+    protected Class<? extends T> getCauseType() {
+        return (Class<? extends T>) ResolvableType.forClass(AbstractFailureAnalyzer.class, getClass()).resolveGeneric();
+    }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
+    protected final <E extends Throwable> E findCause(Throwable failure, Class<E> type) {
+        while (failure != null) {
+            if (type.isInstance(failure)) {
+                return (E) failure;
+            }
+            failure = failure.getCause();
+        }
+        return null;
+    }
 }

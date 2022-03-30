@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -35,90 +35,88 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  */
 public interface SpringApplicationRunListener {
 
-	/**
-	 * Called immediately when the run method has first started. Can be used for very
-	 * early initialization.
-	 * @param bootstrapContext the bootstrap context
-	 */
-	default void starting(ConfigurableBootstrapContext bootstrapContext) {
-		starting();
-	}
+    /**
+     * Called immediately when the run method has first started. Can be used for very
+     * early initialization.
+     * @param bootstrapContext the bootstrap context
+     */
+    default void starting(ConfigurableBootstrapContext bootstrapContext) {
+        starting();
+    }
 
-	/**
-	 * Called immediately when the run method has first started. Can be used for very
-	 * early initialization.
-	 * @deprecated since 2.4.0 in favor of {@link #starting(ConfigurableBootstrapContext)}
-	 */
-	@Deprecated
-	default void starting() {
-	}
+    /**
+     * Called immediately when the run method has first started. Can be used for very
+     * early initialization.
+     * @deprecated since 2.4.0 in favor of {@link #starting(ConfigurableBootstrapContext)}
+     */
+    @Deprecated
+    default void starting() {
+    }
 
-	/**
-	 * Called once the environment has been prepared, but before the
-	 * {@link ApplicationContext} has been created.
-	 * @param bootstrapContext the bootstrap context
-	 * @param environment the environment
-	 */
-	default void environmentPrepared(ConfigurableBootstrapContext bootstrapContext,
-			ConfigurableEnvironment environment) {
-		environmentPrepared(environment);
-	}
+    /**
+     * Called once the environment has been prepared, but before the
+     * {@link ApplicationContext} has been created.
+     * @param bootstrapContext the bootstrap context
+     * @param environment the environment
+     */
+    default void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
+        environmentPrepared(environment);
+    }
 
-	/**
-	 * Called once the environment has been prepared, but before the
-	 * {@link ApplicationContext} has been created.
-	 * @param environment the environment
-	 * @deprecated since 2.4.0 in favor of
-	 * {@link #environmentPrepared(ConfigurableBootstrapContext, ConfigurableEnvironment)}
-	 */
-	@Deprecated
-	default void environmentPrepared(ConfigurableEnvironment environment) {
-	}
+    /**
+     * Called once the environment has been prepared, but before the
+     * {@link ApplicationContext} has been created.
+     * @param environment the environment
+     * @deprecated since 2.4.0 in favor of
+     * {@link #environmentPrepared(ConfigurableBootstrapContext, ConfigurableEnvironment)}
+     */
+    @Deprecated
+    default void environmentPrepared(ConfigurableEnvironment environment) {
+    }
 
-	/**
-	 * Called once the {@link ApplicationContext} has been created and prepared, but
-	 * before sources have been loaded.
-	 * @param context the application context
-	 */
-	default void contextPrepared(ConfigurableApplicationContext context) {
-	}
+    /**
+     * Called once the {@link ApplicationContext} has been created and prepared, but
+     * before sources have been loaded.
+     * @param context the application context
+     */
+    default void contextPrepared(ConfigurableApplicationContext context) {
+    }
 
-	/**
-	 * Called once the application context has been loaded but before it has been
-	 * refreshed.
-	 * @param context the application context
-	 */
-	default void contextLoaded(ConfigurableApplicationContext context) {
-	}
+    /**
+     * Called once the application context has been loaded but before it has been
+     * refreshed.
+     * @param context the application context
+     */
+    default void contextLoaded(ConfigurableApplicationContext context) {
+    }
 
-	/**
-	 * The context has been refreshed and the application has started but
-	 * {@link CommandLineRunner CommandLineRunners} and {@link ApplicationRunner
-	 * ApplicationRunners} have not been called.
-	 * @param context the application context.
-	 * @since 2.0.0
-	 */
-	default void started(ConfigurableApplicationContext context) {
-	}
+    /**
+     * The context has been refreshed and the application has started but
+     * {@link CommandLineRunner CommandLineRunners} and {@link ApplicationRunner
+     * ApplicationRunners} have not been called.
+     * @param context the application context.
+     * @since 2.0.0
+     */
+    default void started(ConfigurableApplicationContext context) {
+    }
 
-	/**
-	 * Called immediately before the run method finishes, when the application context has
-	 * been refreshed and all {@link CommandLineRunner CommandLineRunners} and
-	 * {@link ApplicationRunner ApplicationRunners} have been called.
-	 * @param context the application context.
-	 * @since 2.0.0
-	 */
-	default void running(ConfigurableApplicationContext context) {
-	}
+    /**
+     * Called immediately before the run method finishes, when the application context has
+     * been refreshed and all {@link CommandLineRunner CommandLineRunners} and
+     * {@link ApplicationRunner ApplicationRunners} have been called.
+     * @param context the application context.
+     * @since 2.0.0
+     */
+    default void running(ConfigurableApplicationContext context) {
+    }
 
-	/**
-	 * Called when a failure occurs when running the application.
-	 * @param context the application context or {@code null} if a failure occurred before
-	 * the context was created
-	 * @param exception the failure
-	 * @since 2.0.0
-	 */
-	default void failed(ConfigurableApplicationContext context, Throwable exception) {
-	}
-
+    /**
+     * Called when a failure occurs when running the application.
+     * @param context the application context or {@code null} if a failure occurred before
+     * the context was created
+     * @param exception the failure
+     * @since 2.0.0
+     */
+    default void failed(ConfigurableApplicationContext context, Throwable exception) {
+    }
 }

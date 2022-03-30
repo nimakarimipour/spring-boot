@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet.server;
 
+import org.springframework.boot.Initializer;
 import java.io.File;
-
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.util.Assert;
@@ -30,34 +29,34 @@ import org.springframework.util.Assert;
  */
 class SessionStoreDirectory {
 
-	private File directory;
+    private File directory;
 
-	File getDirectory() {
-		return this.directory;
-	}
+    File getDirectory() {
+        return this.directory;
+    }
 
-	void setDirectory(File directory) {
-		this.directory = directory;
-	}
+    @Initializer
+    void setDirectory(File directory) {
+        this.directory = directory;
+    }
 
-	File getValidDirectory(boolean mkdirs) {
-		File dir = getDirectory();
-		if (dir == null) {
-			return new ApplicationTemp().getDir("servlet-sessions");
-		}
-		if (!dir.isAbsolute()) {
-			dir = new File(new ApplicationHome().getDir(), dir.getPath());
-		}
-		if (!dir.exists() && mkdirs) {
-			dir.mkdirs();
-		}
-		assertDirectory(mkdirs, dir);
-		return dir;
-	}
+    File getValidDirectory(boolean mkdirs) {
+        File dir = getDirectory();
+        if (dir == null) {
+            return new ApplicationTemp().getDir("servlet-sessions");
+        }
+        if (!dir.isAbsolute()) {
+            dir = new File(new ApplicationHome().getDir(), dir.getPath());
+        }
+        if (!dir.exists() && mkdirs) {
+            dir.mkdirs();
+        }
+        assertDirectory(mkdirs, dir);
+        return dir;
+    }
 
-	private void assertDirectory(boolean mkdirs, File dir) {
-		Assert.state(!mkdirs || dir.exists(), () -> "Session dir " + dir + " does not exist");
-		Assert.state(!dir.isFile(), () -> "Session dir " + dir + " points to a file");
-	}
-
+    private void assertDirectory(boolean mkdirs, File dir) {
+        Assert.state(!mkdirs || dir.exists(), () -> "Session dir " + dir + " does not exist");
+        Assert.state(!dir.isFile(), () -> "Session dir " + dir + " points to a file");
+    }
 }

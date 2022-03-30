@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.event;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -31,53 +31,52 @@ import org.springframework.core.env.Environment;
 @SuppressWarnings("serial")
 public class ApplicationEnvironmentPreparedEvent extends SpringApplicationEvent {
 
-	private final ConfigurableBootstrapContext bootstrapContext;
+    @Nullable
+    private final ConfigurableBootstrapContext bootstrapContext;
 
-	private final ConfigurableEnvironment environment;
+    private final ConfigurableEnvironment environment;
 
-	/**
-	 * Create a new {@link ApplicationEnvironmentPreparedEvent} instance.
-	 * @param application the current application
-	 * @param args the arguments the application is running with
-	 * @param environment the environment that was just created
-	 * @deprecated since 2.4.0 in favor of
-	 * {@link #ApplicationEnvironmentPreparedEvent(ConfigurableBootstrapContext, SpringApplication, String[], ConfigurableEnvironment)}
-	 */
-	@Deprecated
-	public ApplicationEnvironmentPreparedEvent(SpringApplication application, String[] args,
-			ConfigurableEnvironment environment) {
-		this(null, application, args, environment);
-	}
+    /**
+     * Create a new {@link ApplicationEnvironmentPreparedEvent} instance.
+     * @param application the current application
+     * @param args the arguments the application is running with
+     * @param environment the environment that was just created
+     * @deprecated since 2.4.0 in favor of
+     * {@link #ApplicationEnvironmentPreparedEvent(ConfigurableBootstrapContext, SpringApplication, String[], ConfigurableEnvironment)}
+     */
+    @Deprecated
+    public ApplicationEnvironmentPreparedEvent(SpringApplication application, String[] args, ConfigurableEnvironment environment) {
+        this(null, application, args, environment);
+    }
 
-	/**
-	 * Create a new {@link ApplicationEnvironmentPreparedEvent} instance.
-	 * @param bootstrapContext the bootstrap context
-	 * @param application the current application
-	 * @param args the arguments the application is running with
-	 * @param environment the environment that was just created
-	 */
-	public ApplicationEnvironmentPreparedEvent(ConfigurableBootstrapContext bootstrapContext,
-			SpringApplication application, String[] args, ConfigurableEnvironment environment) {
-		super(application, args);
-		this.bootstrapContext = bootstrapContext;
-		this.environment = environment;
-	}
+    /**
+     * Create a new {@link ApplicationEnvironmentPreparedEvent} instance.
+     * @param bootstrapContext the bootstrap context
+     * @param application the current application
+     * @param args the arguments the application is running with
+     * @param environment the environment that was just created
+     */
+    public ApplicationEnvironmentPreparedEvent(@Nullable ConfigurableBootstrapContext bootstrapContext, SpringApplication application, String[] args, ConfigurableEnvironment environment) {
+        super(application, args);
+        this.bootstrapContext = bootstrapContext;
+        this.environment = environment;
+    }
 
-	/**
-	 * Return the bootstap context.
-	 * @return the bootstrap context
-	 * @since 2.4.0
-	 */
-	public ConfigurableBootstrapContext getBootstrapContext() {
-		return this.bootstrapContext;
-	}
+    /**
+     * Return the bootstap context.
+     * @return the bootstrap context
+     * @since 2.4.0
+     */
+    @Nullable
+    public ConfigurableBootstrapContext getBootstrapContext() {
+        return this.bootstrapContext;
+    }
 
-	/**
-	 * Return the environment.
-	 * @return the environment
-	 */
-	public ConfigurableEnvironment getEnvironment() {
-		return this.environment;
-	}
-
+    /**
+     * Return the environment.
+     * @return the environment
+     */
+    public ConfigurableEnvironment getEnvironment() {
+        return this.environment;
+    }
 }

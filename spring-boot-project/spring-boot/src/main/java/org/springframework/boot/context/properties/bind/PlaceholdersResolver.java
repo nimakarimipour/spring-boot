@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
 import org.springframework.core.env.PropertyResolver;
 
 /**
@@ -29,16 +29,16 @@ import org.springframework.core.env.PropertyResolver;
 @FunctionalInterface
 public interface PlaceholdersResolver {
 
-	/**
-	 * No-op {@link PropertyResolver}.
-	 */
-	PlaceholdersResolver NONE = (value) -> value;
+    /**
+     * No-op {@link PropertyResolver}.
+     */
+    PlaceholdersResolver NONE = (value) -> value;
 
-	/**
-	 * Called to resolve any placeholders in the given value.
-	 * @param value the source value
-	 * @return a value with placeholders resolved
-	 */
-	Object resolvePlaceholders(Object value);
-
+    /**
+     * Called to resolve any placeholders in the given value.
+     * @param value the source value
+     * @return a value with placeholders resolved
+     */
+    @Nullable
+    Object resolvePlaceholders(@Nullable Object value);
 }

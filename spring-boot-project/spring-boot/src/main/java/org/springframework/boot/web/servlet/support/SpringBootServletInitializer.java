@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet.support;
 
+import javax.annotation.Nullable;
+import org.springframework.boot.Initializer;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collections;
-
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.ParentContextApplicationContextInitializer;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -74,182 +72,174 @@ import org.springframework.web.context.WebApplicationContext;
  */
 public abstract class SpringBootServletInitializer implements WebApplicationInitializer {
 
-	protected Log logger; // Don't initialize early
+    // Don't initialize early
+    protected Log logger;
 
-	private boolean registerErrorPageFilter = true;
+    private boolean registerErrorPageFilter = true;
 
-	/**
-	 * Set if the {@link ErrorPageFilter} should be registered. Set to {@code false} if
-	 * error page mappings should be handled via the server and not Spring Boot.
-	 * @param registerErrorPageFilter if the {@link ErrorPageFilter} should be registered.
-	 */
-	protected final void setRegisterErrorPageFilter(boolean registerErrorPageFilter) {
-		this.registerErrorPageFilter = registerErrorPageFilter;
-	}
+    /**
+     * Set if the {@link ErrorPageFilter} should be registered. Set to {@code false} if
+     * error page mappings should be handled via the server and not Spring Boot.
+     * @param registerErrorPageFilter if the {@link ErrorPageFilter} should be registered.
+     */
+    protected final void setRegisterErrorPageFilter(boolean registerErrorPageFilter) {
+        this.registerErrorPageFilter = registerErrorPageFilter;
+    }
 
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		// Logger initialization is deferred in case an ordered
-		// LogServletContextInitializer is being used
-		this.logger = LogFactory.getLog(getClass());
-		WebApplicationContext rootApplicationContext = createRootApplicationContext(servletContext);
-		if (rootApplicationContext != null) {
-			servletContext.addListener(new SpringBootContextLoaderListener(rootApplicationContext, servletContext));
-		}
-		else {
-			this.logger.debug("No ContextLoaderListener registered, as createRootApplicationContext() did not "
-					+ "return an application context");
-		}
-	}
+    @Override
+    @Initializer
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        // Logger initialization is deferred in case an ordered
+        // LogServletContextInitializer is being used
+        this.logger = LogFactory.getLog(getClass());
+        WebApplicationContext rootApplicationContext = createRootApplicationContext(servletContext);
+        if (rootApplicationContext != null) {
+            servletContext.addListener(new SpringBootContextLoaderListener(rootApplicationContext, servletContext));
+        } else {
+            this.logger.debug("No ContextLoaderListener registered, as createRootApplicationContext() did not " + "return an application context");
+        }
+    }
 
-	/**
-	 * Deregisters the JDBC drivers that were registered by the application represented by
-	 * the given {@code servletContext}. The default implementation
-	 * {@link DriverManager#deregisterDriver(Driver) deregisters} every {@link Driver}
-	 * that was loaded by the {@link ServletContext#getClassLoader web application's class
-	 * loader}.
-	 * @param servletContext the web application's servlet context
-	 * @since 2.3.0
-	 */
-	protected void deregisterJdbcDrivers(ServletContext servletContext) {
-		for (Driver driver : Collections.list(DriverManager.getDrivers())) {
-			if (driver.getClass().getClassLoader() == servletContext.getClassLoader()) {
-				try {
-					DriverManager.deregisterDriver(driver);
-				}
-				catch (SQLException ex) {
-					// Continue
-				}
-			}
-		}
-	}
+    /**
+     * Deregisters the JDBC drivers that were registered by the application represented by
+     * the given {@code servletContext}. The default implementation
+     * {@link DriverManager#deregisterDriver(Driver) deregisters} every {@link Driver}
+     * that was loaded by the {@link ServletContext#getClassLoader web application's class
+     * loader}.
+     * @param servletContext the web application's servlet context
+     * @since 2.3.0
+     */
+    protected void deregisterJdbcDrivers(ServletContext servletContext) {
+        for (Driver driver : Collections.list(DriverManager.getDrivers())) {
+            if (driver.getClass().getClassLoader() == servletContext.getClassLoader()) {
+                try {
+                    DriverManager.deregisterDriver(driver);
+                } catch (SQLException ex) {
+                    // Continue
+                }
+            }
+        }
+    }
 
-	protected WebApplicationContext createRootApplicationContext(ServletContext servletContext) {
-		SpringApplicationBuilder builder = createSpringApplicationBuilder();
-		builder.main(getClass());
-		ApplicationContext parent = getExistingRootWebApplicationContext(servletContext);
-		if (parent != null) {
-			this.logger.info("Root context already created (using as parent).");
-			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, null);
-			builder.initializers(new ParentContextApplicationContextInitializer(parent));
-		}
-		builder.initializers(new ServletContextApplicationContextInitializer(servletContext));
-		builder.contextFactory((webApplicationType) -> new AnnotationConfigServletWebServerApplicationContext());
-		builder = configure(builder);
-		builder.listeners(new WebEnvironmentPropertySourceInitializer(servletContext));
-		SpringApplication application = builder.build();
-		if (application.getAllSources().isEmpty()
-				&& MergedAnnotations.from(getClass(), SearchStrategy.TYPE_HIERARCHY).isPresent(Configuration.class)) {
-			application.addPrimarySources(Collections.singleton(getClass()));
-		}
-		Assert.state(!application.getAllSources().isEmpty(),
-				"No SpringApplication sources have been defined. Either override the "
-						+ "configure method or add an @Configuration annotation");
-		// Ensure error pages are registered
-		if (this.registerErrorPageFilter) {
-			application.addPrimarySources(Collections.singleton(ErrorPageFilterConfiguration.class));
-		}
-		application.setRegisterShutdownHook(false);
-		return run(application);
-	}
+    protected WebApplicationContext createRootApplicationContext(ServletContext servletContext) {
+        SpringApplicationBuilder builder = createSpringApplicationBuilder();
+        builder.main(getClass());
+        ApplicationContext parent = getExistingRootWebApplicationContext(servletContext);
+        if (parent != null) {
+            this.logger.info("Root context already created (using as parent).");
+            servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, null);
+            builder.initializers(new ParentContextApplicationContextInitializer(parent));
+        }
+        builder.initializers(new ServletContextApplicationContextInitializer(servletContext));
+        builder.contextFactory((webApplicationType) -> new AnnotationConfigServletWebServerApplicationContext());
+        builder = configure(builder);
+        builder.listeners(new WebEnvironmentPropertySourceInitializer(servletContext));
+        SpringApplication application = builder.build();
+        if (application.getAllSources().isEmpty() && MergedAnnotations.from(getClass(), SearchStrategy.TYPE_HIERARCHY).isPresent(Configuration.class)) {
+            application.addPrimarySources(Collections.singleton(getClass()));
+        }
+        Assert.state(!application.getAllSources().isEmpty(), "No SpringApplication sources have been defined. Either override the " + "configure method or add an @Configuration annotation");
+        // Ensure error pages are registered
+        if (this.registerErrorPageFilter) {
+            application.addPrimarySources(Collections.singleton(ErrorPageFilterConfiguration.class));
+        }
+        application.setRegisterShutdownHook(false);
+        return run(application);
+    }
 
-	/**
-	 * Returns the {@code SpringApplicationBuilder} that is used to configure and create
-	 * the {@link SpringApplication}. The default implementation returns a new
-	 * {@code SpringApplicationBuilder} in its default state.
-	 * @return the {@code SpringApplicationBuilder}.
-	 * @since 1.3.0
-	 */
-	protected SpringApplicationBuilder createSpringApplicationBuilder() {
-		return new SpringApplicationBuilder();
-	}
+    /**
+     * Returns the {@code SpringApplicationBuilder} that is used to configure and create
+     * the {@link SpringApplication}. The default implementation returns a new
+     * {@code SpringApplicationBuilder} in its default state.
+     * @return the {@code SpringApplicationBuilder}.
+     * @since 1.3.0
+     */
+    protected SpringApplicationBuilder createSpringApplicationBuilder() {
+        return new SpringApplicationBuilder();
+    }
 
-	/**
-	 * Called to run a fully configured {@link SpringApplication}.
-	 * @param application the application to run
-	 * @return the {@link WebApplicationContext}
-	 */
-	protected WebApplicationContext run(SpringApplication application) {
-		return (WebApplicationContext) application.run();
-	}
+    /**
+     * Called to run a fully configured {@link SpringApplication}.
+     * @param application the application to run
+     * @return the {@link WebApplicationContext}
+     */
+    protected WebApplicationContext run(SpringApplication application) {
+        return (WebApplicationContext) application.run();
+    }
 
-	private ApplicationContext getExistingRootWebApplicationContext(ServletContext servletContext) {
-		Object context = servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-		if (context instanceof ApplicationContext) {
-			return (ApplicationContext) context;
-		}
-		return null;
-	}
+    @Nullable
+    private ApplicationContext getExistingRootWebApplicationContext(ServletContext servletContext) {
+        Object context = servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+        if (context instanceof ApplicationContext) {
+            return (ApplicationContext) context;
+        }
+        return null;
+    }
 
-	/**
-	 * Configure the application. Normally all you would need to do is to add sources
-	 * (e.g. config classes) because other settings have sensible defaults. You might
-	 * choose (for instance) to add default command line arguments, or set an active
-	 * Spring profile.
-	 * @param builder a builder for the application context
-	 * @return the application builder
-	 * @see SpringApplicationBuilder
-	 */
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder;
-	}
+    /**
+     * Configure the application. Normally all you would need to do is to add sources
+     * (e.g. config classes) because other settings have sensible defaults. You might
+     * choose (for instance) to add default command line arguments, or set an active
+     * Spring profile.
+     * @param builder a builder for the application context
+     * @return the application builder
+     * @see SpringApplicationBuilder
+     */
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder;
+    }
 
-	/**
-	 * {@link ApplicationListener} to trigger
-	 * {@link ConfigurableWebEnvironment#initPropertySources(ServletContext, javax.servlet.ServletConfig)}.
-	 */
-	private static final class WebEnvironmentPropertySourceInitializer
-			implements ApplicationListener<ApplicationEnvironmentPreparedEvent>, Ordered {
+    /**
+     * {@link ApplicationListener} to trigger
+     * {@link ConfigurableWebEnvironment#initPropertySources(ServletContext, javax.servlet.ServletConfig)}.
+     */
+    private static final class WebEnvironmentPropertySourceInitializer implements ApplicationListener<ApplicationEnvironmentPreparedEvent>, Ordered {
 
-		private final ServletContext servletContext;
+        private final ServletContext servletContext;
 
-		private WebEnvironmentPropertySourceInitializer(ServletContext servletContext) {
-			this.servletContext = servletContext;
-		}
+        private WebEnvironmentPropertySourceInitializer(ServletContext servletContext) {
+            this.servletContext = servletContext;
+        }
 
-		@Override
-		public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
-			ConfigurableEnvironment environment = event.getEnvironment();
-			if (environment instanceof ConfigurableWebEnvironment) {
-				((ConfigurableWebEnvironment) environment).initPropertySources(this.servletContext, null);
-			}
-		}
+        @Override
+        public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
+            ConfigurableEnvironment environment = event.getEnvironment();
+            if (environment instanceof ConfigurableWebEnvironment) {
+                ((ConfigurableWebEnvironment) environment).initPropertySources(this.servletContext, null);
+            }
+        }
 
-		@Override
-		public int getOrder() {
-			return Ordered.HIGHEST_PRECEDENCE;
-		}
+        @Override
+        public int getOrder() {
+            return Ordered.HIGHEST_PRECEDENCE;
+        }
+    }
 
-	}
+    /**
+     * {@link ContextLoaderListener} for the initialized context.
+     */
+    private class SpringBootContextLoaderListener extends ContextLoaderListener {
 
-	/**
-	 * {@link ContextLoaderListener} for the initialized context.
-	 */
-	private class SpringBootContextLoaderListener extends ContextLoaderListener {
+        private final ServletContext servletContext;
 
-		private final ServletContext servletContext;
+        SpringBootContextLoaderListener(WebApplicationContext applicationContext, ServletContext servletContext) {
+            super(applicationContext);
+            this.servletContext = servletContext;
+        }
 
-		SpringBootContextLoaderListener(WebApplicationContext applicationContext, ServletContext servletContext) {
-			super(applicationContext);
-			this.servletContext = servletContext;
-		}
+        @Override
+        public void contextInitialized(ServletContextEvent event) {
+            // no-op because the application context is already initialized
+        }
 
-		@Override
-		public void contextInitialized(ServletContextEvent event) {
-			// no-op because the application context is already initialized
-		}
-
-		@Override
-		public void contextDestroyed(ServletContextEvent event) {
-			try {
-				super.contextDestroyed(event);
-			}
-			finally {
-				// Use original context so that the classloader can be accessed
-				deregisterJdbcDrivers(this.servletContext);
-			}
-		}
-
-	}
-
+        @Override
+        public void contextDestroyed(ServletContextEvent event) {
+            try {
+                super.contextDestroyed(event);
+            } finally {
+                // Use original context so that the classloader can be accessed
+                deregisterJdbcDrivers(this.servletContext);
+            }
+        }
+    }
 }

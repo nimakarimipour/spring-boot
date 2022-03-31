@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 
 /**
@@ -28,81 +28,79 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
  */
 public interface BindHandler {
 
-	/**
-	 * Default no-op bind handler.
-	 */
-	BindHandler DEFAULT = new BindHandler() {
+    /**
+     * Default no-op bind handler.
+     */
+    BindHandler DEFAULT = new BindHandler() {
+    };
 
-	};
+    /**
+     * Called when binding of an element starts but before any result has been determined.
+     * @param <T> the bindable source type
+     * @param name the name of the element being bound
+     * @param target the item being bound
+     * @param context the bind context
+     * @return the actual item that should be used for binding (may be {@code null})
+     */
+    default <T> Bindable<T> onStart(ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
+        return target;
+    }
 
-	/**
-	 * Called when binding of an element starts but before any result has been determined.
-	 * @param <T> the bindable source type
-	 * @param name the name of the element being bound
-	 * @param target the item being bound
-	 * @param context the bind context
-	 * @return the actual item that should be used for binding (may be {@code null})
-	 */
-	default <T> Bindable<T> onStart(ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
-		return target;
-	}
+    /**
+     * Called when binding of an element ends with a successful result. Implementations
+     * may change the ultimately returned result or perform addition validation.
+     * @param name the name of the element being bound
+     * @param target the item being bound
+     * @param context the bind context
+     * @param result the bound result (never {@code null})
+     * @return the actual result that should be used (may be {@code null})
+     */
+    default Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+        return result;
+    }
 
-	/**
-	 * Called when binding of an element ends with a successful result. Implementations
-	 * may change the ultimately returned result or perform addition validation.
-	 * @param name the name of the element being bound
-	 * @param target the item being bound
-	 * @param context the bind context
-	 * @param result the bound result (never {@code null})
-	 * @return the actual result that should be used (may be {@code null})
-	 */
-	default Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
-		return result;
-	}
+    /**
+     * Called when binding of an element ends with an unbound result and a newly created
+     * instance is about to be returned. Implementations may change the ultimately
+     * returned result or perform addition validation.
+     * @param name the name of the element being bound
+     * @param target the item being bound
+     * @param context the bind context
+     * @param result the newly created instance (never {@code null})
+     * @return the actual result that should be used (must not be {@code null})
+     * @since 2.2.2
+     */
+    @Nullable
+    default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result) {
+        return result;
+    }
 
-	/**
-	 * Called when binding of an element ends with an unbound result and a newly created
-	 * instance is about to be returned. Implementations may change the ultimately
-	 * returned result or perform addition validation.
-	 * @param name the name of the element being bound
-	 * @param target the item being bound
-	 * @param context the bind context
-	 * @param result the newly created instance (never {@code null})
-	 * @return the actual result that should be used (must not be {@code null})
-	 * @since 2.2.2
-	 */
-	default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
-		return result;
-	}
+    /**
+     * Called when binding fails for any reason (including failures from
+     * {@link #onSuccess} or {@link #onCreate} calls). Implementations may choose to
+     * swallow exceptions and return an alternative result.
+     * @param name the name of the element being bound
+     * @param target the item being bound
+     * @param context the bind context
+     * @param error the cause of the error (if the exception stands it may be re-thrown)
+     * @return the actual result that should be used (may be {@code null}).
+     * @throws Exception if the binding isn't valid
+     */
+    @Nullable
+    default Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error) throws Exception {
+        throw error;
+    }
 
-	/**
-	 * Called when binding fails for any reason (including failures from
-	 * {@link #onSuccess} or {@link #onCreate} calls). Implementations may choose to
-	 * swallow exceptions and return an alternative result.
-	 * @param name the name of the element being bound
-	 * @param target the item being bound
-	 * @param context the bind context
-	 * @param error the cause of the error (if the exception stands it may be re-thrown)
-	 * @return the actual result that should be used (may be {@code null}).
-	 * @throws Exception if the binding isn't valid
-	 */
-	default Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
-			throws Exception {
-		throw error;
-	}
-
-	/**
-	 * Called when binding finishes with either bound or unbound result. This method will
-	 * not be called when binding failed, even if a handler returns a result from
-	 * {@link #onFailure}.
-	 * @param name the name of the element being bound
-	 * @param target the item being bound
-	 * @param context the bind context
-	 * @param result the bound result (may be {@code null})
-	 * @throws Exception if the binding isn't valid
-	 */
-	default void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result)
-			throws Exception {
-	}
-
+    /**
+     * Called when binding finishes with either bound or unbound result. This method will
+     * not be called when binding failed, even if a handler returns a result from
+     * {@link #onFailure}.
+     * @param name the name of the element being bound
+     * @param target the item being bound
+     * @param context the bind context
+     * @param result the bound result (may be {@code null})
+     * @throws Exception if the binding isn't valid
+     */
+    default void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result) throws Exception {
+    }
 }

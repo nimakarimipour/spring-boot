@@ -112,7 +112,7 @@ dependencies {
 	}
 
 	annotationProcessor "com.uber.nullaway:nullaway:0.9.6"
-	annotationProcessor "edu.ucr.cs.riple.nullawayannotator:css:1.1.1-LOCAL"
+	annotationProcessor "edu.ucr.cs.riple.nullawayannotator:css:1.2.3-LOCAL"
 
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 	errorprone "com.google.errorprone:error_prone_core:2.3.2"

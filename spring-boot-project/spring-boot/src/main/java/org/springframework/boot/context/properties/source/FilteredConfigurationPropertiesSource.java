@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
 import java.util.function.Predicate;
-
 import org.springframework.util.Assert;
 
 /**
@@ -28,50 +27,49 @@ import org.springframework.util.Assert;
  */
 class FilteredConfigurationPropertiesSource implements ConfigurationPropertySource {
 
-	private final ConfigurationPropertySource source;
+    private final ConfigurationPropertySource source;
 
-	private final Predicate<ConfigurationPropertyName> filter;
+    private final Predicate<ConfigurationPropertyName> filter;
 
-	FilteredConfigurationPropertiesSource(ConfigurationPropertySource source,
-			Predicate<ConfigurationPropertyName> filter) {
-		Assert.notNull(source, "Source must not be null");
-		Assert.notNull(filter, "Filter must not be null");
-		this.source = source;
-		this.filter = filter;
-	}
+    FilteredConfigurationPropertiesSource(ConfigurationPropertySource source, Predicate<ConfigurationPropertyName> filter) {
+        Assert.notNull(source, "Source must not be null");
+        Assert.notNull(filter, "Filter must not be null");
+        this.source = source;
+        this.filter = filter;
+    }
 
-	@Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
-		boolean filtered = getFilter().test(name);
-		return filtered ? getSource().getConfigurationProperty(name) : null;
-	}
+    @Override
+    @Nullable
+    public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+        boolean filtered = getFilter().test(name);
+        return filtered ? getSource().getConfigurationProperty(name) : null;
+    }
 
-	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
-		ConfigurationPropertyState result = this.source.containsDescendantOf(name);
-		if (result == ConfigurationPropertyState.PRESENT) {
-			// We can't be sure a contained descendant won't be filtered
-			return ConfigurationPropertyState.UNKNOWN;
-		}
-		return result;
-	}
+    @Override
+    public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+        ConfigurationPropertyState result = this.source.containsDescendantOf(name);
+        if (result == ConfigurationPropertyState.PRESENT) {
+            // We can't be sure a contained descendant won't be filtered
+            return ConfigurationPropertyState.UNKNOWN;
+        }
+        return result;
+    }
 
-	@Override
-	public Object getUnderlyingSource() {
-		return this.source.getUnderlyingSource();
-	}
+    @Override
+    public Object getUnderlyingSource() {
+        return this.source.getUnderlyingSource();
+    }
 
-	protected ConfigurationPropertySource getSource() {
-		return this.source;
-	}
+    protected ConfigurationPropertySource getSource() {
+        return this.source;
+    }
 
-	protected Predicate<ConfigurationPropertyName> getFilter() {
-		return this.filter;
-	}
+    protected Predicate<ConfigurationPropertyName> getFilter() {
+        return this.filter;
+    }
 
-	@Override
-	public String toString() {
-		return this.source.toString() + " (filtered)";
-	}
-
+    @Override
+    public String toString() {
+        return this.source.toString() + " (filtered)";
+    }
 }

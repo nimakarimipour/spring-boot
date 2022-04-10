@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.origin;
+
+import javax.annotation.Nullable;
 
 /**
  * An interface that may be implemented by an object that can lookup {@link Origin}
@@ -27,44 +28,44 @@ package org.springframework.boot.origin;
 @FunctionalInterface
 public interface OriginLookup<K> {
 
-	/**
-	 * Return the origin of the given key or {@code null} if the origin cannot be
-	 * determined.
-	 * @param key the key to lookup
-	 * @return the origin of the key or {@code null}
-	 */
-	Origin getOrigin(K key);
+    /**
+     * Return the origin of the given key or {@code null} if the origin cannot be
+     * determined.
+     * @param key the key to lookup
+     * @return the origin of the key or {@code null}
+     */
+    @Nullable
+    Origin getOrigin(K key);
 
-	/**
-	 * Return {@code true} if this lookup is immutable and has contents that will never
-	 * change.
-	 * @return if the lookup is immutable
-	 * @since 2.2.0
-	 */
-	default boolean isImmutable() {
-		return false;
-	}
+    /**
+     * Return {@code true} if this lookup is immutable and has contents that will never
+     * change.
+     * @return if the lookup is immutable
+     * @since 2.2.0
+     */
+    default boolean isImmutable() {
+        return false;
+    }
 
-	/**
-	 * Attempt to lookup the origin from the given source. If the source is not a
-	 * {@link OriginLookup} or if an exception occurs during lookup then {@code null} is
-	 * returned.
-	 * @param source the source object
-	 * @param key the key to lookup
-	 * @param <K> the key type
-	 * @return an {@link Origin} or {@code null}
-	 */
-	@SuppressWarnings("unchecked")
-	static <K> Origin getOrigin(Object source, K key) {
-		if (!(source instanceof OriginLookup)) {
-			return null;
-		}
-		try {
-			return ((OriginLookup<K>) source).getOrigin(key);
-		}
-		catch (Throwable ex) {
-			return null;
-		}
-	}
-
+    /**
+     * Attempt to lookup the origin from the given source. If the source is not a
+     * {@link OriginLookup} or if an exception occurs during lookup then {@code null} is
+     * returned.
+     * @param source the source object
+     * @param key the key to lookup
+     * @param <K> the key type
+     * @return an {@link Origin} or {@code null}
+     */
+    @SuppressWarnings("unchecked")
+    @Nullable
+    static <K> Origin getOrigin(Object source, K key) {
+        if (!(source instanceof OriginLookup)) {
+            return null;
+        }
+        try {
+            return ((OriginLookup<K>) source).getOrigin(key);
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
 }

@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -30,20 +29,16 @@ import org.springframework.util.StringUtils;
  */
 public final class SslConfigurationValidator {
 
-	private SslConfigurationValidator() {
-	}
+    private SslConfigurationValidator() {
+    }
 
-	public static void validateKeyAlias(KeyStore keyStore, String keyAlias) {
-		if (StringUtils.hasLength(keyAlias)) {
-			try {
-				Assert.state(keyStore.containsAlias(keyAlias),
-						() -> String.format("Keystore does not contain specified alias '%s'", keyAlias));
-			}
-			catch (KeyStoreException ex) {
-				throw new IllegalStateException(
-						String.format("Could not determine if keystore contains alias '%s'", keyAlias), ex);
-			}
-		}
-	}
-
+    public static void validateKeyAlias(KeyStore keyStore, String keyAlias) {
+        if (StringUtils.hasLength(keyAlias)) {
+            try {
+                Assert.state(keyStore.containsAlias(keyAlias), () -> String.format("Keystore does not contain specified alias '%s'", keyAlias));
+            } catch (KeyStoreException ex) {
+                throw new IllegalStateException(String.format("Could not determine if keystore contains alias '%s'", keyAlias), ex);
+            }
+        }
+    }
 }

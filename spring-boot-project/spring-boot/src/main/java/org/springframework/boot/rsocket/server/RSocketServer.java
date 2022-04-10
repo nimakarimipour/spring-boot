@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.rsocket.server;
 
+import javax.annotation.Nullable;
 import java.net.InetSocketAddress;
 
 /**
@@ -27,41 +27,39 @@ import java.net.InetSocketAddress;
  */
 public interface RSocketServer {
 
-	/**
-	 * Starts the RSocket server. Calling this method on an already started server has no
-	 * effect.
-	 * @throws RSocketServerException if the server cannot be started
-	 */
-	void start() throws RSocketServerException;
+    /**
+     * Starts the RSocket server. Calling this method on an already started server has no
+     * effect.
+     * @throws RSocketServerException if the server cannot be started
+     */
+    void start() throws RSocketServerException;
 
-	/**
-	 * Stops the RSocket server. Calling this method on an already stopped server has no
-	 * effect.
-	 * @throws RSocketServerException if the server cannot be stopped
-	 */
-	void stop() throws RSocketServerException;
+    /**
+     * Stops the RSocket server. Calling this method on an already stopped server has no
+     * effect.
+     * @throws RSocketServerException if the server cannot be stopped
+     */
+    void stop() throws RSocketServerException;
 
-	/**
-	 * Return the address this server is listening on.
-	 * @return the address
-	 */
-	InetSocketAddress address();
+    /**
+     * Return the address this server is listening on.
+     * @return the address
+     */
+    @Nullable
+    InetSocketAddress address();
 
-	/**
-	 * Choice of transport protocol for the RSocket server.
-	 */
-	enum Transport {
+    /**
+     * Choice of transport protocol for the RSocket server.
+     */
+    enum Transport {
 
-		/**
-		 * TCP transport protocol.
-		 */
-		TCP,
-
-		/**
-		 * WebSocket transport protocol.
-		 */
-		WEBSOCKET
-
-	}
-
+        /**
+         * TCP transport protocol.
+         */
+        TCP,
+        /**
+         * WebSocket transport protocol.
+         */
+        WEBSOCKET
+    }
 }

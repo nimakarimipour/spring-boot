@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
 import java.net.BindException;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
@@ -30,81 +30,80 @@ import java.util.function.IntSupplier;
  */
 public class PortInUseException extends WebServerException {
 
-	private final int port;
+    private final int port;
 
-	/**
-	 * Creates a new port in use exception for the given {@code port}.
-	 * @param port the port that was in use
-	 */
-	public PortInUseException(int port) {
-		this(port, null);
-	}
+    /**
+     * Creates a new port in use exception for the given {@code port}.
+     * @param port the port that was in use
+     */
+    public PortInUseException(int port) {
+        this(port, null);
+    }
 
-	/**
-	 * Creates a new port in use exception for the given {@code port}.
-	 * @param port the port that was in use
-	 * @param cause the cause of the exception
-	 */
-	public PortInUseException(int port, Throwable cause) {
-		super("Port " + port + " is already in use", cause);
-		this.port = port;
-	}
+    /**
+     * Creates a new port in use exception for the given {@code port}.
+     * @param port the port that was in use
+     * @param cause the cause of the exception
+     */
+    public PortInUseException(int port, @Nullable Throwable cause) {
+        super("Port " + port + " is already in use", cause);
+        this.port = port;
+    }
 
-	/**
-	 * Returns the port that was in use.
-	 * @return the port
-	 */
-	public int getPort() {
-		return this.port;
-	}
+    /**
+     * Returns the port that was in use.
+     * @return the port
+     */
+    public int getPort() {
+        return this.port;
+    }
 
-	/**
-	 * Throw a {@link PortInUseException} if the given exception was caused by a "port in
-	 * use" {@link BindException}.
-	 * @param ex the source exception
-	 * @param port a suppler used to provide the port
-	 * @since 2.2.7
-	 */
-	public static void throwIfPortBindingException(Exception ex, IntSupplier port) {
-		ifPortBindingException(ex, (bindException) -> {
-			throw new PortInUseException(port.getAsInt(), ex);
-		});
-	}
+    /**
+     * Throw a {@link PortInUseException} if the given exception was caused by a "port in
+     * use" {@link BindException}.
+     * @param ex the source exception
+     * @param port a suppler used to provide the port
+     * @since 2.2.7
+     */
+    public static void throwIfPortBindingException(Exception ex, IntSupplier port) {
+        ifPortBindingException(ex, (bindException) -> {
+            throw new PortInUseException(port.getAsInt(), ex);
+        });
+    }
 
-	/**
-	 * Perform an action if the given exception was caused by a "port in use"
-	 * {@link BindException}.
-	 * @param ex the source exception
-	 * @param action the action to perform
-	 * @since 2.2.7
-	 */
-	public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
-		ifCausedBy(ex, BindException.class, (bindException) -> {
-			// bind exception can be also thrown because an address can't be assigned
-			if (bindException.getMessage().toLowerCase().contains("in use")) {
-				action.accept(bindException);
-			}
-		});
-	}
+    /**
+     * Perform an action if the given exception was caused by a "port in use"
+     * {@link BindException}.
+     * @param ex the source exception
+     * @param action the action to perform
+     * @since 2.2.7
+     */
+    public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
+        ifCausedBy(ex, BindException.class, (bindException) -> {
+            // bind exception can be also thrown because an address can't be assigned
+            if (bindException.getMessage().toLowerCase().contains("in use")) {
+                action.accept(bindException);
+            }
+        });
+    }
 
-	/**
-	 * Perform an action if the given exception was caused by a specific exception type.
-	 * @param <E> the cause exception type
-	 * @param ex the source exception
-	 * @param causedBy the required cause type
-	 * @param action the action to perform
-	 * @since 2.2.7
-	 */
-	@SuppressWarnings("unchecked")
-	public static <E extends Exception> void ifCausedBy(Exception ex, Class<E> causedBy, Consumer<E> action) {
-		Throwable candidate = ex;
-		while (candidate != null) {
-			if (causedBy.isInstance(candidate)) {
-				action.accept((E) candidate);
-				return;
-			}
-			candidate = candidate.getCause();
-		}
-	}
-
+    /**
+     * Perform an action if the given exception was caused by a specific exception type.
+     * @param <E> the cause exception type
+     * @param ex the source exception
+     * @param causedBy the required cause type
+     * @param action the action to perform
+     * @since 2.2.7
+     */
+    @SuppressWarnings("unchecked")
+    public static <E extends Exception> void ifCausedBy(Exception ex, Class<E> causedBy, Consumer<E> action) {
+        Throwable candidate = ex;
+        while (candidate != null) {
+            if (causedBy.isInstance(candidate)) {
+                action.accept((E) candidate);
+                return;
+            }
+            candidate = candidate.getCause();
+        }
+    }
 }

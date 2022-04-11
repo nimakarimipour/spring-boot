@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -25,27 +25,24 @@ import java.util.stream.Stream;
  * @author Phillip Webb
  * @author Madhura Bhave
  */
-class FilteredIterableConfigurationPropertiesSource extends FilteredConfigurationPropertiesSource
-		implements IterableConfigurationPropertySource {
+class FilteredIterableConfigurationPropertiesSource extends FilteredConfigurationPropertiesSource implements IterableConfigurationPropertySource {
 
-	FilteredIterableConfigurationPropertiesSource(IterableConfigurationPropertySource source,
-			Predicate<ConfigurationPropertyName> filter) {
-		super(source, filter);
-	}
+    FilteredIterableConfigurationPropertiesSource(IterableConfigurationPropertySource source, Predicate<ConfigurationPropertyName> filter) {
+        super(source, filter);
+    }
 
-	@Override
-	public Stream<ConfigurationPropertyName> stream() {
-		return getSource().stream().filter(getFilter());
-	}
+    @Override
+    public Stream<ConfigurationPropertyName> stream() {
+        return getSource().stream().filter(getFilter());
+    }
 
-	@Override
-	protected IterableConfigurationPropertySource getSource() {
-		return (IterableConfigurationPropertySource) super.getSource();
-	}
+    @Override
+    protected IterableConfigurationPropertySource getSource() {
+        return (IterableConfigurationPropertySource) super.getSource();
+    }
 
-	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
-		return ConfigurationPropertyState.search(this, name::isAncestorOf);
-	}
-
+    @Override
+    public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+        return ConfigurationPropertyState.search(this, name::isAncestorOf);
+    }
 }

@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextListener;
@@ -28,7 +27,6 @@ import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionListener;
-
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
@@ -55,91 +53,91 @@ import org.springframework.util.ClassUtils;
  */
 public class ServletListenerRegistrationBean<T extends EventListener> extends RegistrationBean {
 
-	private static final Set<Class<?>> SUPPORTED_TYPES;
+    private static final Set<Class<?>> SUPPORTED_TYPES;
 
-	static {
-		Set<Class<?>> types = new HashSet<>();
-		types.add(ServletContextAttributeListener.class);
-		types.add(ServletRequestListener.class);
-		types.add(ServletRequestAttributeListener.class);
-		types.add(HttpSessionAttributeListener.class);
-		types.add(HttpSessionListener.class);
-		types.add(ServletContextListener.class);
-		SUPPORTED_TYPES = Collections.unmodifiableSet(types);
-	}
+    static {
+        Set<Class<?>> types = new HashSet<>();
+        types.add(ServletContextAttributeListener.class);
+        types.add(ServletRequestListener.class);
+        types.add(ServletRequestAttributeListener.class);
+        types.add(HttpSessionAttributeListener.class);
+        types.add(HttpSessionListener.class);
+        types.add(ServletContextListener.class);
+        SUPPORTED_TYPES = Collections.unmodifiableSet(types);
+    }
 
-	private T listener;
+    @Nullable
+    private T listener;
 
-	/**
-	 * Create a new {@link ServletListenerRegistrationBean} instance.
-	 */
-	public ServletListenerRegistrationBean() {
-	}
+    /**
+     * Create a new {@link ServletListenerRegistrationBean} instance.
+     */
+    public ServletListenerRegistrationBean() {
+    }
 
-	/**
-	 * Create a new {@link ServletListenerRegistrationBean} instance.
-	 * @param listener the listener to register
-	 */
-	public ServletListenerRegistrationBean(T listener) {
-		Assert.notNull(listener, "Listener must not be null");
-		Assert.isTrue(isSupportedType(listener), "Listener is not of a supported type");
-		this.listener = listener;
-	}
+    /**
+     * Create a new {@link ServletListenerRegistrationBean} instance.
+     * @param listener the listener to register
+     */
+    public ServletListenerRegistrationBean(T listener) {
+        Assert.notNull(listener, "Listener must not be null");
+        Assert.isTrue(isSupportedType(listener), "Listener is not of a supported type");
+        this.listener = listener;
+    }
 
-	/**
-	 * Set the listener that will be registered.
-	 * @param listener the listener to register
-	 */
-	public void setListener(T listener) {
-		Assert.notNull(listener, "Listener must not be null");
-		Assert.isTrue(isSupportedType(listener), "Listener is not of a supported type");
-		this.listener = listener;
-	}
+    /**
+     * Set the listener that will be registered.
+     * @param listener the listener to register
+     */
+    public void setListener(T listener) {
+        Assert.notNull(listener, "Listener must not be null");
+        Assert.isTrue(isSupportedType(listener), "Listener is not of a supported type");
+        this.listener = listener;
+    }
 
-	/**
-	 * Return the listener to be registered.
-	 * @return the listener to be registered
-	 */
-	public T getListener() {
-		return this.listener;
-	}
+    /**
+     * Return the listener to be registered.
+     * @return the listener to be registered
+     */
+    @Nullable
+    public T getListener() {
+        return this.listener;
+    }
 
-	@Override
-	protected String getDescription() {
-		Assert.notNull(this.listener, "Listener must not be null");
-		return "listener " + this.listener;
-	}
+    @Override
+    protected String getDescription() {
+        Assert.notNull(this.listener, "Listener must not be null");
+        return "listener " + this.listener;
+    }
 
-	@Override
-	protected void register(String description, ServletContext servletContext) {
-		try {
-			servletContext.addListener(this.listener);
-		}
-		catch (RuntimeException ex) {
-			throw new IllegalStateException("Failed to add listener '" + this.listener + "' to servlet context", ex);
-		}
-	}
+    @Override
+    protected void register(String description, ServletContext servletContext) {
+        try {
+            servletContext.addListener(this.listener);
+        } catch (RuntimeException ex) {
+            throw new IllegalStateException("Failed to add listener '" + this.listener + "' to servlet context", ex);
+        }
+    }
 
-	/**
-	 * Returns {@code true} if the specified listener is one of the supported types.
-	 * @param listener the listener to test
-	 * @return if the listener is of a supported type
-	 */
-	public static boolean isSupportedType(EventListener listener) {
-		for (Class<?> type : SUPPORTED_TYPES) {
-			if (ClassUtils.isAssignableValue(type, listener)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Returns {@code true} if the specified listener is one of the supported types.
+     * @param listener the listener to test
+     * @return if the listener is of a supported type
+     */
+    public static boolean isSupportedType(EventListener listener) {
+        for (Class<?> type : SUPPORTED_TYPES) {
+            if (ClassUtils.isAssignableValue(type, listener)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Return the supported types for this registration.
-	 * @return the supported types
-	 */
-	public static Set<Class<?>> getSupportedTypes() {
-		return SUPPORTED_TYPES;
-	}
-
+    /**
+     * Return the supported types for this registration.
+     * @return the supported types
+     */
+    public static Set<Class<?>> getSupportedTypes() {
+        return SUPPORTED_TYPES;
+    }
 }

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.server;
+
+import javax.annotation.Nullable;
 
 /**
  * Exceptions thrown by an web server.
@@ -25,8 +26,7 @@ package org.springframework.boot.web.server;
 @SuppressWarnings("serial")
 public class WebServerException extends RuntimeException {
 
-	public WebServerException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
+    public WebServerException(String message, @Nullable Throwable cause) {
+        super(message, cause);
+    }
 }

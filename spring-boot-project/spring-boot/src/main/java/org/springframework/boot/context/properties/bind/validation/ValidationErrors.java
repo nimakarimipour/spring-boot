@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind.validation;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
@@ -41,94 +40,87 @@ import org.springframework.validation.ObjectError;
  */
 public class ValidationErrors implements Iterable<ObjectError> {
 
-	private final ConfigurationPropertyName name;
+    private final ConfigurationPropertyName name;
 
-	private final Set<ConfigurationProperty> boundProperties;
+    private final Set<ConfigurationProperty> boundProperties;
 
-	private final List<ObjectError> errors;
+    private final List<ObjectError> errors;
 
-	ValidationErrors(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
-			List<ObjectError> errors) {
-		Assert.notNull(name, "Name must not be null");
-		Assert.notNull(boundProperties, "BoundProperties must not be null");
-		Assert.notNull(errors, "Errors must not be null");
-		this.name = name;
-		this.boundProperties = Collections.unmodifiableSet(boundProperties);
-		this.errors = convertErrors(name, boundProperties, errors);
-	}
+    ValidationErrors(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties, List<ObjectError> errors) {
+        Assert.notNull(name, "Name must not be null");
+        Assert.notNull(boundProperties, "BoundProperties must not be null");
+        Assert.notNull(errors, "Errors must not be null");
+        this.name = name;
+        this.boundProperties = Collections.unmodifiableSet(boundProperties);
+        this.errors = convertErrors(name, boundProperties, errors);
+    }
 
-	private List<ObjectError> convertErrors(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
-			List<ObjectError> errors) {
-		List<ObjectError> converted = new ArrayList<>(errors.size());
-		for (ObjectError error : errors) {
-			converted.add(convertError(name, boundProperties, error));
-		}
-		return Collections.unmodifiableList(converted);
-	}
+    private List<ObjectError> convertErrors(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties, List<ObjectError> errors) {
+        List<ObjectError> converted = new ArrayList<>(errors.size());
+        for (ObjectError error : errors) {
+            converted.add(convertError(name, boundProperties, error));
+        }
+        return Collections.unmodifiableList(converted);
+    }
 
-	private ObjectError convertError(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
-			ObjectError error) {
-		if (error instanceof FieldError) {
-			return convertFieldError(name, boundProperties, (FieldError) error);
-		}
-		return error;
-	}
+    private ObjectError convertError(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties, ObjectError error) {
+        if (error instanceof FieldError) {
+            return convertFieldError(name, boundProperties, (FieldError) error);
+        }
+        return error;
+    }
 
-	private FieldError convertFieldError(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
-			FieldError error) {
-		if (error instanceof OriginProvider) {
-			return error;
-		}
-		return OriginTrackedFieldError.of(error, findFieldErrorOrigin(name, boundProperties, error));
-	}
+    private FieldError convertFieldError(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties, FieldError error) {
+        if (error instanceof OriginProvider) {
+            return error;
+        }
+        return OriginTrackedFieldError.of(error, findFieldErrorOrigin(name, boundProperties, error));
+    }
 
-	private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
-			FieldError error) {
-		for (ConfigurationProperty boundProperty : boundProperties) {
-			if (isForError(name, boundProperty.getName(), error)) {
-				return Origin.from(boundProperty);
-			}
-		}
-		return null;
-	}
+    @Nullable
+    private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties, FieldError error) {
+        for (ConfigurationProperty boundProperty : boundProperties) {
+            if (isForError(name, boundProperty.getName(), error)) {
+                return Origin.from(boundProperty);
+            }
+        }
+        return null;
+    }
 
-	private boolean isForError(ConfigurationPropertyName name, ConfigurationPropertyName boundPropertyName,
-			FieldError error) {
-		return name.isParentOf(boundPropertyName)
-				&& boundPropertyName.getLastElement(Form.UNIFORM).equalsIgnoreCase(error.getField());
-	}
+    private boolean isForError(ConfigurationPropertyName name, ConfigurationPropertyName boundPropertyName, FieldError error) {
+        return name.isParentOf(boundPropertyName) && boundPropertyName.getLastElement(Form.UNIFORM).equalsIgnoreCase(error.getField());
+    }
 
-	/**
-	 * Return the name of the item that was being validated.
-	 * @return the name of the item
-	 */
-	public ConfigurationPropertyName getName() {
-		return this.name;
-	}
+    /**
+     * Return the name of the item that was being validated.
+     * @return the name of the item
+     */
+    public ConfigurationPropertyName getName() {
+        return this.name;
+    }
 
-	/**
-	 * Return the properties that were bound before validation failed.
-	 * @return the boundProperties
-	 */
-	public Set<ConfigurationProperty> getBoundProperties() {
-		return this.boundProperties;
-	}
+    /**
+     * Return the properties that were bound before validation failed.
+     * @return the boundProperties
+     */
+    public Set<ConfigurationProperty> getBoundProperties() {
+        return this.boundProperties;
+    }
 
-	public boolean hasErrors() {
-		return !this.errors.isEmpty();
-	}
+    public boolean hasErrors() {
+        return !this.errors.isEmpty();
+    }
 
-	/**
-	 * Return the list of all validation errors.
-	 * @return the errors
-	 */
-	public List<ObjectError> getAllErrors() {
-		return this.errors;
-	}
+    /**
+     * Return the list of all validation errors.
+     * @return the errors
+     */
+    public List<ObjectError> getAllErrors() {
+        return this.errors;
+    }
 
-	@Override
-	public Iterator<ObjectError> iterator() {
-		return this.errors.iterator();
-	}
-
+    @Override
+    public Iterator<ObjectError> iterator() {
+        return this.errors.iterator();
+    }
 }

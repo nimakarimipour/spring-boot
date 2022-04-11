@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,34 +30,34 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class LoggerGroups implements Iterable<LoggerGroup> {
 
-	private final Map<String, LoggerGroup> groups = new ConcurrentHashMap<>();
+    private final Map<String, LoggerGroup> groups = new ConcurrentHashMap<>();
 
-	public LoggerGroups() {
-	}
+    public LoggerGroups() {
+    }
 
-	public LoggerGroups(Map<String, List<String>> namesAndMembers) {
-		putAll(namesAndMembers);
-	}
+    public LoggerGroups(Map<String, List<String>> namesAndMembers) {
+        putAll(namesAndMembers);
+    }
 
-	public void putAll(Map<String, List<String>> namesAndMembers) {
-		namesAndMembers.forEach(this::put);
-	}
+    public void putAll(Map<String, List<String>> namesAndMembers) {
+        namesAndMembers.forEach(this::put);
+    }
 
-	private void put(String name, List<String> members) {
-		put(new LoggerGroup(name, members));
-	}
+    private void put(String name, List<String> members) {
+        put(new LoggerGroup(name, members));
+    }
 
-	private void put(LoggerGroup loggerGroup) {
-		this.groups.put(loggerGroup.getName(), loggerGroup);
-	}
+    private void put(LoggerGroup loggerGroup) {
+        this.groups.put(loggerGroup.getName(), loggerGroup);
+    }
 
-	public LoggerGroup get(String name) {
-		return this.groups.get(name);
-	}
+    @Nullable
+    public LoggerGroup get(String name) {
+        return this.groups.get(name);
+    }
 
-	@Override
-	public Iterator<LoggerGroup> iterator() {
-		return this.groups.values().iterator();
-	}
-
+    @Override
+    public Iterator<LoggerGroup> iterator() {
+        return this.groups.values().iterator();
+    }
 }

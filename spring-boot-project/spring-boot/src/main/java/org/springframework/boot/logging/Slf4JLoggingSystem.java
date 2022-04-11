@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.logging;
 
+import javax.annotation.Nullable;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
 import org.slf4j.bridge.SLF4JBridgeHandler;
-
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
@@ -34,86 +32,81 @@ import org.springframework.util.ClassUtils;
  */
 public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 
-	private static final String BRIDGE_HANDLER = "org.slf4j.bridge.SLF4JBridgeHandler";
+    private static final String BRIDGE_HANDLER = "org.slf4j.bridge.SLF4JBridgeHandler";
 
-	public Slf4JLoggingSystem(ClassLoader classLoader) {
-		super(classLoader);
-	}
+    public Slf4JLoggingSystem(ClassLoader classLoader) {
+        super(classLoader);
+    }
 
-	@Override
-	public void beforeInitialize() {
-		super.beforeInitialize();
-		configureJdkLoggingBridgeHandler();
-	}
+    @Override
+    public void beforeInitialize() {
+        super.beforeInitialize();
+        configureJdkLoggingBridgeHandler();
+    }
 
-	@Override
-	public void cleanUp() {
-		if (isBridgeHandlerAvailable()) {
-			removeJdkLoggingBridgeHandler();
-		}
-	}
+    @Override
+    public void cleanUp() {
+        if (isBridgeHandlerAvailable()) {
+            removeJdkLoggingBridgeHandler();
+        }
+    }
 
-	@Override
-	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
-		Assert.notNull(location, "Location must not be null");
-		if (initializationContext != null) {
-			applySystemProperties(initializationContext.getEnvironment(), logFile);
-		}
-	}
+    @Override
+    protected void loadConfiguration(LoggingInitializationContext initializationContext, @Nullable String location, @Nullable LogFile logFile) {
+        Assert.notNull(location, "Location must not be null");
+        if (initializationContext != null) {
+            applySystemProperties(initializationContext.getEnvironment(), logFile);
+        }
+    }
 
-	private void configureJdkLoggingBridgeHandler() {
-		try {
-			if (isBridgeJulIntoSlf4j()) {
-				removeJdkLoggingBridgeHandler();
-				SLF4JBridgeHandler.install();
-			}
-		}
-		catch (Throwable ex) {
-			// Ignore. No java.util.logging bridge is installed.
-		}
-	}
+    private void configureJdkLoggingBridgeHandler() {
+        try {
+            if (isBridgeJulIntoSlf4j()) {
+                removeJdkLoggingBridgeHandler();
+                SLF4JBridgeHandler.install();
+            }
+        } catch (Throwable ex) {
+            // Ignore. No java.util.logging bridge is installed.
+        }
+    }
 
-	/**
-	 * Return whether bridging JUL into SLF4J or not.
-	 * @return whether bridging JUL into SLF4J or not
-	 * @since 2.0.4
-	 */
-	protected final boolean isBridgeJulIntoSlf4j() {
-		return isBridgeHandlerAvailable() && isJulUsingASingleConsoleHandlerAtMost();
-	}
+    /**
+     * Return whether bridging JUL into SLF4J or not.
+     * @return whether bridging JUL into SLF4J or not
+     * @since 2.0.4
+     */
+    protected final boolean isBridgeJulIntoSlf4j() {
+        return isBridgeHandlerAvailable() && isJulUsingASingleConsoleHandlerAtMost();
+    }
 
-	protected final boolean isBridgeHandlerAvailable() {
-		return ClassUtils.isPresent(BRIDGE_HANDLER, getClassLoader());
-	}
+    protected final boolean isBridgeHandlerAvailable() {
+        return ClassUtils.isPresent(BRIDGE_HANDLER, getClassLoader());
+    }
 
-	private boolean isJulUsingASingleConsoleHandlerAtMost() {
-		Logger rootLogger = LogManager.getLogManager().getLogger("");
-		Handler[] handlers = rootLogger.getHandlers();
-		return handlers.length == 0 || (handlers.length == 1 && handlers[0] instanceof ConsoleHandler);
-	}
+    private boolean isJulUsingASingleConsoleHandlerAtMost() {
+        Logger rootLogger = LogManager.getLogManager().getLogger("");
+        Handler[] handlers = rootLogger.getHandlers();
+        return handlers.length == 0 || (handlers.length == 1 && handlers[0] instanceof ConsoleHandler);
+    }
 
-	private void removeJdkLoggingBridgeHandler() {
-		try {
-			removeDefaultRootHandler();
-			SLF4JBridgeHandler.uninstall();
-		}
-		catch (Throwable ex) {
-			// Ignore and continue
-		}
-	}
+    private void removeJdkLoggingBridgeHandler() {
+        try {
+            removeDefaultRootHandler();
+            SLF4JBridgeHandler.uninstall();
+        } catch (Throwable ex) {
+            // Ignore and continue
+        }
+    }
 
-	private void removeDefaultRootHandler() {
-		try {
-			Logger rootLogger = LogManager.getLogManager().getLogger("");
-			Handler[] handlers = rootLogger.getHandlers();
-			if (handlers.length == 1 && handlers[0] instanceof ConsoleHandler) {
-				rootLogger.removeHandler(handlers[0]);
-			}
-		}
-		catch (Throwable ex) {
-			// Ignore and continue
-		}
-	}
-
+    private void removeDefaultRootHandler() {
+        try {
+            Logger rootLogger = LogManager.getLogManager().getLogger("");
+            Handler[] handlers = rootLogger.getHandlers();
+            if (handlers.length == 1 && handlers[0] instanceof ConsoleHandler) {
+                rootLogger.removeHandler(handlers[0]);
+            }
+        } catch (Throwable ex) {
+            // Ignore and continue
+        }
+    }
 }

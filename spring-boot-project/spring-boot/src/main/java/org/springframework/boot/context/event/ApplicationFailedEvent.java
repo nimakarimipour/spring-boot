@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.event;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -29,38 +29,38 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SuppressWarnings("serial")
 public class ApplicationFailedEvent extends SpringApplicationEvent {
 
-	private final ConfigurableApplicationContext context;
+    @Nullable
+    private final ConfigurableApplicationContext context;
 
-	private final Throwable exception;
+    private final Throwable exception;
 
-	/**
-	 * Create a new {@link ApplicationFailedEvent} instance.
-	 * @param application the current application
-	 * @param args the arguments the application was running with
-	 * @param context the context that was being created (maybe null)
-	 * @param exception the exception that caused the error
-	 */
-	public ApplicationFailedEvent(SpringApplication application, String[] args, ConfigurableApplicationContext context,
-			Throwable exception) {
-		super(application, args);
-		this.context = context;
-		this.exception = exception;
-	}
+    /**
+     * Create a new {@link ApplicationFailedEvent} instance.
+     * @param application the current application
+     * @param args the arguments the application was running with
+     * @param context the context that was being created (maybe null)
+     * @param exception the exception that caused the error
+     */
+    public ApplicationFailedEvent(SpringApplication application, String[] args, @Nullable ConfigurableApplicationContext context, Throwable exception) {
+        super(application, args);
+        this.context = context;
+        this.exception = exception;
+    }
 
-	/**
-	 * Return the application context.
-	 * @return the context
-	 */
-	public ConfigurableApplicationContext getApplicationContext() {
-		return this.context;
-	}
+    /**
+     * Return the application context.
+     * @return the context
+     */
+    @Nullable
+    public ConfigurableApplicationContext getApplicationContext() {
+        return this.context;
+    }
 
-	/**
-	 * Return the exception that caused the failure.
-	 * @return the exception
-	 */
-	public Throwable getException() {
-		return this.exception;
-	}
-
+    /**
+     * Return the exception that caused the failure.
+     * @return the exception
+     */
+    public Throwable getException() {
+        return this.exception;
+    }
 }

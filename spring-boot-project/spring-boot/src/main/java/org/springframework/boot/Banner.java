@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
 import java.io.PrintStream;
-
 import org.springframework.core.env.Environment;
 
 /**
@@ -31,34 +30,30 @@ import org.springframework.core.env.Environment;
 @FunctionalInterface
 public interface Banner {
 
-	/**
-	 * Print the banner to the specified print stream.
-	 * @param environment the spring environment
-	 * @param sourceClass the source class for the application
-	 * @param out the output print stream
-	 */
-	void printBanner(Environment environment, Class<?> sourceClass, PrintStream out);
+    /**
+     * Print the banner to the specified print stream.
+     * @param environment the spring environment
+     * @param sourceClass the source class for the application
+     * @param out the output print stream
+     */
+    void printBanner(Environment environment, @Nullable Class<?> sourceClass, PrintStream out);
 
-	/**
-	 * An enumeration of possible values for configuring the Banner.
-	 */
-	enum Mode {
+    /**
+     * An enumeration of possible values for configuring the Banner.
+     */
+    enum Mode {
 
-		/**
-		 * Disable printing of the banner.
-		 */
-		OFF,
-
-		/**
-		 * Print the banner to System.out.
-		 */
-		CONSOLE,
-
-		/**
-		 * Print the banner to the log file.
-		 */
-		LOG
-
-	}
-
+        /**
+         * Disable printing of the banner.
+         */
+        OFF,
+        /**
+         * Print the banner to System.out.
+         */
+        CONSOLE,
+        /**
+         * Print the banner to the log file.
+         */
+        LOG
+    }
 }

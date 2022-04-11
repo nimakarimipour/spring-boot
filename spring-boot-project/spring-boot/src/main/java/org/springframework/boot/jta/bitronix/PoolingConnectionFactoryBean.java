@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.jta.bitronix;
 
+import javax.annotation.Nullable;
 import java.util.Properties;
-
 import javax.jms.JMSException;
 import javax.jms.XAConnection;
 import javax.jms.XAConnectionFactory;
 import javax.jms.XAJMSContext;
-
 import bitronix.tm.resource.common.ResourceBean;
 import bitronix.tm.resource.common.XAStatefulHolder;
 import bitronix.tm.resource.jms.PoolingConnectionFactory;
-
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -46,112 +43,113 @@ import org.springframework.util.StringUtils;
 @Deprecated
 @SuppressWarnings("serial")
 @ConfigurationProperties(prefix = "spring.jta.bitronix.connectionfactory")
-public class PoolingConnectionFactoryBean extends PoolingConnectionFactory
-		implements BeanNameAware, InitializingBean, DisposableBean {
+public class PoolingConnectionFactoryBean extends PoolingConnectionFactory implements BeanNameAware, InitializingBean, DisposableBean {
 
-	private static final ThreadLocal<PoolingConnectionFactoryBean> source = new ThreadLocal<>();
+    private static final ThreadLocal<PoolingConnectionFactoryBean> source = new ThreadLocal<>();
 
-	private String beanName;
+    @Nullable
+    private String beanName;
 
-	private XAConnectionFactory connectionFactory;
+    @Nullable
+    private XAConnectionFactory connectionFactory;
 
-	public PoolingConnectionFactoryBean() {
-		setMaxPoolSize(10);
-		setTestConnections(true);
-		setAutomaticEnlistingEnabled(true);
-		setAllowLocalTransactions(true);
-	}
+    public PoolingConnectionFactoryBean() {
+        setMaxPoolSize(10);
+        setTestConnections(true);
+        setAutomaticEnlistingEnabled(true);
+        setAllowLocalTransactions(true);
+    }
 
-	@Override
-	public synchronized void init() {
-		source.set(this);
-		try {
-			super.init();
-		}
-		finally {
-			source.remove();
-		}
-	}
+    @Override
+    public synchronized void init() {
+        source.set(this);
+        try {
+            super.init();
+        } finally {
+            source.remove();
+        }
+    }
 
-	@Override
-	public void setBeanName(String name) {
-		this.beanName = name;
-	}
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (!StringUtils.hasLength(getUniqueName())) {
-			setUniqueName(this.beanName);
-		}
-		init();
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (!StringUtils.hasLength(getUniqueName())) {
+            setUniqueName(this.beanName);
+        }
+        init();
+    }
 
-	@Override
-	public void destroy() throws Exception {
-		close();
-	}
+    @Override
+    public void destroy() throws Exception {
+        close();
+    }
 
-	/**
-	 * Set the {@link XAConnectionFactory} directly, instead of calling
-	 * {@link #setClassName(String)}.
-	 * @param connectionFactory the connection factory to use
-	 */
-	public void setConnectionFactory(XAConnectionFactory connectionFactory) {
-		this.connectionFactory = connectionFactory;
-		setClassName(DirectXAConnectionFactory.class.getName());
-		setDriverProperties(new Properties());
-	}
+    /**
+     * Set the {@link XAConnectionFactory} directly, instead of calling
+     * {@link #setClassName(String)}.
+     * @param connectionFactory the connection factory to use
+     */
+    public void setConnectionFactory(XAConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+        setClassName(DirectXAConnectionFactory.class.getName());
+        setDriverProperties(new Properties());
+    }
 
-	protected final XAConnectionFactory getConnectionFactory() {
-		return this.connectionFactory;
-	}
+    @Nullable
+    protected final XAConnectionFactory getConnectionFactory() {
+        return this.connectionFactory;
+    }
 
-	@Override
-	public XAStatefulHolder createPooledConnection(Object xaFactory, ResourceBean bean) throws Exception {
-		if (xaFactory instanceof DirectXAConnectionFactory) {
-			xaFactory = ((DirectXAConnectionFactory) xaFactory).getConnectionFactory();
-		}
-		return super.createPooledConnection(xaFactory, bean);
-	}
+    @Override
+    public XAStatefulHolder createPooledConnection(Object xaFactory, ResourceBean bean) throws Exception {
+        if (xaFactory instanceof DirectXAConnectionFactory) {
+            xaFactory = ((DirectXAConnectionFactory) xaFactory).getConnectionFactory();
+        }
+        return super.createPooledConnection(xaFactory, bean);
+    }
 
-	/**
-	 * A {@link XAConnectionFactory} implementation that delegates to the
-	 * {@link ThreadLocal} {@link PoolingConnectionFactoryBean}.
-	 *
-	 * @see PoolingConnectionFactoryBean#setConnectionFactory(XAConnectionFactory)
-	 */
-	public static class DirectXAConnectionFactory implements XAConnectionFactory {
+    /**
+     * A {@link XAConnectionFactory} implementation that delegates to the
+     * {@link ThreadLocal} {@link PoolingConnectionFactoryBean}.
+     *
+     * @see PoolingConnectionFactoryBean#setConnectionFactory(XAConnectionFactory)
+     */
+    public static class DirectXAConnectionFactory implements XAConnectionFactory {
 
-		private final XAConnectionFactory connectionFactory;
+        @Nullable
+        private final XAConnectionFactory connectionFactory;
 
-		public DirectXAConnectionFactory() {
-			this.connectionFactory = source.get().connectionFactory;
-		}
+        public DirectXAConnectionFactory() {
+            this.connectionFactory = source.get().connectionFactory;
+        }
 
-		@Override
-		public XAConnection createXAConnection() throws JMSException {
-			return this.connectionFactory.createXAConnection();
-		}
+        @Override
+        public XAConnection createXAConnection() throws JMSException {
+            return this.connectionFactory.createXAConnection();
+        }
 
-		@Override
-		public XAConnection createXAConnection(String userName, String password) throws JMSException {
-			return this.connectionFactory.createXAConnection(userName, password);
-		}
+        @Override
+        public XAConnection createXAConnection(String userName, String password) throws JMSException {
+            return this.connectionFactory.createXAConnection(userName, password);
+        }
 
-		public XAConnectionFactory getConnectionFactory() {
-			return this.connectionFactory;
-		}
+        @Nullable
+        public XAConnectionFactory getConnectionFactory() {
+            return this.connectionFactory;
+        }
 
-		@Override
-		public XAJMSContext createXAContext() {
-			return this.connectionFactory.createXAContext();
-		}
+        @Override
+        public XAJMSContext createXAContext() {
+            return this.connectionFactory.createXAContext();
+        }
 
-		@Override
-		public XAJMSContext createXAContext(String username, String password) {
-			return this.connectionFactory.createXAContext(username, password);
-		}
-
-	}
-
+        @Override
+        public XAJMSContext createXAContext(String username, String password) {
+            return this.connectionFactory.createXAContext(username, password);
+        }
+    }
 }

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 
@@ -29,24 +29,23 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 @FunctionalInterface
 interface AggregateElementBinder {
 
-	/**
-	 * Bind the given name to a target bindable.
-	 * @param name the name to bind
-	 * @param target the target bindable
-	 * @return a bound object or {@code null}
-	 */
-	default Object bind(ConfigurationPropertyName name, Bindable<?> target) {
-		return bind(name, target, null);
-	}
+    /**
+     * Bind the given name to a target bindable.
+     * @param name the name to bind
+     * @param target the target bindable
+     * @return a bound object or {@code null}
+     */
+    default Object bind(ConfigurationPropertyName name, Bindable<?> target) {
+        return bind(name, target, null);
+    }
 
-	/**
-	 * Bind the given name to a target bindable using optionally limited to a single
-	 * source.
-	 * @param name the name to bind
-	 * @param target the target bindable
-	 * @param source the source of the elements or {@code null} to use all sources
-	 * @return a bound object or {@code null}
-	 */
-	Object bind(ConfigurationPropertyName name, Bindable<?> target, ConfigurationPropertySource source);
-
+    /**
+     * Bind the given name to a target bindable using optionally limited to a single
+     * source.
+     * @param name the name to bind
+     * @param target the target bindable
+     * @param source the source of the elements or {@code null} to use all sources
+     * @return a bound object or {@code null}
+     */
+    Object bind(ConfigurationPropertyName name, Bindable<?> target, @Nullable ConfigurationPropertySource source);
 }

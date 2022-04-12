@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.embedded.undertow;
 
+import javax.annotation.Nullable;
 import java.io.Closeable;
-
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.GracefulShutdownHandler;
 
@@ -36,11 +35,10 @@ import io.undertow.server.handlers.GracefulShutdownHandler;
 @FunctionalInterface
 public interface HttpHandlerFactory {
 
-	/**
-	 * Create the {@link HttpHandler} instance that should be added.
-	 * @param next the next handler in the chain
-	 * @return the new HTTP handler instance
-	 */
-	HttpHandler getHandler(HttpHandler next);
-
+    /**
+     * Create the {@link HttpHandler} instance that should be added.
+     * @param next the next handler in the chain
+     * @return the new HTTP handler instance
+     */
+    HttpHandler getHandler(HttpHandler next);
 }

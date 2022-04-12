@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.origin;
+
+import javax.annotation.Nullable;
 
 /**
  * Interface to provide access to the origin of an item.
@@ -26,10 +27,9 @@ package org.springframework.boot.origin;
 @FunctionalInterface
 public interface OriginProvider {
 
-	/**
-	 * Return the source origin or {@code null} if the origin is not known.
-	 * @return the origin or {@code null}
-	 */
-	Origin getOrigin();
-
+    /**
+     * Return the source origin or {@code null} if the origin is not known.
+     * @return the origin or {@code null}
+     */
+    Origin getOrigin();
 }

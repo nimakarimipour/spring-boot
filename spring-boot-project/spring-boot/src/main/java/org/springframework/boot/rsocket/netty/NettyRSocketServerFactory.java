@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.rsocket.netty;
 
+import javax.annotation.Nullable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
 import io.rsocket.SocketAcceptor;
 import io.rsocket.transport.ServerTransport;
 import io.rsocket.transport.netty.server.CloseableChannel;
@@ -32,7 +31,6 @@ import io.rsocket.transport.netty.server.WebsocketServerTransport;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.server.HttpServer;
 import reactor.netty.tcp.TcpServer;
-
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.rsocket.server.ConfigurableRSocketServerFactory;
 import org.springframework.boot.rsocket.server.RSocketServer;
@@ -55,162 +53,165 @@ import org.springframework.util.unit.DataSize;
  */
 public class NettyRSocketServerFactory implements RSocketServerFactory, ConfigurableRSocketServerFactory {
 
-	private int port = 9898;
+    private int port = 9898;
 
-	private DataSize fragmentSize;
+    @Nullable
+    private DataSize fragmentSize;
 
-	private InetAddress address;
+    @Nullable
+    private InetAddress address;
 
-	private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
+    private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
 
-	private ReactorResourceFactory resourceFactory;
+    @Nullable
+    private ReactorResourceFactory resourceFactory;
 
-	private Duration lifecycleTimeout;
+    @Nullable
+    private Duration lifecycleTimeout;
 
-	private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
+    private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
 
-	private Ssl ssl;
+    @Nullable
+    private Ssl ssl;
 
-	private SslStoreProvider sslStoreProvider;
+    @Nullable
+    private SslStoreProvider sslStoreProvider;
 
-	@Override
-	public void setPort(int port) {
-		this.port = port;
-	}
+    @Override
+    public void setPort(int port) {
+        this.port = port;
+    }
 
-	@Override
-	public void setFragmentSize(DataSize fragmentSize) {
-		this.fragmentSize = fragmentSize;
-	}
+    @Override
+    public void setFragmentSize(DataSize fragmentSize) {
+        this.fragmentSize = fragmentSize;
+    }
 
-	@Override
-	public void setAddress(InetAddress address) {
-		this.address = address;
-	}
+    @Override
+    public void setAddress(InetAddress address) {
+        this.address = address;
+    }
 
-	@Override
-	public void setTransport(RSocketServer.Transport transport) {
-		this.transport = transport;
-	}
+    @Override
+    public void setTransport(RSocketServer.Transport transport) {
+        this.transport = transport;
+    }
 
-	@Override
-	public void setSsl(Ssl ssl) {
-		this.ssl = ssl;
-	}
+    @Override
+    public void setSsl(Ssl ssl) {
+        this.ssl = ssl;
+    }
 
-	@Override
-	public void setSslStoreProvider(SslStoreProvider sslStoreProvider) {
-		this.sslStoreProvider = sslStoreProvider;
-	}
+    @Override
+    public void setSslStoreProvider(SslStoreProvider sslStoreProvider) {
+        this.sslStoreProvider = sslStoreProvider;
+    }
 
-	/**
-	 * Set the {@link ReactorResourceFactory} to get the shared resources from.
-	 * @param resourceFactory the server resources
-	 */
-	public void setResourceFactory(ReactorResourceFactory resourceFactory) {
-		this.resourceFactory = resourceFactory;
-	}
+    /**
+     * Set the {@link ReactorResourceFactory} to get the shared resources from.
+     * @param resourceFactory the server resources
+     */
+    public void setResourceFactory(ReactorResourceFactory resourceFactory) {
+        this.resourceFactory = resourceFactory;
+    }
 
-	/**
-	 * Set {@link RSocketServerCustomizer}s that should be called to configure the
-	 * {@link io.rsocket.core.RSocketServer} while building the server. Calling this
-	 * method will replace any existing customizers.
-	 * @param rSocketServerCustomizers customizers to apply before the server starts
-	 * @since 2.2.7
-	 */
-	public void setRSocketServerCustomizers(Collection<? extends RSocketServerCustomizer> rSocketServerCustomizers) {
-		Assert.notNull(rSocketServerCustomizers, "RSocketServerCustomizers must not be null");
-		this.rSocketServerCustomizers = new ArrayList<>(rSocketServerCustomizers);
-	}
+    /**
+     * Set {@link RSocketServerCustomizer}s that should be called to configure the
+     * {@link io.rsocket.core.RSocketServer} while building the server. Calling this
+     * method will replace any existing customizers.
+     * @param rSocketServerCustomizers customizers to apply before the server starts
+     * @since 2.2.7
+     */
+    public void setRSocketServerCustomizers(Collection<? extends RSocketServerCustomizer> rSocketServerCustomizers) {
+        Assert.notNull(rSocketServerCustomizers, "RSocketServerCustomizers must not be null");
+        this.rSocketServerCustomizers = new ArrayList<>(rSocketServerCustomizers);
+    }
 
-	/**
-	 * Add {@link RSocketServerCustomizer}s that should be called to configure the
-	 * {@link io.rsocket.core.RSocketServer}.
-	 * @param rSocketServerCustomizers customizers to apply before the server starts
-	 * @since 2.2.7
-	 */
-	public void addRSocketServerCustomizers(RSocketServerCustomizer... rSocketServerCustomizers) {
-		Assert.notNull(rSocketServerCustomizers, "RSocketServerCustomizers must not be null");
-		this.rSocketServerCustomizers.addAll(Arrays.asList(rSocketServerCustomizers));
-	}
+    /**
+     * Add {@link RSocketServerCustomizer}s that should be called to configure the
+     * {@link io.rsocket.core.RSocketServer}.
+     * @param rSocketServerCustomizers customizers to apply before the server starts
+     * @since 2.2.7
+     */
+    public void addRSocketServerCustomizers(RSocketServerCustomizer... rSocketServerCustomizers) {
+        Assert.notNull(rSocketServerCustomizers, "RSocketServerCustomizers must not be null");
+        this.rSocketServerCustomizers.addAll(Arrays.asList(rSocketServerCustomizers));
+    }
 
-	/**
-	 * Set the maximum amount of time that should be waited when starting or stopping the
-	 * server.
-	 * @param lifecycleTimeout the lifecycle timeout
-	 */
-	public void setLifecycleTimeout(Duration lifecycleTimeout) {
-		this.lifecycleTimeout = lifecycleTimeout;
-	}
+    /**
+     * Set the maximum amount of time that should be waited when starting or stopping the
+     * server.
+     * @param lifecycleTimeout the lifecycle timeout
+     */
+    public void setLifecycleTimeout(Duration lifecycleTimeout) {
+        this.lifecycleTimeout = lifecycleTimeout;
+    }
 
-	@Override
-	public NettyRSocketServer create(SocketAcceptor socketAcceptor) {
-		ServerTransport<CloseableChannel> transport = createTransport();
-		io.rsocket.core.RSocketServer server = io.rsocket.core.RSocketServer.create(socketAcceptor);
-		configureServer(server);
-		Mono<CloseableChannel> starter = server.bind(transport);
-		return new NettyRSocketServer(starter, this.lifecycleTimeout);
-	}
+    @Override
+    public NettyRSocketServer create(SocketAcceptor socketAcceptor) {
+        ServerTransport<CloseableChannel> transport = createTransport();
+        io.rsocket.core.RSocketServer server = io.rsocket.core.RSocketServer.create(socketAcceptor);
+        configureServer(server);
+        Mono<CloseableChannel> starter = server.bind(transport);
+        return new NettyRSocketServer(starter, this.lifecycleTimeout);
+    }
 
-	private void configureServer(io.rsocket.core.RSocketServer server) {
-		PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-		map.from(this.fragmentSize).asInt(DataSize::toBytes).to(server::fragment);
-		this.rSocketServerCustomizers.forEach((customizer) -> customizer.customize(server));
-	}
+    private void configureServer(io.rsocket.core.RSocketServer server) {
+        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        map.from(this.fragmentSize).asInt(DataSize::toBytes).to(server::fragment);
+        this.rSocketServerCustomizers.forEach((customizer) -> customizer.customize(server));
+    }
 
-	private ServerTransport<CloseableChannel> createTransport() {
-		if (this.transport == RSocketServer.Transport.WEBSOCKET) {
-			return createWebSocketTransport();
-		}
-		return createTcpTransport();
-	}
+    private ServerTransport<CloseableChannel> createTransport() {
+        if (this.transport == RSocketServer.Transport.WEBSOCKET) {
+            return createWebSocketTransport();
+        }
+        return createTcpTransport();
+    }
 
-	private ServerTransport<CloseableChannel> createWebSocketTransport() {
-		HttpServer httpServer = HttpServer.create();
-		if (this.resourceFactory != null) {
-			httpServer = httpServer.runOn(this.resourceFactory.getLoopResources());
-		}
-		if (this.ssl != null && this.ssl.isEnabled()) {
-			SslServerCustomizer sslServerCustomizer = new SslServerCustomizer(this.ssl, null, this.sslStoreProvider);
-			httpServer = sslServerCustomizer.apply(httpServer);
-		}
-		return WebsocketServerTransport.create(httpServer.bindAddress(this::getListenAddress));
-	}
+    private ServerTransport<CloseableChannel> createWebSocketTransport() {
+        HttpServer httpServer = HttpServer.create();
+        if (this.resourceFactory != null) {
+            httpServer = httpServer.runOn(this.resourceFactory.getLoopResources());
+        }
+        if (this.ssl != null && this.ssl.isEnabled()) {
+            SslServerCustomizer sslServerCustomizer = new SslServerCustomizer(this.ssl, null, this.sslStoreProvider);
+            httpServer = sslServerCustomizer.apply(httpServer);
+        }
+        return WebsocketServerTransport.create(httpServer.bindAddress(this::getListenAddress));
+    }
 
-	private ServerTransport<CloseableChannel> createTcpTransport() {
-		TcpServer tcpServer = TcpServer.create();
-		if (this.resourceFactory != null) {
-			tcpServer = tcpServer.runOn(this.resourceFactory.getLoopResources());
-		}
-		if (this.ssl != null && this.ssl.isEnabled()) {
-			TcpSslServerCustomizer sslServerCustomizer = new TcpSslServerCustomizer(this.ssl, this.sslStoreProvider);
-			tcpServer = sslServerCustomizer.apply(tcpServer);
-		}
-		return TcpServerTransport.create(tcpServer.bindAddress(this::getListenAddress));
-	}
+    private ServerTransport<CloseableChannel> createTcpTransport() {
+        TcpServer tcpServer = TcpServer.create();
+        if (this.resourceFactory != null) {
+            tcpServer = tcpServer.runOn(this.resourceFactory.getLoopResources());
+        }
+        if (this.ssl != null && this.ssl.isEnabled()) {
+            TcpSslServerCustomizer sslServerCustomizer = new TcpSslServerCustomizer(this.ssl, this.sslStoreProvider);
+            tcpServer = sslServerCustomizer.apply(tcpServer);
+        }
+        return TcpServerTransport.create(tcpServer.bindAddress(this::getListenAddress));
+    }
 
-	private InetSocketAddress getListenAddress() {
-		if (this.address != null) {
-			return new InetSocketAddress(this.address.getHostAddress(), this.port);
-		}
-		return new InetSocketAddress(this.port);
-	}
+    private InetSocketAddress getListenAddress() {
+        if (this.address != null) {
+            return new InetSocketAddress(this.address.getHostAddress(), this.port);
+        }
+        return new InetSocketAddress(this.port);
+    }
 
-	private static final class TcpSslServerCustomizer extends SslServerCustomizer {
+    private static final class TcpSslServerCustomizer extends SslServerCustomizer {
 
-		private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
-			super(ssl, null, sslStoreProvider);
-		}
+        private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+            super(ssl, null, sslStoreProvider);
+        }
 
-		private TcpServer apply(TcpServer server) {
-			try {
-				return server.secure((contextSpec) -> contextSpec.sslContext(getContextBuilder()));
-			}
-			catch (Exception ex) {
-				throw new IllegalStateException(ex);
-			}
-		}
-
-	}
-
+        private TcpServer apply(TcpServer server) {
+            try {
+                return server.secure((contextSpec) -> contextSpec.sslContext(getContextBuilder()));
+            } catch (Exception ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
+    }
 }

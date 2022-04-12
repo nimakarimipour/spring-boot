@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.diagnostics;
+
+import javax.annotation.Nullable;
 
 /**
  * A {@code FailureAnalyzer} is used to analyze a failure and provide diagnostic
@@ -26,12 +27,11 @@ package org.springframework.boot.diagnostics;
 @FunctionalInterface
 public interface FailureAnalyzer {
 
-	/**
-	 * Returns an analysis of the given {@code failure}, or {@code null} if no analysis
-	 * was possible.
-	 * @param failure the failure
-	 * @return the analysis or {@code null}
-	 */
-	FailureAnalysis analyze(Throwable failure);
-
+    /**
+     * Returns an analysis of the given {@code failure}, or {@code null} if no analysis
+     * was possible.
+     * @param failure the failure
+     * @return the analysis or {@code null}
+     */
+    FailureAnalysis analyze(Throwable failure);
 }

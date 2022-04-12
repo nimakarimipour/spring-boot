@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.client;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.springframework.boot.util.LambdaSafe;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequest;
@@ -35,29 +34,26 @@ import org.springframework.http.client.ClientHttpRequestInitializer;
  */
 class RestTemplateBuilderClientHttpRequestInitializer implements ClientHttpRequestInitializer {
 
-	private final BasicAuthentication basicAuthentication;
+    private final BasicAuthentication basicAuthentication;
 
-	private final Map<String, List<String>> defaultHeaders;
+    private final Map<String, List<String>> defaultHeaders;
 
-	private final Set<RestTemplateRequestCustomizer<?>> requestCustomizers;
+    private final Set<RestTemplateRequestCustomizer<?>> requestCustomizers;
 
-	RestTemplateBuilderClientHttpRequestInitializer(BasicAuthentication basicAuthentication,
-			Map<String, List<String>> defaultHeaders, Set<RestTemplateRequestCustomizer<?>> requestCustomizers) {
-		this.basicAuthentication = basicAuthentication;
-		this.defaultHeaders = defaultHeaders;
-		this.requestCustomizers = requestCustomizers;
-	}
+    RestTemplateBuilderClientHttpRequestInitializer(BasicAuthentication basicAuthentication, Map<String, List<String>> defaultHeaders, Set<RestTemplateRequestCustomizer<?>> requestCustomizers) {
+        this.basicAuthentication = basicAuthentication;
+        this.defaultHeaders = defaultHeaders;
+        this.requestCustomizers = requestCustomizers;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void initialize(ClientHttpRequest request) {
-		HttpHeaders headers = request.getHeaders();
-		if (this.basicAuthentication != null) {
-			this.basicAuthentication.applyTo(headers);
-		}
-		this.defaultHeaders.forEach(headers::putIfAbsent);
-		LambdaSafe.callbacks(RestTemplateRequestCustomizer.class, this.requestCustomizers, request)
-				.invoke((customizer) -> customizer.customize(request));
-	}
-
+    @Override
+    @SuppressWarnings("unchecked")
+    public void initialize(ClientHttpRequest request) {
+        HttpHeaders headers = request.getHeaders();
+        if (this.basicAuthentication != null) {
+            this.basicAuthentication.applyTo(headers);
+        }
+        this.defaultHeaders.forEach(headers::putIfAbsent);
+        LambdaSafe.callbacks(RestTemplateRequestCustomizer.class, this.requestCustomizers, request).invoke((customizer) -> customizer.customize(request));
+    }
 }

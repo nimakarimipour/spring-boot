@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -44,45 +44,44 @@ import java.util.jar.JarFile;
  */
 public final class SpringBootVersion {
 
-	private SpringBootVersion() {
-	}
+    private SpringBootVersion() {
+    }
 
-	/**
-	 * Return the full version string of the present Spring Boot codebase, or {@code null}
-	 * if it cannot be determined.
-	 * @return the version of Spring Boot or {@code null}
-	 * @see Package#getImplementationVersion()
-	 */
-	public static String getVersion() {
-		return determineSpringBootVersion();
-	}
+    /**
+     * Return the full version string of the present Spring Boot codebase, or {@code null}
+     * if it cannot be determined.
+     * @return the version of Spring Boot or {@code null}
+     * @see Package#getImplementationVersion()
+     */
+    public static String getVersion() {
+        return determineSpringBootVersion();
+    }
 
-	private static String determineSpringBootVersion() {
-		String implementationVersion = SpringBootVersion.class.getPackage().getImplementationVersion();
-		if (implementationVersion != null) {
-			return implementationVersion;
-		}
-		CodeSource codeSource = SpringBootVersion.class.getProtectionDomain().getCodeSource();
-		if (codeSource == null) {
-			return null;
-		}
-		URL codeSourceLocation = codeSource.getLocation();
-		try {
-			URLConnection connection = codeSourceLocation.openConnection();
-			if (connection instanceof JarURLConnection) {
-				return getImplementationVersion(((JarURLConnection) connection).getJarFile());
-			}
-			try (JarFile jarFile = new JarFile(new File(codeSourceLocation.toURI()))) {
-				return getImplementationVersion(jarFile);
-			}
-		}
-		catch (Exception ex) {
-			return null;
-		}
-	}
+    @Nullable
+    private static String determineSpringBootVersion() {
+        String implementationVersion = SpringBootVersion.class.getPackage().getImplementationVersion();
+        if (implementationVersion != null) {
+            return implementationVersion;
+        }
+        CodeSource codeSource = SpringBootVersion.class.getProtectionDomain().getCodeSource();
+        if (codeSource == null) {
+            return null;
+        }
+        URL codeSourceLocation = codeSource.getLocation();
+        try {
+            URLConnection connection = codeSourceLocation.openConnection();
+            if (connection instanceof JarURLConnection) {
+                return getImplementationVersion(((JarURLConnection) connection).getJarFile());
+            }
+            try (JarFile jarFile = new JarFile(new File(codeSourceLocation.toURI()))) {
+                return getImplementationVersion(jarFile);
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
-	private static String getImplementationVersion(JarFile jarFile) throws IOException {
-		return jarFile.getManifest().getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION);
-	}
-
+    private static String getImplementationVersion(JarFile jarFile) throws IOException {
+        return jarFile.getManifest().getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+    }
 }

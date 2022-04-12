@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.diagnostics;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.SpringBootExceptionReporter;
@@ -49,94 +47,92 @@ import org.springframework.util.ReflectionUtils;
  */
 final class FailureAnalyzers implements SpringBootExceptionReporter {
 
-	private static final Log logger = LogFactory.getLog(FailureAnalyzers.class);
+    private static final Log logger = LogFactory.getLog(FailureAnalyzers.class);
 
-	private final ClassLoader classLoader;
+    private final ClassLoader classLoader;
 
-	private final List<FailureAnalyzer> analyzers;
+    private final List<FailureAnalyzer> analyzers;
 
-	FailureAnalyzers(ConfigurableApplicationContext context) {
-		this(context, null);
-	}
+    FailureAnalyzers(ConfigurableApplicationContext context) {
+        this(context, null);
+    }
 
-	FailureAnalyzers(ConfigurableApplicationContext context, ClassLoader classLoader) {
-		this.classLoader = (classLoader != null) ? classLoader : getClassLoader(context);
-		this.analyzers = loadFailureAnalyzers(context, this.classLoader);
-	}
+    FailureAnalyzers(ConfigurableApplicationContext context, @Nullable ClassLoader classLoader) {
+        this.classLoader = (classLoader != null) ? classLoader : getClassLoader(context);
+        this.analyzers = loadFailureAnalyzers(context, this.classLoader);
+    }
 
-	private ClassLoader getClassLoader(ConfigurableApplicationContext context) {
-		return (context != null) ? context.getClassLoader() : null;
-	}
+    @Nullable
+    private ClassLoader getClassLoader(ConfigurableApplicationContext context) {
+        return (context != null) ? context.getClassLoader() : null;
+    }
 
-	private List<FailureAnalyzer> loadFailureAnalyzers(ConfigurableApplicationContext context,
-			ClassLoader classLoader) {
-		List<String> classNames = SpringFactoriesLoader.loadFactoryNames(FailureAnalyzer.class, classLoader);
-		List<FailureAnalyzer> analyzers = new ArrayList<>();
-		for (String className : classNames) {
-			try {
-				FailureAnalyzer analyzer = createAnalyzer(context, className);
-				if (analyzer != null) {
-					analyzers.add(analyzer);
-				}
-			}
-			catch (Throwable ex) {
-				logger.trace(LogMessage.format("Failed to load %s", className), ex);
-			}
-		}
-		AnnotationAwareOrderComparator.sort(analyzers);
-		return analyzers;
-	}
+    private List<FailureAnalyzer> loadFailureAnalyzers(ConfigurableApplicationContext context, ClassLoader classLoader) {
+        List<String> classNames = SpringFactoriesLoader.loadFactoryNames(FailureAnalyzer.class, classLoader);
+        List<FailureAnalyzer> analyzers = new ArrayList<>();
+        for (String className : classNames) {
+            try {
+                FailureAnalyzer analyzer = createAnalyzer(context, className);
+                if (analyzer != null) {
+                    analyzers.add(analyzer);
+                }
+            } catch (Throwable ex) {
+                logger.trace(LogMessage.format("Failed to load %s", className), ex);
+            }
+        }
+        AnnotationAwareOrderComparator.sort(analyzers);
+        return analyzers;
+    }
 
-	private FailureAnalyzer createAnalyzer(ConfigurableApplicationContext context, String className) throws Exception {
-		Constructor<?> constructor = ClassUtils.forName(className, this.classLoader).getDeclaredConstructor();
-		ReflectionUtils.makeAccessible(constructor);
-		FailureAnalyzer analyzer = (FailureAnalyzer) constructor.newInstance();
-		if (analyzer instanceof BeanFactoryAware || analyzer instanceof EnvironmentAware) {
-			if (context == null) {
-				logger.trace(LogMessage.format("Skipping %s due to missing context", className));
-				return null;
-			}
-			if (analyzer instanceof BeanFactoryAware) {
-				((BeanFactoryAware) analyzer).setBeanFactory(context.getBeanFactory());
-			}
-			if (analyzer instanceof EnvironmentAware) {
-				((EnvironmentAware) analyzer).setEnvironment(context.getEnvironment());
-			}
-		}
-		return analyzer;
-	}
+    @Nullable
+    private FailureAnalyzer createAnalyzer(ConfigurableApplicationContext context, String className) throws Exception {
+        Constructor<?> constructor = ClassUtils.forName(className, this.classLoader).getDeclaredConstructor();
+        ReflectionUtils.makeAccessible(constructor);
+        FailureAnalyzer analyzer = (FailureAnalyzer) constructor.newInstance();
+        if (analyzer instanceof BeanFactoryAware || analyzer instanceof EnvironmentAware) {
+            if (context == null) {
+                logger.trace(LogMessage.format("Skipping %s due to missing context", className));
+                return null;
+            }
+            if (analyzer instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) analyzer).setBeanFactory(context.getBeanFactory());
+            }
+            if (analyzer instanceof EnvironmentAware) {
+                ((EnvironmentAware) analyzer).setEnvironment(context.getEnvironment());
+            }
+        }
+        return analyzer;
+    }
 
-	@Override
-	public boolean reportException(Throwable failure) {
-		FailureAnalysis analysis = analyze(failure, this.analyzers);
-		return report(analysis, this.classLoader);
-	}
+    @Override
+    public boolean reportException(Throwable failure) {
+        FailureAnalysis analysis = analyze(failure, this.analyzers);
+        return report(analysis, this.classLoader);
+    }
 
-	private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
-		for (FailureAnalyzer analyzer : analyzers) {
-			try {
-				FailureAnalysis analysis = analyzer.analyze(failure);
-				if (analysis != null) {
-					return analysis;
-				}
-			}
-			catch (Throwable ex) {
-				logger.debug(LogMessage.format("FailureAnalyzer %s failed", analyzer), ex);
-			}
-		}
-		return null;
-	}
+    @Nullable
+    private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
+        for (FailureAnalyzer analyzer : analyzers) {
+            try {
+                FailureAnalysis analysis = analyzer.analyze(failure);
+                if (analysis != null) {
+                    return analysis;
+                }
+            } catch (Throwable ex) {
+                logger.debug(LogMessage.format("FailureAnalyzer %s failed", analyzer), ex);
+            }
+        }
+        return null;
+    }
 
-	private boolean report(FailureAnalysis analysis, ClassLoader classLoader) {
-		List<FailureAnalysisReporter> reporters = SpringFactoriesLoader.loadFactories(FailureAnalysisReporter.class,
-				classLoader);
-		if (analysis == null || reporters.isEmpty()) {
-			return false;
-		}
-		for (FailureAnalysisReporter reporter : reporters) {
-			reporter.report(analysis);
-		}
-		return true;
-	}
-
+    private boolean report(FailureAnalysis analysis, ClassLoader classLoader) {
+        List<FailureAnalysisReporter> reporters = SpringFactoriesLoader.loadFactories(FailureAnalysisReporter.class, classLoader);
+        if (analysis == null || reporters.isEmpty()) {
+            return false;
+        }
+        for (FailureAnalysisReporter reporter : reporters) {
+            reporter.report(analysis);
+        }
+        return true;
+    }
 }

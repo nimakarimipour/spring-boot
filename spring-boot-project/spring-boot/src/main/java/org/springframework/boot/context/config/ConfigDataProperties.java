@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.bind.BindContext;
 import org.springframework.boot.context.properties.bind.BindHandler;
@@ -38,155 +37,150 @@ import org.springframework.util.ObjectUtils;
  */
 class ConfigDataProperties {
 
-	private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
+    @Nullable
+    private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
 
-	private static final ConfigurationPropertyName LEGACY_PROFILES_NAME = ConfigurationPropertyName
-			.of("spring.profiles");
+    @Nullable
+    private static final ConfigurationPropertyName LEGACY_PROFILES_NAME = ConfigurationPropertyName.of("spring.profiles");
 
-	private static final Bindable<ConfigDataProperties> BINDABLE_PROPERTIES = Bindable.of(ConfigDataProperties.class);
+    private static final Bindable<ConfigDataProperties> BINDABLE_PROPERTIES = Bindable.of(ConfigDataProperties.class);
 
-	private static final Bindable<String[]> BINDABLE_STRING_ARRAY = Bindable.of(String[].class);
+    private static final Bindable<String[]> BINDABLE_STRING_ARRAY = Bindable.of(String[].class);
 
-	private final List<ConfigDataLocation> imports;
+    private final List<ConfigDataLocation> imports;
 
-	private final Activate activate;
+    @Nullable
+    private final Activate activate;
 
-	/**
-	 * Create a new {@link ConfigDataProperties} instance.
-	 * @param imports the imports requested
-	 * @param activate the activate properties
-	 */
-	ConfigDataProperties(@Name("import") List<ConfigDataLocation> imports, Activate activate) {
-		this(imports, activate, Collections.emptyList());
-	}
+    /**
+     * Create a new {@link ConfigDataProperties} instance.
+     * @param imports the imports requested
+     * @param activate the activate properties
+     */
+    ConfigDataProperties(@Name("import") @Nullable List<ConfigDataLocation> imports, @Nullable Activate activate) {
+        this(imports, activate, Collections.emptyList());
+    }
 
-	private ConfigDataProperties(List<ConfigDataLocation> imports, Activate activate,
-			List<ConfigurationProperty> boundProperties) {
-		this.imports = (imports != null) ? imports : Collections.emptyList();
-		this.activate = activate;
-	}
+    private ConfigDataProperties(@Nullable List<ConfigDataLocation> imports, @Nullable Activate activate, List<ConfigurationProperty> boundProperties) {
+        this.imports = (imports != null) ? imports : Collections.emptyList();
+        this.activate = activate;
+    }
 
-	/**
-	 * Return any additional imports requested.
-	 * @return the requested imports
-	 */
-	List<ConfigDataLocation> getImports() {
-		return this.imports;
-	}
+    /**
+     * Return any additional imports requested.
+     * @return the requested imports
+     */
+    List<ConfigDataLocation> getImports() {
+        return this.imports;
+    }
 
-	/**
-	 * Return {@code true} if the properties indicate that the config data property source
-	 * is active for the given activation context.
-	 * @param activationContext the activation context
-	 * @return {@code true} if the config data property source is active
-	 */
-	boolean isActive(ConfigDataActivationContext activationContext) {
-		return this.activate == null || this.activate.isActive(activationContext);
-	}
+    /**
+     * Return {@code true} if the properties indicate that the config data property source
+     * is active for the given activation context.
+     * @param activationContext the activation context
+     * @return {@code true} if the config data property source is active
+     */
+    boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
+        return this.activate == null || this.activate.isActive(activationContext);
+    }
 
-	/**
-	 * Return a new variant of these properties without any imports.
-	 * @return a new {@link ConfigDataProperties} instance
-	 */
-	ConfigDataProperties withoutImports() {
-		return new ConfigDataProperties(null, this.activate);
-	}
+    /**
+     * Return a new variant of these properties without any imports.
+     * @return a new {@link ConfigDataProperties} instance
+     */
+    ConfigDataProperties withoutImports() {
+        return new ConfigDataProperties(null, this.activate);
+    }
 
-	ConfigDataProperties withLegacyProfiles(String[] legacyProfiles, ConfigurationProperty property) {
-		if (this.activate != null && !ObjectUtils.isEmpty(this.activate.onProfile)) {
-			throw new InvalidConfigDataPropertyException(property, NAME.append("activate.on-profile"), null);
-		}
-		return new ConfigDataProperties(this.imports, new Activate(this.activate.onCloudPlatform, legacyProfiles));
-	}
+    ConfigDataProperties withLegacyProfiles(String[] legacyProfiles, @Nullable ConfigurationProperty property) {
+        if (this.activate != null && !ObjectUtils.isEmpty(this.activate.onProfile)) {
+            throw new InvalidConfigDataPropertyException(property, NAME.append("activate.on-profile"), null);
+        }
+        return new ConfigDataProperties(this.imports, new Activate(this.activate.onCloudPlatform, legacyProfiles));
+    }
 
-	/**
-	 * Factory method used to create {@link ConfigDataProperties} from the given
-	 * {@link Binder}.
-	 * @param binder the binder used to bind the properties
-	 * @return a {@link ConfigDataProperties} instance or {@code null}
-	 */
-	static ConfigDataProperties get(Binder binder) {
-		LegacyProfilesBindHandler legacyProfilesBindHandler = new LegacyProfilesBindHandler();
-		String[] legacyProfiles = binder.bind(LEGACY_PROFILES_NAME, BINDABLE_STRING_ARRAY, legacyProfilesBindHandler)
-				.orElse(null);
-		ConfigDataProperties properties = binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler())
-				.orElse(null);
-		if (!ObjectUtils.isEmpty(legacyProfiles)) {
-			properties = (properties != null)
-					? properties.withLegacyProfiles(legacyProfiles, legacyProfilesBindHandler.getProperty())
-					: new ConfigDataProperties(null, new Activate(null, legacyProfiles));
-		}
-		return properties;
-	}
+    /**
+     * Factory method used to create {@link ConfigDataProperties} from the given
+     * {@link Binder}.
+     * @param binder the binder used to bind the properties
+     * @return a {@link ConfigDataProperties} instance or {@code null}
+     */
+    static ConfigDataProperties get(Binder binder) {
+        LegacyProfilesBindHandler legacyProfilesBindHandler = new LegacyProfilesBindHandler();
+        String[] legacyProfiles = binder.bind(LEGACY_PROFILES_NAME, BINDABLE_STRING_ARRAY, legacyProfilesBindHandler).orElse(null);
+        ConfigDataProperties properties = binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler()).orElse(null);
+        if (!ObjectUtils.isEmpty(legacyProfiles)) {
+            properties = (properties != null) ? properties.withLegacyProfiles(legacyProfiles, legacyProfilesBindHandler.getProperty()) : new ConfigDataProperties(null, new Activate(null, legacyProfiles));
+        }
+        return properties;
+    }
 
-	/**
-	 * {@link BindHandler} used to check for legacy processing properties.
-	 */
-	private static class LegacyProfilesBindHandler implements BindHandler {
+    /**
+     * {@link BindHandler} used to check for legacy processing properties.
+     */
+    private static class LegacyProfilesBindHandler implements BindHandler {
 
-		private ConfigurationProperty property;
+        @Nullable
+        private ConfigurationProperty property;
 
-		@Override
-		public Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context,
-				Object result) {
-			this.property = context.getConfigurationProperty();
-			return result;
-		}
+        @Override
+        public Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+            this.property = context.getConfigurationProperty();
+            return result;
+        }
 
-		ConfigurationProperty getProperty() {
-			return this.property;
-		}
+        @Nullable
+        ConfigurationProperty getProperty() {
+            return this.property;
+        }
+    }
 
-	}
+    /**
+     * Activate properties used to determine when a config data property source is active.
+     */
+    static class Activate {
 
-	/**
-	 * Activate properties used to determine when a config data property source is active.
-	 */
-	static class Activate {
+        @Nullable
+        private final CloudPlatform onCloudPlatform;
 
-		private final CloudPlatform onCloudPlatform;
+        private final String[] onProfile;
 
-		private final String[] onProfile;
+        /**
+         * Create a new {@link Activate} instance.
+         * @param onCloudPlatform the cloud platform required for activation
+         * @param onProfile the profile expression required for activation
+         */
+        Activate(@Nullable CloudPlatform onCloudPlatform, String[] onProfile) {
+            this.onProfile = onProfile;
+            this.onCloudPlatform = onCloudPlatform;
+        }
 
-		/**
-		 * Create a new {@link Activate} instance.
-		 * @param onCloudPlatform the cloud platform required for activation
-		 * @param onProfile the profile expression required for activation
-		 */
-		Activate(CloudPlatform onCloudPlatform, String[] onProfile) {
-			this.onProfile = onProfile;
-			this.onCloudPlatform = onCloudPlatform;
-		}
+        /**
+         * Return {@code true} if the properties indicate that the config data property
+         * source is active for the given activation context.
+         * @param activationContext the activation context
+         * @return {@code true} if the config data property source is active
+         */
+        boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
+            if (activationContext == null) {
+                return false;
+            }
+            boolean activate = true;
+            activate = activate && isActive(activationContext.getCloudPlatform());
+            activate = activate && isActive(activationContext.getProfiles());
+            return activate;
+        }
 
-		/**
-		 * Return {@code true} if the properties indicate that the config data property
-		 * source is active for the given activation context.
-		 * @param activationContext the activation context
-		 * @return {@code true} if the config data property source is active
-		 */
-		boolean isActive(ConfigDataActivationContext activationContext) {
-			if (activationContext == null) {
-				return false;
-			}
-			boolean activate = true;
-			activate = activate && isActive(activationContext.getCloudPlatform());
-			activate = activate && isActive(activationContext.getProfiles());
-			return activate;
-		}
+        private boolean isActive(@Nullable CloudPlatform cloudPlatform) {
+            return this.onCloudPlatform == null || this.onCloudPlatform == cloudPlatform;
+        }
 
-		private boolean isActive(CloudPlatform cloudPlatform) {
-			return this.onCloudPlatform == null || this.onCloudPlatform == cloudPlatform;
-		}
+        private boolean isActive(@Nullable Profiles profiles) {
+            return ObjectUtils.isEmpty(this.onProfile) || (profiles != null && matchesActiveProfiles(profiles::isAccepted));
+        }
 
-		private boolean isActive(Profiles profiles) {
-			return ObjectUtils.isEmpty(this.onProfile)
-					|| (profiles != null && matchesActiveProfiles(profiles::isAccepted));
-		}
-
-		private boolean matchesActiveProfiles(Predicate<String> activeProfiles) {
-			return org.springframework.core.env.Profiles.of(this.onProfile).matches(activeProfiles);
-		}
-
-	}
-
+        private boolean matchesActiveProfiles(Predicate<String> activeProfiles) {
+            return org.springframework.core.env.Profiles.of(this.onProfile).matches(activeProfiles);
+        }
+    }
 }

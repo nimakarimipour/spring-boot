@@ -205,7 +205,7 @@ tasks.withType(JavaCompile) {
 		options.errorprone {
 			check("NullAway", CheckSeverity.ERROR)
 			check("TypeAnnotatorScanner", CheckSeverity.ERROR)
-			check("ExhaustiveFixSerializer", CheckSeverity.ERROR)
+			check("ExhaustiveFixSerializer", CheckSeverity.OFF)
 			option("NullAway:AnnotatedPackages", "org.springframework.boot")
 			option("NullAway:SerializeFixMetadata", "true")
 			option("NullAway:FixSerializationConfigPath", "/tmp/NullAwayFix/nullaway.xml")

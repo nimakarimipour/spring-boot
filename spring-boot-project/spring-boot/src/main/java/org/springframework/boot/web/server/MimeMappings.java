@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  * @author Guirong Hu
  * @since 2.0.0
  */
-public sealed class MimeMappings implements Iterable<MimeMappings.Mapping> {
+public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Default mime mapping commonly used.

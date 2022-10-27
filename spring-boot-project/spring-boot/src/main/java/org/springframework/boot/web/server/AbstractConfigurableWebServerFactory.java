@@ -47,6 +47,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 
     private Set<ErrorPage> errorPages = new LinkedHashSet<>();
 
+    @SuppressWarnings("NullAway.Init")
     private Ssl ssl;
 
     @Nullable
@@ -55,6 +56,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
     @Nullable
     private Http2 http2;
 
+    @SuppressWarnings("NullAway.Init")
     private Compression compression;
 
     @Nullable

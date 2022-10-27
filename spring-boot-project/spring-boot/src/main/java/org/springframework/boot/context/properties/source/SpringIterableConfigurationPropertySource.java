@@ -188,11 +188,13 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
         private final boolean trackDescendants;
 
+        @SuppressWarnings("NullAway.Init")
         private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
 
         @Nullable
         private volatile Map<String, ConfigurationPropertyName> reverseMappings;
 
+        @SuppressWarnings("NullAway.Init")
         private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
         @Nullable

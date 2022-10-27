@@ -15,6 +15,7 @@
  */
 package org.springframework.boot;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -157,6 +158,7 @@ class BeanDefinitionLoader {
         throw new IllegalArgumentException("Invalid source type " + source.getClass());
     }
 
+    @NullUnmarked
     private void load(Class<?> source) {
         if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
             // Any GroovyLoaders added in beans{} DSL can contribute beans here

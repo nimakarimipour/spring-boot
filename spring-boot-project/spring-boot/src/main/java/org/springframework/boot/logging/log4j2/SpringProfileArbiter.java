@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.logging.log4j2;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -94,6 +95,7 @@ final class SpringProfileArbiter implements Arbiter {
 
         @Override
         @Nullable
+        @NullUnmarked
         public SpringProfileArbiter build() {
             Environment environment = Log4J2LoggingSystem.getEnvironment(this.loggerContext);
             if (environment == null) {

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.servlet;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -52,6 +53,7 @@ class WebFilterHandler extends ServletComponentHandler {
         registry.registerBeanDefinition(name, builder.getBeanDefinition());
     }
 
+    @NullUnmarked
     private EnumSet<DispatcherType> extractDispatcherTypes(Map<String, Object> attributes) {
         DispatcherType[] dispatcherTypes = (DispatcherType[]) attributes.get("dispatcherTypes");
         if (dispatcherTypes.length == 0) {

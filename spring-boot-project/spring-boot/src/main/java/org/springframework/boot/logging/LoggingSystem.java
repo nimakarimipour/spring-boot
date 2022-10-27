@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.logging;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
@@ -149,6 +150,7 @@ public abstract class LoggingSystem {
      * @param classLoader the classloader
      * @return the logging system
      */
+    @NullUnmarked
     public static LoggingSystem get(ClassLoader classLoader) {
         String loggingSystemClassName = System.getProperty(SYSTEM_PROPERTY);
         if (StringUtils.hasLength(loggingSystemClassName)) {

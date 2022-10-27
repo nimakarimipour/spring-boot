@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.bind;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -145,6 +146,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
             return candidate.getParameterCount() == 0;
         }
 
+        @NullUnmarked
         private void handleValueObjectProperties(ReflectionHints hints) {
             for (int i = 0; i < this.bindConstructor.getParameterCount(); i++) {
                 String propertyName = this.bindConstructor.getParameters()[i].getName();
@@ -153,6 +155,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
             }
         }
 
+        @NullUnmarked
         private void handleJavaBeanProperties(ReflectionHints hints) {
             for (PropertyDescriptor propertyDescriptor : this.beanInfo.getPropertyDescriptors()) {
                 Method writeMethod = propertyDescriptor.getWriteMethod();

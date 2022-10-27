@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.rsocket.netty;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -61,6 +62,7 @@ public class NettyRSocketServer implements RSocketServer {
     }
 
     @Override
+    @NullUnmarked
     public void start() throws RSocketServerException {
         this.channel = block(this.starter, this.lifecycleTimeout);
         logger.info("Netty RSocket started on port(s): " + address().getPort());

@@ -177,6 +177,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
     private final Log logger = LogFactory.getLog(getClass());
 
+    @SuppressWarnings("NullAway.Init")
     private LoggingSystem loggingSystem;
 
     @Nullable

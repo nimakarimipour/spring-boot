@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.embedded.undertow;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.net.InetAddress;
@@ -189,6 +190,7 @@ class UndertowWebServerFactoryDelegate {
         return factories;
     }
 
+    @NullUnmarked
     static List<HttpHandlerFactory> createHttpHandlerFactories(Compression compression, boolean useForwardHeaders, @Nullable String serverHeader, @Nullable Shutdown shutdown, HttpHandlerFactory... initialHttpHandlerFactories) {
         List<HttpHandlerFactory> factories = new ArrayList<>(Arrays.asList(initialHttpHandlerFactories));
         if (compression != null && compression.getEnabled()) {

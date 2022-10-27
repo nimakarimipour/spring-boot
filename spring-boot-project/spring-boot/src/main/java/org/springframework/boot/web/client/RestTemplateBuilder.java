@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.client;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -706,12 +707,14 @@ public class RestTemplateBuilder {
             return unwrappedRequestFactory;
         }
 
+        @NullUnmarked
         private void setConnectTimeout(ClientHttpRequestFactory factory) {
             Method method = findMethod(factory, "setConnectTimeout", int.class);
             int timeout = Math.toIntExact(this.connectTimeout.toMillis());
             invoke(factory, method, timeout);
         }
 
+        @NullUnmarked
         private void setReadTimeout(ClientHttpRequestFactory factory) {
             Method method = findMethod(factory, "setReadTimeout", int.class);
             int timeout = Math.toIntExact(this.readTimeout.toMillis());

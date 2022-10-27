@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.servlet.view;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -79,6 +80,7 @@ public class MustacheView extends AbstractTemplateView {
         }
     }
 
+    @NullUnmarked
     private Template createTemplate(Resource resource) throws IOException {
         try (Reader reader = getReader(resource)) {
             return this.compiler.compile(reader);

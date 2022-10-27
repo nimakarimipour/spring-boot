@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.embedded.netty;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.InputStream;
 import java.net.Socket;
@@ -67,6 +68,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 
     private final SslStoreProvider sslStoreProvider;
 
+    @NullUnmarked
     public SslServerCustomizer(@Nullable Ssl ssl, @Nullable Http2 http2, SslStoreProvider sslStoreProvider) {
         this.ssl = ssl;
         this.http2 = http2;

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.servlet;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
@@ -215,6 +216,7 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
      * @param registration the registration
      */
     @Override
+    @NullUnmarked
     protected void configure(FilterRegistration.Dynamic registration) {
         super.configure(registration);
         EnumSet<DispatcherType> dispatcherTypes = this.dispatcherTypes;

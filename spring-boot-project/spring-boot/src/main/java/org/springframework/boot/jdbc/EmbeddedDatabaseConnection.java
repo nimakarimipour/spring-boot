@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.jdbc;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -182,6 +183,7 @@ public enum EmbeddedDatabaseConnection {
     private static class IsEmbedded implements ConnectionCallback<Boolean> {
 
         @Override
+        @NullUnmarked
         public Boolean doInConnection(Connection connection) throws SQLException, DataAccessException {
             DatabaseMetaData metaData = connection.getMetaData();
             String productName = metaData.getDatabaseProductName();

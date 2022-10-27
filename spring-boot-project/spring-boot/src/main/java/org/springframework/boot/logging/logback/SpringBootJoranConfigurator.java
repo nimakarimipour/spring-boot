@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.logging.logback;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -258,6 +259,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
         }
 
         @Nullable
+        @NullUnmarked
         private Object instantiate(@Nullable Class<?> type) {
             try {
                 return type.getConstructor().newInstance();

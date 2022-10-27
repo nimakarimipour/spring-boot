@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.config;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -260,6 +261,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
         return new ConfigDataEnvironmentContributor(this.kind, this.location, this.resource, this.fromProfileSpecificImport, this.propertySource, this.configurationPropertySource, this.properties, this.configDataOptions, updatedChildren);
     }
 
+    @NullUnmarked
     private void moveProfileSpecific(Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children) {
         List<ConfigDataEnvironmentContributor> before = children.get(ImportPhase.BEFORE_PROFILE_ACTIVATION);
         if (!hasAnyProfileSpecificChildren(before)) {

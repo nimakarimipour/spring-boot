@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.embedded.undertow;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
@@ -614,6 +615,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
         }
 
         @Override
+        @NullUnmarked
         public void handleRequest(HttpServerExchange exchange) throws Exception {
             exchange.addResponseCommitListener(this::beforeCommit);
             this.next.handleRequest(exchange);

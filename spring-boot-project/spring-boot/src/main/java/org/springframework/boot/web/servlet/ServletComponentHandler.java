@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.servlet;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ abstract class ServletComponentHandler {
     }
 
     @Nullable
+    @NullUnmarked
     protected String[] extractUrlPatterns(Map<String, Object> attributes) {
         String[] value = (String[]) attributes.get("value");
         String[] urlPatterns = (String[]) attributes.get("urlPatterns");
@@ -58,6 +60,7 @@ abstract class ServletComponentHandler {
         return value;
     }
 
+    @NullUnmarked
     protected final Map<String, String> extractInitParameters(Map<String, Object> attributes) {
         Map<String, String> initParameters = new HashMap<>();
         for (AnnotationAttributes initParam : (AnnotationAttributes[]) attributes.get("initParams")) {

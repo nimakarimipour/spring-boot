@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.servlet.support;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -122,6 +123,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
         }
     }
 
+    @NullUnmarked
     protected WebApplicationContext createRootApplicationContext(ServletContext servletContext) {
         SpringApplicationBuilder builder = createSpringApplicationBuilder();
         builder.main(getClass());

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.config;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
@@ -116,6 +117,7 @@ public final class ConfigDataLocation implements OriginProvider {
      * @return the split locations
      * @since 2.4.7
      */
+    @NullUnmarked
     public ConfigDataLocation[] split(String delimiter) {
         String[] values = StringUtils.delimitedListToStringArray(toString(), delimiter);
         ConfigDataLocation[] result = new ConfigDataLocation[values.length];

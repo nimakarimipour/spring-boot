@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.embedded.netty;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -69,6 +70,7 @@ final class GracefulShutdown {
         }
     }
 
+    @NullUnmarked
     void abort() {
         Thread shutdownThread = this.shutdownThread;
         if (shutdownThread != null) {

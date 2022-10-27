@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -63,6 +64,7 @@ public class ConfigurationPropertiesBindingPostProcessor implements BeanPostProc
     }
 
     @Override
+    @NullUnmarked
     public void afterPropertiesSet() throws Exception {
         // We can't use constructor injection of the application context because
         // it causes eager factory bean initialization
@@ -81,6 +83,7 @@ public class ConfigurationPropertiesBindingPostProcessor implements BeanPostProc
         return bean;
     }
 
+    @NullUnmarked
     private void bind(ConfigurationPropertiesBean bean) {
         if (bean == null || hasBoundValueObject(bean.getName())) {
             return;
@@ -93,6 +96,7 @@ public class ConfigurationPropertiesBindingPostProcessor implements BeanPostProc
         }
     }
 
+    @NullUnmarked
     private boolean hasBoundValueObject(String beanName) {
         return this.registry.containsBeanDefinition(beanName) && BindMethod.VALUE_OBJECT.equals(this.registry.getBeanDefinition(beanName).getAttribute(BindMethod.class.getName()));
     }

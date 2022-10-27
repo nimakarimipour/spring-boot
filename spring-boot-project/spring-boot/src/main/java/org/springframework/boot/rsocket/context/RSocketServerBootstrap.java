@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.rsocket.context;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import io.rsocket.SocketAcceptor;
 import org.springframework.boot.rsocket.server.RSocketServer;
@@ -48,6 +49,7 @@ public class RSocketServerBootstrap implements ApplicationEventPublisherAware, S
     }
 
     @Override
+    @NullUnmarked
     public void start() {
         this.server.start();
         this.eventPublisher.publishEvent(new RSocketServerInitializedEvent(this.server));

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.reactive.result.view;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,6 +77,7 @@ public class MustacheView extends AbstractUrlBasedView {
     }
 
     @Override
+    @NullUnmarked
     protected Mono<Void> renderInternal(Map<String, Object> model, MediaType contentType, ServerWebExchange exchange) {
         Resource resource = resolveResource();
         if (resource == null) {

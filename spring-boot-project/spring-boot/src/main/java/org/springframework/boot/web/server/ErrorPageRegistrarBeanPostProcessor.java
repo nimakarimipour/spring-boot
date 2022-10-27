@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.server;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +70,7 @@ public class ErrorPageRegistrarBeanPostProcessor implements BeanPostProcessor, B
         }
     }
 
+    @NullUnmarked
     private Collection<ErrorPageRegistrar> getRegistrars() {
         if (this.registrars == null) {
             // Look up does not include the parent context

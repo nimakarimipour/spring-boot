@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.jdbc;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.Method;
@@ -586,6 +587,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class HikariDataSourceProperties extends MappedDataSourceProperties<HikariDataSource> {
 
+        @NullUnmarked
         HikariDataSourceProperties() {
             add(DataSourceProperty.URL, HikariDataSource::getJdbcUrl, HikariDataSource::setJdbcUrl);
             add(DataSourceProperty.DRIVER_CLASS_NAME, HikariDataSource::getDriverClassName, HikariDataSource::setDriverClassName);
@@ -599,6 +601,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class TomcatPoolDataSourceProperties extends MappedDataSourceProperties<org.apache.tomcat.jdbc.pool.DataSource> {
 
+        @NullUnmarked
         TomcatPoolDataSourceProperties() {
             add(DataSourceProperty.URL, org.apache.tomcat.jdbc.pool.DataSource::getUrl, org.apache.tomcat.jdbc.pool.DataSource::setUrl);
             add(DataSourceProperty.DRIVER_CLASS_NAME, org.apache.tomcat.jdbc.pool.DataSource::getDriverClassName, org.apache.tomcat.jdbc.pool.DataSource::setDriverClassName);
@@ -612,6 +615,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class MappedDbcp2DataSource extends MappedDataSourceProperties<BasicDataSource> {
 
+        @NullUnmarked
         MappedDbcp2DataSource() {
             add(DataSourceProperty.URL, BasicDataSource::getUrl, BasicDataSource::setUrl);
             add(DataSourceProperty.DRIVER_CLASS_NAME, BasicDataSource::getDriverClassName, BasicDataSource::setDriverClassName);
@@ -630,6 +634,7 @@ public final class DataSourceBuilder<T extends DataSource> {
             return PoolDataSourceImpl.class;
         }
 
+        @NullUnmarked
         OraclePoolDataSourceProperties() {
             add(DataSourceProperty.URL, PoolDataSource::getURL, PoolDataSource::setURL);
             add(DataSourceProperty.DRIVER_CLASS_NAME, PoolDataSource::getConnectionFactoryClassName, PoolDataSource::setConnectionFactoryClassName);
@@ -643,6 +648,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class ComboPooledDataSourceProperties extends MappedDataSourceProperties<ComboPooledDataSource> {
 
+        @NullUnmarked
         ComboPooledDataSourceProperties() {
             add(DataSourceProperty.URL, ComboPooledDataSource::getJdbcUrl, ComboPooledDataSource::setJdbcUrl);
             add(DataSourceProperty.DRIVER_CLASS_NAME, ComboPooledDataSource::getDriverClass, this::setDriverClass);
@@ -665,6 +671,7 @@ public final class DataSourceBuilder<T extends DataSource> {
     private static class SimpleDataSourceProperties extends MappedDataSourceProperties<SimpleDriverDataSource> {
 
         @SuppressWarnings("unchecked")
+        @NullUnmarked
         SimpleDataSourceProperties() {
             add(DataSourceProperty.URL, SimpleDriverDataSource::getUrl, SimpleDriverDataSource::setUrl);
             add(DataSourceProperty.DRIVER_CLASS_NAME, Class.class, (dataSource) -> dataSource.getDriver().getClass(), SimpleDriverDataSource::setDriverClass);
@@ -678,6 +685,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class OracleDataSourceProperties extends MappedDataSourceProperties<OracleDataSource> {
 
+        @NullUnmarked
         OracleDataSourceProperties() {
             add(DataSourceProperty.URL, OracleDataSource::getURL, OracleDataSource::setURL);
             add(DataSourceProperty.USERNAME, OracleDataSource::getUser, OracleDataSource::setUser);
@@ -690,6 +698,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class H2DataSourceProperties extends MappedDataSourceProperties<JdbcDataSource> {
 
+        @NullUnmarked
         H2DataSourceProperties() {
             add(DataSourceProperty.URL, JdbcDataSource::getUrl, JdbcDataSource::setUrl);
             add(DataSourceProperty.USERNAME, JdbcDataSource::getUser, JdbcDataSource::setUser);
@@ -702,6 +711,7 @@ public final class DataSourceBuilder<T extends DataSource> {
      */
     private static class PostgresDataSourceProperties extends MappedDataSourceProperties<PGSimpleDataSource> {
 
+        @NullUnmarked
         PostgresDataSourceProperties() {
             add(DataSourceProperty.URL, PGSimpleDataSource::getUrl, PGSimpleDataSource::setUrl);
             add(DataSourceProperty.USERNAME, PGSimpleDataSource::getUser, PGSimpleDataSource::setUser);

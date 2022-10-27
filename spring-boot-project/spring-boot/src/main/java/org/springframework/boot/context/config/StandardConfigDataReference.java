@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.config;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.util.StringUtils;
@@ -71,6 +72,7 @@ class StandardConfigDataReference {
         return !this.configDataLocation.isOptional() && this.directory != null;
     }
 
+    @NullUnmarked
     String getDirectory() {
         return this.directory;
     }

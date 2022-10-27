@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.server;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.net.BindException;
 import java.util.function.Consumer;
@@ -78,6 +79,7 @@ public class PortInUseException extends WebServerException {
      * @param action the action to perform
      * @since 2.2.7
      */
+    @NullUnmarked
     public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
         ifCausedBy(ex, BindException.class, (bindException) -> {
             // bind exception can be also thrown because an address can't be assigned

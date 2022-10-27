@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import org.springframework.beans.factory.InjectionPoint;
@@ -44,6 +45,7 @@ class NotConstructorBoundInjectionFailureAnalyzer extends AbstractInjectionFailu
 
     @Override
     @Nullable
+    @NullUnmarked
     protected FailureAnalysis analyze(Throwable rootFailure, NoSuchBeanDefinitionException cause, @Nullable String description) {
         InjectionPoint injectionPoint = findInjectionPoint(rootFailure);
         if (isConstructorBindingConfigurationProperties(injectionPoint)) {

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.diagnostics.analyzer;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -87,6 +88,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
         return new NoSuchMethodDescriptor(message, className, candidates, typeHierarchy);
     }
 
+    @NullUnmarked
     private String cleanMessage(@Nullable String message) {
         int loadedFromIndex = message.indexOf(" (loaded from");
         if (loadedFromIndex == -1) {

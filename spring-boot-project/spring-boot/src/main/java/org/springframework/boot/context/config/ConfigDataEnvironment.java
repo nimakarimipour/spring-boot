@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.config;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -290,6 +291,7 @@ class ConfigDataEnvironment {
         this.bootstrapContext.register(Binder.class, InstanceSupplier.from(() -> contributors.getBinder(activationContext, binderOptions)).withScope(Scope.PROTOTYPE));
     }
 
+    @NullUnmarked
     private void applyToEnvironment(ConfigDataEnvironmentContributors contributors, ConfigDataActivationContext activationContext, Set<ConfigDataLocation> loadedLocations, Set<ConfigDataLocation> optionalLocations) {
         checkForInvalidProperties(contributors);
         checkMandatoryLocations(contributors, activationContext, loadedLocations, optionalLocations);

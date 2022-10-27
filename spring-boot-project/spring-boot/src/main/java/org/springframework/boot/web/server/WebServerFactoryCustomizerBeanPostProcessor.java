@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.server;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,6 +82,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
+    @NullUnmarked
     private Collection<WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
         return (Collection) this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false).values();
     }

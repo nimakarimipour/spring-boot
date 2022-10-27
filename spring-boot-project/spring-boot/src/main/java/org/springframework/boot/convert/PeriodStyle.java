@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.convert;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
@@ -255,6 +256,7 @@ public enum PeriodStyle {
             return intValue(value) == 0;
         }
 
+        @NullUnmarked
         private int intValue(Period value) {
             Assert.notNull(this.intValue, () -> "intValue cannot be extracted from " + this.name());
             return this.intValue.apply(value);

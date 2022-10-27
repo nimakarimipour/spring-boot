@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.logging;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ public class DeferredLog implements Log {
     /**
      * Create a new {@link DeferredLog} instance.
      */
+    @NullUnmarked
     public DeferredLog() {
         this.destinationSupplier = null;
         this.lines = new Lines();

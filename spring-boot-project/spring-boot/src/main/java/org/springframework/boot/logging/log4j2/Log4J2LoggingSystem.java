@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.logging.log4j2;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
@@ -351,6 +352,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
         getLoggerContext().updateLoggers();
     }
 
+    @NullUnmarked
     private void clearLogLevel(@Nullable String loggerName, @Nullable LoggerConfig logger) {
         if (logger instanceof LevelSetLoggerConfig) {
             getLoggerContext().getConfiguration().removeLogger(loggerName);

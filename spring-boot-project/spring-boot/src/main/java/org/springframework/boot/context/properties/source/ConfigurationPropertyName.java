@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -320,6 +321,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
         return 0;
     }
 
+    @NullUnmarked
     private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
         if (e1 == null) {
             return -1;
@@ -570,6 +572,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
      * @throws InvalidConfigurationPropertyNameException if the name is not valid and
      * {@code returnNullIfInvalid} is {@code false}
      */
+    @NullUnmarked
     static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
         Elements elements = elementsOf(name, returnNullIfInvalid);
         return (elements != null) ? new ConfigurationPropertyName(elements) : null;
@@ -742,6 +745,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
             this.resolved = resolved;
         }
 
+        @NullUnmarked
         Elements append(@Nullable Elements additional) {
             int size = this.size + additional.size;
             ElementType[] type = new ElementType[size];

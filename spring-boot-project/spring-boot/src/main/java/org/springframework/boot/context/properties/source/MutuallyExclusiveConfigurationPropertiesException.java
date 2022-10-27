@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -73,6 +74,7 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
         return this.mutuallyExclusiveNames;
     }
 
+    @NullUnmarked
     private static Set<String> asSet(Collection<String> collection) {
         return (collection != null) ? new LinkedHashSet<>(collection) : null;
     }

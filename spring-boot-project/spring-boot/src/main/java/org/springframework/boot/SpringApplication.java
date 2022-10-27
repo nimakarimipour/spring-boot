@@ -15,6 +15,7 @@
  */
 package org.springframework.boot;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.StackWalker.StackFrame;
 import java.time.Duration;
@@ -188,6 +189,7 @@ public class SpringApplication {
 
     private Set<String> sources = new LinkedHashSet<>();
 
+    @SuppressWarnings("NullAway.Init")
     private Class<?> mainApplicationClass;
 
     private Banner.Mode bannerMode = Banner.Mode.CONSOLE;
@@ -216,8 +218,10 @@ public class SpringApplication {
 
     private boolean registerShutdownHook = true;
 
+    @SuppressWarnings("NullAway.Init")
     private List<ApplicationContextInitializer<?>> initializers;
 
+    @SuppressWarnings("NullAway.Init")
     private List<ApplicationListener<?>> listeners;
 
     @Nullable
@@ -267,6 +271,7 @@ public class SpringApplication {
      * @see #setSources(Set)
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
+    @NullUnmarked
     public SpringApplication(@Nullable ResourceLoader resourceLoader, Class<?>... primarySources) {
         this.resourceLoader = resourceLoader;
         Assert.notNull(primarySources, "PrimarySources must not be null");
@@ -293,6 +298,7 @@ public class SpringApplication {
      * @param args the application arguments (usually passed from a Java main method)
      * @return a running {@link ApplicationContext}
      */
+    @NullUnmarked
     public ConfigurableApplicationContext run(String... args) {
         long startTime = System.nanoTime();
         DefaultBootstrapContext bootstrapContext = createBootstrapContext();
@@ -1146,6 +1152,7 @@ public class SpringApplication {
      * @return the environment property prefix
      * @since 2.5.0
      */
+    @NullUnmarked
     public String getEnvironmentPrefix() {
         return this.environmentPrefix;
     }

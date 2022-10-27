@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.liquibase;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import liquibase.exception.ChangeLogParseException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
@@ -32,6 +33,7 @@ class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<C
 
     @Override
     @Nullable
+    @NullUnmarked
     protected FailureAnalysis analyze(Throwable rootFailure, ChangeLogParseException cause) {
         if (cause.getMessage().endsWith(MESSAGE_SUFFIX)) {
             String changelogPath = extractChangelogPath(cause);
@@ -40,6 +42,7 @@ class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<C
         return null;
     }
 
+    @NullUnmarked
     private String extractChangelogPath(ChangeLogParseException cause) {
         return cause.getMessage().substring(0, cause.getMessage().length() - MESSAGE_SUFFIX.length());
     }

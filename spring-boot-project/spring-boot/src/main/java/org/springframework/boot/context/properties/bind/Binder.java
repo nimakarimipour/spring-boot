@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.bind;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -167,6 +168,7 @@ public class Binder {
      * constructor to use when binding
      * @since 2.5.0
      */
+    @NullUnmarked
     public Binder(@Nullable Iterable<ConfigurationPropertySource> sources, @Nullable PlaceholdersResolver placeholdersResolver, @Nullable List<ConversionService> conversionServices, @Nullable Consumer<PropertyEditorRegistry> propertyEditorInitializer, @Nullable BindHandler defaultBindHandler, @Nullable BindConstructorProvider constructorProvider) {
         Assert.notNull(sources, "Sources must not be null");
         for (ConfigurationPropertySource source : sources) {

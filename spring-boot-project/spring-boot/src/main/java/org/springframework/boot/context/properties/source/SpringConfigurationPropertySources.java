@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -54,6 +55,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
     }
 
     @Override
+    @NullUnmarked
     public Iterator<ConfigurationPropertySource> iterator() {
         return new SourcesIterator(this.sources.iterator(), this::adapt);
     }

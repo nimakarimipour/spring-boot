@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.bind;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.beans.PropertyEditor;
 import java.lang.annotation.Annotation;
@@ -91,6 +92,7 @@ final class BindConverter {
     }
 
     @SuppressWarnings("unchecked")
+    @NullUnmarked
     <T> T convert(@Nullable Object source, ResolvableType targetType, Annotation... targetAnnotations) {
         if (source == null) {
             return null;

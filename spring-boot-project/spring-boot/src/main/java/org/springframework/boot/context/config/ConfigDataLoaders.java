@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.config;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ class ConfigDataLoaders {
     }
 
     @SuppressWarnings("unchecked")
+    @NullUnmarked
     private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
         ConfigDataLoader<R> result = null;
         for (int i = 0; i < this.loaders.size(); i++) {

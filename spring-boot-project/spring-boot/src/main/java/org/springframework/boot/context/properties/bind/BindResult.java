@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.bind;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
@@ -97,6 +98,7 @@ public final class BindResult<T> {
      * {@code null})
      * @return the value, if bound, otherwise {@code other}
      */
+    @NullUnmarked
     public T orElse(@Nullable T other) {
         return (this.value != null) ? this.value : other;
     }

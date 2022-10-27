@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -265,6 +266,7 @@ public final class ConfigurationPropertiesBean {
         return propertiesBean;
     }
 
+    @NullUnmarked
     private static ConfigurationPropertiesBean create(String name, @Nullable Object instance, Class<?> type, @Nullable Method factory) {
         ConfigurationProperties annotation = findAnnotation(instance, type, factory, ConfigurationProperties.class);
         if (annotation == null) {

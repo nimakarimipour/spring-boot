@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -223,6 +224,7 @@ class ConfigurationPropertiesBinder {
             this.applicationContext = applicationContext;
         }
 
+        @NullUnmarked
         ConfigurationPropertiesBinder create() {
             return new ConfigurationPropertiesBinder(this.applicationContext);
         }

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.diagnostics.analyzer;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -76,6 +77,7 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
     }
 
     @Nullable
+    @NullUnmarked
     private String[] extractBeanNames(NoUniqueBeanDefinitionException cause) {
         if (cause.getMessage().contains("but found")) {
             return StringUtils.commaDelimitedListToStringArray(cause.getMessage().substring(cause.getMessage().lastIndexOf(':') + 1).trim());

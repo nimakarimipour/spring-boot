@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collection;
@@ -71,6 +72,7 @@ public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
         return false;
     }
 
+    @NullUnmarked
     private Collection<TypeExcludeFilter> getDelegates() {
         Collection<TypeExcludeFilter> delegates = this.delegates;
         if (delegates == null) {

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.embedded.undertow;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.IOException;
@@ -69,6 +70,7 @@ public class UndertowWebServer implements WebServer {
 
     private final boolean autoStart;
 
+    @SuppressWarnings("NullAway.Init")
     private Undertow undertow;
 
     private volatile boolean started = false;
@@ -76,6 +78,7 @@ public class UndertowWebServer implements WebServer {
     @Nullable
     private volatile GracefulShutdownHandler gracefulShutdown;
 
+    @SuppressWarnings("NullAway.Init")
     private volatile List<Closeable> closeables;
 
     /**
@@ -374,11 +377,13 @@ public class UndertowWebServer implements WebServer {
             return new CloseableHttpHandler() {
 
                 @Override
+                @NullUnmarked
                 public void handleRequest(HttpServerExchange exchange) throws Exception {
                     next.handleRequest(exchange);
                 }
 
                 @Override
+                @NullUnmarked
                 public void close() throws IOException {
                     CloseableHttpHandlerFactory.this.closeable.close();
                 }

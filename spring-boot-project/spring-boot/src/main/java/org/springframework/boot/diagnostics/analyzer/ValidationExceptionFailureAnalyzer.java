@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.diagnostics.analyzer;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import jakarta.validation.ValidationException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
@@ -35,6 +36,7 @@ class ValidationExceptionFailureAnalyzer extends AbstractFailureAnalyzer<Validat
 
     @Override
     @Nullable
+    @NullUnmarked
     protected FailureAnalysis analyze(Throwable rootFailure, ValidationException cause) {
         if (cause.getMessage().startsWith(JAVAX_MISSING_IMPLEMENTATION_MESSAGE) || cause.getMessage().startsWith(JAKARTA_MISSING_IMPLEMENTATION_MESSAGE)) {
             return new FailureAnalysis("The Bean Validation API is on the classpath but no implementation could be found", "Add an implementation, such as Hibernate Validator, to the classpath", cause);

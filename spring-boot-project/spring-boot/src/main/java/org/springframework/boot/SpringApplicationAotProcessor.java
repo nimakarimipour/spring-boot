@@ -15,6 +15,7 @@
  */
 package org.springframework.boot;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
@@ -96,6 +97,7 @@ public class SpringApplicationAotProcessor extends ContextAotProcessor {
         }
 
         @Nullable
+        @NullUnmarked
         private <T> GenericApplicationContext run(ThrowingSupplier<T> action) {
             try {
                 SpringApplication.withHook(this, action);

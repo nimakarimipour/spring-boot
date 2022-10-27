@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
@@ -48,6 +49,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
         this(null, name, value, origin);
     }
 
+    @NullUnmarked
     private ConfigurationProperty(@Nullable ConfigurationPropertySource source, @Nullable ConfigurationPropertyName name, Object value, @Nullable Origin origin) {
         Assert.notNull(name, "Name must not be null");
         Assert.notNull(value, "Value must not be null");

@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.server;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -108,6 +109,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
      * @param ssl the SSL properties
      * @return an {@code SslStoreProvider} or {@code null}
      */
+    @NullUnmarked
     public static SslStoreProvider from(@Nullable Ssl ssl) {
         if (ssl != null && ssl.isEnabled()) {
             if (ssl.getCertificate() != null && ssl.getCertificatePrivateKey() != null) {

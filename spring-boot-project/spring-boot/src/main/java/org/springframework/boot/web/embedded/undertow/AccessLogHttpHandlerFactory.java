@@ -15,6 +15,7 @@
  */
 package org.springframework.boot.web.embedded.undertow;
 
+import org.springframework.boot.NullUnmarked;
 import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
@@ -72,6 +73,7 @@ class AccessLogHttpHandlerFactory implements HttpHandlerFactory {
         }
     }
 
+    @NullUnmarked
     private void createAccessLogDirectoryIfNecessary() {
         Assert.state(this.directory != null, "Access log directory is not set");
         if (!this.directory.isDirectory() && !this.directory.mkdirs()) {

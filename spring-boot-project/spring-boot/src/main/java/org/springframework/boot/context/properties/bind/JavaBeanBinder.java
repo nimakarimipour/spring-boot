@@ -271,8 +271,10 @@ class JavaBeanBinder implements DataObjectBinder {
 
         private final ResolvableType declaringClassType;
 
+        @SuppressWarnings("NullAway.Init")
         private Method getter;
 
+        @SuppressWarnings("NullAway.Init")
         private Method setter;
 
         @Nullable

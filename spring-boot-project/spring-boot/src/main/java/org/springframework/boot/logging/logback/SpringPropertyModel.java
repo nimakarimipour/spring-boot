@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.logging.logback;
 
 import ch.qos.logback.core.model.NamedModel;
@@ -28,34 +27,36 @@ import ch.qos.logback.core.model.NamedModel;
  */
 class SpringPropertyModel extends NamedModel {
 
-	private String scope;
+    @SuppressWarnings("NullAway.Init")
+    private String scope;
 
-	private String defaultValue;
+    @SuppressWarnings("NullAway.Init")
+    private String defaultValue;
 
-	private String source;
+    @SuppressWarnings("NullAway.Init")
+    private String source;
 
-	String getScope() {
-		return this.scope;
-	}
+    String getScope() {
+        return this.scope;
+    }
 
-	void setScope(String scope) {
-		this.scope = scope;
-	}
+    void setScope(String scope) {
+        this.scope = scope;
+    }
 
-	String getDefaultValue() {
-		return this.defaultValue;
-	}
+    String getDefaultValue() {
+        return this.defaultValue;
+    }
 
-	void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-	String getSource() {
-		return this.source;
-	}
+    String getSource() {
+        return this.source;
+    }
 
-	void setSource(String source) {
-		this.source = source;
-	}
-
+    void setSource(String source) {
+        this.source = source;
+    }
 }

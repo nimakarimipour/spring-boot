@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
+
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Exception throw if a {@link ConfigDataLocation} is not supported.
@@ -25,23 +26,23 @@ package org.springframework.boot.context.config;
  */
 public class UnsupportedConfigDataLocationException extends ConfigDataException {
 
-	private final ConfigDataLocation location;
+    private final ConfigDataLocation location;
 
-	/**
-	 * Create a new {@link UnsupportedConfigDataLocationException} instance.
-	 * @param location the unsupported location
-	 */
-	UnsupportedConfigDataLocationException(ConfigDataLocation location) {
-		super("Unsupported config data location '" + location + "'", null);
-		this.location = location;
-	}
+    /**
+     * Create a new {@link UnsupportedConfigDataLocationException} instance.
+     * @param location the unsupported location
+     */
+    @NullUnmarked
+    UnsupportedConfigDataLocationException(ConfigDataLocation location) {
+        super("Unsupported config data location '" + location + "'", null);
+        this.location = location;
+    }
 
-	/**
-	 * Return the unsupported location reference.
-	 * @return the unsupported location reference
-	 */
-	public ConfigDataLocation getLocation() {
-		return this.location;
-	}
-
+    /**
+     * Return the unsupported location reference.
+     * @return the unsupported location reference
+     */
+    public ConfigDataLocation getLocation() {
+        return this.location;
+    }
 }

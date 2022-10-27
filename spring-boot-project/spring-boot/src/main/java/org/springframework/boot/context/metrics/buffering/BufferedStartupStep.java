@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.metrics.buffering;
 
+import org.springframework.boot.NullUnmarked;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
 
@@ -37,100 +36,98 @@ import org.springframework.util.Assert;
  */
 class BufferedStartupStep implements StartupStep {
 
-	private final String name;
+    private final String name;
 
-	private final long id;
+    private final long id;
 
-	private final BufferedStartupStep parent;
+    private final BufferedStartupStep parent;
 
-	private final List<Tag> tags = new ArrayList<>();
+    private final List<Tag> tags = new ArrayList<>();
 
-	private final Consumer<BufferedStartupStep> recorder;
+    private final Consumer<BufferedStartupStep> recorder;
 
-	private final Instant startTime;
+    private final Instant startTime;
 
-	private final AtomicBoolean ended = new AtomicBoolean();
+    private final AtomicBoolean ended = new AtomicBoolean();
 
-	BufferedStartupStep(BufferedStartupStep parent, String name, long id, Instant startTime,
-			Consumer<BufferedStartupStep> recorder) {
-		this.parent = parent;
-		this.name = name;
-		this.id = id;
-		this.startTime = startTime;
-		this.recorder = recorder;
-	}
+    BufferedStartupStep(BufferedStartupStep parent, String name, long id, Instant startTime, Consumer<BufferedStartupStep> recorder) {
+        this.parent = parent;
+        this.name = name;
+        this.id = id;
+        this.startTime = startTime;
+        this.recorder = recorder;
+    }
 
-	BufferedStartupStep getParent() {
-		return this.parent;
-	}
+    BufferedStartupStep getParent() {
+        return this.parent;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	@Override
-	public long getId() {
-		return this.id;
-	}
+    @Override
+    public long getId() {
+        return this.id;
+    }
 
-	Instant getStartTime() {
-		return this.startTime;
-	}
+    Instant getStartTime() {
+        return this.startTime;
+    }
 
-	@Override
-	public Long getParentId() {
-		return (this.parent != null) ? this.parent.getId() : null;
-	}
+    @Override
+    @NullUnmarked
+    public Long getParentId() {
+        return (this.parent != null) ? this.parent.getId() : null;
+    }
 
-	@Override
-	public Tags getTags() {
-		return Collections.unmodifiableList(this.tags)::iterator;
-	}
+    @Override
+    public Tags getTags() {
+        return Collections.unmodifiableList(this.tags)::iterator;
+    }
 
-	@Override
-	public StartupStep tag(String key, Supplier<String> value) {
-		return this.tag(key, value.get());
-	}
+    @Override
+    public StartupStep tag(String key, Supplier<String> value) {
+        return this.tag(key, value.get());
+    }
 
-	@Override
-	public StartupStep tag(String key, String value) {
-		Assert.state(!this.ended.get(), "StartupStep has already ended.");
-		this.tags.add(new DefaultTag(key, value));
-		return this;
-	}
+    @Override
+    public StartupStep tag(String key, String value) {
+        Assert.state(!this.ended.get(), "StartupStep has already ended.");
+        this.tags.add(new DefaultTag(key, value));
+        return this;
+    }
 
-	@Override
-	public void end() {
-		this.ended.set(true);
-		this.recorder.accept(this);
-	}
+    @Override
+    public void end() {
+        this.ended.set(true);
+        this.recorder.accept(this);
+    }
 
-	boolean isEnded() {
-		return this.ended.get();
-	}
+    boolean isEnded() {
+        return this.ended.get();
+    }
 
-	static class DefaultTag implements Tag {
+    static class DefaultTag implements Tag {
 
-		private final String key;
+        private final String key;
 
-		private final String value;
+        private final String value;
 
-		DefaultTag(String key, String value) {
-			this.key = key;
-			this.value = value;
-		}
+        DefaultTag(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
 
-		@Override
-		public String getKey() {
-			return this.key;
-		}
+        @Override
+        public String getKey() {
+            return this.key;
+        }
 
-		@Override
-		public String getValue() {
-			return this.value;
-		}
-
-	}
-
+        @Override
+        public String getValue() {
+            return this.value;
+        }
+    }
 }

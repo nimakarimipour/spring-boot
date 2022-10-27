@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.reactive.result.view;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
-
 import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.UrlBasedViewResolver;
 import org.springframework.web.reactive.result.view.ViewResolver;
@@ -32,53 +30,53 @@ import org.springframework.web.reactive.result.view.ViewResolver;
  */
 public class MustacheViewResolver extends UrlBasedViewResolver {
 
-	private final Compiler compiler;
+    private final Compiler compiler;
 
-	private String charset;
+    @SuppressWarnings("NullAway.Init")
+    private String charset;
 
-	/**
-	 * Create a {@code MustacheViewResolver} backed by a default instance of a
-	 * {@link Compiler}.
-	 */
-	public MustacheViewResolver() {
-		this.compiler = Mustache.compiler();
-		setViewClass(requiredViewClass());
-	}
+    /**
+     * Create a {@code MustacheViewResolver} backed by a default instance of a
+     * {@link Compiler}.
+     */
+    public MustacheViewResolver() {
+        this.compiler = Mustache.compiler();
+        setViewClass(requiredViewClass());
+    }
 
-	/**
-	 * Create a {@code MustacheViewResolver} backed by a custom instance of a
-	 * {@link Compiler}.
-	 * @param compiler the Mustache compiler used to compile templates
-	 */
-	public MustacheViewResolver(Compiler compiler) {
-		this.compiler = compiler;
-		setViewClass(requiredViewClass());
-	}
+    /**
+     * Create a {@code MustacheViewResolver} backed by a custom instance of a
+     * {@link Compiler}.
+     * @param compiler the Mustache compiler used to compile templates
+     */
+    public MustacheViewResolver(Compiler compiler) {
+        this.compiler = compiler;
+        setViewClass(requiredViewClass());
+    }
 
-	/**
-	 * Set the charset.
-	 * @param charset the charset
-	 */
-	public void setCharset(String charset) {
-		this.charset = charset;
-	}
+    /**
+     * Set the charset.
+     * @param charset the charset
+     */
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
 
-	@Override
-	protected Class<?> requiredViewClass() {
-		return MustacheView.class;
-	}
+    @Override
+    protected Class<?> requiredViewClass() {
+        return MustacheView.class;
+    }
 
-	@Override
-	protected AbstractUrlBasedView createView(String viewName) {
-		MustacheView view = (MustacheView) super.createView(viewName);
-		view.setCompiler(this.compiler);
-		view.setCharset(this.charset);
-		return view;
-	}
+    @Override
+    protected AbstractUrlBasedView createView(String viewName) {
+        MustacheView view = (MustacheView) super.createView(viewName);
+        view.setCompiler(this.compiler);
+        view.setCharset(this.charset);
+        return view;
+    }
 
-	@Override
-	protected AbstractUrlBasedView instantiateView() {
-		return (getViewClass() == MustacheView.class) ? new MustacheView() : super.instantiateView();
-	}
-
+    @Override
+    protected AbstractUrlBasedView instantiateView() {
+        return (getViewClass() == MustacheView.class) ? new MustacheView() : super.instantiateView();
+    }
 }

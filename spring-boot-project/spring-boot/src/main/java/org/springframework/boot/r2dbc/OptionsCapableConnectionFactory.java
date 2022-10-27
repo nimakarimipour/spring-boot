@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.r2dbc;
 
+import org.springframework.boot.NullUnmarked;
 import io.r2dbc.spi.Connection;
 import io.r2dbc.spi.ConnectionFactory;
 import io.r2dbc.spi.ConnectionFactoryMetadata;
@@ -32,63 +32,62 @@ import org.reactivestreams.Publisher;
  */
 public class OptionsCapableConnectionFactory implements Wrapped<ConnectionFactory>, ConnectionFactory {
 
-	private final ConnectionFactoryOptions options;
+    private final ConnectionFactoryOptions options;
 
-	private final ConnectionFactory delegate;
+    private final ConnectionFactory delegate;
 
-	/**
-	 * Create a new {@code OptionsCapableConnectionFactory} that will provide access to
-	 * the given {@code options} that were used to build the given {@code delegate}
-	 * {@link ConnectionFactory}.
-	 * @param options the options from which the connection factory was built
-	 * @param delegate the delegate connection factory that was built with options
-	 */
-	public OptionsCapableConnectionFactory(ConnectionFactoryOptions options, ConnectionFactory delegate) {
-		this.options = options;
-		this.delegate = delegate;
-	}
+    /**
+     * Create a new {@code OptionsCapableConnectionFactory} that will provide access to
+     * the given {@code options} that were used to build the given {@code delegate}
+     * {@link ConnectionFactory}.
+     * @param options the options from which the connection factory was built
+     * @param delegate the delegate connection factory that was built with options
+     */
+    public OptionsCapableConnectionFactory(ConnectionFactoryOptions options, ConnectionFactory delegate) {
+        this.options = options;
+        this.delegate = delegate;
+    }
 
-	public ConnectionFactoryOptions getOptions() {
-		return this.options;
-	}
+    public ConnectionFactoryOptions getOptions() {
+        return this.options;
+    }
 
-	@Override
-	public Publisher<? extends Connection> create() {
-		return this.delegate.create();
-	}
+    @Override
+    public Publisher<? extends Connection> create() {
+        return this.delegate.create();
+    }
 
-	@Override
-	public ConnectionFactoryMetadata getMetadata() {
-		return this.delegate.getMetadata();
-	}
+    @Override
+    public ConnectionFactoryMetadata getMetadata() {
+        return this.delegate.getMetadata();
+    }
 
-	@Override
-	public ConnectionFactory unwrap() {
-		return this.delegate;
-	}
+    @Override
+    public ConnectionFactory unwrap() {
+        return this.delegate;
+    }
 
-	/**
-	 * Returns, if possible, an {@code OptionsCapableConnectionFactory} by unwrapping the
-	 * given {@code connectionFactory} as necessary. If the given
-	 * {@code connectionFactory} does not wrap an {@code OptionsCapableConnectionFactory}
-	 * and is not itself an {@code OptionsCapableConnectionFactory}, {@code null} is
-	 * returned.
-	 * @param connectionFactory the connection factory to unwrap
-	 * @return the {@code OptionsCapableConnectionFactory} or {@code null}
-	 * @since 2.5.1
-	 */
-	public static OptionsCapableConnectionFactory unwrapFrom(ConnectionFactory connectionFactory) {
-		if (connectionFactory instanceof OptionsCapableConnectionFactory) {
-			return (OptionsCapableConnectionFactory) connectionFactory;
-		}
-		if (connectionFactory instanceof Wrapped) {
-			Object unwrapped = ((Wrapped<?>) connectionFactory).unwrap();
-			if (unwrapped instanceof ConnectionFactory) {
-				return unwrapFrom((ConnectionFactory) unwrapped);
-			}
-		}
-		return null;
-
-	}
-
+    /**
+     * Returns, if possible, an {@code OptionsCapableConnectionFactory} by unwrapping the
+     * given {@code connectionFactory} as necessary. If the given
+     * {@code connectionFactory} does not wrap an {@code OptionsCapableConnectionFactory}
+     * and is not itself an {@code OptionsCapableConnectionFactory}, {@code null} is
+     * returned.
+     * @param connectionFactory the connection factory to unwrap
+     * @return the {@code OptionsCapableConnectionFactory} or {@code null}
+     * @since 2.5.1
+     */
+    @NullUnmarked
+    public static OptionsCapableConnectionFactory unwrapFrom(ConnectionFactory connectionFactory) {
+        if (connectionFactory instanceof OptionsCapableConnectionFactory) {
+            return (OptionsCapableConnectionFactory) connectionFactory;
+        }
+        if (connectionFactory instanceof Wrapped) {
+            Object unwrapped = ((Wrapped<?>) connectionFactory).unwrap();
+            if (unwrapped instanceof ConnectionFactory) {
+                return unwrapFrom((ConnectionFactory) unwrapped);
+            }
+        }
+        return null;
+    }
 }

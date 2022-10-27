@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties;
 
+import org.springframework.boot.NullUnmarked;
 import java.util.stream.Collectors;
-
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
@@ -29,11 +28,10 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
  */
 class IncompatibleConfigurationFailureAnalyzer extends AbstractFailureAnalyzer<IncompatibleConfigurationException> {
 
-	@Override
-	protected FailureAnalysis analyze(Throwable rootFailure, IncompatibleConfigurationException cause) {
-		String action = String.format("Review the docs for %s and change the configured values.",
-				cause.getIncompatibleKeys().stream().collect(Collectors.joining(", ")));
-		return new FailureAnalysis(cause.getMessage(), action, cause);
-	}
-
+    @Override
+    @NullUnmarked
+    protected FailureAnalysis analyze(Throwable rootFailure, IncompatibleConfigurationException cause) {
+        String action = String.format("Review the docs for %s and change the configured values.", cause.getIncompatibleKeys().stream().collect(Collectors.joining(", ")));
+        return new FailureAnalysis(cause.getMessage(), action, cause);
+    }
 }

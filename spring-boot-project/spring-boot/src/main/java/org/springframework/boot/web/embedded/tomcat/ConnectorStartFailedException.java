@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.embedded.tomcat;
 
+import org.springframework.boot.NullUnmarked;
 import org.apache.catalina.connector.Connector;
-
 import org.springframework.boot.web.server.WebServerException;
 
 /**
@@ -29,20 +28,20 @@ import org.springframework.boot.web.server.WebServerException;
  */
 public class ConnectorStartFailedException extends WebServerException {
 
-	private final int port;
+    private final int port;
 
-	/**
-	 * Creates a new {@code ConnectorStartFailedException} for a connector that's
-	 * configured to listen on the given {@code port}.
-	 * @param port the port
-	 */
-	public ConnectorStartFailedException(int port) {
-		super("Connector configured to listen on port " + port + " failed to start", null);
-		this.port = port;
-	}
+    /**
+     * Creates a new {@code ConnectorStartFailedException} for a connector that's
+     * configured to listen on the given {@code port}.
+     * @param port the port
+     */
+    @NullUnmarked
+    public ConnectorStartFailedException(int port) {
+        super("Connector configured to listen on port " + port + " failed to start", null);
+        this.port = port;
+    }
 
-	public int getPort() {
-		return this.port;
-	}
-
+    public int getPort() {
+        return this.port;
+    }
 }

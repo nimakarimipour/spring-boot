@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.NullUnmarked;
 import org.springframework.core.env.AbstractPropertyResolver;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySources;
@@ -30,99 +30,96 @@ import org.springframework.core.env.PropertySourcesPropertyResolver;
  */
 class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResolver {
 
-	private final MutablePropertySources propertySources;
+    private final MutablePropertySources propertySources;
 
-	private final DefaultResolver defaultResolver;
+    private final DefaultResolver defaultResolver;
 
-	ConfigurationPropertySourcesPropertyResolver(MutablePropertySources propertySources) {
-		this.propertySources = propertySources;
-		this.defaultResolver = new DefaultResolver(propertySources);
-	}
+    ConfigurationPropertySourcesPropertyResolver(MutablePropertySources propertySources) {
+        this.propertySources = propertySources;
+        this.defaultResolver = new DefaultResolver(propertySources);
+    }
 
-	@Override
-	public boolean containsProperty(String key) {
-		ConfigurationPropertySourcesPropertySource attached = getAttached();
-		if (attached != null) {
-			ConfigurationPropertyName name = ConfigurationPropertyName.of(key, true);
-			if (name != null) {
-				try {
-					return attached.findConfigurationProperty(name) != null;
-				}
-				catch (Exception ex) {
-				}
-			}
-		}
-		return this.defaultResolver.containsProperty(key);
-	}
+    @Override
+    public boolean containsProperty(String key) {
+        ConfigurationPropertySourcesPropertySource attached = getAttached();
+        if (attached != null) {
+            ConfigurationPropertyName name = ConfigurationPropertyName.of(key, true);
+            if (name != null) {
+                try {
+                    return attached.findConfigurationProperty(name) != null;
+                } catch (Exception ex) {
+                }
+            }
+        }
+        return this.defaultResolver.containsProperty(key);
+    }
 
-	@Override
-	public String getProperty(String key) {
-		return getProperty(key, String.class, true);
-	}
+    @Override
+    public String getProperty(String key) {
+        return getProperty(key, String.class, true);
+    }
 
-	@Override
-	public <T> T getProperty(String key, Class<T> targetValueType) {
-		return getProperty(key, targetValueType, true);
-	}
+    @Override
+    public <T> T getProperty(String key, Class<T> targetValueType) {
+        return getProperty(key, targetValueType, true);
+    }
 
-	@Override
-	protected String getPropertyAsRawString(String key) {
-		return getProperty(key, String.class, false);
-	}
+    @Override
+    protected String getPropertyAsRawString(String key) {
+        return getProperty(key, String.class, false);
+    }
 
-	private <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
-		Object value = findPropertyValue(key);
-		if (value == null) {
-			return null;
-		}
-		if (resolveNestedPlaceholders && value instanceof String string) {
-			value = resolveNestedPlaceholders(string);
-		}
-		return convertValueIfNecessary(value, targetValueType);
-	}
+    @NullUnmarked
+    private <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
+        Object value = findPropertyValue(key);
+        if (value == null) {
+            return null;
+        }
+        if (resolveNestedPlaceholders && value instanceof String string) {
+            value = resolveNestedPlaceholders(string);
+        }
+        return convertValueIfNecessary(value, targetValueType);
+    }
 
-	private Object findPropertyValue(String key) {
-		ConfigurationPropertySourcesPropertySource attached = getAttached();
-		if (attached != null) {
-			ConfigurationPropertyName name = ConfigurationPropertyName.of(key, true);
-			if (name != null) {
-				try {
-					ConfigurationProperty configurationProperty = attached.findConfigurationProperty(name);
-					return (configurationProperty != null) ? configurationProperty.getValue() : null;
-				}
-				catch (Exception ex) {
-				}
-			}
-		}
-		return this.defaultResolver.getProperty(key, Object.class, false);
-	}
+    @NullUnmarked
+    private Object findPropertyValue(String key) {
+        ConfigurationPropertySourcesPropertySource attached = getAttached();
+        if (attached != null) {
+            ConfigurationPropertyName name = ConfigurationPropertyName.of(key, true);
+            if (name != null) {
+                try {
+                    ConfigurationProperty configurationProperty = attached.findConfigurationProperty(name);
+                    return (configurationProperty != null) ? configurationProperty.getValue() : null;
+                } catch (Exception ex) {
+                }
+            }
+        }
+        return this.defaultResolver.getProperty(key, Object.class, false);
+    }
 
-	private ConfigurationPropertySourcesPropertySource getAttached() {
-		ConfigurationPropertySourcesPropertySource attached = (ConfigurationPropertySourcesPropertySource) ConfigurationPropertySources
-				.getAttached(this.propertySources);
-		Iterable<ConfigurationPropertySource> attachedSource = (attached != null) ? attached.getSource() : null;
-		if ((attachedSource instanceof SpringConfigurationPropertySources springSource)
-				&& springSource.isUsingSources(this.propertySources)) {
-			return attached;
-		}
-		return null;
-	}
+    @NullUnmarked
+    private ConfigurationPropertySourcesPropertySource getAttached() {
+        ConfigurationPropertySourcesPropertySource attached = (ConfigurationPropertySourcesPropertySource) ConfigurationPropertySources.getAttached(this.propertySources);
+        Iterable<ConfigurationPropertySource> attachedSource = (attached != null) ? attached.getSource() : null;
+        if ((attachedSource instanceof SpringConfigurationPropertySources springSource) && springSource.isUsingSources(this.propertySources)) {
+            return attached;
+        }
+        return null;
+    }
 
-	/**
-	 * Default {@link PropertySourcesPropertyResolver} used if
-	 * {@link ConfigurationPropertySources} is not attached.
-	 */
-	static class DefaultResolver extends PropertySourcesPropertyResolver {
+    /**
+     * Default {@link PropertySourcesPropertyResolver} used if
+     * {@link ConfigurationPropertySources} is not attached.
+     */
+    static class DefaultResolver extends PropertySourcesPropertyResolver {
 
-		DefaultResolver(PropertySources propertySources) {
-			super(propertySources);
-		}
+        DefaultResolver(PropertySources propertySources) {
+            super(propertySources);
+        }
 
-		@Override
-		public <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
-			return super.getProperty(key, targetValueType, resolveNestedPlaceholders);
-		}
-
-	}
-
+        @Override
+        public <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
+            return super.getProperty(key, targetValueType, resolveNestedPlaceholders);
+        }
+    }
 }

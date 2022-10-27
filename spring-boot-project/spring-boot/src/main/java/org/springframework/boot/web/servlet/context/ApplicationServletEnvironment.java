@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet.context;
 
+import org.springframework.boot.NullUnmarked;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.core.env.ConfigurablePropertyResolver;
@@ -30,19 +30,20 @@ import org.springframework.web.context.support.StandardServletEnvironment;
  */
 class ApplicationServletEnvironment extends StandardServletEnvironment {
 
-	@Override
-	protected String doGetActiveProfilesProperty() {
-		return null;
-	}
+    @Override
+    @NullUnmarked
+    protected String doGetActiveProfilesProperty() {
+        return null;
+    }
 
-	@Override
-	protected String doGetDefaultProfilesProperty() {
-		return null;
-	}
+    @Override
+    @NullUnmarked
+    protected String doGetDefaultProfilesProperty() {
+        return null;
+    }
 
-	@Override
-	protected ConfigurablePropertyResolver createPropertyResolver(MutablePropertySources propertySources) {
-		return ConfigurationPropertySources.createPropertyResolver(propertySources);
-	}
-
+    @Override
+    protected ConfigurablePropertyResolver createPropertyResolver(MutablePropertySources propertySources) {
+        return ConfigurationPropertySources.createPropertyResolver(propertySources);
+    }
 }

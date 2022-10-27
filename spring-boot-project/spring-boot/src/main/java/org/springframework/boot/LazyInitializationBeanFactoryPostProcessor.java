@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import org.springframework.boot.NullUnmarked;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.SmartInitializingSingleton;
@@ -47,62 +46,57 @@ import org.springframework.core.Ordered;
  */
 public final class LazyInitializationBeanFactoryPostProcessor implements BeanFactoryPostProcessor, Ordered {
 
-	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		Collection<LazyInitializationExcludeFilter> filters = getFilters(beanFactory);
-		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
-			if (beanDefinition instanceof AbstractBeanDefinition abstractBeanDefinition) {
-				postProcess(beanFactory, filters, beanName, abstractBeanDefinition);
-			}
-		}
-	}
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        Collection<LazyInitializationExcludeFilter> filters = getFilters(beanFactory);
+        for (String beanName : beanFactory.getBeanDefinitionNames()) {
+            BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
+            if (beanDefinition instanceof AbstractBeanDefinition abstractBeanDefinition) {
+                postProcess(beanFactory, filters, beanName, abstractBeanDefinition);
+            }
+        }
+    }
 
-	private Collection<LazyInitializationExcludeFilter> getFilters(ConfigurableListableBeanFactory beanFactory) {
-		// Take care not to force the eager init of factory beans when getting filters
-		ArrayList<LazyInitializationExcludeFilter> filters = new ArrayList<>(
-				beanFactory.getBeansOfType(LazyInitializationExcludeFilter.class, false, false).values());
-		filters.add(LazyInitializationExcludeFilter.forBeanTypes(SmartInitializingSingleton.class));
-		return filters;
-	}
+    private Collection<LazyInitializationExcludeFilter> getFilters(ConfigurableListableBeanFactory beanFactory) {
+        // Take care not to force the eager init of factory beans when getting filters
+        ArrayList<LazyInitializationExcludeFilter> filters = new ArrayList<>(beanFactory.getBeansOfType(LazyInitializationExcludeFilter.class, false, false).values());
+        filters.add(LazyInitializationExcludeFilter.forBeanTypes(SmartInitializingSingleton.class));
+        return filters;
+    }
 
-	private void postProcess(ConfigurableListableBeanFactory beanFactory,
-			Collection<LazyInitializationExcludeFilter> filters, String beanName,
-			AbstractBeanDefinition beanDefinition) {
-		Boolean lazyInit = beanDefinition.getLazyInit();
-		if (lazyInit != null) {
-			return;
-		}
-		Class<?> beanType = getBeanType(beanFactory, beanName);
-		if (!isExcluded(filters, beanName, beanDefinition, beanType)) {
-			beanDefinition.setLazyInit(true);
-		}
-	}
+    private void postProcess(ConfigurableListableBeanFactory beanFactory, Collection<LazyInitializationExcludeFilter> filters, String beanName, AbstractBeanDefinition beanDefinition) {
+        Boolean lazyInit = beanDefinition.getLazyInit();
+        if (lazyInit != null) {
+            return;
+        }
+        Class<?> beanType = getBeanType(beanFactory, beanName);
+        if (!isExcluded(filters, beanName, beanDefinition, beanType)) {
+            beanDefinition.setLazyInit(true);
+        }
+    }
 
-	private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
-		try {
-			return beanFactory.getType(beanName, false);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
-			return null;
-		}
-	}
+    @NullUnmarked
+    private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
+        try {
+            return beanFactory.getType(beanName, false);
+        } catch (NoSuchBeanDefinitionException ex) {
+            return null;
+        }
+    }
 
-	private boolean isExcluded(Collection<LazyInitializationExcludeFilter> filters, String beanName,
-			AbstractBeanDefinition beanDefinition, Class<?> beanType) {
-		if (beanType != null) {
-			for (LazyInitializationExcludeFilter filter : filters) {
-				if (filter.isExcluded(beanName, beanDefinition, beanType)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    private boolean isExcluded(Collection<LazyInitializationExcludeFilter> filters, String beanName, AbstractBeanDefinition beanDefinition, Class<?> beanType) {
+        if (beanType != null) {
+            for (LazyInitializationExcludeFilter filter : filters) {
+                if (filter.isExcluded(beanName, beanDefinition, beanType)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public int getOrder() {
-		return Ordered.HIGHEST_PRECEDENCE;
-	}
-
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
+    }
 }

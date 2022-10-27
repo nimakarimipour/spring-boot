@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.liquibase;
 
+import org.springframework.boot.NullUnmarked;
 import liquibase.exception.ChangeLogParseException;
-
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
@@ -29,24 +28,24 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
  */
 class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<ChangeLogParseException> {
 
-	private static final String MESSAGE_SUFFIX = " does not exist";
+    private static final String MESSAGE_SUFFIX = " does not exist";
 
-	@Override
-	protected FailureAnalysis analyze(Throwable rootFailure, ChangeLogParseException cause) {
-		if (cause.getMessage().endsWith(MESSAGE_SUFFIX)) {
-			String changelogPath = extractChangelogPath(cause);
-			return new FailureAnalysis(getDescription(changelogPath),
-					"Make sure a Liquibase changelog is present at the configured path.", cause);
-		}
-		return null;
-	}
+    @Override
+    @NullUnmarked
+    protected FailureAnalysis analyze(Throwable rootFailure, ChangeLogParseException cause) {
+        if (cause.getMessage().endsWith(MESSAGE_SUFFIX)) {
+            String changelogPath = extractChangelogPath(cause);
+            return new FailureAnalysis(getDescription(changelogPath), "Make sure a Liquibase changelog is present at the configured path.", cause);
+        }
+        return null;
+    }
 
-	private String extractChangelogPath(ChangeLogParseException cause) {
-		return cause.getMessage().substring(0, cause.getMessage().length() - MESSAGE_SUFFIX.length());
-	}
+    @NullUnmarked
+    private String extractChangelogPath(ChangeLogParseException cause) {
+        return cause.getMessage().substring(0, cause.getMessage().length() - MESSAGE_SUFFIX.length());
+    }
 
-	private String getDescription(String changelogPath) {
-		return "Liquibase failed to start because no changelog could be found at '" + changelogPath + "'.";
-	}
-
+    private String getDescription(String changelogPath) {
+        return "Liquibase failed to start because no changelog could be found at '" + changelogPath + "'.";
+    }
 }

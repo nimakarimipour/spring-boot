@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.ServletContext;
-
 import org.springframework.util.Assert;
 
 /**
@@ -42,38 +40,38 @@ import org.springframework.util.Assert;
  */
 public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegistrationBean<T> {
 
-	private T filter;
+    @SuppressWarnings("NullAway.Init")
+    private T filter;
 
-	/**
-	 * Create a new {@link FilterRegistrationBean} instance.
-	 */
-	public FilterRegistrationBean() {
-	}
+    /**
+     * Create a new {@link FilterRegistrationBean} instance.
+     */
+    public FilterRegistrationBean() {
+    }
 
-	/**
-	 * Create a new {@link FilterRegistrationBean} instance to be registered with the
-	 * specified {@link ServletRegistrationBean}s.
-	 * @param filter the filter to register
-	 * @param servletRegistrationBeans associate {@link ServletRegistrationBean}s
-	 */
-	public FilterRegistrationBean(T filter, ServletRegistrationBean<?>... servletRegistrationBeans) {
-		super(servletRegistrationBeans);
-		Assert.notNull(filter, "Filter must not be null");
-		this.filter = filter;
-	}
+    /**
+     * Create a new {@link FilterRegistrationBean} instance to be registered with the
+     * specified {@link ServletRegistrationBean}s.
+     * @param filter the filter to register
+     * @param servletRegistrationBeans associate {@link ServletRegistrationBean}s
+     */
+    public FilterRegistrationBean(T filter, ServletRegistrationBean<?>... servletRegistrationBeans) {
+        super(servletRegistrationBeans);
+        Assert.notNull(filter, "Filter must not be null");
+        this.filter = filter;
+    }
 
-	@Override
-	public T getFilter() {
-		return this.filter;
-	}
+    @Override
+    public T getFilter() {
+        return this.filter;
+    }
 
-	/**
-	 * Set the filter to be registered.
-	 * @param filter the filter
-	 */
-	public void setFilter(T filter) {
-		Assert.notNull(filter, "Filter must not be null");
-		this.filter = filter;
-	}
-
+    /**
+     * Set the filter to be registered.
+     * @param filter the filter
+     */
+    public void setFilter(T filter) {
+        Assert.notNull(filter, "Filter must not be null");
+        this.filter = filter;
+    }
 }

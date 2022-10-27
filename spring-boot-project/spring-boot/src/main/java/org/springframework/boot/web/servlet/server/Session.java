@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet.server;
 
 import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
-
 import org.springframework.boot.convert.DurationUnit;
 
 /**
@@ -31,120 +29,118 @@ import org.springframework.boot.convert.DurationUnit;
  */
 public class Session {
 
-	@DurationUnit(ChronoUnit.SECONDS)
-	private Duration timeout = Duration.ofMinutes(30);
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration timeout = Duration.ofMinutes(30);
 
-	private Set<Session.SessionTrackingMode> trackingModes;
+    @SuppressWarnings("NullAway.Init")
+    private Set<Session.SessionTrackingMode> trackingModes;
 
-	private boolean persistent;
+    private boolean persistent;
 
-	/**
-	 * Directory used to store session data.
-	 */
-	private File storeDir;
+    /**
+     * Directory used to store session data.
+     */
+    @SuppressWarnings("NullAway.Init")
+    private File storeDir;
 
-	private final Cookie cookie = new Cookie();
+    private final Cookie cookie = new Cookie();
 
-	private final SessionStoreDirectory sessionStoreDirectory = new SessionStoreDirectory();
+    private final SessionStoreDirectory sessionStoreDirectory = new SessionStoreDirectory();
 
-	public Duration getTimeout() {
-		return this.timeout;
-	}
+    public Duration getTimeout() {
+        return this.timeout;
+    }
 
-	public void setTimeout(Duration timeout) {
-		this.timeout = timeout;
-	}
+    public void setTimeout(Duration timeout) {
+        this.timeout = timeout;
+    }
 
-	/**
-	 * Return the {@link SessionTrackingMode session tracking modes}.
-	 * @return the session tracking modes
-	 */
-	public Set<Session.SessionTrackingMode> getTrackingModes() {
-		return this.trackingModes;
-	}
+    /**
+     * Return the {@link SessionTrackingMode session tracking modes}.
+     * @return the session tracking modes
+     */
+    public Set<Session.SessionTrackingMode> getTrackingModes() {
+        return this.trackingModes;
+    }
 
-	public void setTrackingModes(Set<Session.SessionTrackingMode> trackingModes) {
-		this.trackingModes = trackingModes;
-	}
+    public void setTrackingModes(Set<Session.SessionTrackingMode> trackingModes) {
+        this.trackingModes = trackingModes;
+    }
 
-	/**
-	 * Return whether to persist session data between restarts.
-	 * @return {@code true} to persist session data between restarts.
-	 */
-	public boolean isPersistent() {
-		return this.persistent;
-	}
+    /**
+     * Return whether to persist session data between restarts.
+     * @return {@code true} to persist session data between restarts.
+     */
+    public boolean isPersistent() {
+        return this.persistent;
+    }
 
-	public void setPersistent(boolean persistent) {
-		this.persistent = persistent;
-	}
+    public void setPersistent(boolean persistent) {
+        this.persistent = persistent;
+    }
 
-	/**
-	 * Return the directory used to store session data.
-	 * @return the session data store directory
-	 */
-	public File getStoreDir() {
-		return this.storeDir;
-	}
+    /**
+     * Return the directory used to store session data.
+     * @return the session data store directory
+     */
+    public File getStoreDir() {
+        return this.storeDir;
+    }
 
-	public void setStoreDir(File storeDir) {
-		this.sessionStoreDirectory.setDirectory(storeDir);
-		this.storeDir = storeDir;
-	}
+    public void setStoreDir(File storeDir) {
+        this.sessionStoreDirectory.setDirectory(storeDir);
+        this.storeDir = storeDir;
+    }
 
-	public Cookie getCookie() {
-		return this.cookie;
-	}
+    public Cookie getCookie() {
+        return this.cookie;
+    }
 
-	SessionStoreDirectory getSessionStoreDirectory() {
-		return this.sessionStoreDirectory;
-	}
+    SessionStoreDirectory getSessionStoreDirectory() {
+        return this.sessionStoreDirectory;
+    }
 
-	/**
-	 * Session cookie properties.
-	 */
-	public static class Cookie extends org.springframework.boot.web.server.Cookie {
+    /**
+     * Session cookie properties.
+     */
+    public static class Cookie extends org.springframework.boot.web.server.Cookie {
 
-		/**
-		 * Comment for the session cookie.
-		 */
-		private String comment;
+        /**
+         * Comment for the session cookie.
+         */
+        @SuppressWarnings("NullAway.Init")
+        private String comment;
 
-		/**
-		 * Return the comment for the session cookie.
-		 * @return the session cookie comment
-		 */
-		public String getComment() {
-			return this.comment;
-		}
+        /**
+         * Return the comment for the session cookie.
+         * @return the session cookie comment
+         */
+        public String getComment() {
+            return this.comment;
+        }
 
-		public void setComment(String comment) {
-			this.comment = comment;
-		}
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+    }
 
-	}
+    /**
+     * Available session tracking modes (mirrors
+     * {@link jakarta.servlet.SessionTrackingMode}.
+     */
+    public enum SessionTrackingMode {
 
-	/**
-	 * Available session tracking modes (mirrors
-	 * {@link jakarta.servlet.SessionTrackingMode}.
-	 */
-	public enum SessionTrackingMode {
-
-		/**
-		 * Send a cookie in response to the client's first request.
-		 */
-		COOKIE,
-
-		/**
-		 * Rewrite the URL to append a session ID.
-		 */
-		URL,
-
-		/**
-		 * Use SSL build-in mechanism to track the session.
-		 */
-		SSL
-
-	}
-
+        /**
+         * Send a cookie in response to the client's first request.
+         */
+        COOKIE,
+        /**
+         * Rewrite the URL to append a session ID.
+         */
+        URL,
+        /**
+         * Use SSL build-in mechanism to track the session.
+         */
+        SSL
+    }
 }

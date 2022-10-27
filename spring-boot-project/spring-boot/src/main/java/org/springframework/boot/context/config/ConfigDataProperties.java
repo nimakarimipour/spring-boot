@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
 
+import org.springframework.boot.NullUnmarked;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -35,108 +34,107 @@ import org.springframework.util.ObjectUtils;
  */
 class ConfigDataProperties {
 
-	private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
+    private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
 
-	private static final Bindable<ConfigDataProperties> BINDABLE_PROPERTIES = Bindable.of(ConfigDataProperties.class);
+    private static final Bindable<ConfigDataProperties> BINDABLE_PROPERTIES = Bindable.of(ConfigDataProperties.class);
 
-	private final List<ConfigDataLocation> imports;
+    private final List<ConfigDataLocation> imports;
 
-	private final Activate activate;
+    private final Activate activate;
 
-	/**
-	 * Create a new {@link ConfigDataProperties} instance.
-	 * @param imports the imports requested
-	 * @param activate the activate properties
-	 */
-	ConfigDataProperties(@Name("import") List<ConfigDataLocation> imports, Activate activate) {
-		this.imports = (imports != null) ? imports : Collections.emptyList();
-		this.activate = activate;
-	}
+    /**
+     * Create a new {@link ConfigDataProperties} instance.
+     * @param imports the imports requested
+     * @param activate the activate properties
+     */
+    ConfigDataProperties(@Name("import") List<ConfigDataLocation> imports, Activate activate) {
+        this.imports = (imports != null) ? imports : Collections.emptyList();
+        this.activate = activate;
+    }
 
-	/**
-	 * Return any additional imports requested.
-	 * @return the requested imports
-	 */
-	List<ConfigDataLocation> getImports() {
-		return this.imports;
-	}
+    /**
+     * Return any additional imports requested.
+     * @return the requested imports
+     */
+    List<ConfigDataLocation> getImports() {
+        return this.imports;
+    }
 
-	/**
-	 * Return {@code true} if the properties indicate that the config data property source
-	 * is active for the given activation context.
-	 * @param activationContext the activation context
-	 * @return {@code true} if the config data property source is active
-	 */
-	boolean isActive(ConfigDataActivationContext activationContext) {
-		return this.activate == null || this.activate.isActive(activationContext);
-	}
+    /**
+     * Return {@code true} if the properties indicate that the config data property source
+     * is active for the given activation context.
+     * @param activationContext the activation context
+     * @return {@code true} if the config data property source is active
+     */
+    boolean isActive(ConfigDataActivationContext activationContext) {
+        return this.activate == null || this.activate.isActive(activationContext);
+    }
 
-	/**
-	 * Return a new variant of these properties without any imports.
-	 * @return a new {@link ConfigDataProperties} instance
-	 */
-	ConfigDataProperties withoutImports() {
-		return new ConfigDataProperties(null, this.activate);
-	}
+    /**
+     * Return a new variant of these properties without any imports.
+     * @return a new {@link ConfigDataProperties} instance
+     */
+    @NullUnmarked
+    ConfigDataProperties withoutImports() {
+        return new ConfigDataProperties(null, this.activate);
+    }
 
-	/**
-	 * Factory method used to create {@link ConfigDataProperties} from the given
-	 * {@link Binder}.
-	 * @param binder the binder used to bind the properties
-	 * @return a {@link ConfigDataProperties} instance or {@code null}
-	 */
-	static ConfigDataProperties get(Binder binder) {
-		return binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler()).orElse(null);
-	}
+    /**
+     * Factory method used to create {@link ConfigDataProperties} from the given
+     * {@link Binder}.
+     * @param binder the binder used to bind the properties
+     * @return a {@link ConfigDataProperties} instance or {@code null}
+     */
+    @NullUnmarked
+    static ConfigDataProperties get(Binder binder) {
+        return binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler()).orElse(null);
+    }
 
-	/**
-	 * Activate properties used to determine when a config data property source is active.
-	 */
-	static class Activate {
+    /**
+     * Activate properties used to determine when a config data property source is active.
+     */
+    static class Activate {
 
-		private final CloudPlatform onCloudPlatform;
+        private final CloudPlatform onCloudPlatform;
 
-		private final String[] onProfile;
+        private final String[] onProfile;
 
-		/**
-		 * Create a new {@link Activate} instance.
-		 * @param onCloudPlatform the cloud platform required for activation
-		 * @param onProfile the profile expression required for activation
-		 */
-		Activate(CloudPlatform onCloudPlatform, String[] onProfile) {
-			this.onProfile = onProfile;
-			this.onCloudPlatform = onCloudPlatform;
-		}
+        /**
+         * Create a new {@link Activate} instance.
+         * @param onCloudPlatform the cloud platform required for activation
+         * @param onProfile the profile expression required for activation
+         */
+        Activate(CloudPlatform onCloudPlatform, String[] onProfile) {
+            this.onProfile = onProfile;
+            this.onCloudPlatform = onCloudPlatform;
+        }
 
-		/**
-		 * Return {@code true} if the properties indicate that the config data property
-		 * source is active for the given activation context.
-		 * @param activationContext the activation context
-		 * @return {@code true} if the config data property source is active
-		 */
-		boolean isActive(ConfigDataActivationContext activationContext) {
-			if (activationContext == null) {
-				return false;
-			}
-			boolean activate = true;
-			activate = activate && isActive(activationContext.getCloudPlatform());
-			activate = activate && isActive(activationContext.getProfiles());
-			return activate;
-		}
+        /**
+         * Return {@code true} if the properties indicate that the config data property
+         * source is active for the given activation context.
+         * @param activationContext the activation context
+         * @return {@code true} if the config data property source is active
+         */
+        boolean isActive(ConfigDataActivationContext activationContext) {
+            if (activationContext == null) {
+                return false;
+            }
+            boolean activate = true;
+            activate = activate && isActive(activationContext.getCloudPlatform());
+            activate = activate && isActive(activationContext.getProfiles());
+            return activate;
+        }
 
-		private boolean isActive(CloudPlatform cloudPlatform) {
-			return this.onCloudPlatform == null || this.onCloudPlatform == cloudPlatform;
-		}
+        private boolean isActive(CloudPlatform cloudPlatform) {
+            return this.onCloudPlatform == null || this.onCloudPlatform == cloudPlatform;
+        }
 
-		private boolean isActive(Profiles profiles) {
-			return ObjectUtils.isEmpty(this.onProfile)
-					|| (profiles != null && matchesActiveProfiles(profiles::isAccepted));
-		}
+        private boolean isActive(Profiles profiles) {
+            return ObjectUtils.isEmpty(this.onProfile) || (profiles != null && matchesActiveProfiles(profiles::isAccepted));
+        }
 
-		private boolean matchesActiveProfiles(Predicate<String> activeProfiles) {
-			return org.springframework.core.env.Profiles.of(this.onProfile).matches(activeProfiles);
-		}
-
-	}
-
+        private boolean matchesActiveProfiles(Predicate<String> activeProfiles) {
+            return org.springframework.core.env.Profiles.of(this.onProfile).matches(activeProfiles);
+        }
+    }
 }

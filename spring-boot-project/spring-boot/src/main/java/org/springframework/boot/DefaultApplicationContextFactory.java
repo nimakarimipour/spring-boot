@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import org.springframework.boot.NullUnmarked;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-
 import org.springframework.aot.AotDetector;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -34,45 +33,42 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  */
 class DefaultApplicationContextFactory implements ApplicationContextFactory {
 
-	@Override
-	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
-		return getFromSpringFactories(webApplicationType, ApplicationContextFactory::getEnvironmentType, null);
-	}
+    @Override
+    @NullUnmarked
+    public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
+        return getFromSpringFactories(webApplicationType, ApplicationContextFactory::getEnvironmentType, null);
+    }
 
-	@Override
-	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
-		return getFromSpringFactories(webApplicationType, ApplicationContextFactory::createEnvironment, null);
-	}
+    @Override
+    @NullUnmarked
+    public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
+        return getFromSpringFactories(webApplicationType, ApplicationContextFactory::createEnvironment, null);
+    }
 
-	@Override
-	public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
-		try {
-			return getFromSpringFactories(webApplicationType, ApplicationContextFactory::create,
-					this::createDefaultApplicationContext);
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException("Unable create a default ApplicationContext instance, "
-					+ "you may need a custom ApplicationContextFactory", ex);
-		}
-	}
+    @Override
+    public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
+        try {
+            return getFromSpringFactories(webApplicationType, ApplicationContextFactory::create, this::createDefaultApplicationContext);
+        } catch (Exception ex) {
+            throw new IllegalStateException("Unable create a default ApplicationContext instance, " + "you may need a custom ApplicationContextFactory", ex);
+        }
+    }
 
-	private ConfigurableApplicationContext createDefaultApplicationContext() {
-		if (!AotDetector.useGeneratedArtifacts()) {
-			return new AnnotationConfigApplicationContext();
-		}
-		return new GenericApplicationContext();
-	}
+    private ConfigurableApplicationContext createDefaultApplicationContext() {
+        if (!AotDetector.useGeneratedArtifacts()) {
+            return new AnnotationConfigApplicationContext();
+        }
+        return new GenericApplicationContext();
+    }
 
-	private <T> T getFromSpringFactories(WebApplicationType webApplicationType,
-			BiFunction<ApplicationContextFactory, WebApplicationType, T> action, Supplier<T> defaultResult) {
-		for (ApplicationContextFactory candidate : SpringFactoriesLoader.loadFactories(ApplicationContextFactory.class,
-				getClass().getClassLoader())) {
-			T result = action.apply(candidate, webApplicationType);
-			if (result != null) {
-				return result;
-			}
-		}
-		return (defaultResult != null) ? defaultResult.get() : null;
-	}
-
+    @NullUnmarked
+    private <T> T getFromSpringFactories(WebApplicationType webApplicationType, BiFunction<ApplicationContextFactory, WebApplicationType, T> action, Supplier<T> defaultResult) {
+        for (ApplicationContextFactory candidate : SpringFactoriesLoader.loadFactories(ApplicationContextFactory.class, getClass().getClassLoader())) {
+            T result = action.apply(candidate, webApplicationType);
+            if (result != null) {
+                return result;
+            }
+        }
+        return (defaultResult != null) ? defaultResult.get() : null;
+    }
 }

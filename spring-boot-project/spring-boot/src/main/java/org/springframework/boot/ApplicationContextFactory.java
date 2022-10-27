@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import org.springframework.boot.NullUnmarked;
 import java.util.function.Supplier;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -36,65 +35,66 @@ import org.springframework.core.env.Environment;
 @FunctionalInterface
 public interface ApplicationContextFactory {
 
-	/**
-	 * A default {@link ApplicationContextFactory} implementation that will create an
-	 * appropriate context for the {@link WebApplicationType}.
-	 */
-	ApplicationContextFactory DEFAULT = new DefaultApplicationContextFactory();
+    /**
+     * A default {@link ApplicationContextFactory} implementation that will create an
+     * appropriate context for the {@link WebApplicationType}.
+     */
+    ApplicationContextFactory DEFAULT = new DefaultApplicationContextFactory();
 
-	/**
-	 * Return the {@link Environment} type expected to be set on the
-	 * {@link #create(WebApplicationType) created} application context. The result of this
-	 * method can be used to convert an existing environment instance to the correct type.
-	 * @param webApplicationType the web application type
-	 * @return the expected application context type or {@code null} to use the default
-	 * @since 2.6.14
-	 */
-	default Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
-		return null;
-	}
+    /**
+     * Return the {@link Environment} type expected to be set on the
+     * {@link #create(WebApplicationType) created} application context. The result of this
+     * method can be used to convert an existing environment instance to the correct type.
+     * @param webApplicationType the web application type
+     * @return the expected application context type or {@code null} to use the default
+     * @since 2.6.14
+     */
+    @NullUnmarked
+    default Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
+        return null;
+    }
 
-	/**
-	 * Create a new {@link Environment} to be set on the
-	 * {@link #create(WebApplicationType) created} application context. The result of this
-	 * method must match the type returned by
-	 * {@link #getEnvironmentType(WebApplicationType)}.
-	 * @param webApplicationType the web application type
-	 * @return an environment instance or {@code null} to use the default
-	 * @since 2.6.14
-	 */
-	default ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
-		return null;
-	}
+    /**
+     * Create a new {@link Environment} to be set on the
+     * {@link #create(WebApplicationType) created} application context. The result of this
+     * method must match the type returned by
+     * {@link #getEnvironmentType(WebApplicationType)}.
+     * @param webApplicationType the web application type
+     * @return an environment instance or {@code null} to use the default
+     * @since 2.6.14
+     */
+    @NullUnmarked
+    default ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
+        return null;
+    }
 
-	/**
-	 * Creates the {@link ConfigurableApplicationContext application context} for a
-	 * {@link SpringApplication}, respecting the given {@code webApplicationType}.
-	 * @param webApplicationType the web application type
-	 * @return the newly created application context
-	 */
-	ConfigurableApplicationContext create(WebApplicationType webApplicationType);
+    /**
+     * Creates the {@link ConfigurableApplicationContext application context} for a
+     * {@link SpringApplication}, respecting the given {@code webApplicationType}.
+     * @param webApplicationType the web application type
+     * @return the newly created application context
+     */
+    ConfigurableApplicationContext create(WebApplicationType webApplicationType);
 
-	/**
-	 * Creates an {@code ApplicationContextFactory} that will create contexts by
-	 * instantiating the given {@code contextClass} via its primary constructor.
-	 * @param contextClass the context class
-	 * @return the factory that will instantiate the context class
-	 * @see BeanUtils#instantiateClass(Class)
-	 */
-	static ApplicationContextFactory ofContextClass(Class<? extends ConfigurableApplicationContext> contextClass) {
-		return of(() -> BeanUtils.instantiateClass(contextClass));
-	}
+    /**
+     * Creates an {@code ApplicationContextFactory} that will create contexts by
+     * instantiating the given {@code contextClass} via its primary constructor.
+     * @param contextClass the context class
+     * @return the factory that will instantiate the context class
+     * @see BeanUtils#instantiateClass(Class)
+     */
+    static ApplicationContextFactory ofContextClass(Class<? extends ConfigurableApplicationContext> contextClass) {
+        return of(() -> BeanUtils.instantiateClass(contextClass));
+    }
 
-	/**
-	 * Creates an {@code ApplicationContextFactory} that will create contexts by calling
-	 * the given {@link Supplier}.
-	 * @param supplier the context supplier, for example
-	 * {@code AnnotationConfigApplicationContext::new}
-	 * @return the factory that will instantiate the context class
-	 */
-	static ApplicationContextFactory of(Supplier<ConfigurableApplicationContext> supplier) {
-		return (webApplicationType) -> supplier.get();
-	}
-
+    /**
+     * Creates an {@code ApplicationContextFactory} that will create contexts by calling
+     * the given {@link Supplier}.
+     * @param supplier the context supplier, for example
+     * {@code AnnotationConfigApplicationContext::new}
+     * @return the factory that will instantiate the context class
+     */
+    static ApplicationContextFactory of(Supplier<ConfigurableApplicationContext> supplier) {
+        return (webApplicationType) -> supplier.get();
+    }
 }

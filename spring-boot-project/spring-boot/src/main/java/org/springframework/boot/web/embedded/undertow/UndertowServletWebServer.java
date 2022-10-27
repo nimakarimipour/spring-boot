@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.embedded.undertow;
 
+import org.springframework.boot.NullUnmarked;
 import io.undertow.Handlers;
 import io.undertow.Undertow.Builder;
 import io.undertow.server.HttpHandler;
 import io.undertow.servlet.api.DeploymentManager;
-
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.util.StringUtils;
 
@@ -39,54 +38,53 @@ import org.springframework.util.StringUtils;
  */
 public class UndertowServletWebServer extends UndertowWebServer {
 
-	private final String contextPath;
+    private final String contextPath;
 
-	private final DeploymentManager manager;
+    private final DeploymentManager manager;
 
-	/**
-	 * Create a new {@link UndertowServletWebServer} instance.
-	 * @param builder the builder
-	 * @param httpHandlerFactories the handler factories
-	 * @param contextPath the root context path
-	 * @param autoStart if the server should be started
-	 * @since 2.3.0
-	 */
-	public UndertowServletWebServer(Builder builder, Iterable<HttpHandlerFactory> httpHandlerFactories,
-			String contextPath, boolean autoStart) {
-		super(builder, httpHandlerFactories, autoStart);
-		this.contextPath = contextPath;
-		this.manager = findManager(httpHandlerFactories);
-	}
+    /**
+     * Create a new {@link UndertowServletWebServer} instance.
+     * @param builder the builder
+     * @param httpHandlerFactories the handler factories
+     * @param contextPath the root context path
+     * @param autoStart if the server should be started
+     * @since 2.3.0
+     */
+    public UndertowServletWebServer(Builder builder, Iterable<HttpHandlerFactory> httpHandlerFactories, String contextPath, boolean autoStart) {
+        super(builder, httpHandlerFactories, autoStart);
+        this.contextPath = contextPath;
+        this.manager = findManager(httpHandlerFactories);
+    }
 
-	private DeploymentManager findManager(Iterable<HttpHandlerFactory> httpHandlerFactories) {
-		for (HttpHandlerFactory httpHandlerFactory : httpHandlerFactories) {
-			if (httpHandlerFactory instanceof DeploymentManagerHttpHandlerFactory deploymentManagerFactory) {
-				return deploymentManagerFactory.getDeploymentManager();
-			}
-		}
-		return null;
-	}
+    @NullUnmarked
+    private DeploymentManager findManager(Iterable<HttpHandlerFactory> httpHandlerFactories) {
+        for (HttpHandlerFactory httpHandlerFactory : httpHandlerFactories) {
+            if (httpHandlerFactory instanceof DeploymentManagerHttpHandlerFactory deploymentManagerFactory) {
+                return deploymentManagerFactory.getDeploymentManager();
+            }
+        }
+        return null;
+    }
 
-	@Override
-	protected HttpHandler createHttpHandler() {
-		HttpHandler handler = super.createHttpHandler();
-		if (StringUtils.hasLength(this.contextPath)) {
-			handler = Handlers.path().addPrefixPath(this.contextPath, handler);
-		}
-		return handler;
-	}
+    @Override
+    protected HttpHandler createHttpHandler() {
+        HttpHandler handler = super.createHttpHandler();
+        if (StringUtils.hasLength(this.contextPath)) {
+            handler = Handlers.path().addPrefixPath(this.contextPath, handler);
+        }
+        return handler;
+    }
 
-	@Override
-	protected String getStartLogMessage() {
-		String message = super.getStartLogMessage();
-		if (StringUtils.hasText(this.contextPath)) {
-			message += " with context path '" + this.contextPath + "'";
-		}
-		return message;
-	}
+    @Override
+    protected String getStartLogMessage() {
+        String message = super.getStartLogMessage();
+        if (StringUtils.hasText(this.contextPath)) {
+            message += " with context path '" + this.contextPath + "'";
+        }
+        return message;
+    }
 
-	public DeploymentManager getDeploymentManager() {
-		return this.manager;
-	}
-
+    public DeploymentManager getDeploymentManager() {
+        return this.manager;
+    }
 }

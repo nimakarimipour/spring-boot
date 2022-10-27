@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.convert;
 
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
@@ -53,247 +52,241 @@ import org.springframework.util.StringValueResolver;
  */
 public class ApplicationConversionService extends FormattingConversionService {
 
-	private static volatile ApplicationConversionService sharedInstance;
+    @Nullable
+    private static volatile ApplicationConversionService sharedInstance;
 
-	private final boolean unmodifiable;
+    private final boolean unmodifiable;
 
-	public ApplicationConversionService() {
-		this(null);
-	}
+    public ApplicationConversionService() {
+        this(null);
+    }
 
-	public ApplicationConversionService(StringValueResolver embeddedValueResolver) {
-		this(embeddedValueResolver, false);
-	}
+    public ApplicationConversionService(@Nullable StringValueResolver embeddedValueResolver) {
+        this(embeddedValueResolver, false);
+    }
 
-	private ApplicationConversionService(StringValueResolver embeddedValueResolver, boolean unmodifiable) {
-		if (embeddedValueResolver != null) {
-			setEmbeddedValueResolver(embeddedValueResolver);
-		}
-		configure(this);
-		this.unmodifiable = unmodifiable;
-	}
+    private ApplicationConversionService(@Nullable StringValueResolver embeddedValueResolver, boolean unmodifiable) {
+        if (embeddedValueResolver != null) {
+            setEmbeddedValueResolver(embeddedValueResolver);
+        }
+        configure(this);
+        this.unmodifiable = unmodifiable;
+    }
 
-	@Override
-	public void addPrinter(Printer<?> printer) {
-		assertModifiable();
-		super.addPrinter(printer);
-	}
+    @Override
+    public void addPrinter(Printer<?> printer) {
+        assertModifiable();
+        super.addPrinter(printer);
+    }
 
-	@Override
-	public void addParser(Parser<?> parser) {
-		assertModifiable();
-		super.addParser(parser);
-	}
+    @Override
+    public void addParser(Parser<?> parser) {
+        assertModifiable();
+        super.addParser(parser);
+    }
 
-	@Override
-	public void addFormatter(Formatter<?> formatter) {
-		assertModifiable();
-		super.addFormatter(formatter);
-	}
+    @Override
+    public void addFormatter(Formatter<?> formatter) {
+        assertModifiable();
+        super.addFormatter(formatter);
+    }
 
-	@Override
-	public void addFormatterForFieldType(Class<?> fieldType, Formatter<?> formatter) {
-		assertModifiable();
-		super.addFormatterForFieldType(fieldType, formatter);
-	}
+    @Override
+    public void addFormatterForFieldType(Class<?> fieldType, Formatter<?> formatter) {
+        assertModifiable();
+        super.addFormatterForFieldType(fieldType, formatter);
+    }
 
-	@Override
-	public void addConverter(Converter<?, ?> converter) {
-		assertModifiable();
-		super.addConverter(converter);
-	}
+    @Override
+    public void addConverter(Converter<?, ?> converter) {
+        assertModifiable();
+        super.addConverter(converter);
+    }
 
-	@Override
-	public void addFormatterForFieldType(Class<?> fieldType, Printer<?> printer, Parser<?> parser) {
-		assertModifiable();
-		super.addFormatterForFieldType(fieldType, printer, parser);
-	}
+    @Override
+    public void addFormatterForFieldType(Class<?> fieldType, Printer<?> printer, Parser<?> parser) {
+        assertModifiable();
+        super.addFormatterForFieldType(fieldType, printer, parser);
+    }
 
-	@Override
-	public void addFormatterForFieldAnnotation(
-			AnnotationFormatterFactory<? extends Annotation> annotationFormatterFactory) {
-		assertModifiable();
-		super.addFormatterForFieldAnnotation(annotationFormatterFactory);
-	}
+    @Override
+    public void addFormatterForFieldAnnotation(AnnotationFormatterFactory<? extends Annotation> annotationFormatterFactory) {
+        assertModifiable();
+        super.addFormatterForFieldAnnotation(annotationFormatterFactory);
+    }
 
-	@Override
-	public <S, T> void addConverter(Class<S> sourceType, Class<T> targetType,
-			Converter<? super S, ? extends T> converter) {
-		assertModifiable();
-		super.addConverter(sourceType, targetType, converter);
-	}
+    @Override
+    public <S, T> void addConverter(Class<S> sourceType, Class<T> targetType, Converter<? super S, ? extends T> converter) {
+        assertModifiable();
+        super.addConverter(sourceType, targetType, converter);
+    }
 
-	@Override
-	public void addConverter(GenericConverter converter) {
-		assertModifiable();
-		super.addConverter(converter);
-	}
+    @Override
+    public void addConverter(GenericConverter converter) {
+        assertModifiable();
+        super.addConverter(converter);
+    }
 
-	@Override
-	public void addConverterFactory(ConverterFactory<?, ?> factory) {
-		assertModifiable();
-		super.addConverterFactory(factory);
-	}
+    @Override
+    public void addConverterFactory(ConverterFactory<?, ?> factory) {
+        assertModifiable();
+        super.addConverterFactory(factory);
+    }
 
-	@Override
-	public void removeConvertible(Class<?> sourceType, Class<?> targetType) {
-		assertModifiable();
-		super.removeConvertible(sourceType, targetType);
-	}
+    @Override
+    public void removeConvertible(Class<?> sourceType, Class<?> targetType) {
+        assertModifiable();
+        super.removeConvertible(sourceType, targetType);
+    }
 
-	private void assertModifiable() {
-		if (this.unmodifiable) {
-			throw new UnsupportedOperationException("This ApplicationConversionService cannot be modified");
-		}
-	}
+    private void assertModifiable() {
+        if (this.unmodifiable) {
+            throw new UnsupportedOperationException("This ApplicationConversionService cannot be modified");
+        }
+    }
 
-	/**
-	 * Return {@code true} if objects of {@code sourceType} can be converted to the
-	 * {@code targetType} and the converter has {@code Object.class} as a supported source
-	 * type.
-	 * @param sourceType the source type to test
-	 * @param targetType the target type to test
-	 * @return if conversion happens via an {@code ObjectTo...} converter
-	 * @since 2.4.3
-	 */
-	public boolean isConvertViaObjectSourceType(TypeDescriptor sourceType, TypeDescriptor targetType) {
-		GenericConverter converter = getConverter(sourceType, targetType);
-		Set<ConvertiblePair> pairs = (converter != null) ? converter.getConvertibleTypes() : null;
-		if (pairs != null) {
-			for (ConvertiblePair pair : pairs) {
-				if (Object.class.equals(pair.getSourceType())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    /**
+     * Return {@code true} if objects of {@code sourceType} can be converted to the
+     * {@code targetType} and the converter has {@code Object.class} as a supported source
+     * type.
+     * @param sourceType the source type to test
+     * @param targetType the target type to test
+     * @return if conversion happens via an {@code ObjectTo...} converter
+     * @since 2.4.3
+     */
+    public boolean isConvertViaObjectSourceType(TypeDescriptor sourceType, TypeDescriptor targetType) {
+        GenericConverter converter = getConverter(sourceType, targetType);
+        Set<ConvertiblePair> pairs = (converter != null) ? converter.getConvertibleTypes() : null;
+        if (pairs != null) {
+            for (ConvertiblePair pair : pairs) {
+                if (Object.class.equals(pair.getSourceType())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Return a shared default application {@code ConversionService} instance, lazily
-	 * building it once needed.
-	 * <p>
-	 * Note: This method actually returns an {@link ApplicationConversionService}
-	 * instance. However, the {@code ConversionService} signature has been preserved for
-	 * binary compatibility.
-	 * @return the shared {@code ApplicationConversionService} instance (never
-	 * {@code null})
-	 */
-	public static ConversionService getSharedInstance() {
-		ApplicationConversionService sharedInstance = ApplicationConversionService.sharedInstance;
-		if (sharedInstance == null) {
-			synchronized (ApplicationConversionService.class) {
-				sharedInstance = ApplicationConversionService.sharedInstance;
-				if (sharedInstance == null) {
-					sharedInstance = new ApplicationConversionService(null, true);
-					ApplicationConversionService.sharedInstance = sharedInstance;
-				}
-			}
-		}
-		return sharedInstance;
-	}
+    /**
+     * Return a shared default application {@code ConversionService} instance, lazily
+     * building it once needed.
+     * <p>
+     * Note: This method actually returns an {@link ApplicationConversionService}
+     * instance. However, the {@code ConversionService} signature has been preserved for
+     * binary compatibility.
+     * @return the shared {@code ApplicationConversionService} instance (never
+     * {@code null})
+     */
+    public static ConversionService getSharedInstance() {
+        ApplicationConversionService sharedInstance = ApplicationConversionService.sharedInstance;
+        if (sharedInstance == null) {
+            synchronized (ApplicationConversionService.class) {
+                sharedInstance = ApplicationConversionService.sharedInstance;
+                if (sharedInstance == null) {
+                    sharedInstance = new ApplicationConversionService(null, true);
+                    ApplicationConversionService.sharedInstance = sharedInstance;
+                }
+            }
+        }
+        return sharedInstance;
+    }
 
-	/**
-	 * Configure the given {@link FormatterRegistry} with formatters and converters
-	 * appropriate for most Spring Boot applications.
-	 * @param registry the registry of converters to add to (must also be castable to
-	 * ConversionService, e.g. being a {@link ConfigurableConversionService})
-	 * @throws ClassCastException if the given FormatterRegistry could not be cast to a
-	 * ConversionService
-	 */
-	public static void configure(FormatterRegistry registry) {
-		DefaultConversionService.addDefaultConverters(registry);
-		DefaultFormattingConversionService.addDefaultFormatters(registry);
-		addApplicationFormatters(registry);
-		addApplicationConverters(registry);
-	}
+    /**
+     * Configure the given {@link FormatterRegistry} with formatters and converters
+     * appropriate for most Spring Boot applications.
+     * @param registry the registry of converters to add to (must also be castable to
+     * ConversionService, e.g. being a {@link ConfigurableConversionService})
+     * @throws ClassCastException if the given FormatterRegistry could not be cast to a
+     * ConversionService
+     */
+    public static void configure(FormatterRegistry registry) {
+        DefaultConversionService.addDefaultConverters(registry);
+        DefaultFormattingConversionService.addDefaultFormatters(registry);
+        addApplicationFormatters(registry);
+        addApplicationConverters(registry);
+    }
 
-	/**
-	 * Add converters useful for most Spring Boot applications.
-	 * @param registry the registry of converters to add to (must also be castable to
-	 * ConversionService, e.g. being a {@link ConfigurableConversionService})
-	 * @throws ClassCastException if the given ConverterRegistry could not be cast to a
-	 * ConversionService
-	 */
-	public static void addApplicationConverters(ConverterRegistry registry) {
-		addDelimitedStringConverters(registry);
-		registry.addConverter(new StringToDurationConverter());
-		registry.addConverter(new DurationToStringConverter());
-		registry.addConverter(new NumberToDurationConverter());
-		registry.addConverter(new DurationToNumberConverter());
-		registry.addConverter(new StringToPeriodConverter());
-		registry.addConverter(new PeriodToStringConverter());
-		registry.addConverter(new NumberToPeriodConverter());
-		registry.addConverter(new StringToDataSizeConverter());
-		registry.addConverter(new NumberToDataSizeConverter());
-		registry.addConverter(new StringToFileConverter());
-		registry.addConverter(new InputStreamSourceToByteArrayConverter());
-		registry.addConverterFactory(new LenientStringToEnumConverterFactory());
-		registry.addConverterFactory(new LenientBooleanToEnumConverterFactory());
-		if (registry instanceof ConversionService conversionService) {
-			addApplicationConverters(registry, conversionService);
-		}
-	}
+    /**
+     * Add converters useful for most Spring Boot applications.
+     * @param registry the registry of converters to add to (must also be castable to
+     * ConversionService, e.g. being a {@link ConfigurableConversionService})
+     * @throws ClassCastException if the given ConverterRegistry could not be cast to a
+     * ConversionService
+     */
+    public static void addApplicationConverters(ConverterRegistry registry) {
+        addDelimitedStringConverters(registry);
+        registry.addConverter(new StringToDurationConverter());
+        registry.addConverter(new DurationToStringConverter());
+        registry.addConverter(new NumberToDurationConverter());
+        registry.addConverter(new DurationToNumberConverter());
+        registry.addConverter(new StringToPeriodConverter());
+        registry.addConverter(new PeriodToStringConverter());
+        registry.addConverter(new NumberToPeriodConverter());
+        registry.addConverter(new StringToDataSizeConverter());
+        registry.addConverter(new NumberToDataSizeConverter());
+        registry.addConverter(new StringToFileConverter());
+        registry.addConverter(new InputStreamSourceToByteArrayConverter());
+        registry.addConverterFactory(new LenientStringToEnumConverterFactory());
+        registry.addConverterFactory(new LenientBooleanToEnumConverterFactory());
+        if (registry instanceof ConversionService conversionService) {
+            addApplicationConverters(registry, conversionService);
+        }
+    }
 
-	private static void addApplicationConverters(ConverterRegistry registry, ConversionService conversionService) {
-		registry.addConverter(new CharSequenceToObjectConverter(conversionService));
-	}
+    private static void addApplicationConverters(ConverterRegistry registry, ConversionService conversionService) {
+        registry.addConverter(new CharSequenceToObjectConverter(conversionService));
+    }
 
-	/**
-	 * Add converters to support delimited strings.
-	 * @param registry the registry of converters to add to (must also be castable to
-	 * ConversionService, e.g. being a {@link ConfigurableConversionService})
-	 * @throws ClassCastException if the given ConverterRegistry could not be cast to a
-	 * ConversionService
-	 */
-	public static void addDelimitedStringConverters(ConverterRegistry registry) {
-		ConversionService service = (ConversionService) registry;
-		registry.addConverter(new ArrayToDelimitedStringConverter(service));
-		registry.addConverter(new CollectionToDelimitedStringConverter(service));
-		registry.addConverter(new DelimitedStringToArrayConverter(service));
-		registry.addConverter(new DelimitedStringToCollectionConverter(service));
-	}
+    /**
+     * Add converters to support delimited strings.
+     * @param registry the registry of converters to add to (must also be castable to
+     * ConversionService, e.g. being a {@link ConfigurableConversionService})
+     * @throws ClassCastException if the given ConverterRegistry could not be cast to a
+     * ConversionService
+     */
+    public static void addDelimitedStringConverters(ConverterRegistry registry) {
+        ConversionService service = (ConversionService) registry;
+        registry.addConverter(new ArrayToDelimitedStringConverter(service));
+        registry.addConverter(new CollectionToDelimitedStringConverter(service));
+        registry.addConverter(new DelimitedStringToArrayConverter(service));
+        registry.addConverter(new DelimitedStringToCollectionConverter(service));
+    }
 
-	/**
-	 * Add formatters useful for most Spring Boot applications.
-	 * @param registry the service to register default formatters with
-	 */
-	public static void addApplicationFormatters(FormatterRegistry registry) {
-		registry.addFormatter(new CharArrayFormatter());
-		registry.addFormatter(new InetAddressFormatter());
-		registry.addFormatter(new IsoOffsetFormatter());
-	}
+    /**
+     * Add formatters useful for most Spring Boot applications.
+     * @param registry the service to register default formatters with
+     */
+    public static void addApplicationFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new CharArrayFormatter());
+        registry.addFormatter(new InetAddressFormatter());
+        registry.addFormatter(new IsoOffsetFormatter());
+    }
 
-	/**
-	 * Add {@link GenericConverter}, {@link Converter}, {@link Printer}, {@link Parser}
-	 * and {@link Formatter} beans from the specified context.
-	 * @param registry the service to register beans with
-	 * @param beanFactory the bean factory to get the beans from
-	 * @since 2.2.0
-	 */
-	public static void addBeans(FormatterRegistry registry, ListableBeanFactory beanFactory) {
-		Set<Object> beans = new LinkedHashSet<>();
-		beans.addAll(beanFactory.getBeansOfType(GenericConverter.class).values());
-		beans.addAll(beanFactory.getBeansOfType(Converter.class).values());
-		beans.addAll(beanFactory.getBeansOfType(Printer.class).values());
-		beans.addAll(beanFactory.getBeansOfType(Parser.class).values());
-		for (Object bean : beans) {
-			if (bean instanceof GenericConverter) {
-				registry.addConverter((GenericConverter) bean);
-			}
-			else if (bean instanceof Converter) {
-				registry.addConverter((Converter<?, ?>) bean);
-			}
-			else if (bean instanceof Formatter) {
-				registry.addFormatter((Formatter<?>) bean);
-			}
-			else if (bean instanceof Printer) {
-				registry.addPrinter((Printer<?>) bean);
-			}
-			else if (bean instanceof Parser) {
-				registry.addParser((Parser<?>) bean);
-			}
-		}
-	}
-
+    /**
+     * Add {@link GenericConverter}, {@link Converter}, {@link Printer}, {@link Parser}
+     * and {@link Formatter} beans from the specified context.
+     * @param registry the service to register beans with
+     * @param beanFactory the bean factory to get the beans from
+     * @since 2.2.0
+     */
+    public static void addBeans(FormatterRegistry registry, ListableBeanFactory beanFactory) {
+        Set<Object> beans = new LinkedHashSet<>();
+        beans.addAll(beanFactory.getBeansOfType(GenericConverter.class).values());
+        beans.addAll(beanFactory.getBeansOfType(Converter.class).values());
+        beans.addAll(beanFactory.getBeansOfType(Printer.class).values());
+        beans.addAll(beanFactory.getBeansOfType(Parser.class).values());
+        for (Object bean : beans) {
+            if (bean instanceof GenericConverter) {
+                registry.addConverter((GenericConverter) bean);
+            } else if (bean instanceof Converter) {
+                registry.addConverter((Converter<?, ?>) bean);
+            } else if (bean instanceof Formatter) {
+                registry.addFormatter((Formatter<?>) bean);
+            } else if (bean instanceof Printer) {
+                registry.addPrinter((Printer<?>) bean);
+            } else if (bean instanceof Parser) {
+                registry.addParser((Parser<?>) bean);
+            }
+        }
+    }
 }

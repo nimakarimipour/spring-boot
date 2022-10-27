@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind.handler;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.context.properties.bind.AbstractBindHandler;
 import org.springframework.boot.context.properties.bind.BindContext;
 import org.springframework.boot.context.properties.bind.BindHandler;
@@ -32,28 +32,27 @@ import org.springframework.core.convert.ConverterNotFoundException;
  */
 public class IgnoreTopLevelConverterNotFoundBindHandler extends AbstractBindHandler {
 
-	/**
-	 * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance.
-	 */
-	public IgnoreTopLevelConverterNotFoundBindHandler() {
-	}
+    /**
+     * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance.
+     */
+    public IgnoreTopLevelConverterNotFoundBindHandler() {
+    }
 
-	/**
-	 * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance with a
-	 * specific parent.
-	 * @param parent the parent handler
-	 */
-	public IgnoreTopLevelConverterNotFoundBindHandler(BindHandler parent) {
-		super(parent);
-	}
+    /**
+     * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance with a
+     * specific parent.
+     * @param parent the parent handler
+     */
+    public IgnoreTopLevelConverterNotFoundBindHandler(BindHandler parent) {
+        super(parent);
+    }
 
-	@Override
-	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
-			throws Exception {
-		if (context.getDepth() == 0 && error instanceof ConverterNotFoundException) {
-			return null;
-		}
-		throw error;
-	}
-
+    @Override
+    @Nullable
+    public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error) throws Exception {
+        if (context.getDepth() == 0 && error instanceof ConverterNotFoundException) {
+            return null;
+        }
+        throw error;
+    }
 }

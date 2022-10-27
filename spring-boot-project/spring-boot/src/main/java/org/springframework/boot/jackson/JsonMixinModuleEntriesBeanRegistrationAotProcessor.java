@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.jackson;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Executable;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import javax.lang.model.element.Modifier;
-
 import org.springframework.aot.generate.AccessControl;
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
@@ -43,66 +41,58 @@ import org.springframework.javapoet.CodeBlock;
  */
 class JsonMixinModuleEntriesBeanRegistrationAotProcessor implements BeanRegistrationAotProcessor {
 
-	@Override
-	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
-		if (registeredBean.getBeanClass().equals(JsonMixinModuleEntries.class)) {
-			return BeanRegistrationAotContribution
-					.withCustomCodeFragments((codeFragments) -> new AotContribution(codeFragments, registeredBean));
-		}
-		return null;
-	}
+    @Override
+    @Nullable
+    public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
+        if (registeredBean.getBeanClass().equals(JsonMixinModuleEntries.class)) {
+            return BeanRegistrationAotContribution.withCustomCodeFragments((codeFragments) -> new AotContribution(codeFragments, registeredBean));
+        }
+        return null;
+    }
 
-	static class AotContribution extends BeanRegistrationCodeFragmentsDecorator {
+    static class AotContribution extends BeanRegistrationCodeFragmentsDecorator {
 
-		private final RegisteredBean registeredBean;
+        private final RegisteredBean registeredBean;
 
-		private final ClassLoader classLoader;
+        private final ClassLoader classLoader;
 
-		AotContribution(BeanRegistrationCodeFragments delegate, RegisteredBean registeredBean) {
-			super(delegate);
-			this.registeredBean = registeredBean;
-			this.classLoader = registeredBean.getBeanFactory().getBeanClassLoader();
-		}
+        AotContribution(BeanRegistrationCodeFragments delegate, RegisteredBean registeredBean) {
+            super(delegate);
+            this.registeredBean = registeredBean;
+            this.classLoader = registeredBean.getBeanFactory().getBeanClassLoader();
+        }
 
-		@Override
-		public CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
-				BeanRegistrationCode beanRegistrationCode, Executable constructorOrFactoryMethod,
-				boolean allowDirectSupplierShortcut) {
-			JsonMixinModuleEntries entries = this.registeredBean.getBeanFactory()
-					.getBean(this.registeredBean.getBeanName(), JsonMixinModuleEntries.class);
-			contributeHints(generationContext.getRuntimeHints(), entries);
-			GeneratedMethod generatedMethod = beanRegistrationCode.getMethods().add("getInstance", (method) -> {
-				Class<?> beanType = JsonMixinModuleEntries.class;
-				method.addJavadoc("Get the bean instance for '$L'.", this.registeredBean.getBeanName());
-				method.addModifiers(Modifier.PRIVATE, Modifier.STATIC);
-				method.returns(beanType);
-				CodeBlock.Builder code = CodeBlock.builder();
-				code.add("return $T.create(", JsonMixinModuleEntries.class).beginControlFlow("(mixins) ->");
-				entries.doWithEntry(this.classLoader, (type, mixin) -> addEntryCode(code, type, mixin));
-				code.endControlFlow(")");
-				method.addCode(code.build());
-			});
-			return generatedMethod.toMethodReference().toCodeBlock();
-		}
+        @Override
+        public CodeBlock generateInstanceSupplierCode(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode, Executable constructorOrFactoryMethod, boolean allowDirectSupplierShortcut) {
+            JsonMixinModuleEntries entries = this.registeredBean.getBeanFactory().getBean(this.registeredBean.getBeanName(), JsonMixinModuleEntries.class);
+            contributeHints(generationContext.getRuntimeHints(), entries);
+            GeneratedMethod generatedMethod = beanRegistrationCode.getMethods().add("getInstance", (method) -> {
+                Class<?> beanType = JsonMixinModuleEntries.class;
+                method.addJavadoc("Get the bean instance for '$L'.", this.registeredBean.getBeanName());
+                method.addModifiers(Modifier.PRIVATE, Modifier.STATIC);
+                method.returns(beanType);
+                CodeBlock.Builder code = CodeBlock.builder();
+                code.add("return $T.create(", JsonMixinModuleEntries.class).beginControlFlow("(mixins) ->");
+                entries.doWithEntry(this.classLoader, (type, mixin) -> addEntryCode(code, type, mixin));
+                code.endControlFlow(")");
+                method.addCode(code.build());
+            });
+            return generatedMethod.toMethodReference().toCodeBlock();
+        }
 
-		private void addEntryCode(CodeBlock.Builder code, Class<?> type, Class<?> mixin) {
-			AccessControl accessForTypes = AccessControl.lowest(AccessControl.forClass(type),
-					AccessControl.forClass(mixin));
-			if (accessForTypes.isPublic()) {
-				code.addStatement("$L.and($T.class, $T.class)", "mixins", type, mixin);
-			}
-			else {
-				code.addStatement("$L.and($S, $S)", "mixins", type.getName(), mixin.getName());
-			}
-		}
+        private void addEntryCode(CodeBlock.Builder code, Class<?> type, Class<?> mixin) {
+            AccessControl accessForTypes = AccessControl.lowest(AccessControl.forClass(type), AccessControl.forClass(mixin));
+            if (accessForTypes.isPublic()) {
+                code.addStatement("$L.and($T.class, $T.class)", "mixins", type, mixin);
+            } else {
+                code.addStatement("$L.and($S, $S)", "mixins", type.getName(), mixin.getName());
+            }
+        }
 
-		private void contributeHints(RuntimeHints runtimeHints, JsonMixinModuleEntries entries) {
-			Set<Class<?>> mixins = new LinkedHashSet<>();
-			entries.doWithEntry(this.classLoader, (type, mixin) -> mixins.add(type));
-			new BindingReflectionHintsRegistrar().registerReflectionHints(runtimeHints.reflection(),
-					mixins.toArray(Class<?>[]::new));
-		}
-
-	}
-
+        private void contributeHints(RuntimeHints runtimeHints, JsonMixinModuleEntries entries) {
+            Set<Class<?>> mixins = new LinkedHashSet<>();
+            entries.doWithEntry(this.classLoader, (type, mixin) -> mixins.add(type));
+            new BindingReflectionHintsRegistrar().registerReflectionHints(runtimeHints.reflection(), mixins.toArray(Class<?>[]::new));
+        }
+    }
 }

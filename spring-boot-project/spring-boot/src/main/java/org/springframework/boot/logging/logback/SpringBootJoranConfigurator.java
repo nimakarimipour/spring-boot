@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.logging.logback;
 
+import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,7 +33,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.CoreConstants;
@@ -49,7 +48,6 @@ import ch.qos.logback.core.model.processor.ModelInterpretationContext;
 import ch.qos.logback.core.spi.ContextAware;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.util.AggregationType;
-
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.SerializationHints;
@@ -76,312 +74,281 @@ import org.springframework.util.function.SingletonSupplier;
  */
 class SpringBootJoranConfigurator extends JoranConfigurator {
 
-	private LoggingInitializationContext initializationContext;
+    private LoggingInitializationContext initializationContext;
 
-	SpringBootJoranConfigurator(LoggingInitializationContext initializationContext) {
-		this.initializationContext = initializationContext;
-	}
+    SpringBootJoranConfigurator(LoggingInitializationContext initializationContext) {
+        this.initializationContext = initializationContext;
+    }
 
-	@Override
-	protected void addModelHandlerAssociations(DefaultProcessor defaultProcessor) {
-		super.addModelHandlerAssociations(defaultProcessor);
-		defaultProcessor.addHandler(SpringPropertyModel.class,
-				(handlerContext, handlerMic) -> new SpringPropertyModelHandler(this.context,
-						this.initializationContext.getEnvironment()));
-		defaultProcessor.addHandler(SpringProfileModel.class,
-				(handlerContext, handlerMic) -> new SpringProfileModelHandler(this.context,
-						this.initializationContext.getEnvironment()));
-	}
+    @Override
+    protected void addModelHandlerAssociations(DefaultProcessor defaultProcessor) {
+        super.addModelHandlerAssociations(defaultProcessor);
+        defaultProcessor.addHandler(SpringPropertyModel.class, (handlerContext, handlerMic) -> new SpringPropertyModelHandler(this.context, this.initializationContext.getEnvironment()));
+        defaultProcessor.addHandler(SpringProfileModel.class, (handlerContext, handlerMic) -> new SpringProfileModelHandler(this.context, this.initializationContext.getEnvironment()));
+    }
 
-	@Override
-	public void addElementSelectorAndActionAssociations(RuleStore ruleStore) {
-		super.addElementSelectorAndActionAssociations(ruleStore);
-		ruleStore.addRule(new ElementSelector("configuration/springProperty"), SpringPropertyAction::new);
-		ruleStore.addRule(new ElementSelector("*/springProfile"), SpringProfileAction::new);
-		ruleStore.addTransparentPathPart("springProfile");
-	}
+    @Override
+    public void addElementSelectorAndActionAssociations(RuleStore ruleStore) {
+        super.addElementSelectorAndActionAssociations(ruleStore);
+        ruleStore.addRule(new ElementSelector("configuration/springProperty"), SpringPropertyAction::new);
+        ruleStore.addRule(new ElementSelector("*/springProfile"), SpringProfileAction::new);
+        ruleStore.addTransparentPathPart("springProfile");
+    }
 
-	boolean configureUsingAotGeneratedArtifacts() {
-		if (!new PatternRules(getContext()).load()) {
-			return false;
-		}
-		Model model = new ModelReader().read();
-		processModel(model);
-		registerSafeConfiguration(model);
-		return true;
-	}
+    boolean configureUsingAotGeneratedArtifacts() {
+        if (!new PatternRules(getContext()).load()) {
+            return false;
+        }
+        Model model = new ModelReader().read();
+        processModel(model);
+        registerSafeConfiguration(model);
+        return true;
+    }
 
-	@Override
-	public void processModel(Model model) {
-		super.processModel(model);
-		if (!NativeDetector.inNativeImage() && isAotProcessingInProgress()) {
-			getContext().putObject(BeanFactoryInitializationAotContribution.class.getName(),
-					new LogbackConfigurationAotContribution(model, getModelInterpretationContext(), getContext()));
-		}
-	}
+    @Override
+    public void processModel(Model model) {
+        super.processModel(model);
+        if (!NativeDetector.inNativeImage() && isAotProcessingInProgress()) {
+            getContext().putObject(BeanFactoryInitializationAotContribution.class.getName(), new LogbackConfigurationAotContribution(model, getModelInterpretationContext(), getContext()));
+        }
+    }
 
-	private boolean isAotProcessingInProgress() {
-		return Boolean.getBoolean("spring.aot.processing");
-	}
+    private boolean isAotProcessingInProgress() {
+        return Boolean.getBoolean("spring.aot.processing");
+    }
 
-	static final class LogbackConfigurationAotContribution implements BeanFactoryInitializationAotContribution {
+    static final class LogbackConfigurationAotContribution implements BeanFactoryInitializationAotContribution {
 
-		private final ModelWriter modelWriter;
+        private final ModelWriter modelWriter;
 
-		private final PatternRules patternRules;
+        private final PatternRules patternRules;
 
-		private LogbackConfigurationAotContribution(Model model, ModelInterpretationContext interpretationContext,
-				Context context) {
-			this.modelWriter = new ModelWriter(model, interpretationContext);
-			this.patternRules = new PatternRules(context);
-		}
+        private LogbackConfigurationAotContribution(Model model, ModelInterpretationContext interpretationContext, Context context) {
+            this.modelWriter = new ModelWriter(model, interpretationContext);
+            this.patternRules = new PatternRules(context);
+        }
 
-		@Override
-		public void applyTo(GenerationContext generationContext,
-				BeanFactoryInitializationCode beanFactoryInitializationCode) {
-			this.modelWriter.writeTo(generationContext);
-			this.patternRules.save(generationContext);
-		}
+        @Override
+        public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCode beanFactoryInitializationCode) {
+            this.modelWriter.writeTo(generationContext);
+            this.patternRules.save(generationContext);
+        }
+    }
 
-	}
+    private static final class ModelWriter {
 
-	private static final class ModelWriter {
+        private static final String MODEL_RESOURCE_LOCATION = "META-INF/spring/logback-model";
 
-		private static final String MODEL_RESOURCE_LOCATION = "META-INF/spring/logback-model";
+        private final Model model;
 
-		private final Model model;
+        private final ModelInterpretationContext modelInterpretationContext;
 
-		private final ModelInterpretationContext modelInterpretationContext;
+        private ModelWriter(Model model, ModelInterpretationContext modelInterpretationContext) {
+            this.model = model;
+            this.modelInterpretationContext = modelInterpretationContext;
+        }
 
-		private ModelWriter(Model model, ModelInterpretationContext modelInterpretationContext) {
-			this.model = model;
-			this.modelInterpretationContext = modelInterpretationContext;
-		}
+        private void writeTo(GenerationContext generationContext) {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            try (ObjectOutputStream output = new ObjectOutputStream(bytes)) {
+                output.writeObject(this.model);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            Resource modelResource = new ByteArrayResource(bytes.toByteArray());
+            generationContext.getGeneratedFiles().addResourceFile(MODEL_RESOURCE_LOCATION, modelResource);
+            generationContext.getRuntimeHints().resources().registerPattern(MODEL_RESOURCE_LOCATION);
+            SerializationHints serializationHints = generationContext.getRuntimeHints().serialization();
+            serializationTypes(this.model).forEach(serializationHints::registerType);
+            reflectionTypes(this.model).forEach((type) -> generationContext.getRuntimeHints().reflection().registerType(TypeReference.of(type), MemberCategory.INTROSPECT_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS));
+        }
 
-		private void writeTo(GenerationContext generationContext) {
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			try (ObjectOutputStream output = new ObjectOutputStream(bytes)) {
-				output.writeObject(this.model);
-			}
-			catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-			Resource modelResource = new ByteArrayResource(bytes.toByteArray());
-			generationContext.getGeneratedFiles().addResourceFile(MODEL_RESOURCE_LOCATION, modelResource);
-			generationContext.getRuntimeHints().resources().registerPattern(MODEL_RESOURCE_LOCATION);
-			SerializationHints serializationHints = generationContext.getRuntimeHints().serialization();
-			serializationTypes(this.model).forEach(serializationHints::registerType);
-			reflectionTypes(this.model).forEach((type) -> generationContext.getRuntimeHints().reflection().registerType(
-					TypeReference.of(type), MemberCategory.INTROSPECT_PUBLIC_METHODS,
-					MemberCategory.INVOKE_PUBLIC_METHODS, MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS));
-		}
+        @SuppressWarnings("unchecked")
+        private Set<Class<? extends Serializable>> serializationTypes(Model model) {
+            Set<Class<? extends Serializable>> modelClasses = new HashSet<>();
+            Class<?> candidate = model.getClass();
+            while (Model.class.isAssignableFrom(candidate)) {
+                if (modelClasses.add((Class<? extends Model>) candidate)) {
+                    ReflectionUtils.doWithFields(candidate, (field) -> {
+                        if (Modifier.isStatic(field.getModifiers())) {
+                            return;
+                        }
+                        ReflectionUtils.makeAccessible(field);
+                        Object value = field.get(model);
+                        if (value != null) {
+                            Class<?> fieldType = value.getClass();
+                            if (Serializable.class.isAssignableFrom(fieldType)) {
+                                modelClasses.add((Class<? extends Serializable>) fieldType);
+                            }
+                        }
+                    });
+                    candidate = candidate.getSuperclass();
+                }
+            }
+            for (Model submodel : model.getSubModels()) {
+                modelClasses.addAll(serializationTypes(submodel));
+            }
+            return modelClasses;
+        }
 
-		@SuppressWarnings("unchecked")
-		private Set<Class<? extends Serializable>> serializationTypes(Model model) {
-			Set<Class<? extends Serializable>> modelClasses = new HashSet<>();
-			Class<?> candidate = model.getClass();
-			while (Model.class.isAssignableFrom(candidate)) {
-				if (modelClasses.add((Class<? extends Model>) candidate)) {
-					ReflectionUtils.doWithFields(candidate, (field) -> {
-						if (Modifier.isStatic(field.getModifiers())) {
-							return;
-						}
-						ReflectionUtils.makeAccessible(field);
-						Object value = field.get(model);
-						if (value != null) {
-							Class<?> fieldType = value.getClass();
-							if (Serializable.class.isAssignableFrom(fieldType)) {
-								modelClasses.add((Class<? extends Serializable>) fieldType);
-							}
-						}
-					});
-					candidate = candidate.getSuperclass();
-				}
-			}
-			for (Model submodel : model.getSubModels()) {
-				modelClasses.addAll(serializationTypes(submodel));
-			}
-			return modelClasses;
-		}
+        private Set<String> reflectionTypes(Model model) {
+            return reflectionTypes(model, () -> null);
+        }
 
-		private Set<String> reflectionTypes(Model model) {
-			return reflectionTypes(model, () -> null);
-		}
+        private Set<String> reflectionTypes(Model model, Supplier<Object> parent) {
+            Set<String> reflectionTypes = new HashSet<>();
+            Class<?> componentType = determineType(model, parent);
+            if (componentType != null) {
+                processComponent(componentType, reflectionTypes);
+            }
+            Supplier<Object> componentSupplier = SingletonSupplier.ofNullable(() -> instantiate(componentType));
+            for (Model submodel : model.getSubModels()) {
+                reflectionTypes.addAll(reflectionTypes(submodel, componentSupplier));
+            }
+            return reflectionTypes;
+        }
 
-		private Set<String> reflectionTypes(Model model, Supplier<Object> parent) {
-			Set<String> reflectionTypes = new HashSet<>();
-			Class<?> componentType = determineType(model, parent);
-			if (componentType != null) {
-				processComponent(componentType, reflectionTypes);
-			}
-			Supplier<Object> componentSupplier = SingletonSupplier.ofNullable(() -> instantiate(componentType));
-			for (Model submodel : model.getSubModels()) {
-				reflectionTypes.addAll(reflectionTypes(submodel, componentSupplier));
-			}
-			return reflectionTypes;
-		}
+        @Nullable
+        private Class<?> determineType(Model model, Supplier<Object> parentSupplier) {
+            String className = null;
+            if (model instanceof ComponentModel) {
+                className = ((ComponentModel) model).getClassName();
+            }
+            if (className == null) {
+                String tag = model.getTag();
+                if (tag != null) {
+                    className = this.modelInterpretationContext.getDefaultNestedComponentRegistry().findDefaultComponentTypeByTag(tag);
+                    if (className == null) {
+                        Class<?> type = inferTypeFromParent(parentSupplier, tag);
+                        if (type != null) {
+                            return type;
+                        }
+                    }
+                }
+            }
+            if (className != null) {
+                className = this.modelInterpretationContext.getImport(className);
+                return loadComponentType(className);
+            }
+            return null;
+        }
 
-		private Class<?> determineType(Model model, Supplier<Object> parentSupplier) {
-			String className = null;
-			if (model instanceof ComponentModel) {
-				className = ((ComponentModel) model).getClassName();
-			}
-			if (className == null) {
-				String tag = model.getTag();
-				if (tag != null) {
-					className = this.modelInterpretationContext.getDefaultNestedComponentRegistry()
-							.findDefaultComponentTypeByTag(tag);
-					if (className == null) {
-						Class<?> type = inferTypeFromParent(parentSupplier, tag);
-						if (type != null) {
-							return type;
-						}
-					}
-				}
-			}
-			if (className != null) {
-				className = this.modelInterpretationContext.getImport(className);
-				return loadComponentType(className);
-			}
-			return null;
-		}
+        @Nullable
+        private Class<?> inferTypeFromParent(Supplier<Object> parentSupplier, String tag) {
+            Object parent = parentSupplier.get();
+            if (parent != null) {
+                try {
+                    Class<?> typeFromSetter = new PropertySetter(this.modelInterpretationContext.getBeanDescriptionCache(), parent).getClassNameViaImplicitRules(tag, AggregationType.AS_COMPLEX_PROPERTY, this.modelInterpretationContext.getDefaultNestedComponentRegistry());
+                    if (typeFromSetter != null) {
+                        return typeFromSetter;
+                    }
+                } catch (Exception ex) {
+                    // Continue
+                }
+            }
+            return null;
+        }
 
-		private Class<?> inferTypeFromParent(Supplier<Object> parentSupplier, String tag) {
-			Object parent = parentSupplier.get();
-			if (parent != null) {
-				try {
-					Class<?> typeFromSetter = new PropertySetter(
-							this.modelInterpretationContext.getBeanDescriptionCache(), parent)
-									.getClassNameViaImplicitRules(tag, AggregationType.AS_COMPLEX_PROPERTY,
-											this.modelInterpretationContext.getDefaultNestedComponentRegistry());
-					if (typeFromSetter != null) {
-						return typeFromSetter;
-					}
-				}
-				catch (Exception ex) {
-					// Continue
-				}
-			}
-			return null;
-		}
+        private Class<?> loadComponentType(String componentType) {
+            try {
+                return ClassUtils.forName(componentType, getClass().getClassLoader());
+            } catch (Throwable ex) {
+                throw new RuntimeException("Failed to load component type '" + componentType + "'", ex);
+            }
+        }
 
-		private Class<?> loadComponentType(String componentType) {
-			try {
-				return ClassUtils.forName(componentType, getClass().getClassLoader());
-			}
-			catch (Throwable ex) {
-				throw new RuntimeException("Failed to load component type '" + componentType + "'", ex);
-			}
-		}
+        @Nullable
+        private Object instantiate(@Nullable Class<?> type) {
+            try {
+                return type.getConstructor().newInstance();
+            } catch (Exception ex) {
+                return null;
+            }
+        }
 
-		private Object instantiate(Class<?> type) {
-			try {
-				return type.getConstructor().newInstance();
-			}
-			catch (Exception ex) {
-				return null;
-			}
-		}
+        private void processComponent(Class<?> componentType, Set<String> reflectionTypes) {
+            BeanDescription beanDescription = this.modelInterpretationContext.getBeanDescriptionCache().getBeanDescription(componentType);
+            reflectionTypes.addAll(parameterTypesNames(beanDescription.getPropertyNameToAdder().values()));
+            reflectionTypes.addAll(parameterTypesNames(beanDescription.getPropertyNameToSetter().values()));
+            reflectionTypes.add(componentType.getCanonicalName());
+        }
 
-		private void processComponent(Class<?> componentType, Set<String> reflectionTypes) {
-			BeanDescription beanDescription = this.modelInterpretationContext.getBeanDescriptionCache()
-					.getBeanDescription(componentType);
-			reflectionTypes.addAll(parameterTypesNames(beanDescription.getPropertyNameToAdder().values()));
-			reflectionTypes.addAll(parameterTypesNames(beanDescription.getPropertyNameToSetter().values()));
-			reflectionTypes.add(componentType.getCanonicalName());
-		}
+        private Collection<String> parameterTypesNames(Collection<Method> methods) {
+            return methods.stream().filter((method) -> !method.getDeclaringClass().equals(ContextAware.class) && !method.getDeclaringClass().equals(ContextAwareBase.class)).map(Method::getParameterTypes).flatMap(Stream::of).filter((type) -> !type.isPrimitive() && !type.equals(String.class)).map(Class::getName).toList();
+        }
+    }
 
-		private Collection<String> parameterTypesNames(Collection<Method> methods) {
-			return methods.stream()
-					.filter((method) -> !method.getDeclaringClass().equals(ContextAware.class)
-							&& !method.getDeclaringClass().equals(ContextAwareBase.class))
-					.map(Method::getParameterTypes).flatMap(Stream::of)
-					.filter((type) -> !type.isPrimitive() && !type.equals(String.class)).map(Class::getName).toList();
-		}
+    private static final class ModelReader {
 
-	}
+        private Model read() {
+            try (InputStream modelInput = getClass().getClassLoader().getResourceAsStream(ModelWriter.MODEL_RESOURCE_LOCATION)) {
+                try (ObjectInputStream input = new ObjectInputStream(modelInput)) {
+                    Model model = (Model) input.readObject();
+                    ModelUtil.resetForReuse(model);
+                    return model;
+                }
+            } catch (Exception ex) {
+                throw new RuntimeException("Failed to load model from '" + ModelWriter.MODEL_RESOURCE_LOCATION + "'", ex);
+            }
+        }
+    }
 
-	private static final class ModelReader {
+    private static final class PatternRules {
 
-		private Model read() {
-			try (InputStream modelInput = getClass().getClassLoader()
-					.getResourceAsStream(ModelWriter.MODEL_RESOURCE_LOCATION)) {
-				try (ObjectInputStream input = new ObjectInputStream(modelInput)) {
-					Model model = (Model) input.readObject();
-					ModelUtil.resetForReuse(model);
-					return model;
-				}
-			}
-			catch (Exception ex) {
-				throw new RuntimeException("Failed to load model from '" + ModelWriter.MODEL_RESOURCE_LOCATION + "'",
-						ex);
-			}
-		}
+        private static final String RESOURCE_LOCATION = "META-INF/spring/logback-pattern-rules";
 
-	}
+        private final Context context;
 
-	private static final class PatternRules {
+        private PatternRules(Context context) {
+            this.context = context;
+        }
 
-		private static final String RESOURCE_LOCATION = "META-INF/spring/logback-pattern-rules";
+        private boolean load() {
+            try {
+                ClassPathResource resource = new ClassPathResource(RESOURCE_LOCATION);
+                if (!resource.exists()) {
+                    return false;
+                }
+                Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+                Map<String, String> patternRuleRegistry = getRegistryMap();
+                for (String word : properties.stringPropertyNames()) {
+                    patternRuleRegistry.put(word, properties.getProperty(word));
+                }
+                return true;
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
 
-		private final Context context;
+        @SuppressWarnings("unchecked")
+        private Map<String, String> getRegistryMap() {
+            Map<String, String> patternRuleRegistry = (Map<String, String>) this.context.getObject(CoreConstants.PATTERN_RULE_REGISTRY);
+            if (patternRuleRegistry == null) {
+                patternRuleRegistry = new HashMap<>();
+                this.context.putObject(CoreConstants.PATTERN_RULE_REGISTRY, patternRuleRegistry);
+            }
+            return patternRuleRegistry;
+        }
 
-		private PatternRules(Context context) {
-			this.context = context;
-		}
+        private void save(GenerationContext generationContext) {
+            Map<String, String> registryMap = getRegistryMap();
+            generationContext.getGeneratedFiles().addResourceFile(RESOURCE_LOCATION, () -> asInputStream(registryMap));
+            generationContext.getRuntimeHints().resources().registerPattern(RESOURCE_LOCATION);
+            for (String ruleClassName : registryMap.values()) {
+                generationContext.getRuntimeHints().reflection().registerType(TypeReference.of(ruleClassName), MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
+            }
+        }
 
-		private boolean load() {
-			try {
-				ClassPathResource resource = new ClassPathResource(RESOURCE_LOCATION);
-				if (!resource.exists()) {
-					return false;
-				}
-				Properties properties = PropertiesLoaderUtils.loadProperties(resource);
-				Map<String, String> patternRuleRegistry = getRegistryMap();
-				for (String word : properties.stringPropertyNames()) {
-					patternRuleRegistry.put(word, properties.getProperty(word));
-				}
-				return true;
-			}
-			catch (Exception ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		private Map<String, String> getRegistryMap() {
-			Map<String, String> patternRuleRegistry = (Map<String, String>) this.context
-					.getObject(CoreConstants.PATTERN_RULE_REGISTRY);
-			if (patternRuleRegistry == null) {
-				patternRuleRegistry = new HashMap<>();
-				this.context.putObject(CoreConstants.PATTERN_RULE_REGISTRY, patternRuleRegistry);
-			}
-			return patternRuleRegistry;
-		}
-
-		private void save(GenerationContext generationContext) {
-			Map<String, String> registryMap = getRegistryMap();
-			generationContext.getGeneratedFiles().addResourceFile(RESOURCE_LOCATION, () -> asInputStream(registryMap));
-			generationContext.getRuntimeHints().resources().registerPattern(RESOURCE_LOCATION);
-			for (String ruleClassName : registryMap.values()) {
-				generationContext.getRuntimeHints().reflection().registerType(TypeReference.of(ruleClassName),
-						MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS);
-			}
-		}
-
-		private InputStream asInputStream(Map<String, String> patternRuleRegistry) {
-			Properties properties = CollectionFactory.createSortedProperties(true);
-			patternRuleRegistry.forEach(properties::setProperty);
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			try {
-				properties.store(bytes, "");
-			}
-			catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-			return new ByteArrayInputStream(bytes.toByteArray());
-		}
-
-	}
-
+        private InputStream asInputStream(Map<String, String> patternRuleRegistry) {
+            Properties properties = CollectionFactory.createSortedProperties(true);
+            patternRuleRegistry.forEach(properties::setProperty);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            try {
+                properties.store(bytes, "");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            return new ByteArrayInputStream(bytes.toByteArray());
+        }
+    }
 }

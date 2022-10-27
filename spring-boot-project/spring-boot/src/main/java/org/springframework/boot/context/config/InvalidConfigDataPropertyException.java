@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
@@ -36,118 +35,117 @@ import org.springframework.core.env.AbstractEnvironment;
  */
 public class InvalidConfigDataPropertyException extends ConfigDataException {
 
-	private static final Map<ConfigurationPropertyName, ConfigurationPropertyName> ERRORS;
-	static {
-		Map<ConfigurationPropertyName, ConfigurationPropertyName> errors = new LinkedHashMap<>();
-		errors.put(ConfigurationPropertyName.of("spring.profiles"),
-				ConfigurationPropertyName.of("spring.config.activate.on-profile"));
-		errors.put(ConfigurationPropertyName.of("spring.profiles[0]"),
-				ConfigurationPropertyName.of("spring.config.activate.on-profile"));
-		ERRORS = Collections.unmodifiableMap(errors);
-	}
+    private static final Map<ConfigurationPropertyName, ConfigurationPropertyName> ERRORS;
 
-	private static final Set<ConfigurationPropertyName> PROFILE_SPECIFIC_ERRORS;
-	static {
-		Set<ConfigurationPropertyName> errors = new LinkedHashSet<>();
-		errors.add(Profiles.INCLUDE_PROFILES);
-		errors.add(Profiles.INCLUDE_PROFILES.append("[0]"));
-		errors.add(ConfigurationPropertyName.of(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME));
-		errors.add(ConfigurationPropertyName.of(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME + "[0]"));
-		errors.add(ConfigurationPropertyName.of(AbstractEnvironment.DEFAULT_PROFILES_PROPERTY_NAME));
-		errors.add(ConfigurationPropertyName.of(AbstractEnvironment.DEFAULT_PROFILES_PROPERTY_NAME + "[0]"));
-		PROFILE_SPECIFIC_ERRORS = Collections.unmodifiableSet(errors);
-	}
+    static {
+        Map<ConfigurationPropertyName, ConfigurationPropertyName> errors = new LinkedHashMap<>();
+        errors.put(ConfigurationPropertyName.of("spring.profiles"), ConfigurationPropertyName.of("spring.config.activate.on-profile"));
+        errors.put(ConfigurationPropertyName.of("spring.profiles[0]"), ConfigurationPropertyName.of("spring.config.activate.on-profile"));
+        ERRORS = Collections.unmodifiableMap(errors);
+    }
 
-	private final ConfigurationProperty property;
+    private static final Set<ConfigurationPropertyName> PROFILE_SPECIFIC_ERRORS;
 
-	private final ConfigurationPropertyName replacement;
+    static {
+        Set<ConfigurationPropertyName> errors = new LinkedHashSet<>();
+        errors.add(Profiles.INCLUDE_PROFILES);
+        errors.add(Profiles.INCLUDE_PROFILES.append("[0]"));
+        errors.add(ConfigurationPropertyName.of(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME));
+        errors.add(ConfigurationPropertyName.of(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME + "[0]"));
+        errors.add(ConfigurationPropertyName.of(AbstractEnvironment.DEFAULT_PROFILES_PROPERTY_NAME));
+        errors.add(ConfigurationPropertyName.of(AbstractEnvironment.DEFAULT_PROFILES_PROPERTY_NAME + "[0]"));
+        PROFILE_SPECIFIC_ERRORS = Collections.unmodifiableSet(errors);
+    }
 
-	private final ConfigDataResource location;
+    private final ConfigurationProperty property;
 
-	InvalidConfigDataPropertyException(ConfigurationProperty property, boolean profileSpecific,
-			ConfigurationPropertyName replacement, ConfigDataResource location) {
-		super(getMessage(property, profileSpecific, replacement, location), null);
-		this.property = property;
-		this.replacement = replacement;
-		this.location = location;
-	}
+    @Nullable
+    private final ConfigurationPropertyName replacement;
 
-	/**
-	 * Return source property that caused the exception.
-	 * @return the invalid property
-	 */
-	public ConfigurationProperty getProperty() {
-		return this.property;
-	}
+    @Nullable
+    private final ConfigDataResource location;
 
-	/**
-	 * Return the {@link ConfigDataResource} of the invalid property or {@code null} if
-	 * the source was not loaded from {@link ConfigData}.
-	 * @return the config data location or {@code null}
-	 */
-	public ConfigDataResource getLocation() {
-		return this.location;
-	}
+    InvalidConfigDataPropertyException(ConfigurationProperty property, boolean profileSpecific, @Nullable ConfigurationPropertyName replacement, @Nullable ConfigDataResource location) {
+        super(getMessage(property, profileSpecific, replacement, location), null);
+        this.property = property;
+        this.replacement = replacement;
+        this.location = location;
+    }
 
-	/**
-	 * Return the replacement property that should be used instead or {@code null} if not
-	 * replacement is available.
-	 * @return the replacement property name
-	 */
-	public ConfigurationPropertyName getReplacement() {
-		return this.replacement;
-	}
+    /**
+     * Return source property that caused the exception.
+     * @return the invalid property
+     */
+    public ConfigurationProperty getProperty() {
+        return this.property;
+    }
 
-	/**
-	 * Throw an {@link InvalidConfigDataPropertyException} if the given
-	 * {@link ConfigDataEnvironmentContributor} contains any invalid property.
-	 * @param contributor the contributor to check
-	 */
-	static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor) {
-		ConfigurationPropertySource propertySource = contributor.getConfigurationPropertySource();
-		if (propertySource != null) {
-			ERRORS.forEach((name, replacement) -> {
-				ConfigurationProperty property = propertySource.getConfigurationProperty(name);
-				if (property != null) {
-					throw new InvalidConfigDataPropertyException(property, false, replacement,
-							contributor.getResource());
-				}
-			});
-			if (contributor.isFromProfileSpecificImport()
-					&& !contributor.hasConfigDataOption(ConfigData.Option.IGNORE_PROFILES)) {
-				PROFILE_SPECIFIC_ERRORS.forEach((name) -> {
-					ConfigurationProperty property = propertySource.getConfigurationProperty(name);
-					if (property != null) {
-						throw new InvalidConfigDataPropertyException(property, true, null, contributor.getResource());
-					}
-				});
-			}
-		}
-	}
+    /**
+     * Return the {@link ConfigDataResource} of the invalid property or {@code null} if
+     * the source was not loaded from {@link ConfigData}.
+     * @return the config data location or {@code null}
+     */
+    @Nullable
+    public ConfigDataResource getLocation() {
+        return this.location;
+    }
 
-	private static String getMessage(ConfigurationProperty property, boolean profileSpecific,
-			ConfigurationPropertyName replacement, ConfigDataResource location) {
-		StringBuilder message = new StringBuilder("Property '");
-		message.append(property.getName());
-		if (location != null) {
-			message.append("' imported from location '");
-			message.append(location);
-		}
-		message.append("' is invalid");
-		if (profileSpecific) {
-			message.append(" in a profile specific resource");
-		}
-		if (replacement != null) {
-			message.append(" and should be replaced with '");
-			message.append(replacement);
-			message.append("'");
-		}
-		if (property.getOrigin() != null) {
-			message.append(" [origin: ");
-			message.append(property.getOrigin());
-			message.append("]");
-		}
-		return message.toString();
-	}
+    /**
+     * Return the replacement property that should be used instead or {@code null} if not
+     * replacement is available.
+     * @return the replacement property name
+     */
+    @Nullable
+    public ConfigurationPropertyName getReplacement() {
+        return this.replacement;
+    }
 
+    /**
+     * Throw an {@link InvalidConfigDataPropertyException} if the given
+     * {@link ConfigDataEnvironmentContributor} contains any invalid property.
+     * @param contributor the contributor to check
+     */
+    static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor) {
+        ConfigurationPropertySource propertySource = contributor.getConfigurationPropertySource();
+        if (propertySource != null) {
+            ERRORS.forEach((name, replacement) -> {
+                ConfigurationProperty property = propertySource.getConfigurationProperty(name);
+                if (property != null) {
+                    throw new InvalidConfigDataPropertyException(property, false, replacement, contributor.getResource());
+                }
+            });
+            if (contributor.isFromProfileSpecificImport() && !contributor.hasConfigDataOption(ConfigData.Option.IGNORE_PROFILES)) {
+                PROFILE_SPECIFIC_ERRORS.forEach((name) -> {
+                    ConfigurationProperty property = propertySource.getConfigurationProperty(name);
+                    if (property != null) {
+                        throw new InvalidConfigDataPropertyException(property, true, null, contributor.getResource());
+                    }
+                });
+            }
+        }
+    }
+
+    private static String getMessage(ConfigurationProperty property, boolean profileSpecific, @Nullable ConfigurationPropertyName replacement, @Nullable ConfigDataResource location) {
+        StringBuilder message = new StringBuilder("Property '");
+        message.append(property.getName());
+        if (location != null) {
+            message.append("' imported from location '");
+            message.append(location);
+        }
+        message.append("' is invalid");
+        if (profileSpecific) {
+            message.append(" in a profile specific resource");
+        }
+        if (replacement != null) {
+            message.append(" and should be replaced with '");
+            message.append(replacement);
+            message.append("'");
+        }
+        if (property.getOrigin() != null) {
+            message.append(" [origin: ");
+            message.append(property.getOrigin());
+            message.append("]");
+        }
+        return message.toString();
+    }
 }

@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.availability;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.Assert;
@@ -35,71 +33,70 @@ import org.springframework.util.Assert;
  * @since 2.3.0
  * @see ApplicationAvailability
  */
-public class ApplicationAvailabilityBean
-		implements ApplicationAvailability, ApplicationListener<AvailabilityChangeEvent<?>> {
+public class ApplicationAvailabilityBean implements ApplicationAvailability, ApplicationListener<AvailabilityChangeEvent<?>> {
 
-	private final Map<Class<? extends AvailabilityState>, AvailabilityChangeEvent<?>> events = new ConcurrentHashMap<>();
+    private final Map<Class<? extends AvailabilityState>, AvailabilityChangeEvent<?>> events = new ConcurrentHashMap<>();
 
-	private final Log logger;
+    private final Log logger;
 
-	public ApplicationAvailabilityBean() {
-		this(LogFactory.getLog(ApplicationAvailabilityBean.class));
-	}
+    public ApplicationAvailabilityBean() {
+        this(LogFactory.getLog(ApplicationAvailabilityBean.class));
+    }
 
-	ApplicationAvailabilityBean(Log logger) {
-		this.logger = logger;
-	}
+    ApplicationAvailabilityBean(Log logger) {
+        this.logger = logger;
+    }
 
-	@Override
-	public <S extends AvailabilityState> S getState(Class<S> stateType, S defaultState) {
-		Assert.notNull(stateType, "StateType must not be null");
-		Assert.notNull(defaultState, "DefaultState must not be null");
-		S state = getState(stateType);
-		return (state != null) ? state : defaultState;
-	}
+    @Override
+    public <S extends AvailabilityState> S getState(Class<S> stateType, S defaultState) {
+        Assert.notNull(stateType, "StateType must not be null");
+        Assert.notNull(defaultState, "DefaultState must not be null");
+        S state = getState(stateType);
+        return (state != null) ? state : defaultState;
+    }
 
-	@Override
-	public <S extends AvailabilityState> S getState(Class<S> stateType) {
-		AvailabilityChangeEvent<S> event = getLastChangeEvent(stateType);
-		return (event != null) ? event.getState() : null;
-	}
+    @Override
+    @Nullable
+    public <S extends AvailabilityState> S getState(Class<S> stateType) {
+        AvailabilityChangeEvent<S> event = getLastChangeEvent(stateType);
+        return (event != null) ? event.getState() : null;
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType) {
-		return (AvailabilityChangeEvent<S>) this.events.get(stateType);
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType) {
+        return (AvailabilityChangeEvent<S>) this.events.get(stateType);
+    }
 
-	@Override
-	public void onApplicationEvent(AvailabilityChangeEvent<?> event) {
-		Class<? extends AvailabilityState> type = getStateType(event.getState());
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug(getLogMessage(type, event));
-		}
-		this.events.put(type, event);
-	}
+    @Override
+    public void onApplicationEvent(AvailabilityChangeEvent<?> event) {
+        Class<? extends AvailabilityState> type = getStateType(event.getState());
+        if (this.logger.isDebugEnabled()) {
+            this.logger.debug(getLogMessage(type, event));
+        }
+        this.events.put(type, event);
+    }
 
-	private <S extends AvailabilityState> Object getLogMessage(Class<S> type, AvailabilityChangeEvent<?> event) {
-		AvailabilityChangeEvent<S> lastChangeEvent = getLastChangeEvent(type);
-		StringBuilder message = new StringBuilder(
-				"Application availability state " + type.getSimpleName() + " changed");
-		message.append((lastChangeEvent != null) ? " from " + lastChangeEvent.getState() : "");
-		message.append(" to " + event.getState());
-		message.append(getSourceDescription(event.getSource()));
-		return message;
-	}
+    private <S extends AvailabilityState> Object getLogMessage(Class<S> type, AvailabilityChangeEvent<?> event) {
+        AvailabilityChangeEvent<S> lastChangeEvent = getLastChangeEvent(type);
+        StringBuilder message = new StringBuilder("Application availability state " + type.getSimpleName() + " changed");
+        message.append((lastChangeEvent != null) ? " from " + lastChangeEvent.getState() : "");
+        message.append(" to " + event.getState());
+        message.append(getSourceDescription(event.getSource()));
+        return message;
+    }
 
-	private String getSourceDescription(Object source) {
-		if (source == null || source instanceof ApplicationEventPublisher) {
-			return "";
-		}
-		return ": " + ((source instanceof Throwable) ? source : source.getClass().getName());
-	}
+    private String getSourceDescription(Object source) {
+        if (source == null || source instanceof ApplicationEventPublisher) {
+            return "";
+        }
+        return ": " + ((source instanceof Throwable) ? source : source.getClass().getName());
+    }
 
-	@SuppressWarnings("unchecked")
-	private Class<? extends AvailabilityState> getStateType(AvailabilityState state) {
-		Class<?> type = (state instanceof Enum) ? ((Enum<?>) state).getDeclaringClass() : state.getClass();
-		return (Class<? extends AvailabilityState>) type;
-	}
-
+    @SuppressWarnings("unchecked")
+    private Class<? extends AvailabilityState> getStateType(AvailabilityState state) {
+        Class<?> type = (state instanceof Enum) ? ((Enum<?>) state).getDeclaringClass() : state.getClass();
+        return (Class<? extends AvailabilityState>) type;
+    }
 }

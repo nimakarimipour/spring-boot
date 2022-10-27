@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotContribution;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor;
@@ -39,37 +38,34 @@ import org.springframework.util.CollectionUtils;
  */
 class ConfigurationPropertiesBeanFactoryInitializationAotProcessor implements BeanFactoryInitializationAotProcessor {
 
-	@Override
-	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
-		String[] beanNames = beanFactory.getBeanNamesForAnnotation(ConfigurationProperties.class);
-		List<Class<?>> types = new ArrayList<>();
-		for (String beanName : beanNames) {
-			Class<?> beanType = beanFactory.getType(beanName, false);
-			if (beanType != null) {
-				types.add(ClassUtils.getUserClass(beanType));
-			}
-		}
-		if (!CollectionUtils.isEmpty(types)) {
-			return new ConfigurationPropertiesReflectionHintsContribution(types);
-		}
-		return null;
-	}
+    @Override
+    @Nullable
+    public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
+        String[] beanNames = beanFactory.getBeanNamesForAnnotation(ConfigurationProperties.class);
+        List<Class<?>> types = new ArrayList<>();
+        for (String beanName : beanNames) {
+            Class<?> beanType = beanFactory.getType(beanName, false);
+            if (beanType != null) {
+                types.add(ClassUtils.getUserClass(beanType));
+            }
+        }
+        if (!CollectionUtils.isEmpty(types)) {
+            return new ConfigurationPropertiesReflectionHintsContribution(types);
+        }
+        return null;
+    }
 
-	private static final class ConfigurationPropertiesReflectionHintsContribution
-			implements BeanFactoryInitializationAotContribution {
+    private static final class ConfigurationPropertiesReflectionHintsContribution implements BeanFactoryInitializationAotContribution {
 
-		private final Iterable<Class<?>> types;
+        private final Iterable<Class<?>> types;
 
-		private ConfigurationPropertiesReflectionHintsContribution(Iterable<Class<?>> types) {
-			this.types = types;
-		}
+        private ConfigurationPropertiesReflectionHintsContribution(Iterable<Class<?>> types) {
+            this.types = types;
+        }
 
-		@Override
-		public void applyTo(GenerationContext generationContext,
-				BeanFactoryInitializationCode beanFactoryInitializationCode) {
-			BindableRuntimeHintsRegistrar.forTypes(this.types).registerHints(generationContext.getRuntimeHints());
-		}
-
-	}
-
+        @Override
+        public void applyTo(GenerationContext generationContext, BeanFactoryInitializationCode beanFactoryInitializationCode) {
+            BindableRuntimeHintsRegistrar.forTypes(this.types).registerHints(generationContext.getRuntimeHints());
+        }
+    }
 }

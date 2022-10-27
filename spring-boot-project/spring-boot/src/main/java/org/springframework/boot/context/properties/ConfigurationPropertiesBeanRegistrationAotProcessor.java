@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Executable;
 import java.util.function.Predicate;
-
 import javax.lang.model.element.Modifier;
-
 import org.springframework.aot.generate.GeneratedMethod;
 import org.springframework.aot.generate.GenerationContext;
 import org.springframework.beans.factory.BeanFactory;
@@ -44,65 +42,44 @@ import org.springframework.javapoet.CodeBlock;
  */
 class ConfigurationPropertiesBeanRegistrationAotProcessor implements BeanRegistrationAotProcessor {
 
-	@Override
-	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
-		if (!isImmutableConfigurationPropertiesBeanDefinition(registeredBean.getMergedBeanDefinition())) {
-			return null;
-		}
-		return BeanRegistrationAotContribution.withCustomCodeFragments(
-				(codeFragments) -> new ConfigurationPropertiesBeanRegistrationCodeFragments(codeFragments,
-						registeredBean));
+    @Override
+    @Nullable
+    public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
+        if (!isImmutableConfigurationPropertiesBeanDefinition(registeredBean.getMergedBeanDefinition())) {
+            return null;
+        }
+        return BeanRegistrationAotContribution.withCustomCodeFragments((codeFragments) -> new ConfigurationPropertiesBeanRegistrationCodeFragments(codeFragments, registeredBean));
+    }
 
-	}
+    private boolean isImmutableConfigurationPropertiesBeanDefinition(BeanDefinition beanDefinition) {
+        return beanDefinition.hasAttribute(BindMethod.class.getName()) && BindMethod.VALUE_OBJECT.equals(beanDefinition.getAttribute(BindMethod.class.getName()));
+    }
 
-	private boolean isImmutableConfigurationPropertiesBeanDefinition(BeanDefinition beanDefinition) {
-		return beanDefinition.hasAttribute(BindMethod.class.getName())
-				&& BindMethod.VALUE_OBJECT.equals(beanDefinition.getAttribute(BindMethod.class.getName()));
-	}
+    private static class ConfigurationPropertiesBeanRegistrationCodeFragments extends BeanRegistrationCodeFragmentsDecorator {
 
-	private static class ConfigurationPropertiesBeanRegistrationCodeFragments
-			extends BeanRegistrationCodeFragmentsDecorator {
+        private static final Predicate<String> INCLUDE_BIND_METHOD_ATTRIBUTE_FILTER = (name) -> name.equals(BindMethod.class.getName());
 
-		private static final Predicate<String> INCLUDE_BIND_METHOD_ATTRIBUTE_FILTER = (name) -> name
-				.equals(BindMethod.class.getName());
+        private static final String REGISTERED_BEAN_PARAMETER_NAME = "registeredBean";
 
-		private static final String REGISTERED_BEAN_PARAMETER_NAME = "registeredBean";
+        private final RegisteredBean registeredBean;
 
-		private final RegisteredBean registeredBean;
+        ConfigurationPropertiesBeanRegistrationCodeFragments(BeanRegistrationCodeFragments codeFragments, RegisteredBean registeredBean) {
+            super(codeFragments);
+            this.registeredBean = registeredBean;
+        }
 
-		ConfigurationPropertiesBeanRegistrationCodeFragments(BeanRegistrationCodeFragments codeFragments,
-				RegisteredBean registeredBean) {
-			super(codeFragments);
-			this.registeredBean = registeredBean;
-		}
+        @Override
+        public CodeBlock generateSetBeanDefinitionPropertiesCode(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode, RootBeanDefinition beanDefinition, Predicate<String> attributeFilter) {
+            return super.generateSetBeanDefinitionPropertiesCode(generationContext, beanRegistrationCode, beanDefinition, INCLUDE_BIND_METHOD_ATTRIBUTE_FILTER.or(attributeFilter));
+        }
 
-		@Override
-		public CodeBlock generateSetBeanDefinitionPropertiesCode(GenerationContext generationContext,
-				BeanRegistrationCode beanRegistrationCode, RootBeanDefinition beanDefinition,
-				Predicate<String> attributeFilter) {
-			return super.generateSetBeanDefinitionPropertiesCode(generationContext, beanRegistrationCode,
-					beanDefinition, INCLUDE_BIND_METHOD_ATTRIBUTE_FILTER.or(attributeFilter));
-		}
-
-		@Override
-		public CodeBlock generateInstanceSupplierCode(GenerationContext generationContext,
-				BeanRegistrationCode beanRegistrationCode, Executable constructorOrFactoryMethod,
-				boolean allowDirectSupplierShortcut) {
-			GeneratedMethod generatedMethod = beanRegistrationCode.getMethods().add("getInstance", (method) -> {
-				Class<?> beanClass = this.registeredBean.getBeanClass();
-				method.addJavadoc("Get the bean instance for '$L'.", this.registeredBean.getBeanName())
-						.addModifiers(Modifier.PRIVATE, Modifier.STATIC).returns(beanClass)
-						.addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME)
-						.addStatement("$T beanFactory = registeredBean.getBeanFactory()", BeanFactory.class)
-						.addStatement("$T beanName = registeredBean.getBeanName()", String.class)
-						.addStatement("$T<?> beanClass = registeredBean.getBeanClass()", Class.class)
-						.addStatement("return ($T) $T.from(beanFactory, beanName, beanClass)", beanClass,
-								ConstructorBound.class);
-			});
-			return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, beanRegistrationCode.getClassName(),
-					generatedMethod.getName());
-		}
-
-	}
-
+        @Override
+        public CodeBlock generateInstanceSupplierCode(GenerationContext generationContext, BeanRegistrationCode beanRegistrationCode, Executable constructorOrFactoryMethod, boolean allowDirectSupplierShortcut) {
+            GeneratedMethod generatedMethod = beanRegistrationCode.getMethods().add("getInstance", (method) -> {
+                Class<?> beanClass = this.registeredBean.getBeanClass();
+                method.addJavadoc("Get the bean instance for '$L'.", this.registeredBean.getBeanName()).addModifiers(Modifier.PRIVATE, Modifier.STATIC).returns(beanClass).addParameter(RegisteredBean.class, REGISTERED_BEAN_PARAMETER_NAME).addStatement("$T beanFactory = registeredBean.getBeanFactory()", BeanFactory.class).addStatement("$T beanName = registeredBean.getBeanName()", String.class).addStatement("$T<?> beanClass = registeredBean.getBeanClass()", Class.class).addStatement("return ($T) $T.from(beanFactory, beanName, beanClass)", beanClass, ConstructorBound.class);
+            });
+            return CodeBlock.of("$T.of($T::$L)", InstanceSupplier.class, beanRegistrationCode.getClassName(), generatedMethod.getName());
+        }
+    }
 }

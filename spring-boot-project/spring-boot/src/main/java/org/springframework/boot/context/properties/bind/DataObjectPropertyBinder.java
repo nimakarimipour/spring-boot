@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.bind;
+
+import javax.annotation.Nullable;
 
 /**
  * Binder that can be used by {@link DataObjectBinder} implementations to bind the data
@@ -25,13 +26,12 @@ package org.springframework.boot.context.properties.bind;
  */
 interface DataObjectPropertyBinder {
 
-	/**
-	 * Bind the given property.
-	 * @param propertyName the property name (in lowercase dashed form, e.g.
-	 * {@code first-name})
-	 * @param target the target bindable
-	 * @return the bound value or {@code null}
-	 */
-	Object bindProperty(String propertyName, Bindable<?> target);
-
+    /**
+     * Bind the given property.
+     * @param propertyName the property name (in lowercase dashed form, e.g.
+     * {@code first-name})
+     * @param target the target bindable
+     * @return the bound value or {@code null}
+     */
+    Object bindProperty(String propertyName, Bindable<?> target);
 }

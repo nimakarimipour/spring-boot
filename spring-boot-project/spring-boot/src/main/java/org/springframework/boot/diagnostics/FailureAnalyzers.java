@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.diagnostics;
 
+import javax.annotation.Nullable;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.SpringBootExceptionReporter;
@@ -48,93 +46,82 @@ import org.springframework.util.StringUtils;
  */
 final class FailureAnalyzers implements SpringBootExceptionReporter {
 
-	private static final Log logger = LogFactory.getLog(FailureAnalyzers.class);
+    private static final Log logger = LogFactory.getLog(FailureAnalyzers.class);
 
-	private final SpringFactoriesLoader springFactoriesLoader;
+    private final SpringFactoriesLoader springFactoriesLoader;
 
-	private final List<FailureAnalyzer> analyzers;
+    private final List<FailureAnalyzer> analyzers;
 
-	public FailureAnalyzers(ConfigurableApplicationContext context) {
-		this(context,
-				SpringFactoriesLoader.forDefaultResourceLocation((context != null) ? context.getClassLoader() : null));
-	}
+    public FailureAnalyzers(ConfigurableApplicationContext context) {
+        this(context, SpringFactoriesLoader.forDefaultResourceLocation((context != null) ? context.getClassLoader() : null));
+    }
 
-	FailureAnalyzers(ConfigurableApplicationContext context, SpringFactoriesLoader springFactoriesLoader) {
-		this.springFactoriesLoader = springFactoriesLoader;
-		this.analyzers = loadFailureAnalyzers(context, this.springFactoriesLoader);
-	}
+    FailureAnalyzers(ConfigurableApplicationContext context, SpringFactoriesLoader springFactoriesLoader) {
+        this.springFactoriesLoader = springFactoriesLoader;
+        this.analyzers = loadFailureAnalyzers(context, this.springFactoriesLoader);
+    }
 
-	private static List<FailureAnalyzer> loadFailureAnalyzers(ConfigurableApplicationContext context,
-			SpringFactoriesLoader springFactoriesLoader) {
-		List<FailureAnalyzer> analyzers = springFactoriesLoader.load(FailureAnalyzer.class,
-				getArgumentResolver(context), FailureHandler.logging(logger));
-		List<FailureAnalyzer> awareAnalyzers = analyzers.stream()
-				.filter((analyzer) -> analyzer instanceof BeanFactoryAware || analyzer instanceof EnvironmentAware)
-				.toList();
-		if (!awareAnalyzers.isEmpty()) {
-			String awareAnalyzerNames = StringUtils.collectionToCommaDelimitedString(
-					awareAnalyzers.stream().map((analyzer) -> analyzer.getClass().getName()).toList());
-			logger.warn(LogMessage.format(
-					"FailureAnalyzers [%s] implement BeanFactoryAware or EnvironmentAware. "
-							+ "Support for these interfaces on FailureAnalyzers is deprecated, "
-							+ "and will be removed in a future release. "
-							+ "Instead provide a constructor that accepts BeanFactory or Environment parameters.",
-					awareAnalyzerNames));
-			if (context == null) {
-				logger.trace(LogMessage.format("Skipping [%s] due to missing context", awareAnalyzerNames));
-				return analyzers.stream().filter((analyzer) -> !awareAnalyzers.contains(analyzer)).toList();
-			}
-			awareAnalyzers.forEach((analyzer) -> {
-				if (analyzer instanceof BeanFactoryAware beanFactoryAware) {
-					beanFactoryAware.setBeanFactory(context.getBeanFactory());
-				}
-				if (analyzer instanceof EnvironmentAware environmentAware) {
-					environmentAware.setEnvironment(context.getEnvironment());
-				}
-			});
-		}
-		return analyzers;
-	}
+    private static List<FailureAnalyzer> loadFailureAnalyzers(ConfigurableApplicationContext context, SpringFactoriesLoader springFactoriesLoader) {
+        List<FailureAnalyzer> analyzers = springFactoriesLoader.load(FailureAnalyzer.class, getArgumentResolver(context), FailureHandler.logging(logger));
+        List<FailureAnalyzer> awareAnalyzers = analyzers.stream().filter((analyzer) -> analyzer instanceof BeanFactoryAware || analyzer instanceof EnvironmentAware).toList();
+        if (!awareAnalyzers.isEmpty()) {
+            String awareAnalyzerNames = StringUtils.collectionToCommaDelimitedString(awareAnalyzers.stream().map((analyzer) -> analyzer.getClass().getName()).toList());
+            logger.warn(LogMessage.format("FailureAnalyzers [%s] implement BeanFactoryAware or EnvironmentAware. " + "Support for these interfaces on FailureAnalyzers is deprecated, " + "and will be removed in a future release. " + "Instead provide a constructor that accepts BeanFactory or Environment parameters.", awareAnalyzerNames));
+            if (context == null) {
+                logger.trace(LogMessage.format("Skipping [%s] due to missing context", awareAnalyzerNames));
+                return analyzers.stream().filter((analyzer) -> !awareAnalyzers.contains(analyzer)).toList();
+            }
+            awareAnalyzers.forEach((analyzer) -> {
+                if (analyzer instanceof BeanFactoryAware beanFactoryAware) {
+                    beanFactoryAware.setBeanFactory(context.getBeanFactory());
+                }
+                if (analyzer instanceof EnvironmentAware environmentAware) {
+                    environmentAware.setEnvironment(context.getEnvironment());
+                }
+            });
+        }
+        return analyzers;
+    }
 
-	private static ArgumentResolver getArgumentResolver(ConfigurableApplicationContext context) {
-		if (context == null) {
-			return null;
-		}
-		ArgumentResolver argumentResolver = ArgumentResolver.of(BeanFactory.class, context.getBeanFactory());
-		argumentResolver = argumentResolver.and(Environment.class, context.getEnvironment());
-		return argumentResolver;
-	}
+    @Nullable
+    private static ArgumentResolver getArgumentResolver(ConfigurableApplicationContext context) {
+        if (context == null) {
+            return null;
+        }
+        ArgumentResolver argumentResolver = ArgumentResolver.of(BeanFactory.class, context.getBeanFactory());
+        argumentResolver = argumentResolver.and(Environment.class, context.getEnvironment());
+        return argumentResolver;
+    }
 
-	@Override
-	public boolean reportException(Throwable failure) {
-		FailureAnalysis analysis = analyze(failure, this.analyzers);
-		return report(analysis);
-	}
+    @Override
+    public boolean reportException(Throwable failure) {
+        FailureAnalysis analysis = analyze(failure, this.analyzers);
+        return report(analysis);
+    }
 
-	private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
-		for (FailureAnalyzer analyzer : analyzers) {
-			try {
-				FailureAnalysis analysis = analyzer.analyze(failure);
-				if (analysis != null) {
-					return analysis;
-				}
-			}
-			catch (Throwable ex) {
-				logger.trace(LogMessage.format("FailureAnalyzer %s failed", analyzer), ex);
-			}
-		}
-		return null;
-	}
+    @Nullable
+    private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
+        for (FailureAnalyzer analyzer : analyzers) {
+            try {
+                FailureAnalysis analysis = analyzer.analyze(failure);
+                if (analysis != null) {
+                    return analysis;
+                }
+            } catch (Throwable ex) {
+                logger.trace(LogMessage.format("FailureAnalyzer %s failed", analyzer), ex);
+            }
+        }
+        return null;
+    }
 
-	private boolean report(FailureAnalysis analysis) {
-		List<FailureAnalysisReporter> reporters = this.springFactoriesLoader.load(FailureAnalysisReporter.class);
-		if (analysis == null || reporters.isEmpty()) {
-			return false;
-		}
-		for (FailureAnalysisReporter reporter : reporters) {
-			reporter.report(analysis);
-		}
-		return true;
-	}
-
+    private boolean report(@Nullable FailureAnalysis analysis) {
+        List<FailureAnalysisReporter> reporters = this.springFactoriesLoader.load(FailureAnalysisReporter.class);
+        if (analysis == null || reporters.isEmpty()) {
+            return false;
+        }
+        for (FailureAnalysisReporter reporter : reporters) {
+            reporter.report(analysis);
+        }
+        return true;
+    }
 }

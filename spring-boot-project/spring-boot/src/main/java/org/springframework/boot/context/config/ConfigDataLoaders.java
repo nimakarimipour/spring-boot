@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
-
 import org.springframework.boot.BootstrapContext;
 import org.springframework.boot.BootstrapRegistry;
 import org.springframework.boot.ConfigurableBootstrapContext;
@@ -41,78 +39,75 @@ import org.springframework.util.Assert;
  */
 class ConfigDataLoaders {
 
-	private final Log logger;
+    private final Log logger;
 
-	@SuppressWarnings("rawtypes")
-	private final List<ConfigDataLoader> loaders;
+    @SuppressWarnings("rawtypes")
+    private final List<ConfigDataLoader> loaders;
 
-	private final List<Class<?>> resourceTypes;
+    private final List<Class<?>> resourceTypes;
 
-	/**
-	 * Create a new {@link ConfigDataLoaders} instance.
-	 * @param logFactory the deferred log factory
-	 * @param bootstrapContext the bootstrap context
-	 * @param springFactoriesLoader the loader to use
-	 */
-	ConfigDataLoaders(DeferredLogFactory logFactory, ConfigurableBootstrapContext bootstrapContext,
-			SpringFactoriesLoader springFactoriesLoader) {
-		this.logger = logFactory.getLog(getClass());
-		ArgumentResolver argumentResolver = ArgumentResolver.of(DeferredLogFactory.class, logFactory);
-		argumentResolver = argumentResolver.and(ConfigurableBootstrapContext.class, bootstrapContext);
-		argumentResolver = argumentResolver.and(BootstrapContext.class, bootstrapContext);
-		argumentResolver = argumentResolver.and(BootstrapRegistry.class, bootstrapContext);
-		argumentResolver = argumentResolver.andSupplied(Log.class, () -> {
-			throw new IllegalArgumentException("Log types cannot be injected, please use DeferredLogFactory");
-		});
-		this.loaders = springFactoriesLoader.load(ConfigDataLoader.class, argumentResolver);
-		this.resourceTypes = getResourceTypes(this.loaders);
-	}
+    /**
+     * Create a new {@link ConfigDataLoaders} instance.
+     * @param logFactory the deferred log factory
+     * @param bootstrapContext the bootstrap context
+     * @param springFactoriesLoader the loader to use
+     */
+    ConfigDataLoaders(DeferredLogFactory logFactory, ConfigurableBootstrapContext bootstrapContext, SpringFactoriesLoader springFactoriesLoader) {
+        this.logger = logFactory.getLog(getClass());
+        ArgumentResolver argumentResolver = ArgumentResolver.of(DeferredLogFactory.class, logFactory);
+        argumentResolver = argumentResolver.and(ConfigurableBootstrapContext.class, bootstrapContext);
+        argumentResolver = argumentResolver.and(BootstrapContext.class, bootstrapContext);
+        argumentResolver = argumentResolver.and(BootstrapRegistry.class, bootstrapContext);
+        argumentResolver = argumentResolver.andSupplied(Log.class, () -> {
+            throw new IllegalArgumentException("Log types cannot be injected, please use DeferredLogFactory");
+        });
+        this.loaders = springFactoriesLoader.load(ConfigDataLoader.class, argumentResolver);
+        this.resourceTypes = getResourceTypes(this.loaders);
+    }
 
-	@SuppressWarnings("rawtypes")
-	private List<Class<?>> getResourceTypes(List<ConfigDataLoader> loaders) {
-		List<Class<?>> resourceTypes = new ArrayList<>(loaders.size());
-		for (ConfigDataLoader<?> loader : loaders) {
-			resourceTypes.add(getResourceType(loader));
-		}
-		return Collections.unmodifiableList(resourceTypes);
-	}
+    @SuppressWarnings("rawtypes")
+    private List<Class<?>> getResourceTypes(List<ConfigDataLoader> loaders) {
+        List<Class<?>> resourceTypes = new ArrayList<>(loaders.size());
+        for (ConfigDataLoader<?> loader : loaders) {
+            resourceTypes.add(getResourceType(loader));
+        }
+        return Collections.unmodifiableList(resourceTypes);
+    }
 
-	private Class<?> getResourceType(ConfigDataLoader<?> loader) {
-		return ResolvableType.forClass(loader.getClass()).as(ConfigDataLoader.class).resolveGeneric();
-	}
+    private Class<?> getResourceType(ConfigDataLoader<?> loader) {
+        return ResolvableType.forClass(loader.getClass()).as(ConfigDataLoader.class).resolveGeneric();
+    }
 
-	/**
-	 * Load {@link ConfigData} using the first appropriate {@link ConfigDataLoader}.
-	 * @param <R> the resource type
-	 * @param context the loader context
-	 * @param resource the resource to load
-	 * @return the loaded {@link ConfigData}
-	 * @throws IOException on IO error
-	 */
-	<R extends ConfigDataResource> ConfigData load(ConfigDataLoaderContext context, R resource) throws IOException {
-		ConfigDataLoader<R> loader = getLoader(context, resource);
-		this.logger.trace(LogMessage.of(() -> "Loading " + resource + " using loader " + loader.getClass().getName()));
-		return loader.load(context, resource);
-	}
+    /**
+     * Load {@link ConfigData} using the first appropriate {@link ConfigDataLoader}.
+     * @param <R> the resource type
+     * @param context the loader context
+     * @param resource the resource to load
+     * @return the loaded {@link ConfigData}
+     * @throws IOException on IO error
+     */
+    <R extends ConfigDataResource> ConfigData load(ConfigDataLoaderContext context, R resource) throws IOException {
+        ConfigDataLoader<R> loader = getLoader(context, resource);
+        this.logger.trace(LogMessage.of(() -> "Loading " + resource + " using loader " + loader.getClass().getName()));
+        return loader.load(context, resource);
+    }
 
-	@SuppressWarnings("unchecked")
-	private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
-		ConfigDataLoader<R> result = null;
-		for (int i = 0; i < this.loaders.size(); i++) {
-			ConfigDataLoader<?> candidate = this.loaders.get(i);
-			if (this.resourceTypes.get(i).isInstance(resource)) {
-				ConfigDataLoader<R> loader = (ConfigDataLoader<R>) candidate;
-				if (loader.isLoadable(context, resource)) {
-					if (result != null) {
-						throw new IllegalStateException("Multiple loaders found for resource '" + resource + "' ["
-								+ candidate.getClass().getName() + "," + result.getClass().getName() + "]");
-					}
-					result = loader;
-				}
-			}
-		}
-		Assert.state(result != null, () -> "No loader found for resource '" + resource + "'");
-		return result;
-	}
-
+    @SuppressWarnings("unchecked")
+    private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
+        ConfigDataLoader<R> result = null;
+        for (int i = 0; i < this.loaders.size(); i++) {
+            ConfigDataLoader<?> candidate = this.loaders.get(i);
+            if (this.resourceTypes.get(i).isInstance(resource)) {
+                ConfigDataLoader<R> loader = (ConfigDataLoader<R>) candidate;
+                if (loader.isLoadable(context, resource)) {
+                    if (result != null) {
+                        throw new IllegalStateException("Multiple loaders found for resource '" + resource + "' [" + candidate.getClass().getName() + "," + result.getClass().getName() + "]");
+                    }
+                    result = loader;
+                }
+            }
+        }
+        Assert.state(result != null, () -> "No loader found for resource '" + resource + "'");
+        return result;
+    }
 }

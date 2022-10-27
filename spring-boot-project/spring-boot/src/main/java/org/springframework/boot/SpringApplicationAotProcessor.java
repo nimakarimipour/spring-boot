@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.Arrays;
-
 import org.springframework.boot.SpringApplication.AbandonedRunException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -42,80 +41,70 @@ import org.springframework.util.function.ThrowingSupplier;
  */
 public class SpringApplicationAotProcessor extends ContextAotProcessor {
 
-	private final String[] applicationArgs;
+    private final String[] applicationArgs;
 
-	/**
-	 * Create a new processor for the specified application and settings.
-	 * @param application the application main class
-	 * @param settings the general AOT processor settings
-	 * @param applicationArgs the arguments to provide to the main method
-	 */
-	public SpringApplicationAotProcessor(Class<?> application, Settings settings, String[] applicationArgs) {
-		super(application, settings);
-		this.applicationArgs = applicationArgs;
-	}
+    /**
+     * Create a new processor for the specified application and settings.
+     * @param application the application main class
+     * @param settings the general AOT processor settings
+     * @param applicationArgs the arguments to provide to the main method
+     */
+    public SpringApplicationAotProcessor(Class<?> application, Settings settings, String[] applicationArgs) {
+        super(application, settings);
+        this.applicationArgs = applicationArgs;
+    }
 
-	@Override
-	protected GenericApplicationContext prepareApplicationContext(Class<?> application) {
-		return new AotProcessorHook(application).run(() -> {
-			Method mainMethod = application.getMethod("main", String[].class);
-			return ReflectionUtils.invokeMethod(mainMethod, null, new Object[] { this.applicationArgs });
-		});
-	}
+    @Override
+    @Nullable
+    protected GenericApplicationContext prepareApplicationContext(Class<?> application) {
+        return new AotProcessorHook(application).run(() -> {
+            Method mainMethod = application.getMethod("main", String[].class);
+            return ReflectionUtils.invokeMethod(mainMethod, null, new Object[] { this.applicationArgs });
+        });
+    }
 
-	public static void main(String[] args) throws Exception {
-		int requiredArgs = 6;
-		Assert.isTrue(args.length >= requiredArgs, () -> "Usage: " + SpringApplicationAotProcessor.class.getName()
-				+ " <applicationName> <sourceOutput> <resourceOutput> <classOutput> <groupId> <artifactId> <originalArgs...>");
-		Class<?> application = Class.forName(args[0]);
-		Settings settings = Settings.builder().sourceOutput(Paths.get(args[1])).resourceOutput(Paths.get(args[2]))
-				.classOutput(Paths.get(args[3])).groupId((StringUtils.hasText(args[4])) ? args[4] : "unspecified")
-				.artifactId(args[5]).build();
-		String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length)
-				: new String[0];
-		new SpringApplicationAotProcessor(application, settings, applicationArgs).process();
-	}
+    public static void main(String[] args) throws Exception {
+        int requiredArgs = 6;
+        Assert.isTrue(args.length >= requiredArgs, () -> "Usage: " + SpringApplicationAotProcessor.class.getName() + " <applicationName> <sourceOutput> <resourceOutput> <classOutput> <groupId> <artifactId> <originalArgs...>");
+        Class<?> application = Class.forName(args[0]);
+        Settings settings = Settings.builder().sourceOutput(Paths.get(args[1])).resourceOutput(Paths.get(args[2])).classOutput(Paths.get(args[3])).groupId((StringUtils.hasText(args[4])) ? args[4] : "unspecified").artifactId(args[5]).build();
+        String[] applicationArgs = (args.length > requiredArgs) ? Arrays.copyOfRange(args, requiredArgs, args.length) : new String[0];
+        new SpringApplicationAotProcessor(application, settings, applicationArgs).process();
+    }
 
-	/**
-	 * {@link SpringApplicationHook} used to capture the {@link ApplicationContext} and
-	 * trigger early exit of main method.
-	 */
-	private static final class AotProcessorHook implements SpringApplicationHook {
+    /**
+     * {@link SpringApplicationHook} used to capture the {@link ApplicationContext} and
+     * trigger early exit of main method.
+     */
+    private static final class AotProcessorHook implements SpringApplicationHook {
 
-		private final Class<?> application;
+        private final Class<?> application;
 
-		private AotProcessorHook(Class<?> application) {
-			this.application = application;
-		}
+        private AotProcessorHook(Class<?> application) {
+            this.application = application;
+        }
 
-		@Override
-		public SpringApplicationRunListener getRunListener(SpringApplication application) {
-			return new SpringApplicationRunListener() {
+        @Override
+        public SpringApplicationRunListener getRunListener(SpringApplication application) {
+            return new SpringApplicationRunListener() {
 
-				@Override
-				public void contextLoaded(ConfigurableApplicationContext context) {
-					throw new AbandonedRunException(context);
-				}
+                @Override
+                public void contextLoaded(ConfigurableApplicationContext context) {
+                    throw new AbandonedRunException(context);
+                }
+            };
+        }
 
-			};
-		}
-
-		private <T> GenericApplicationContext run(ThrowingSupplier<T> action) {
-			try {
-				SpringApplication.withHook(this, action);
-			}
-			catch (AbandonedRunException ex) {
-				ApplicationContext context = ex.getApplicationContext();
-				Assert.isInstanceOf(GenericApplicationContext.class, context,
-						() -> "AOT processing requires a GenericApplicationContext but got a "
-								+ context.getClass().getName());
-				return (GenericApplicationContext) context;
-			}
-			throw new IllegalStateException(
-					"No application context available after calling main method of '%s'. Does it run a SpringApplication?"
-							.formatted(this.application.getName()));
-		}
-
-	}
-
+        @Nullable
+        private <T> GenericApplicationContext run(ThrowingSupplier<T> action) {
+            try {
+                SpringApplication.withHook(this, action);
+            } catch (AbandonedRunException ex) {
+                ApplicationContext context = ex.getApplicationContext();
+                Assert.isInstanceOf(GenericApplicationContext.class, context, () -> "AOT processing requires a GenericApplicationContext but got a " + context.getClass().getName());
+                return (GenericApplicationContext) context;
+            }
+            throw new IllegalStateException("No application context available after calling main method of '%s'. Does it run a SpringApplication?".formatted(this.application.getName()));
+        }
+    }
 }

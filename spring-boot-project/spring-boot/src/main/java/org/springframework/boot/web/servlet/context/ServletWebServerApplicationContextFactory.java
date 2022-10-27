@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.servlet.context;
 
+import javax.annotation.Nullable;
 import org.springframework.aot.AotDetector;
 import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.WebApplicationType;
@@ -32,26 +32,28 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 class ServletWebServerApplicationContextFactory implements ApplicationContextFactory {
 
-	@Override
-	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
-		return (webApplicationType != WebApplicationType.SERVLET) ? null : ApplicationServletEnvironment.class;
-	}
+    @Override
+    @Nullable
+    public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
+        return (webApplicationType != WebApplicationType.SERVLET) ? null : ApplicationServletEnvironment.class;
+    }
 
-	@Override
-	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
-		return (webApplicationType != WebApplicationType.SERVLET) ? null : new ApplicationServletEnvironment();
-	}
+    @Override
+    @Nullable
+    public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
+        return (webApplicationType != WebApplicationType.SERVLET) ? null : new ApplicationServletEnvironment();
+    }
 
-	@Override
-	public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
-		return (webApplicationType != WebApplicationType.SERVLET) ? null : createContext();
-	}
+    @Override
+    @Nullable
+    public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
+        return (webApplicationType != WebApplicationType.SERVLET) ? null : createContext();
+    }
 
-	private ConfigurableApplicationContext createContext() {
-		if (!AotDetector.useGeneratedArtifacts()) {
-			return new AnnotationConfigServletWebServerApplicationContext();
-		}
-		return new ServletWebServerApplicationContext();
-	}
-
+    private ConfigurableApplicationContext createContext() {
+        if (!AotDetector.useGeneratedArtifacts()) {
+            return new AnnotationConfigServletWebServerApplicationContext();
+        }
+        return new ServletWebServerApplicationContext();
+    }
 }

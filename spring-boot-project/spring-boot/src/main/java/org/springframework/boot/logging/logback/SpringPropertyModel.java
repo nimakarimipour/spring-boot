@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.logging.logback;
 
+import javax.annotation.Nullable;
 import ch.qos.logback.core.model.NamedModel;
 
 /**
@@ -28,34 +28,39 @@ import ch.qos.logback.core.model.NamedModel;
  */
 class SpringPropertyModel extends NamedModel {
 
-	private String scope;
+    @Nullable
+    private String scope;
 
-	private String defaultValue;
+    @Nullable
+    private String defaultValue;
 
-	private String source;
+    @Nullable
+    private String source;
 
-	String getScope() {
-		return this.scope;
-	}
+    @Nullable
+    String getScope() {
+        return this.scope;
+    }
 
-	void setScope(String scope) {
-		this.scope = scope;
-	}
+    void setScope(String scope) {
+        this.scope = scope;
+    }
 
-	String getDefaultValue() {
-		return this.defaultValue;
-	}
+    @Nullable
+    String getDefaultValue() {
+        return this.defaultValue;
+    }
 
-	void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-	String getSource() {
-		return this.source;
-	}
+    @Nullable
+    String getSource() {
+        return this.source;
+    }
 
-	void setSource(String source) {
-		this.source = source;
-	}
-
+    void setSource(String source) {
+        this.source = source;
+    }
 }

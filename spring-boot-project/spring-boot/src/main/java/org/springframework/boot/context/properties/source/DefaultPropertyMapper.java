@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
-
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -33,71 +32,70 @@ import org.springframework.util.ObjectUtils;
  */
 final class DefaultPropertyMapper implements PropertyMapper {
 
-	public static final PropertyMapper INSTANCE = new DefaultPropertyMapper();
+    public static final PropertyMapper INSTANCE = new DefaultPropertyMapper();
 
-	private LastMapping<ConfigurationPropertyName, List<String>> lastMappedConfigurationPropertyName;
+    @Nullable
+    private LastMapping<ConfigurationPropertyName, List<String>> lastMappedConfigurationPropertyName;
 
-	private LastMapping<String, ConfigurationPropertyName> lastMappedPropertyName;
+    @Nullable
+    private LastMapping<String, ConfigurationPropertyName> lastMappedPropertyName;
 
-	private DefaultPropertyMapper() {
-	}
+    private DefaultPropertyMapper() {
+    }
 
-	@Override
-	public List<String> map(ConfigurationPropertyName configurationPropertyName) {
-		// Use a local copy in case another thread changes things
-		LastMapping<ConfigurationPropertyName, List<String>> last = this.lastMappedConfigurationPropertyName;
-		if (last != null && last.isFrom(configurationPropertyName)) {
-			return last.getMapping();
-		}
-		String convertedName = configurationPropertyName.toString();
-		List<String> mapping = Collections.singletonList(convertedName);
-		this.lastMappedConfigurationPropertyName = new LastMapping<>(configurationPropertyName, mapping);
-		return mapping;
-	}
+    @Override
+    public List<String> map(ConfigurationPropertyName configurationPropertyName) {
+        // Use a local copy in case another thread changes things
+        LastMapping<ConfigurationPropertyName, List<String>> last = this.lastMappedConfigurationPropertyName;
+        if (last != null && last.isFrom(configurationPropertyName)) {
+            return last.getMapping();
+        }
+        String convertedName = configurationPropertyName.toString();
+        List<String> mapping = Collections.singletonList(convertedName);
+        this.lastMappedConfigurationPropertyName = new LastMapping<>(configurationPropertyName, mapping);
+        return mapping;
+    }
 
-	@Override
-	public ConfigurationPropertyName map(String propertySourceName) {
-		// Use a local copy in case another thread changes things
-		LastMapping<String, ConfigurationPropertyName> last = this.lastMappedPropertyName;
-		if (last != null && last.isFrom(propertySourceName)) {
-			return last.getMapping();
-		}
-		ConfigurationPropertyName mapping = tryMap(propertySourceName);
-		this.lastMappedPropertyName = new LastMapping<>(propertySourceName, mapping);
-		return mapping;
-	}
+    @Override
+    public ConfigurationPropertyName map(String propertySourceName) {
+        // Use a local copy in case another thread changes things
+        LastMapping<String, ConfigurationPropertyName> last = this.lastMappedPropertyName;
+        if (last != null && last.isFrom(propertySourceName)) {
+            return last.getMapping();
+        }
+        ConfigurationPropertyName mapping = tryMap(propertySourceName);
+        this.lastMappedPropertyName = new LastMapping<>(propertySourceName, mapping);
+        return mapping;
+    }
 
-	private ConfigurationPropertyName tryMap(String propertySourceName) {
-		try {
-			ConfigurationPropertyName convertedName = ConfigurationPropertyName.adapt(propertySourceName, '.');
-			if (!convertedName.isEmpty()) {
-				return convertedName;
-			}
-		}
-		catch (Exception ex) {
-		}
-		return ConfigurationPropertyName.EMPTY;
-	}
+    private ConfigurationPropertyName tryMap(String propertySourceName) {
+        try {
+            ConfigurationPropertyName convertedName = ConfigurationPropertyName.adapt(propertySourceName, '.');
+            if (!convertedName.isEmpty()) {
+                return convertedName;
+            }
+        } catch (Exception ex) {
+        }
+        return ConfigurationPropertyName.EMPTY;
+    }
 
-	private static class LastMapping<T, M> {
+    private static class LastMapping<T, M> {
 
-		private final T from;
+        private final T from;
 
-		private final M mapping;
+        private final M mapping;
 
-		LastMapping(T from, M mapping) {
-			this.from = from;
-			this.mapping = mapping;
-		}
+        LastMapping(T from, M mapping) {
+            this.from = from;
+            this.mapping = mapping;
+        }
 
-		boolean isFrom(T from) {
-			return ObjectUtils.nullSafeEquals(from, this.from);
-		}
+        boolean isFrom(T from) {
+            return ObjectUtils.nullSafeEquals(from, this.from);
+        }
 
-		M getMapping() {
-			return this.mapping;
-		}
-
-	}
-
+        M getMapping() {
+            return this.mapping;
+        }
+    }
 }

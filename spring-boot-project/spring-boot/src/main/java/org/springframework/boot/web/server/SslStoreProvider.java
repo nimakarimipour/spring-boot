@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.server;
 
+import javax.annotation.Nullable;
 import java.security.KeyStore;
 
 /**
@@ -27,27 +27,28 @@ import java.security.KeyStore;
  */
 public interface SslStoreProvider {
 
-	/**
-	 * Return the key store that should be used.
-	 * @return the key store to use
-	 * @throws Exception on load error
-	 */
-	KeyStore getKeyStore() throws Exception;
+    /**
+     * Return the key store that should be used.
+     * @return the key store to use
+     * @throws Exception on load error
+     */
+    KeyStore getKeyStore() throws Exception;
 
-	/**
-	 * Return the trust store that should be used.
-	 * @return the trust store to use
-	 * @throws Exception on load error
-	 */
-	KeyStore getTrustStore() throws Exception;
+    /**
+     * Return the trust store that should be used.
+     * @return the trust store to use
+     * @throws Exception on load error
+     */
+    @Nullable
+    KeyStore getTrustStore() throws Exception;
 
-	/**
-	 * Return the password of the private key in the key store.
-	 * @return the key password
-	 * @since 2.7.2
-	 */
-	default String getKeyPassword() {
-		return null;
-	}
-
+    /**
+     * Return the password of the private key in the key store.
+     * @return the key password
+     * @since 2.7.2
+     */
+    @Nullable
+    default String getKeyPassword() {
+        return null;
+    }
 }

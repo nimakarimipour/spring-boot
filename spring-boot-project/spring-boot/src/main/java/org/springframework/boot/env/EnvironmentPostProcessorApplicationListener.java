@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.env;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
-
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
@@ -40,102 +39,95 @@ import org.springframework.core.io.ResourceLoader;
  */
 public class EnvironmentPostProcessorApplicationListener implements SmartApplicationListener, Ordered {
 
-	/**
-	 * The default order for the processor.
-	 */
-	public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 10;
+    /**
+     * The default order for the processor.
+     */
+    public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 10;
 
-	private final DeferredLogs deferredLogs;
+    private final DeferredLogs deferredLogs;
 
-	private int order = DEFAULT_ORDER;
+    private int order = DEFAULT_ORDER;
 
-	private final Function<ClassLoader, EnvironmentPostProcessorsFactory> postProcessorsFactory;
+    private final Function<ClassLoader, EnvironmentPostProcessorsFactory> postProcessorsFactory;
 
-	/**
-	 * Create a new {@link EnvironmentPostProcessorApplicationListener} with
-	 * {@link EnvironmentPostProcessor} classes loaded via {@code spring.factories}.
-	 */
-	public EnvironmentPostProcessorApplicationListener() {
-		this(EnvironmentPostProcessorsFactory::fromSpringFactories);
-	}
+    /**
+     * Create a new {@link EnvironmentPostProcessorApplicationListener} with
+     * {@link EnvironmentPostProcessor} classes loaded via {@code spring.factories}.
+     */
+    public EnvironmentPostProcessorApplicationListener() {
+        this(EnvironmentPostProcessorsFactory::fromSpringFactories);
+    }
 
-	/**
-	 * Create a new {@link EnvironmentPostProcessorApplicationListener} with post
-	 * processors created by the given factory.
-	 * @param postProcessorsFactory the post processors factory
-	 */
-	private EnvironmentPostProcessorApplicationListener(
-			Function<ClassLoader, EnvironmentPostProcessorsFactory> postProcessorsFactory) {
-		this.postProcessorsFactory = postProcessorsFactory;
-		this.deferredLogs = new DeferredLogs();
-	}
+    /**
+     * Create a new {@link EnvironmentPostProcessorApplicationListener} with post
+     * processors created by the given factory.
+     * @param postProcessorsFactory the post processors factory
+     */
+    private EnvironmentPostProcessorApplicationListener(Function<ClassLoader, EnvironmentPostProcessorsFactory> postProcessorsFactory) {
+        this.postProcessorsFactory = postProcessorsFactory;
+        this.deferredLogs = new DeferredLogs();
+    }
 
-	/**
-	 * Factory method that creates an {@link EnvironmentPostProcessorApplicationListener}
-	 * with a specific {@link EnvironmentPostProcessorsFactory}.
-	 * @param postProcessorsFactory the environment post processor factory
-	 * @return an {@link EnvironmentPostProcessorApplicationListener} instance
-	 */
-	public static EnvironmentPostProcessorApplicationListener with(
-			EnvironmentPostProcessorsFactory postProcessorsFactory) {
-		return new EnvironmentPostProcessorApplicationListener((classloader) -> postProcessorsFactory);
-	}
+    /**
+     * Factory method that creates an {@link EnvironmentPostProcessorApplicationListener}
+     * with a specific {@link EnvironmentPostProcessorsFactory}.
+     * @param postProcessorsFactory the environment post processor factory
+     * @return an {@link EnvironmentPostProcessorApplicationListener} instance
+     */
+    public static EnvironmentPostProcessorApplicationListener with(EnvironmentPostProcessorsFactory postProcessorsFactory) {
+        return new EnvironmentPostProcessorApplicationListener((classloader) -> postProcessorsFactory);
+    }
 
-	@Override
-	public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
-		return ApplicationEnvironmentPreparedEvent.class.isAssignableFrom(eventType)
-				|| ApplicationPreparedEvent.class.isAssignableFrom(eventType)
-				|| ApplicationFailedEvent.class.isAssignableFrom(eventType);
-	}
+    @Override
+    public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
+        return ApplicationEnvironmentPreparedEvent.class.isAssignableFrom(eventType) || ApplicationPreparedEvent.class.isAssignableFrom(eventType) || ApplicationFailedEvent.class.isAssignableFrom(eventType);
+    }
 
-	@Override
-	public void onApplicationEvent(ApplicationEvent event) {
-		if (event instanceof ApplicationEnvironmentPreparedEvent environmentPreparedEvent) {
-			onApplicationEnvironmentPreparedEvent(environmentPreparedEvent);
-		}
-		if (event instanceof ApplicationPreparedEvent) {
-			onApplicationPreparedEvent();
-		}
-		if (event instanceof ApplicationFailedEvent) {
-			onApplicationFailedEvent();
-		}
-	}
+    @Override
+    public void onApplicationEvent(ApplicationEvent event) {
+        if (event instanceof ApplicationEnvironmentPreparedEvent environmentPreparedEvent) {
+            onApplicationEnvironmentPreparedEvent(environmentPreparedEvent);
+        }
+        if (event instanceof ApplicationPreparedEvent) {
+            onApplicationPreparedEvent();
+        }
+        if (event instanceof ApplicationFailedEvent) {
+            onApplicationFailedEvent();
+        }
+    }
 
-	private void onApplicationEnvironmentPreparedEvent(ApplicationEnvironmentPreparedEvent event) {
-		ConfigurableEnvironment environment = event.getEnvironment();
-		SpringApplication application = event.getSpringApplication();
-		for (EnvironmentPostProcessor postProcessor : getEnvironmentPostProcessors(application.getResourceLoader(),
-				event.getBootstrapContext())) {
-			postProcessor.postProcessEnvironment(environment, application);
-		}
-	}
+    private void onApplicationEnvironmentPreparedEvent(ApplicationEnvironmentPreparedEvent event) {
+        ConfigurableEnvironment environment = event.getEnvironment();
+        SpringApplication application = event.getSpringApplication();
+        for (EnvironmentPostProcessor postProcessor : getEnvironmentPostProcessors(application.getResourceLoader(), event.getBootstrapContext())) {
+            postProcessor.postProcessEnvironment(environment, application);
+        }
+    }
 
-	private void onApplicationPreparedEvent() {
-		finish();
-	}
+    private void onApplicationPreparedEvent() {
+        finish();
+    }
 
-	private void onApplicationFailedEvent() {
-		finish();
-	}
+    private void onApplicationFailedEvent() {
+        finish();
+    }
 
-	private void finish() {
-		this.deferredLogs.switchOverAll();
-	}
+    private void finish() {
+        this.deferredLogs.switchOverAll();
+    }
 
-	List<EnvironmentPostProcessor> getEnvironmentPostProcessors(ResourceLoader resourceLoader,
-			ConfigurableBootstrapContext bootstrapContext) {
-		ClassLoader classLoader = (resourceLoader != null) ? resourceLoader.getClassLoader() : null;
-		EnvironmentPostProcessorsFactory postProcessorsFactory = this.postProcessorsFactory.apply(classLoader);
-		return postProcessorsFactory.getEnvironmentPostProcessors(this.deferredLogs, bootstrapContext);
-	}
+    List<EnvironmentPostProcessor> getEnvironmentPostProcessors(@Nullable ResourceLoader resourceLoader, ConfigurableBootstrapContext bootstrapContext) {
+        ClassLoader classLoader = (resourceLoader != null) ? resourceLoader.getClassLoader() : null;
+        EnvironmentPostProcessorsFactory postProcessorsFactory = this.postProcessorsFactory.apply(classLoader);
+        return postProcessorsFactory.getEnvironmentPostProcessors(this.deferredLogs, bootstrapContext);
+    }
 
-	@Override
-	public int getOrder() {
-		return this.order;
-	}
+    @Override
+    public int getOrder() {
+        return this.order;
+    }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
+    public void setOrder(int order) {
+        this.order = order;
+    }
 }

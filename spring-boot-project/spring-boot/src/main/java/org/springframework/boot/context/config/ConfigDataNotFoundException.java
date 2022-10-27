@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.context.config;
 
+import javax.annotation.Nullable;
 import org.springframework.boot.origin.OriginProvider;
 
 /**
@@ -26,19 +26,18 @@ import org.springframework.boot.origin.OriginProvider;
  */
 public abstract class ConfigDataNotFoundException extends ConfigDataException implements OriginProvider {
 
-	/**
-	 * Create a new {@link ConfigDataNotFoundException} instance.
-	 * @param message the exception message
-	 * @param cause the exception cause
-	 */
-	ConfigDataNotFoundException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Create a new {@link ConfigDataNotFoundException} instance.
+     * @param message the exception message
+     * @param cause the exception cause
+     */
+    ConfigDataNotFoundException(String message, @Nullable Throwable cause) {
+        super(message, cause);
+    }
 
-	/**
-	 * Return a description of actual referenced item that could not be found.
-	 * @return a description of the referenced items
-	 */
-	public abstract String getReferenceDescription();
-
+    /**
+     * Return a description of actual referenced item that could not be found.
+     * @return a description of the referenced items
+     */
+    public abstract String getReferenceDescription();
 }

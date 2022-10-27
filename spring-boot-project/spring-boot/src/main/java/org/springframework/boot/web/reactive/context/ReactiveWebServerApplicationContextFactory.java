@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.boot.web.reactive.context;
 
+import javax.annotation.Nullable;
 import org.springframework.aot.AotDetector;
 import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.WebApplicationType;
@@ -32,26 +32,28 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 class ReactiveWebServerApplicationContextFactory implements ApplicationContextFactory {
 
-	@Override
-	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
-		return (webApplicationType != WebApplicationType.REACTIVE) ? null : ApplicationReactiveWebEnvironment.class;
-	}
+    @Override
+    @Nullable
+    public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
+        return (webApplicationType != WebApplicationType.REACTIVE) ? null : ApplicationReactiveWebEnvironment.class;
+    }
 
-	@Override
-	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
-		return (webApplicationType != WebApplicationType.REACTIVE) ? null : new ApplicationReactiveWebEnvironment();
-	}
+    @Override
+    @Nullable
+    public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
+        return (webApplicationType != WebApplicationType.REACTIVE) ? null : new ApplicationReactiveWebEnvironment();
+    }
 
-	@Override
-	public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
-		return (webApplicationType != WebApplicationType.REACTIVE) ? null : createContext();
-	}
+    @Override
+    @Nullable
+    public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
+        return (webApplicationType != WebApplicationType.REACTIVE) ? null : createContext();
+    }
 
-	private ConfigurableApplicationContext createContext() {
-		if (!AotDetector.useGeneratedArtifacts()) {
-			return new AnnotationConfigReactiveWebServerApplicationContext();
-		}
-		return new ReactiveWebServerApplicationContext();
-	}
-
+    private ConfigurableApplicationContext createContext() {
+        if (!AotDetector.useGeneratedArtifacts()) {
+            return new AnnotationConfigReactiveWebServerApplicationContext();
+        }
+        return new ReactiveWebServerApplicationContext();
+    }
 }

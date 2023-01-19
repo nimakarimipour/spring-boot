@@ -31,6 +31,7 @@ import org.springframework.core.env.PropertySource.StubPropertySource;
 import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ConcurrentReferenceHashMap.ReferenceType;
+import javax.annotation.Nullable;
 
 /**
  * Adapter to convert Spring's {@link MutablePropertySources} to
@@ -40,12 +41,12 @@ import org.springframework.util.ConcurrentReferenceHashMap.ReferenceType;
  */
 class SpringConfigurationPropertySources implements Iterable<ConfigurationPropertySource> {
 
-	private final Iterable<PropertySource<?>> sources;
+	@Nullable private final Iterable<PropertySource<?>> sources;
 
 	private final Map<PropertySource<?>, ConfigurationPropertySource> cache = new ConcurrentReferenceHashMap<>(16,
 			ReferenceType.SOFT);
 
-	SpringConfigurationPropertySources(Iterable<PropertySource<?>> sources) {
+	SpringConfigurationPropertySources(@Nullable Iterable<PropertySource<?>> sources) {
 		Assert.notNull(sources, "Sources must not be null");
 		this.sources = sources;
 	}
@@ -78,7 +79,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 
 		private final Deque<Iterator<PropertySource<?>>> iterators;
 
-		private ConfigurationPropertySource next;
+		@Nullable private ConfigurationPropertySource next;
 
 		private final Function<PropertySource<?>, ConfigurationPropertySource> adapter;
 
@@ -104,7 +105,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 			return next;
 		}
 
-		private ConfigurationPropertySource fetchNext() {
+		@Nullable private ConfigurationPropertySource fetchNext() {
 			if (this.next == null) {
 				if (this.iterators.isEmpty()) {
 					return null;

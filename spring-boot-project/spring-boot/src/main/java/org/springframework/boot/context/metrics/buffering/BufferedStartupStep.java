@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link StartupStep} implementation to be buffered by
@@ -41,7 +42,7 @@ class BufferedStartupStep implements StartupStep {
 
 	private final long id;
 
-	private final BufferedStartupStep parent;
+	@Nullable private final BufferedStartupStep parent;
 
 	private final List<Tag> tags = new ArrayList<>();
 
@@ -51,7 +52,7 @@ class BufferedStartupStep implements StartupStep {
 
 	private final AtomicBoolean ended = new AtomicBoolean();
 
-	BufferedStartupStep(BufferedStartupStep parent, String name, long id, Instant startTime,
+	BufferedStartupStep(@Nullable BufferedStartupStep parent, String name, long id, Instant startTime,
 			Consumer<BufferedStartupStep> recorder) {
 		this.parent = parent;
 		this.name = name;
@@ -60,7 +61,7 @@ class BufferedStartupStep implements StartupStep {
 		this.recorder = recorder;
 	}
 
-	BufferedStartupStep getParent() {
+	@Nullable BufferedStartupStep getParent() {
 		return this.parent;
 	}
 
@@ -78,7 +79,7 @@ class BufferedStartupStep implements StartupStep {
 		return this.startTime;
 	}
 
-	@Override
+	@Nullable @Override
 	public Long getParentId() {
 		return (this.parent != null) ? this.parent.getId() : null;
 	}

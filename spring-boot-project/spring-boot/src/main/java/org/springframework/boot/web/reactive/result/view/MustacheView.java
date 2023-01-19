@@ -39,6 +39,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.server.ServerWebExchange;
+import javax.annotation.Nullable;
 
 /**
  * Spring WebFlux {@link View} using the Mustache template engine.
@@ -48,9 +49,9 @@ import org.springframework.web.server.ServerWebExchange;
  */
 public class MustacheView extends AbstractUrlBasedView {
 
-	private Compiler compiler;
+	@Nullable private Compiler compiler;
 
-	private String charset;
+	@Nullable private String charset;
 
 	/**
 	 * Set the JMustache compiler to be used by this view. Typically this property is not
@@ -66,7 +67,7 @@ public class MustacheView extends AbstractUrlBasedView {
 	 * Set the charset used for reading Mustache template files.
 	 * @param charset the charset to use for reading template files
 	 */
-	public void setCharset(String charset) {
+	public void setCharset(@Nullable String charset) {
 		this.charset = charset;
 	}
 
@@ -99,7 +100,7 @@ public class MustacheView extends AbstractUrlBasedView {
 		return exchange.getResponse().writeWith(Flux.just(dataBuffer));
 	}
 
-	private Resource resolveResource() {
+	@Nullable private Resource resolveResource() {
 		Resource resource = getApplicationContext().getResource(getUrl());
 		if (resource == null || !resource.exists()) {
 			return null;

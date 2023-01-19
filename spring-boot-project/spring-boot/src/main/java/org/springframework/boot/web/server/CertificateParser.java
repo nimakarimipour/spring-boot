@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
+import javax.annotation.Nullable;
 
 /**
  * Parser for X.509 certificates in PEM format.
@@ -58,7 +59,7 @@ final class CertificateParser {
 	 * @param path the certificate to parse
 	 * @return the parsed certificates
 	 */
-	static X509Certificate[] parse(String path) {
+	static X509Certificate[] parse(@Nullable String path) {
 		CertificateFactory factory = getCertificateFactory();
 		List<X509Certificate> certificates = new ArrayList<>();
 		readCertificates(path, factory, certificates::add);
@@ -74,7 +75,7 @@ final class CertificateParser {
 		}
 	}
 
-	private static void readCertificates(String resource, CertificateFactory factory,
+	private static void readCertificates(@Nullable String resource, CertificateFactory factory,
 			Consumer<X509Certificate> consumer) {
 		try {
 			String text = readText(resource);
@@ -94,7 +95,7 @@ final class CertificateParser {
 		}
 	}
 
-	private static String readText(String resource) throws IOException {
+	private static String readText(@Nullable String resource) throws IOException {
 		URL url = ResourceUtils.getURL(resource);
 		try (Reader reader = new InputStreamReader(url.openStream())) {
 			return FileCopyUtils.copyToString(reader);

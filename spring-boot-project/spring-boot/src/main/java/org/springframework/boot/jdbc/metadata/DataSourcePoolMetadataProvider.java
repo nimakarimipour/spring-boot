@@ -17,6 +17,7 @@
 package org.springframework.boot.jdbc.metadata;
 
 import javax.sql.DataSource;
+import javax.annotation.Nullable;
 
 /**
  * Provide a {@link DataSourcePoolMetadata} based on a {@link DataSource}.
@@ -33,6 +34,6 @@ public interface DataSourcePoolMetadataProvider {
 	 * @param dataSource the data source
 	 * @return the data source pool metadata
 	 */
-	DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource);
+	@Nullable DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource);
 
 }

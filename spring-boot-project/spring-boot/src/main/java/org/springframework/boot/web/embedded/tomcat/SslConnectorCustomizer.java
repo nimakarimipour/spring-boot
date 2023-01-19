@@ -32,6 +32,7 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures SSL support on the given connector.

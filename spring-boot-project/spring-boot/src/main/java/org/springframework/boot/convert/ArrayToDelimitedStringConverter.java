@@ -25,6 +25,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Converts an array to a delimited String.
@@ -49,7 +50,7 @@ final class ArrayToDelimitedStringConverter implements ConditionalGenericConvert
 		return this.delegate.matches(sourceType, targetType);
 	}
 
-	@Override
+	@Nullable @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		List<Object> list = Arrays.asList(ObjectUtils.toObjectArray(source));
 		return this.delegate.convert(list, sourceType, targetType);

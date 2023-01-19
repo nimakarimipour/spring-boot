@@ -41,6 +41,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * An immutable tree structure of {@link ConfigDataEnvironmentContributors} used to
@@ -89,7 +90,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * imports have been processed
 	 */
 	ConfigDataEnvironmentContributors withProcessedImports(ConfigDataImporter importer,
-			ConfigDataActivationContext activationContext) {
+			@Nullable ConfigDataActivationContext activationContext) {
 		ImportPhase importPhase = ImportPhase.get(activationContext);
 		this.logger.trace(LogMessage.format("Processing imports for phase %s. %s", importPhase,
 				(activationContext != null) ? activationContext : "no activation context"));
@@ -137,8 +138,8 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return this.bootstrapContext;
 	}
 
-	private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
-			ConfigDataActivationContext activationContext, ImportPhase importPhase) {
+	@Nullable private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
+			@Nullable ConfigDataActivationContext activationContext, ImportPhase importPhase) {
 		for (ConfigDataEnvironmentContributor contributor : contributors.getRoot()) {
 			if (contributor.getKind() == Kind.UNBOUND_IMPORT
 					|| isActiveWithUnprocessedImports(activationContext, importPhase, contributor)) {
@@ -148,7 +149,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return null;
 	}
 
-	private boolean isActiveWithUnprocessedImports(ConfigDataActivationContext activationContext,
+	private boolean isActiveWithUnprocessedImports(@Nullable ConfigDataActivationContext activationContext,
 			ImportPhase importPhase, ConfigDataEnvironmentContributor contributor) {
 		return contributor.isActive(activationContext) && contributor.hasUnprocessedImports(importPhase);
 	}
@@ -187,7 +188,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * @param options binder options to apply
 	 * @return a binder instance
 	 */
-	Binder getBinder(ConfigDataActivationContext activationContext, BinderOption... options) {
+	Binder getBinder(@Nullable ConfigDataActivationContext activationContext, BinderOption... options) {
 		return getBinder(activationContext, NO_CONTRIBUTOR_FILTER, options);
 	}
 
@@ -198,7 +199,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * @param options binder options to apply
 	 * @return a binder instance
 	 */
-	Binder getBinder(ConfigDataActivationContext activationContext, Predicate<ConfigDataEnvironmentContributor> filter,
+	Binder getBinder(@Nullable ConfigDataActivationContext activationContext, Predicate<ConfigDataEnvironmentContributor> filter,
 			BinderOption... options) {
 		return getBinder(activationContext, filter, asBinderOptionsSet(options));
 	}
@@ -208,7 +209,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 				: EnumSet.copyOf(Arrays.asList(options));
 	}
 
-	private Binder getBinder(ConfigDataActivationContext activationContext,
+	private Binder getBinder(@Nullable ConfigDataActivationContext activationContext,
 			Predicate<ConfigDataEnvironmentContributor> filter, Set<BinderOption> options) {
 		boolean failOnInactiveSource = options.contains(BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		Iterable<ConfigurationPropertySource> sources = () -> getBinderSources(
@@ -260,12 +261,12 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 
 		private final ConfigDataEnvironmentContributor contributor;
 
-		private final ConfigDataActivationContext activationContext;
+		@Nullable private final ConfigDataActivationContext activationContext;
 
-		private volatile Binder binder;
+		@Nullable private volatile Binder binder;
 
 		ContributorConfigDataLocationResolverContext(ConfigDataEnvironmentContributors contributors,
-				ConfigDataEnvironmentContributor contributor, ConfigDataActivationContext activationContext) {
+				ConfigDataEnvironmentContributor contributor, @Nullable ConfigDataActivationContext activationContext) {
 			this.contributors = contributors;
 			this.contributor = contributor;
 			this.activationContext = activationContext;
@@ -281,7 +282,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 			return binder;
 		}
 
-		@Override
+		@Nullable @Override
 		public ConfigDataResource getParent() {
 			return this.contributor.getResource();
 		}
@@ -295,9 +296,9 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 
 	private class InactiveSourceChecker implements BindHandler {
 
-		private final ConfigDataActivationContext activationContext;
+		@Nullable private final ConfigDataActivationContext activationContext;
 
-		InactiveSourceChecker(ConfigDataActivationContext activationContext) {
+		InactiveSourceChecker(@Nullable ConfigDataActivationContext activationContext) {
 			this.activationContext = activationContext;
 		}
 

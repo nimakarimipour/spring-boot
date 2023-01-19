@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
+import javax.annotation.Nullable;
 
 /**
  * Callback interface that can be used to handle additional logic during element
@@ -71,7 +72,7 @@ public interface BindHandler {
 	 * @return the actual result that should be used (must not be {@code null})
 	 * @since 2.2.2
 	 */
-	default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	@Nullable default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result) {
 		return result;
 	}
 
@@ -86,7 +87,7 @@ public interface BindHandler {
 	 * @return the actual result that should be used (may be {@code null}).
 	 * @throws Exception if the binding isn't valid
 	 */
-	default Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
+	@Nullable default Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		throw error;
 	}
@@ -101,7 +102,7 @@ public interface BindHandler {
 	 * @param result the bound result (may be {@code null})
 	 * @throws Exception if the binding isn't valid
 	 */
-	default void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result)
+	default void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result)
 			throws Exception {
 	}
 

@@ -32,6 +32,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Connection details for {@link EmbeddedDatabaseType embedded databases}.
@@ -188,7 +189,7 @@ public enum EmbeddedDatabaseConnection {
 	 */
 	private static class IsEmbedded implements ConnectionCallback<Boolean> {
 
-		@Override
+		@NullUnmarked @Override
 		public Boolean doInConnection(Connection connection) throws SQLException, DataAccessException {
 			DatabaseMetaData metaData = connection.getMetaData();
 			String productName = metaData.getDatabaseProductName();

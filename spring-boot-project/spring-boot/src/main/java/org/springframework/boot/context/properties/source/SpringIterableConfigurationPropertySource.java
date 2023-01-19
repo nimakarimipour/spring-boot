@@ -39,6 +39,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
@@ -194,17 +195,17 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private final boolean trackDescendants;
 
-		private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
+		@SuppressWarnings("NullAway.Init") private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
 
 		@Nullable private volatile Map<String, ConfigurationPropertyName> reverseMappings;
 
-		private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
+		@SuppressWarnings("NullAway.Init") private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
 		@Nullable private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
 		@Nullable private volatile String[] lastUpdated;
 
-		Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
+		@NullUnmarked Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
 			this.mappers = mappers;
 			this.immutable = immutable;
 			this.trackDescendants = trackDescendants;

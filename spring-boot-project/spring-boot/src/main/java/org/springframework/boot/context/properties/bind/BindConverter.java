@@ -44,6 +44,7 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.util.CollectionUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Utility to handle any conversion needed during binding. This class is not thread-safe
@@ -93,7 +94,7 @@ final class BindConverter {
 		return convert(source, target.getType(), target.getAnnotations());
 	}
 
-	@SuppressWarnings("unchecked")
+	@NullUnmarked @SuppressWarnings("unchecked")
 	<T> T convert(@Nullable Object source, ResolvableType targetType, Annotation... targetAnnotations) {
 		if (source == null) {
 			return null;

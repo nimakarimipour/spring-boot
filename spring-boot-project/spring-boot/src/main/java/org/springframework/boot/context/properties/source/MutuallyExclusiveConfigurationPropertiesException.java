@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Exception thrown when more than one mutually exclusive configuration property has been
@@ -77,7 +78,7 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 		return this.mutuallyExclusiveNames;
 	}
 
-	private static Set<String> asSet(Collection<String> collection) {
+	@NullUnmarked private static Set<String> asSet(Collection<String> collection) {
 		return (collection != null) ? new LinkedHashSet<>(collection) : null;
 	}
 

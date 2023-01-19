@@ -46,6 +46,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Provides access to {@link ConfigurationProperties @ConfigurationProperties} bean
@@ -267,7 +268,7 @@ public final class ConfigurationPropertiesBean {
 		return propertiesBean;
 	}
 
-	private static ConfigurationPropertiesBean create(String name, @Nullable Object instance, Class<?> type, @Nullable Method factory) {
+	@NullUnmarked private static ConfigurationPropertiesBean create(String name, @Nullable Object instance, Class<?> type, @Nullable Method factory) {
 		ConfigurationProperties annotation = findAnnotation(instance, type, factory, ConfigurationProperties.class);
 		if (annotation == null) {
 			return null;

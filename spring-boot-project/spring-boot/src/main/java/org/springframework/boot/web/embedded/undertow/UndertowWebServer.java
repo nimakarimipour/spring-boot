@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link WebServer} that can be used to control an Undertow web server. Usually this
@@ -72,13 +73,13 @@ public class UndertowWebServer implements WebServer {
 
 	private final boolean autoStart;
 
-	private Undertow undertow;
+	@SuppressWarnings("NullAway.Init") private Undertow undertow;
 
 	private volatile boolean started = false;
 
 	@Nullable private volatile GracefulShutdownHandler gracefulShutdown;
 
-	private volatile List<Closeable> closeables;
+	@SuppressWarnings("NullAway.Init") private volatile List<Closeable> closeables;
 
 	/**
 	 * Create a new {@link UndertowWebServer} instance.
@@ -167,7 +168,7 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
-	@Nullable protected HttpHandler createHttpHandler() {
+	@NullUnmarked @Nullable protected HttpHandler createHttpHandler() {
 		HttpHandler handler = null;
 		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
 			handler = factory.getHandler(handler);
@@ -387,7 +388,7 @@ public class UndertowWebServer implements WebServer {
 					next.handleRequest(exchange);
 				}
 
-				@Override
+				@NullUnmarked @Override
 				public void close() throws IOException {
 					CloseableHttpHandlerFactory.this.closeable.close();
 				}

@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A container object to return the result of a {@link Binder} bind operation. May contain
@@ -98,7 +99,7 @@ public final class BindResult<T> {
 	 * {@code null})
 	 * @return the value, if bound, otherwise {@code other}
 	 */
-	public T orElse(@Nullable T other) {
+	@NullUnmarked public T orElse(@Nullable T other) {
 		return (this.value != null) ? this.value : other;
 	}
 

@@ -29,6 +29,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An {@link AbstractInjectionFailureAnalyzer} for
@@ -45,7 +46,7 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return 0;
 	}
 
-	@Nullable @Override
+	@NullUnmarked @Nullable @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, NoSuchBeanDefinitionException cause, @Nullable String description) {
 		InjectionPoint injectionPoint = findInjectionPoint(rootFailure);
 		if (isConstructorBindingConfigurationProperties(injectionPoint)) {

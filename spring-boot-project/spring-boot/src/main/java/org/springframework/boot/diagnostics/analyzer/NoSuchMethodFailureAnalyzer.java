@@ -27,6 +27,7 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.ClassUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An {@link AbstractFailureAnalyzer} that analyzes {@link NoSuchMethodError
@@ -85,7 +86,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		return new NoSuchMethodDescriptor(message, className, candidates, typeHierarchy);
 	}
 
-	private String cleanMessage(@Nullable String message) {
+	@NullUnmarked private String cleanMessage(@Nullable String message) {
 		int loadedFromIndex = message.indexOf(" (loaded from");
 		if (loadedFromIndex == -1) {
 			return message;

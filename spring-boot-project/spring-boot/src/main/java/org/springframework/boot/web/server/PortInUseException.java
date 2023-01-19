@@ -20,6 +20,7 @@ import java.net.BindException;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A {@code PortInUseException} is thrown when a web server fails to start due to a port
@@ -79,7 +80,7 @@ public class PortInUseException extends WebServerException {
 	 * @param action the action to perform
 	 * @since 2.2.7
 	 */
-	public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
+	@NullUnmarked public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
 		ifCausedBy(ex, BindException.class, (bindException) -> {
 			// bind exception can be also thrown because an address can't be assigned
 			if (bindException.getMessage().toLowerCase().contains("in use")) {

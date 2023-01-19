@@ -19,6 +19,7 @@ package org.springframework.boot.context.config;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A reference expanded from the original {@link ConfigDataLocation} that can ultimately
@@ -71,7 +72,7 @@ class StandardConfigDataReference {
 		return !this.configDataLocation.isOptional() && this.directory != null;
 	}
 
-	String getDirectory() {
+	@NullUnmarked String getDirectory() {
 		return this.directory;
 	}
 

@@ -24,6 +24,7 @@ import io.r2dbc.spi.ConnectionFactoryOptions;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Connection details for embedded databases compatible with R2DBC.
@@ -98,7 +99,7 @@ public enum EmbeddedDatabaseConnection {
 	 * @return true if the connection factory represents an embedded database
 	 * @since 2.5.1
 	 */
-	public static boolean isEmbedded(ConnectionFactory connectionFactory) {
+	@NullUnmarked public static boolean isEmbedded(ConnectionFactory connectionFactory) {
 		OptionsCapableConnectionFactory optionsCapable = OptionsCapableConnectionFactory.unwrapFrom(connectionFactory);
 		Assert.notNull(optionsCapable,
 				() -> "Cannot determine database's type as ConnectionFactory is not options-capable. To be "

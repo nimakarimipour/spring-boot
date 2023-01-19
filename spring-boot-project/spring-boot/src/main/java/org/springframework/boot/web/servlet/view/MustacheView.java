@@ -31,6 +31,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractTemplateView;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Spring MVC {@link View} using the Mustache template engine.
@@ -81,7 +82,7 @@ public class MustacheView extends AbstractTemplateView {
 		}
 	}
 
-	private Template createTemplate(Resource resource) throws IOException {
+	@NullUnmarked private Template createTemplate(Resource resource) throws IOException {
 		try (Reader reader = getReader(resource)) {
 			return this.compiler.compile(reader);
 		}

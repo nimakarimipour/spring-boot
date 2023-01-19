@@ -90,6 +90,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.function.ThrowingSupplier;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Class that can be used to bootstrap and launch a Spring application from a Java main
@@ -191,7 +192,7 @@ public class SpringApplication {
 
 	private Set<String> sources = new LinkedHashSet<>();
 
-	private Class<?> mainApplicationClass;
+	@SuppressWarnings("NullAway.Init") private Class<?> mainApplicationClass;
 
 	private Banner.Mode bannerMode = Banner.Mode.CONSOLE;
 
@@ -215,9 +216,9 @@ public class SpringApplication {
 
 	private boolean registerShutdownHook = true;
 
-	private List<ApplicationContextInitializer<?>> initializers;
+	@SuppressWarnings("NullAway.Init") private List<ApplicationContextInitializer<?>> initializers;
 
-	private List<ApplicationListener<?>> listeners;
+	@SuppressWarnings("NullAway.Init") private List<ApplicationListener<?>> listeners;
 
 	@Nullable private Map<String, Object> defaultProperties;
 
@@ -292,7 +293,7 @@ public class SpringApplication {
 	 * @param args the application arguments (usually passed from a Java main method)
 	 * @return a running {@link ApplicationContext}
 	 */
-	public ConfigurableApplicationContext run(String... args) {
+	@NullUnmarked public ConfigurableApplicationContext run(String... args) {
 		long startTime = System.nanoTime();
 		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
 		ConfigurableApplicationContext context = null;

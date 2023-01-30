@@ -18,6 +18,7 @@ package org.springframework.boot.logging;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Immutable class that represents the configuration of a {@link LoggingSystem}'s logger.
@@ -29,9 +30,9 @@ public final class LoggerConfiguration {
 
 	private final String name;
 
-	private final LogLevel configuredLevel;
+	@Nullable private final LogLevel configuredLevel;
 
-	private final LogLevel effectiveLevel;
+	@Nullable private final LogLevel effectiveLevel;
 
 	/**
 	 * Create a new {@link LoggerConfiguration instance}.
@@ -39,7 +40,7 @@ public final class LoggerConfiguration {
 	 * @param configuredLevel the configured level of the logger
 	 * @param effectiveLevel the effective level of the logger
 	 */
-	public LoggerConfiguration(String name, LogLevel configuredLevel, LogLevel effectiveLevel) {
+	public LoggerConfiguration(String name, @Nullable LogLevel configuredLevel, @Nullable LogLevel effectiveLevel) {
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(effectiveLevel, "EffectiveLevel must not be null");
 		this.name = name;
@@ -51,7 +52,7 @@ public final class LoggerConfiguration {
 	 * Returns the configured level of the logger.
 	 * @return the configured level of the logger
 	 */
-	public LogLevel getConfiguredLevel() {
+	@Nullable public LogLevel getConfiguredLevel() {
 		return this.configuredLevel;
 	}
 
@@ -59,7 +60,7 @@ public final class LoggerConfiguration {
 	 * Returns the effective level of the logger.
 	 * @return the effective level of the logger
 	 */
-	public LogLevel getEffectiveLevel() {
+	@Nullable public LogLevel getEffectiveLevel() {
 		return this.effectiveLevel;
 	}
 

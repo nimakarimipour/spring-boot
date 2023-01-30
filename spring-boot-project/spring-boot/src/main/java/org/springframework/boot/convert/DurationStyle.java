@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Duration format styles.
@@ -40,7 +41,7 @@ public enum DurationStyle {
 	SIMPLE("^([+-]?\\d+)([a-zA-Z]{0,2})$") {
 
 		@Override
-		public Duration parse(String value, ChronoUnit unit) {
+		public Duration parse(String value, @Nullable ChronoUnit unit) {
 			try {
 				Matcher matcher = matcher(value);
 				Assert.state(matcher.matches(), "Does not match simple duration pattern");
@@ -54,7 +55,7 @@ public enum DurationStyle {
 		}
 
 		@Override
-		public String print(Duration value, ChronoUnit unit) {
+		public String print(Duration value, @Nullable ChronoUnit unit) {
 			return Unit.fromChronoUnit(unit).print(value);
 		}
 
@@ -66,7 +67,7 @@ public enum DurationStyle {
 	ISO8601("^[+-]?[pP].*$") {
 
 		@Override
-		public Duration parse(String value, ChronoUnit unit) {
+		public Duration parse(String value, @Nullable ChronoUnit unit) {
 			try {
 				return Duration.parse(value);
 			}
@@ -76,7 +77,7 @@ public enum DurationStyle {
 		}
 
 		@Override
-		public String print(Duration value, ChronoUnit unit) {
+		public String print(Duration value, @Nullable ChronoUnit unit) {
 			return value.toString();
 		}
 
@@ -112,7 +113,7 @@ public enum DurationStyle {
 	 * will default to ms)
 	 * @return a duration
 	 */
-	public abstract Duration parse(String value, ChronoUnit unit);
+	public abstract Duration parse(String value, @Nullable ChronoUnit unit);
 
 	/**
 	 * Print the specified duration.
@@ -129,7 +130,7 @@ public enum DurationStyle {
 	 * @param unit the value to use for printing
 	 * @return the printed result
 	 */
-	public abstract String print(Duration value, ChronoUnit unit);
+	public abstract String print(Duration value, @Nullable ChronoUnit unit);
 
 	/**
 	 * Detect the style then parse the value to return a duration.
@@ -151,7 +152,7 @@ public enum DurationStyle {
 	 * @throws IllegalArgumentException if the value is not a known style or cannot be
 	 * parsed
 	 */
-	public static Duration detectAndParse(String value, ChronoUnit unit) {
+	public static Duration detectAndParse(String value, @Nullable ChronoUnit unit) {
 		return detect(value).parse(value, unit);
 	}
 
@@ -235,7 +236,7 @@ public enum DurationStyle {
 			return this.longValue.apply(value);
 		}
 
-		public static Unit fromChronoUnit(ChronoUnit chronoUnit) {
+		public static Unit fromChronoUnit(@Nullable ChronoUnit chronoUnit) {
 			if (chronoUnit == null) {
 				return Unit.MILLIS;
 			}

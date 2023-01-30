@@ -44,6 +44,7 @@ import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.convert.ConversionException;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link DataObjectBinder} for immutable value objects.
@@ -61,7 +62,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		this.constructorProvider = constructorProvider;
 	}
 
-	@Override
+	@Nullable @Override
 	public <T> T bind(ConfigurationPropertyName name, Bindable<T> target, Binder.Context context,
 			DataObjectPropertyBinder propertyBinder) {
 		ValueObject<T> valueObject = ValueObject.get(target, this.constructorProvider, context);
@@ -83,7 +84,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return bound ? valueObject.instantiate(args) : null;
 	}
 
-	@Override
+	@Nullable @Override
 	public <T> T create(Bindable<T> target, Binder.Context context) {
 		ValueObject<T> valueObject = ValueObject.get(target, this.constructorProvider, context);
 		if (valueObject == null) {
@@ -97,7 +98,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return valueObject.instantiate(args);
 	}
 
-	private <T> T getDefaultValue(Binder.Context context, ConstructorParameter parameter) {
+	@Nullable private <T> T getDefaultValue(Binder.Context context, ConstructorParameter parameter) {
 		ResolvableType type = parameter.getType();
 		Annotation[] annotations = parameter.getAnnotations();
 		for (Annotation annotation : annotations) {
@@ -126,7 +127,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@Nullable @SuppressWarnings("unchecked")
 	private <T> T getNewDefaultValueInstanceIfPossible(Binder.Context context, ResolvableType type) {
 		Class<T> resolved = (Class<T>) type.resolve();
 		Assert.state(resolved == null || isEmptyDefaultValueAllowed(resolved),
@@ -180,7 +181,7 @@ class ValueObjectBinder implements DataObjectBinder {
 
 		abstract List<ConstructorParameter> getConstructorParameters();
 
-		@SuppressWarnings("unchecked")
+		@Nullable @SuppressWarnings("unchecked")
 		static <T> ValueObject<T> get(Bindable<T> bindable, BindConstructorProvider constructorProvider,
 				Binder.Context context) {
 			Class<T> type = (Class<T>) bindable.getType().resolve();

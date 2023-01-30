@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
+import javax.annotation.Nullable;
 
 /**
  * Provides access to {@link ConfigurationProperties @ConfigurationProperties} bean
@@ -63,7 +64,7 @@ public final class ConfigurationPropertiesBean {
 
 	private final String name;
 
-	private final Object instance;
+	@Nullable private final Object instance;
 
 	private final ConfigurationProperties annotation;
 
@@ -71,12 +72,12 @@ public final class ConfigurationPropertiesBean {
 
 	private final BindMethod bindMethod;
 
-	private ConfigurationPropertiesBean(String name, Object instance, ConfigurationProperties annotation,
+	private ConfigurationPropertiesBean(String name, @Nullable Object instance, ConfigurationProperties annotation,
 			Bindable<?> bindable) {
 		this(name, instance, annotation, bindable, BindMethod.get(bindable));
 	}
 
-	private ConfigurationPropertiesBean(String name, Object instance, ConfigurationProperties annotation,
+	private ConfigurationPropertiesBean(String name, @Nullable Object instance, ConfigurationProperties annotation,
 			Bindable<?> bindTarget, BindMethod bindMethod) {
 		this.name = name;
 		this.instance = instance;
@@ -97,7 +98,7 @@ public final class ConfigurationPropertiesBean {
 	 * Return the actual Spring bean instance.
 	 * @return the bean instance
 	 */
-	public Object getInstance() {
+	@Nullable public Object getInstance() {
 		return this.instance;
 	}
 
@@ -214,18 +215,18 @@ public final class ConfigurationPropertiesBean {
 		return create(beanName, bean, bean.getClass(), factoryMethod);
 	}
 
-	private static Method findFactoryMethod(ApplicationContext applicationContext, String beanName) {
+	@Nullable private static Method findFactoryMethod(ApplicationContext applicationContext, String beanName) {
 		if (applicationContext instanceof ConfigurableApplicationContext configurableContext) {
 			return findFactoryMethod(configurableContext, beanName);
 		}
 		return null;
 	}
 
-	private static Method findFactoryMethod(ConfigurableApplicationContext applicationContext, String beanName) {
+	@Nullable private static Method findFactoryMethod(ConfigurableApplicationContext applicationContext, String beanName) {
 		return findFactoryMethod(applicationContext.getBeanFactory(), beanName);
 	}
 
-	private static Method findFactoryMethod(ConfigurableListableBeanFactory beanFactory, String beanName) {
+	@Nullable private static Method findFactoryMethod(ConfigurableListableBeanFactory beanFactory, String beanName) {
 		if (beanFactory.containsBeanDefinition(beanName)) {
 			BeanDefinition beanDefinition = beanFactory.getMergedBeanDefinition(beanName);
 			if (beanDefinition instanceof RootBeanDefinition rootBeanDefinition) {
@@ -239,7 +240,7 @@ public final class ConfigurationPropertiesBean {
 		return null;
 	}
 
-	private static Method findFactoryMethodUsingReflection(ConfigurableListableBeanFactory beanFactory,
+	@Nullable private static Method findFactoryMethodUsingReflection(ConfigurableListableBeanFactory beanFactory,
 			BeanDefinition beanDefinition) {
 		String factoryMethodName = beanDefinition.getFactoryMethodName();
 		String factoryBeanName = beanDefinition.getFactoryBeanName();
@@ -266,7 +267,7 @@ public final class ConfigurationPropertiesBean {
 		return propertiesBean;
 	}
 
-	private static ConfigurationPropertiesBean create(String name, Object instance, Class<?> type, Method factory) {
+	private static ConfigurationPropertiesBean create(String name, @Nullable Object instance, Class<?> type, @Nullable Method factory) {
 		ConfigurationProperties annotation = findAnnotation(instance, type, factory, ConfigurationProperties.class);
 		if (annotation == null) {
 			return null;
@@ -286,7 +287,7 @@ public final class ConfigurationPropertiesBean {
 		return new ConfigurationPropertiesBean(name, instance, annotation, bindable);
 	}
 
-	private static <A extends Annotation> A findAnnotation(Object instance, Class<?> type, Method factory,
+	@Nullable private static <A extends Annotation> A findAnnotation(@Nullable Object instance, Class<?> type, @Nullable Method factory,
 			Class<A> annotationType) {
 		MergedAnnotation<A> annotation = MergedAnnotation.missing();
 		if (factory != null) {
@@ -302,7 +303,7 @@ public final class ConfigurationPropertiesBean {
 		return annotation.isPresent() ? annotation.synthesize() : null;
 	}
 
-	private static <A extends Annotation> MergedAnnotation<A> findMergedAnnotation(AnnotatedElement element,
+	private static <A extends Annotation> MergedAnnotation<A> findMergedAnnotation(@Nullable AnnotatedElement element,
 			Class<A> annotationType) {
 		return (element != null) ? MergedAnnotations.from(element, SearchStrategy.TYPE_HIERARCHY).get(annotationType)
 				: MergedAnnotation.missing();
@@ -331,7 +332,7 @@ public final class ConfigurationPropertiesBean {
 			return get(BindConstructorProvider.DEFAULT.getBindConstructor(bindable, false));
 		}
 
-		private static BindMethod get(Constructor<?> bindConstructor) {
+		private static BindMethod get(@Nullable Constructor<?> bindConstructor) {
 			return (bindConstructor != null) ? VALUE_OBJECT : JAVA_BEAN;
 		}
 

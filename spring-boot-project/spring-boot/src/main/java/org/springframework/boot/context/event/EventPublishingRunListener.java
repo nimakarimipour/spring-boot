@@ -37,6 +37,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.ErrorHandler;
+import javax.annotation.Nullable;
 
 /**
  * {@link SpringApplicationRunListener} to publish {@link SpringApplicationEvent}s.
@@ -112,7 +113,7 @@ class EventPublishingRunListener implements SpringApplicationRunListener, Ordere
 	}
 
 	@Override
-	public void failed(ConfigurableApplicationContext context, Throwable exception) {
+	public void failed(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 		ApplicationFailedEvent event = new ApplicationFailedEvent(this.application, this.args, context, exception);
 		if (context != null && context.isActive()) {
 			// Listeners have been registered to the application context so we should

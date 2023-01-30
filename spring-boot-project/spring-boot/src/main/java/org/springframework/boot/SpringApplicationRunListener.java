@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import javax.annotation.Nullable;
 
 /**
  * Listener for the {@link SpringApplication} {@code run} method.
@@ -102,7 +103,7 @@ public interface SpringApplicationRunListener {
 	 * @param exception the failure
 	 * @since 2.0.0
 	 */
-	default void failed(ConfigurableApplicationContext context, Throwable exception) {
+	default void failed(@Nullable ConfigurableApplicationContext context, Throwable exception) {
 	}
 
 }

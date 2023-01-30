@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link Origin} for an item loaded from a text resource. Provides access to the original
@@ -60,7 +61,7 @@ public class TextResourceOrigin implements Origin {
 		return this.location;
 	}
 
-	@Override
+	@Nullable @Override
 	public Origin getParent() {
 		return Origin.from(this.resource);
 	}

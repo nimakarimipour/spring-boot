@@ -19,6 +19,7 @@ package org.springframework.boot.web.server;
 import java.net.BindException;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
+import javax.annotation.Nullable;
 
 /**
  * A {@code PortInUseException} is thrown when a web server fails to start due to a port
@@ -45,7 +46,7 @@ public class PortInUseException extends WebServerException {
 	 * @param port the port that was in use
 	 * @param cause the cause of the exception
 	 */
-	public PortInUseException(int port, Throwable cause) {
+	public PortInUseException(int port, @Nullable Throwable cause) {
 		super("Port " + port + " is already in use", cause);
 		this.port = port;
 	}

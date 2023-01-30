@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
+import javax.annotation.Nullable;
 
 /**
  * Converts a Collection to a delimited String.
@@ -53,7 +54,7 @@ final class CollectionToDelimitedStringConverter implements ConditionalGenericCo
 				|| sourceElementType.getType().isAssignableFrom(targetType.getType());
 	}
 
-	@Override
+	@Nullable @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;

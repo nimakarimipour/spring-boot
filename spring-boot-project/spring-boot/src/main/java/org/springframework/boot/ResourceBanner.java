@@ -38,6 +38,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
+import javax.annotation.Nullable;
 
 /**
  * Banner implementation that prints from a source text {@link Resource}.
@@ -102,7 +103,7 @@ public class ResourceBanner implements Banner {
 		return versions;
 	}
 
-	protected String getApplicationVersion(Class<?> sourceClass) {
+	@Nullable protected String getApplicationVersion(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationVersion() : null;
 	}
@@ -111,7 +112,7 @@ public class ResourceBanner implements Banner {
 		return SpringBootVersion.getVersion();
 	}
 
-	private String getVersionString(String version, boolean format) {
+	private String getVersionString(@Nullable String version, boolean format) {
 		if (version == null) {
 			return "";
 		}
@@ -133,7 +134,7 @@ public class ResourceBanner implements Banner {
 		return new PropertySourcesPropertyResolver(sources);
 	}
 
-	protected String getApplicationTitle(Class<?> sourceClass) {
+	@Nullable protected String getApplicationTitle(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationTitle() : null;
 	}

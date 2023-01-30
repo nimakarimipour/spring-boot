@@ -25,6 +25,7 @@ import reactor.netty.DisposableServer;
 
 import org.springframework.boot.web.server.GracefulShutdownCallback;
 import org.springframework.boot.web.server.GracefulShutdownResult;
+import javax.annotation.Nullable;
 
 /**
  * Handles Netty graceful shutdown.
@@ -37,7 +38,7 @@ final class GracefulShutdown {
 
 	private final Supplier<DisposableServer> disposableServer;
 
-	private volatile Thread shutdownThread;
+	@Nullable private volatile Thread shutdownThread;
 
 	private volatile boolean shuttingDown;
 

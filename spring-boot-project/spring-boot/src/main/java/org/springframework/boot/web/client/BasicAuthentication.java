@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Basic authentication details to be applied to {@link HttpHeaders}.
@@ -33,9 +34,9 @@ class BasicAuthentication {
 
 	private final String password;
 
-	private final Charset charset;
+	@Nullable private final Charset charset;
 
-	BasicAuthentication(String username, String password, Charset charset) {
+	BasicAuthentication(String username, String password, @Nullable Charset charset) {
 		Assert.notNull(username, "Username must not be null");
 		Assert.notNull(password, "Password must not be null");
 		this.username = username;

@@ -35,6 +35,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link HttpHandlerFactory} that adds a compression handler.

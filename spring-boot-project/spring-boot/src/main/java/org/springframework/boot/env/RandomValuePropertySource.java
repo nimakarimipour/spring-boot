@@ -33,6 +33,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link PropertySource} that returns a random value for any property that starts with
@@ -79,7 +80,7 @@ public class RandomValuePropertySource extends PropertySource<Random> {
 		super(name, new Random());
 	}
 
-	@Override
+	@Nullable @Override
 	public Object getProperty(String name) {
 		if (!name.startsWith(PREFIX)) {
 			return null;
@@ -109,7 +110,7 @@ public class RandomValuePropertySource extends PropertySource<Random> {
 		return getRandomBytes();
 	}
 
-	private String getRange(String type, String prefix) {
+	@Nullable private String getRange(String type, String prefix) {
 		if (type.startsWith(prefix)) {
 			int startIndex = prefix.length() + 1;
 			if (type.length() > startIndex) {

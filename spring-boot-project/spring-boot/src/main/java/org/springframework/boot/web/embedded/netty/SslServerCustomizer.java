@@ -49,6 +49,7 @@ import org.springframework.boot.web.server.SslConfigurationValidator;
 import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link NettyServerCustomizer} that configures SSL for the given Reactor Netty server
@@ -65,11 +66,11 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 
 	private final Ssl ssl;
 
-	private final Http2 http2;
+	@Nullable private final Http2 http2;
 
 	private final SslStoreProvider sslStoreProvider;
 
-	public SslServerCustomizer(Ssl ssl, Http2 http2, SslStoreProvider sslStoreProvider) {
+	public SslServerCustomizer(@Nullable Ssl ssl, @Nullable Http2 http2, SslStoreProvider sslStoreProvider) {
 		this.ssl = ssl;
 		this.http2 = http2;
 		this.sslStoreProvider = sslStoreProvider;
@@ -148,7 +149,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		}
 	}
 
-	private KeyStore getTrustStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
+	@Nullable private KeyStore getTrustStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getTrustStore();
 		}
@@ -156,19 +157,19 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 				ssl.getTrustStorePassword());
 	}
 
-	private KeyStore loadKeyStore(String type, String provider, String resource, String password) throws Exception {
+	private KeyStore loadKeyStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
+	@Nullable private KeyStore loadTrustStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		if (resource == null) {
 			return null;
 		}
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadStore(String type, String provider, String resource, String password) throws Exception {
+	private KeyStore loadStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		type = (type != null) ? type : "JKS";
 		KeyStore store = (provider != null) ? KeyStore.getInstance(type, provider) : KeyStore.getInstance(type);
 		try {

@@ -25,6 +25,7 @@ import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.boot.info.BuildProperties.BuildPropertiesRuntimeHints;
 import org.springframework.context.annotation.ImportRuntimeHints;
+import javax.annotation.Nullable;
 
 /**
  * Provide build-related information such as group and artifact.
@@ -83,7 +84,7 @@ public class BuildProperties extends InfoProperties {
 	 * @return the build time
 	 * @see #get(String)
 	 */
-	public Instant getTime() {
+	@Nullable public Instant getTime() {
 		return getInstant("time");
 	}
 

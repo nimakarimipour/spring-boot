@@ -46,6 +46,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ConfigDataLocationResolver} for standard locations.
@@ -68,13 +69,13 @@ public class StandardConfigDataLocationResolver
 
 	private static final Pattern EXTENSION_HINT_PATTERN = Pattern.compile("^(.*)\\[(\\.\\w+)\\](?!\\[)$");
 
-	private static final String NO_PROFILE = null;
+	@Nullable private static final String NO_PROFILE = null;
 
 	private final Log logger;
 
 	private final List<PropertySourceLoader> propertySourceLoaders;
 
-	private final String[] configNames;
+	@Nullable private final String[] configNames;
 
 	private final LocationResourceLoader resourceLoader;
 
@@ -93,7 +94,7 @@ public class StandardConfigDataLocationResolver
 		this.resourceLoader = new LocationResourceLoader(resourceLoader);
 	}
 
-	private String[] getConfigNames(Binder binder) {
+	@Nullable private String[] getConfigNames(Binder binder) {
 		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
 		for (String configName : configNames) {
 			validateConfigName(configName);
@@ -187,7 +188,7 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private Set<StandardConfigDataReference> getReferencesForDirectory(ConfigDataLocation configDataLocation,
-			String directory, String profile) {
+			String directory, @Nullable String profile) {
 		Set<StandardConfigDataReference> references = new LinkedHashSet<>();
 		for (String name : this.configNames) {
 			Deque<StandardConfigDataReference> referencesForName = getReferencesForConfigName(name, configDataLocation,
@@ -198,7 +199,7 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private Deque<StandardConfigDataReference> getReferencesForConfigName(String name,
-			ConfigDataLocation configDataLocation, String directory, String profile) {
+			ConfigDataLocation configDataLocation, String directory, @Nullable String profile) {
 		Deque<StandardConfigDataReference> references = new ArrayDeque<>();
 		for (PropertySourceLoader propertySourceLoader : this.propertySourceLoaders) {
 			for (String extension : propertySourceLoader.getFileExtensions()) {
@@ -213,7 +214,7 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private Set<StandardConfigDataReference> getReferencesForFile(ConfigDataLocation configDataLocation, String file,
-			String profile) {
+			@Nullable String profile) {
 		Matcher extensionHintMatcher = EXTENSION_HINT_PATTERN.matcher(file);
 		boolean extensionHintLocation = extensionHintMatcher.matches();
 		if (extensionHintLocation) {
@@ -232,7 +233,7 @@ public class StandardConfigDataLocationResolver
 				+ "If the location is meant to reference a directory, it must end in '/' or File.separator");
 	}
 
-	private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
+	@Nullable private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
 		for (String fileExtension : loader.getFileExtensions()) {
 			if (StringUtils.endsWithIgnoreCase(file, fileExtension)) {
 				return fileExtension;

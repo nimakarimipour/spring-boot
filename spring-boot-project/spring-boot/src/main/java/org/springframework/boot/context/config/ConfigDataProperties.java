@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Bound properties used when working with {@link ConfigData}.
@@ -35,20 +36,20 @@ import org.springframework.util.ObjectUtils;
  */
 class ConfigDataProperties {
 
-	private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
+	@Nullable private static final ConfigurationPropertyName NAME = ConfigurationPropertyName.of("spring.config");
 
 	private static final Bindable<ConfigDataProperties> BINDABLE_PROPERTIES = Bindable.of(ConfigDataProperties.class);
 
 	private final List<ConfigDataLocation> imports;
 
-	private final Activate activate;
+	@Nullable private final Activate activate;
 
 	/**
 	 * Create a new {@link ConfigDataProperties} instance.
 	 * @param imports the imports requested
 	 * @param activate the activate properties
 	 */
-	ConfigDataProperties(@Name("import") List<ConfigDataLocation> imports, Activate activate) {
+	ConfigDataProperties(@Nullable @Name("import") List<ConfigDataLocation> imports, @Nullable Activate activate) {
 		this.imports = (imports != null) ? imports : Collections.emptyList();
 		this.activate = activate;
 	}
@@ -67,7 +68,7 @@ class ConfigDataProperties {
 	 * @param activationContext the activation context
 	 * @return {@code true} if the config data property source is active
 	 */
-	boolean isActive(ConfigDataActivationContext activationContext) {
+	boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 		return this.activate == null || this.activate.isActive(activationContext);
 	}
 
@@ -85,7 +86,7 @@ class ConfigDataProperties {
 	 * @param binder the binder used to bind the properties
 	 * @return a {@link ConfigDataProperties} instance or {@code null}
 	 */
-	static ConfigDataProperties get(Binder binder) {
+	@Nullable static ConfigDataProperties get(Binder binder) {
 		return binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler()).orElse(null);
 	}
 
@@ -114,7 +115,7 @@ class ConfigDataProperties {
 		 * @param activationContext the activation context
 		 * @return {@code true} if the config data property source is active
 		 */
-		boolean isActive(ConfigDataActivationContext activationContext) {
+		boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 			if (activationContext == null) {
 				return false;
 			}
@@ -124,11 +125,11 @@ class ConfigDataProperties {
 			return activate;
 		}
 
-		private boolean isActive(CloudPlatform cloudPlatform) {
+		private boolean isActive(@Nullable CloudPlatform cloudPlatform) {
 			return this.onCloudPlatform == null || this.onCloudPlatform == cloudPlatform;
 		}
 
-		private boolean isActive(Profiles profiles) {
+		private boolean isActive(@Nullable Profiles profiles) {
 			return ObjectUtils.isEmpty(this.onProfile)
 					|| (profiles != null && matchesActiveProfiles(profiles::isAccepted));
 		}

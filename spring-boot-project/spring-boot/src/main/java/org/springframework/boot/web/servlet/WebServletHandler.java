@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Handler for {@link WebServlet @WebServlet}-annotated classes.
@@ -41,7 +42,7 @@ class WebServletHandler extends ServletComponentHandler {
 
 	@Override
 	public void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry) {
+			@Nullable BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(ServletRegistrationBean.class);
 		builder.addPropertyValue("asyncSupported", attributes.get("asyncSupported"));
 		builder.addPropertyValue("initParameters", extractInitParameters(attributes));
@@ -54,12 +55,12 @@ class WebServletHandler extends ServletComponentHandler {
 		registry.registerBeanDefinition(name, builder.getBeanDefinition());
 	}
 
-	private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
+	@Nullable private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
 		return (String) (StringUtils.hasText((String) attributes.get("name")) ? attributes.get("name")
 				: beanDefinition.getBeanClassName());
 	}
 
-	private MultipartConfigElement determineMultipartConfig(AnnotatedBeanDefinition beanDefinition) {
+	@Nullable private MultipartConfigElement determineMultipartConfig(AnnotatedBeanDefinition beanDefinition) {
 		Map<String, Object> attributes = beanDefinition.getMetadata()
 				.getAnnotationAttributes(MultipartConfig.class.getName());
 		if (attributes == null) {

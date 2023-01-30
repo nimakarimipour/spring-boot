@@ -27,6 +27,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link ConfigurationPropertySource} backed by a non-enumerable Spring
@@ -73,8 +74,8 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 		this.mappers = mappers;
 	}
 
-	@Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	@Nullable @Override
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
 		}
@@ -95,7 +96,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 	}
 
 	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+	public ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		PropertySource<?> source = getPropertySource();
 		Object underlyingSource = source.getSource();
 		if (underlyingSource instanceof Random) {
@@ -110,7 +111,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 	}
 
 	private static ConfigurationPropertyState containsDescendantOfForRandom(String prefix,
-			ConfigurationPropertyName name) {
+			@Nullable ConfigurationPropertyName name) {
 		if (name.getNumberOfElements() > 1 && name.getElement(0, Form.DASHED).equals(prefix)) {
 			return ConfigurationPropertyState.PRESENT;
 		}

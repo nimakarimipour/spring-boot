@@ -33,6 +33,7 @@ import org.springframework.boot.origin.TextResourceOrigin;
 import org.springframework.boot.origin.TextResourceOrigin.Location;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Class to load {@code .properties} files into a map of {@code String} -&gt;
@@ -147,7 +148,7 @@ class OriginTrackedPropertiesLoader {
 		return buffer.toString();
 	}
 
-	private OriginTrackedValue loadValue(StringBuilder buffer, CharacterReader reader, boolean splitLists)
+	@Nullable private OriginTrackedValue loadValue(StringBuilder buffer, CharacterReader reader, boolean splitLists)
 			throws IOException {
 		buffer.setLength(0);
 		while (reader.isWhiteSpace() && !reader.isEndOfLine()) {
@@ -328,7 +329,7 @@ class OriginTrackedPropertiesLoader {
 
 		private final Map<String, OriginTrackedValue> values = new LinkedHashMap<>();
 
-		void put(String key, OriginTrackedValue value) {
+		void put(String key, @Nullable OriginTrackedValue value) {
 			if (!key.isEmpty()) {
 				this.values.put(key, value);
 			}

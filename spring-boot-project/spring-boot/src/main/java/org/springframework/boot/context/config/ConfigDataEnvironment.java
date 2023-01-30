@@ -44,6 +44,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Wrapper around a {@link ConfigurableEnvironment} that can be used to import and apply
@@ -108,7 +109,7 @@ class ConfigDataEnvironment {
 
 	private final Log logger;
 
-	private final ConfigDataNotFoundAction notFoundAction;
+	@Nullable private final ConfigDataNotFoundAction notFoundAction;
 
 	private final ConfigurableBootstrapContext bootstrapContext;
 
@@ -137,7 +138,7 @@ class ConfigDataEnvironment {
 	 */
 	ConfigDataEnvironment(DeferredLogFactory logFactory, ConfigurableBootstrapContext bootstrapContext,
 			ConfigurableEnvironment environment, ResourceLoader resourceLoader, Collection<String> additionalProfiles,
-			ConfigDataEnvironmentUpdateListener environmentUpdateListener) {
+			@Nullable ConfigDataEnvironmentUpdateListener environmentUpdateListener) {
 		Binder binder = Binder.get(environment);
 		this.logFactory = logFactory;
 		this.logger = logFactory.getLog(getClass());
@@ -202,12 +203,12 @@ class ConfigDataEnvironment {
 		return initialContributors;
 	}
 
-	private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
+	@Nullable private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
 		return binder.bind(propertyName, CONFIG_DATA_LOCATION_ARRAY).orElse(other);
 	}
 
 	private void addInitialImportContributors(List<ConfigDataEnvironmentContributor> initialContributors,
-			ConfigDataLocation[] locations) {
+			@Nullable ConfigDataLocation[] locations) {
 		for (int i = locations.length - 1; i >= 0; i--) {
 			initialContributors.add(createInitialImportContributor(locations[i]));
 		}
@@ -316,7 +317,7 @@ class ConfigDataEnvironment {
 	}
 
 	private void registerBootstrapBinder(ConfigDataEnvironmentContributors contributors,
-			ConfigDataActivationContext activationContext, BinderOption... binderOptions) {
+			@Nullable ConfigDataActivationContext activationContext, BinderOption... binderOptions) {
 		this.bootstrapContext.register(Binder.class, InstanceSupplier
 				.from(() -> contributors.getBinder(activationContext, binderOptions)).withScope(Scope.PROTOTYPE));
 	}

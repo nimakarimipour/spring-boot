@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import javax.annotation.Nullable;
 
 /**
  * Class used by {@link SpringApplication} to print the application banner.
@@ -42,14 +43,14 @@ class SpringApplicationBannerPrinter {
 
 	private final ResourceLoader resourceLoader;
 
-	private final Banner fallbackBanner;
+	@Nullable private final Banner fallbackBanner;
 
-	SpringApplicationBannerPrinter(ResourceLoader resourceLoader, Banner fallbackBanner) {
+	SpringApplicationBannerPrinter(ResourceLoader resourceLoader, @Nullable Banner fallbackBanner) {
 		this.resourceLoader = resourceLoader;
 		this.fallbackBanner = fallbackBanner;
 	}
 
-	Banner print(Environment environment, Class<?> sourceClass, Log logger) {
+	Banner print(Environment environment, @Nullable Class<?> sourceClass, Log logger) {
 		Banner banner = getBanner(environment);
 		try {
 			logger.info(createStringFromBanner(banner, environment, sourceClass));
@@ -60,7 +61,7 @@ class SpringApplicationBannerPrinter {
 		return new PrintedBanner(banner, sourceClass);
 	}
 
-	Banner print(Environment environment, Class<?> sourceClass, PrintStream out) {
+	Banner print(Environment environment, @Nullable Class<?> sourceClass, PrintStream out) {
 		Banner banner = getBanner(environment);
 		banner.printBanner(environment, sourceClass, out);
 		return new PrintedBanner(banner, sourceClass);
@@ -77,7 +78,7 @@ class SpringApplicationBannerPrinter {
 		return DEFAULT_BANNER;
 	}
 
-	private Banner getTextBanner(Environment environment) {
+	@Nullable private Banner getTextBanner(Environment environment) {
 		String location = environment.getProperty(BANNER_LOCATION_PROPERTY, DEFAULT_BANNER_LOCATION);
 		Resource resource = this.resourceLoader.getResource(location);
 		try {
@@ -91,7 +92,7 @@ class SpringApplicationBannerPrinter {
 		return null;
 	}
 
-	private String createStringFromBanner(Banner banner, Environment environment, Class<?> mainApplicationClass)
+	private String createStringFromBanner(Banner banner, Environment environment, @Nullable Class<?> mainApplicationClass)
 			throws UnsupportedEncodingException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		banner.printBanner(environment, mainApplicationClass, new PrintStream(baos));
@@ -107,15 +108,15 @@ class SpringApplicationBannerPrinter {
 
 		private final Banner banner;
 
-		private final Class<?> sourceClass;
+		@Nullable private final Class<?> sourceClass;
 
-		PrintedBanner(Banner banner, Class<?> sourceClass) {
+		PrintedBanner(Banner banner, @Nullable Class<?> sourceClass) {
 			this.banner = banner;
 			this.sourceClass = sourceClass;
 		}
 
 		@Override
-		public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
+		public void printBanner(Environment environment, @Nullable Class<?> sourceClass, PrintStream out) {
 			sourceClass = (sourceClass != null) ? sourceClass : this.sourceClass;
 			this.banner.printBanner(environment, sourceClass, out);
 		}

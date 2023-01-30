@@ -36,6 +36,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.ConfigurationPropertyState;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
+import javax.annotation.Nullable;
 
 /**
  * {@link DataObjectBinder} for mutable Java Beans.
@@ -47,8 +48,8 @@ class JavaBeanBinder implements DataObjectBinder {
 
 	static final JavaBeanBinder INSTANCE = new JavaBeanBinder();
 
-	@Override
-	public <T> T bind(ConfigurationPropertyName name, Bindable<T> target, Context context,
+	@Nullable @Override
+	public <T> T bind(@Nullable ConfigurationPropertyName name, Bindable<T> target, Context context,
 			DataObjectPropertyBinder propertyBinder) {
 		boolean hasKnownBindableProperties = target.getValue() != null && hasKnownBindableProperties(name, context);
 		Bean<T> bean = Bean.get(target, hasKnownBindableProperties);
@@ -60,14 +61,14 @@ class JavaBeanBinder implements DataObjectBinder {
 		return (bound ? beanSupplier.get() : null);
 	}
 
-	@Override
+	@Nullable @Override
 	@SuppressWarnings("unchecked")
 	public <T> T create(Bindable<T> target, Context context) {
 		Class<T> type = (Class<T>) target.getType().resolve();
 		return (type != null) ? BeanUtils.instantiateClass(type) : null;
 	}
 
-	private boolean hasKnownBindableProperties(ConfigurationPropertyName name, Context context) {
+	private boolean hasKnownBindableProperties(@Nullable ConfigurationPropertyName name, Context context) {
 		for (ConfigurationPropertySource source : context.getSources()) {
 			if (source.containsDescendantOf(name) == ConfigurationPropertyState.PRESENT) {
 				return true;
@@ -113,7 +114,7 @@ class JavaBeanBinder implements DataObjectBinder {
 	 */
 	static class Bean<T> {
 
-		private static Bean<?> cached;
+		@Nullable private static Bean<?> cached;
 
 		private final ResolvableType type;
 
@@ -208,7 +209,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			});
 		}
 
-		@SuppressWarnings("unchecked")
+		@Nullable @SuppressWarnings("unchecked")
 		static <T> Bean<T> get(Bindable<T> bindable, boolean canCallGetValue) {
 			ResolvableType type = bindable.getType();
 			Class<?> resolvedType = type.resolve(Object.class);
@@ -255,7 +256,7 @@ class JavaBeanBinder implements DataObjectBinder {
 
 		private final Supplier<T> factory;
 
-		private T instance;
+		@Nullable private T instance;
 
 		BeanSupplier(Supplier<T> factory) {
 			this.factory = factory;
@@ -280,11 +281,11 @@ class JavaBeanBinder implements DataObjectBinder {
 
 		private final ResolvableType declaringClassType;
 
-		private Method getter;
+		@Nullable private Method getter;
 
-		private Method setter;
+		@Nullable private Method setter;
 
-		private Field field;
+		@Nullable private Field field;
 
 		BeanProperty(String name, ResolvableType declaringClassType) {
 			this.name = DataObjectPropertyName.toDashedForm(name);
@@ -330,7 +331,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			return ResolvableType.forMethodParameter(methodParameter, this.declaringClassType);
 		}
 
-		Annotation[] getAnnotations() {
+		@Nullable Annotation[] getAnnotations() {
 			try {
 				return (this.field != null) ? this.field.getDeclaredAnnotations() : null;
 			}
@@ -339,7 +340,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			}
 		}
 
-		Supplier<Object> getValue(Supplier<?> instance) {
+		@Nullable Supplier<Object> getValue(Supplier<?> instance) {
 			if (this.getter == null) {
 				return null;
 			}

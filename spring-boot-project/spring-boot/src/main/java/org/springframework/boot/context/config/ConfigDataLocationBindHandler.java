@@ -28,6 +28,7 @@ import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.origin.Origin;
+import javax.annotation.Nullable;
 
 /**
  * {@link BindHandler} to set the {@link Origin} of bound {@link ConfigDataLocation}
@@ -40,7 +41,7 @@ class ConfigDataLocationBindHandler extends AbstractBindHandler {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	public Object onSuccess(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
 		if (result instanceof ConfigDataLocation location) {
 			return withOrigin(context, location);
 		}

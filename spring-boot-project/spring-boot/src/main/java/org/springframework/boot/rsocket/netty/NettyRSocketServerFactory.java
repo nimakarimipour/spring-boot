@@ -45,6 +45,7 @@ import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.unit.DataSize;
+import javax.annotation.Nullable;
 
 /**
  * {@link RSocketServerFactory} that can be used to create {@link RSocketServer}s backed
@@ -59,21 +60,21 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 
 	private int port = 9898;
 
-	private DataSize fragmentSize;
+	@Nullable private DataSize fragmentSize;
 
-	private InetAddress address;
+	@Nullable private InetAddress address;
 
 	private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
 
-	private ReactorResourceFactory resourceFactory;
+	@Nullable private ReactorResourceFactory resourceFactory;
 
-	private Duration lifecycleTimeout;
+	@Nullable private Duration lifecycleTimeout;
 
 	private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
 
-	private Ssl ssl;
+	@Nullable private Ssl ssl;
 
-	private SslStoreProvider sslStoreProvider;
+	@Nullable private SslStoreProvider sslStoreProvider;
 
 	@Override
 	public void setPort(int port) {
@@ -198,7 +199,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 		return TcpServerTransport.create(tcpServer.bindAddress(this::getListenAddress));
 	}
 
-	private SslStoreProvider getOrCreateSslStoreProvider() {
+	@Nullable private SslStoreProvider getOrCreateSslStoreProvider() {
 		if (this.sslStoreProvider != null) {
 			return this.sslStoreProvider;
 		}
@@ -216,7 +217,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 	private static final class TcpSslServerCustomizer
 			extends org.springframework.boot.web.embedded.netty.SslServerCustomizer {
 
-		private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+		private TcpSslServerCustomizer(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 			super(ssl, null, sslStoreProvider);
 		}
 

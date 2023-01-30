@@ -18,6 +18,7 @@ package org.springframework.boot.context.config;
 
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * A reference expanded from the original {@link ConfigDataLocation} that can ultimately
@@ -31,9 +32,9 @@ class StandardConfigDataReference {
 
 	private final String resourceLocation;
 
-	private final String directory;
+	@Nullable private final String directory;
 
-	private final String profile;
+	@Nullable private final String profile;
 
 	private final PropertySourceLoader propertySourceLoader;
 
@@ -48,8 +49,8 @@ class StandardConfigDataReference {
 	 * @param propertySourceLoader the property source loader that should be used for this
 	 * reference
 	 */
-	StandardConfigDataReference(ConfigDataLocation configDataLocation, String directory, String root, String profile,
-			String extension, PropertySourceLoader propertySourceLoader) {
+	StandardConfigDataReference(ConfigDataLocation configDataLocation, @Nullable String directory, String root, @Nullable String profile,
+			@Nullable String extension, PropertySourceLoader propertySourceLoader) {
 		this.configDataLocation = configDataLocation;
 		String profileSuffix = (StringUtils.hasText(profile)) ? "-" + profile : "";
 		this.resourceLocation = root + profileSuffix + ((extension != null) ? "." + extension : "");
@@ -70,11 +71,11 @@ class StandardConfigDataReference {
 		return !this.configDataLocation.isOptional() && this.directory != null;
 	}
 
-	String getDirectory() {
+	@Nullable String getDirectory() {
 		return this.directory;
 	}
 
-	String getProfile() {
+	@Nullable String getProfile() {
 		return this.profile;
 	}
 

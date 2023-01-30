@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import javax.annotation.Nullable;
 
 /**
  * Simple cache that uses a {@link SoftReference} to cache a value for as long as
@@ -35,11 +36,11 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 
 	private final boolean neverExpire;
 
-	private volatile Duration timeToLive;
+	@Nullable private volatile Duration timeToLive;
 
 	private volatile SoftReference<T> value = new SoftReference<>(null);
 
-	private volatile Instant lastAccessed = now();
+	@Nullable private volatile Instant lastAccessed = now();
 
 	SoftReferenceConfigurationPropertyCache(boolean neverExpire) {
 		this.neverExpire = neverExpire;
@@ -103,7 +104,7 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 		return Instant.now();
 	}
 
-	protected T getValue() {
+	@Nullable protected T getValue() {
 		return this.value.get();
 	}
 

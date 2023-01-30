@@ -22,6 +22,7 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures compression support on the given
@@ -31,9 +32,9 @@ import org.springframework.util.StringUtils;
  */
 class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 
-	private final Compression compression;
+	@Nullable private final Compression compression;
 
-	CompressionConnectorCustomizer(Compression compression) {
+	CompressionConnectorCustomizer(@Nullable Compression compression) {
 		this.compression = compression;
 	}
 
@@ -57,11 +58,11 @@ class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 		}
 	}
 
-	private int getMinResponseSize(Compression compression) {
+	private int getMinResponseSize(@Nullable Compression compression) {
 		return (int) compression.getMinResponseSize().toBytes();
 	}
 
-	private String getMimeTypes(Compression compression) {
+	private String getMimeTypes(@Nullable Compression compression) {
 		return StringUtils.arrayToCommaDelimitedString(compression.getMimeTypes());
 	}
 

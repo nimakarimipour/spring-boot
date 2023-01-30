@@ -23,6 +23,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
+import javax.annotation.Nullable;
 
 /**
  * {@link ApplicationContextInitializer} for setting the parent context. Also publishes
@@ -37,9 +38,9 @@ public class ParentContextApplicationContextInitializer
 
 	private int order = Ordered.HIGHEST_PRECEDENCE;
 
-	private final ApplicationContext parent;
+	@Nullable private final ApplicationContext parent;
 
-	public ParentContextApplicationContextInitializer(ApplicationContext parent) {
+	public ParentContextApplicationContextInitializer(@Nullable ApplicationContext parent) {
 		this.parent = parent;
 	}
 

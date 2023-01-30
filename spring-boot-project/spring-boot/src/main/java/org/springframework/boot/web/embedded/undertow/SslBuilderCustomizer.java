@@ -45,6 +45,7 @@ import org.springframework.boot.web.server.SslConfigurationValidator;
 import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link UndertowBuilderCustomizer} that configures SSL on the given builder instance.
@@ -56,13 +57,13 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 
 	private final int port;
 
-	private final InetAddress address;
+	@Nullable private final InetAddress address;
 
 	private final Ssl ssl;
 
-	private final SslStoreProvider sslStoreProvider;
+	@Nullable private final SslStoreProvider sslStoreProvider;
 
-	SslBuilderCustomizer(int port, InetAddress address, Ssl ssl, SslStoreProvider sslStoreProvider) {
+	SslBuilderCustomizer(int port, @Nullable InetAddress address, Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		this.port = port;
 		this.address = address;
 		this.ssl = ssl;
@@ -106,7 +107,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		return SslClientAuthMode.NOT_REQUESTED;
 	}
 
-	private KeyManager[] getKeyManagers(Ssl ssl, SslStoreProvider sslStoreProvider) {
+	private KeyManager[] getKeyManagers(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		try {
 			KeyStore keyStore = getKeyStore(ssl, sslStoreProvider);
 			SslConfigurationValidator.validateKeyAlias(keyStore, ssl.getKeyAlias());
@@ -137,7 +138,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		return keyManagers;
 	}
 
-	private KeyStore getKeyStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
+	private KeyStore getKeyStore(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getKeyStore();
 		}
@@ -145,7 +146,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 				ssl.getKeyStorePassword());
 	}
 
-	private TrustManager[] getTrustManagers(Ssl ssl, SslStoreProvider sslStoreProvider) {
+	private TrustManager[] getTrustManagers(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		try {
 			KeyStore store = getTrustStore(ssl, sslStoreProvider);
 			TrustManagerFactory trustManagerFactory = TrustManagerFactory
@@ -158,7 +159,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		}
 	}
 
-	private KeyStore getTrustStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
+	@Nullable private KeyStore getTrustStore(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getTrustStore();
 		}
@@ -166,18 +167,18 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 				ssl.getTrustStorePassword());
 	}
 
-	private KeyStore loadKeyStore(String type, String provider, String resource, String password) throws Exception {
+	private KeyStore loadKeyStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
+	@Nullable private KeyStore loadTrustStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		if (resource == null) {
 			return null;
 		}
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadStore(String type, String provider, String resource, String password) throws Exception {
+	private KeyStore loadStore(@Nullable String type, @Nullable String provider, @Nullable String resource, @Nullable String password) throws Exception {
 		type = (type != null) ? type : "JKS";
 		KeyStore store = (provider != null) ? KeyStore.getInstance(type, provider) : KeyStore.getInstance(type);
 		try {
@@ -199,9 +200,9 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 
 		private final X509ExtendedKeyManager keyManager;
 
-		private final String alias;
+		@Nullable private final String alias;
 
-		ConfigurableAliasKeyManager(X509ExtendedKeyManager keyManager, String alias) {
+		ConfigurableAliasKeyManager(X509ExtendedKeyManager keyManager, @Nullable String alias) {
 			this.keyManager = keyManager;
 			this.alias = alias;
 		}

@@ -25,6 +25,7 @@ import io.undertow.servlet.api.DeploymentManager;
 import jakarta.servlet.ServletException;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link HttpHandlerFactory} that for a {@link DeploymentManager}.
@@ -41,7 +42,7 @@ class DeploymentManagerHttpHandlerFactory implements HttpHandlerFactory {
 	}
 
 	@Override
-	public HttpHandler getHandler(HttpHandler next) {
+	public HttpHandler getHandler(@Nullable HttpHandler next) {
 		Assert.state(next == null, "DeploymentManagerHttpHandlerFactory must be first");
 		return new DeploymentManagerHandler(this.deploymentManager);
 	}

@@ -22,6 +22,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link ConfigDataResource} backed by a {@link Resource}.
@@ -79,7 +80,7 @@ public class StandardConfigDataResource extends ConfigDataResource {
 	 * @return the profile or {@code null}
 	 * @since 2.4.6
 	 */
-	public String getProfile() {
+	@Nullable public String getProfile() {
 		return this.reference.getProfile();
 	}
 

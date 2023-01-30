@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
+import javax.annotation.Nullable;
 
 /**
  * Callback interface that can be used to handle additional logic during element
@@ -43,7 +44,7 @@ public interface BindHandler {
 	 * @param context the bind context
 	 * @return the actual item that should be used for binding (may be {@code null})
 	 */
-	default <T> Bindable<T> onStart(ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
+	default <T> Bindable<T> onStart(@Nullable ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
 		return target;
 	}
 
@@ -56,7 +57,7 @@ public interface BindHandler {
 	 * @param result the bound result (never {@code null})
 	 * @return the actual result that should be used (may be {@code null})
 	 */
-	default Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	default Object onSuccess(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
 		return result;
 	}
 
@@ -71,7 +72,7 @@ public interface BindHandler {
 	 * @return the actual result that should be used (must not be {@code null})
 	 * @since 2.2.2
 	 */
-	default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	@Nullable default Object onCreate(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result) {
 		return result;
 	}
 
@@ -86,7 +87,7 @@ public interface BindHandler {
 	 * @return the actual result that should be used (may be {@code null}).
 	 * @throws Exception if the binding isn't valid
 	 */
-	default Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
+	@Nullable default Object onFailure(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		throw error;
 	}
@@ -101,7 +102,7 @@ public interface BindHandler {
 	 * @param result the bound result (may be {@code null})
 	 * @throws Exception if the binding isn't valid
 	 */
-	default void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result)
+	default void onFinish(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result)
 			throws Exception {
 	}
 

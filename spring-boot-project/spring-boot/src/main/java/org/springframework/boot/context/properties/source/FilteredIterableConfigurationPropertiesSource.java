@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.source;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 /**
  * A filtered {@link IterableConfigurationPropertySource}.
@@ -44,7 +45,7 @@ class FilteredIterableConfigurationPropertiesSource extends FilteredConfiguratio
 	}
 
 	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+	public ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		return ConfigurationPropertyState.search(this, name::isAncestorOf);
 	}
 

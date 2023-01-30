@@ -46,6 +46,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link PropertySource} backed by a directory tree that contains files for each value.
@@ -114,13 +115,13 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 		return this.names.clone();
 	}
 
-	@Override
+	@Nullable @Override
 	public Value getProperty(String name) {
 		PropertyFile propertyFile = this.propertyFiles.get(name);
 		return (propertyFile != null) ? propertyFile.getContent() : null;
 	}
 
-	@Override
+	@Nullable @Override
 	public Origin getOrigin(String name) {
 		PropertyFile propertyFile = this.propertyFiles.get(name);
 		return (propertyFile != null) ? propertyFile.getOrigin() : null;
@@ -177,7 +178,7 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 
 		private final Origin origin;
 
-		private final PropertyFileContent cachedContent;
+		@Nullable private final PropertyFileContent cachedContent;
 
 		private final boolean autoTrimTrailingNewLine;
 
@@ -265,7 +266,7 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 
 		private final boolean autoTrimTrailingNewLine;
 
-		private volatile byte[] content;
+		@Nullable private volatile byte[] content;
 
 		private PropertyFileContent(Path path, Resource resource, Origin origin, boolean cacheContent,
 				boolean autoTrimTrailingNewLine) {

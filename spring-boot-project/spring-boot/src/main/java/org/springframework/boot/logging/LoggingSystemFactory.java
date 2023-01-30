@@ -17,6 +17,7 @@
 package org.springframework.boot.logging;
 
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import javax.annotation.Nullable;
 
 /**
  * Factory class used by {@link LoggingSystem#get(ClassLoader)} to find an actual
@@ -33,7 +34,7 @@ public interface LoggingSystemFactory {
 	 * @param classLoader the class loader to use
 	 * @return a logging system
 	 */
-	LoggingSystem getLoggingSystem(ClassLoader classLoader);
+	@Nullable LoggingSystem getLoggingSystem(ClassLoader classLoader);
 
 	/**
 	 * Return a {@link LoggingSystemFactory} backed by {@code spring.factories}.

@@ -42,6 +42,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link LoggingSystem} for {@link Logger java.util.logging}.
@@ -84,7 +85,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 	}
 
 	@Override
-	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
+	protected void loadDefaults(LoggingInitializationContext initializationContext, @Nullable LogFile logFile) {
 		if (logFile != null) {
 			loadConfiguration(getPackagedConfigFile("logging-file.properties"), logFile);
 		}
@@ -95,11 +96,11 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+			@Nullable LogFile logFile) {
 		loadConfiguration(location, logFile);
 	}
 
-	protected void loadConfiguration(String location, LogFile logFile) {
+	protected void loadConfiguration(String location, @Nullable LogFile logFile) {
 		Assert.notNull(location, "Location must not be null");
 		try {
 			String configuration = FileCopyUtils
@@ -120,7 +121,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 	}
 
 	@Override
-	public void setLogLevel(String loggerName, LogLevel level) {
+	public void setLogLevel(@Nullable String loggerName, LogLevel level) {
 		if (loggerName == null || ROOT_LOGGER_NAME.equals(loggerName)) {
 			loggerName = "";
 		}
@@ -142,7 +143,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		return Collections.unmodifiableList(result);
 	}
 
-	@Override
+	@Nullable @Override
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		Logger logger = Logger.getLogger(loggerName);
 		if (logger == null) {
@@ -181,7 +182,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		private static final boolean PRESENT = ClassUtils.isPresent("java.util.logging.LogManager",
 				Factory.class.getClassLoader());
 
-		@Override
+		@Nullable @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new JavaLoggingSystem(classLoader);

@@ -32,6 +32,7 @@ import org.springframework.boot.context.properties.source.IterableConfigurationP
 import org.springframework.core.ResolvableType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import javax.annotation.Nullable;
 
 /**
  * Base class for {@link AggregateBinder AggregateBinders} that read a sequential run of
@@ -50,7 +51,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	}
 
 	@Override
-	protected boolean isAllowRecursiveBinding(ConfigurationPropertySource source) {
+	protected boolean isAllowRecursiveBinding(@Nullable ConfigurationPropertySource source) {
 		return source == null || source instanceof IterableConfigurationPropertySource;
 	}
 

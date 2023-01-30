@@ -32,6 +32,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import javax.annotation.Nullable;
 
 /**
  * Utility that can be used to invoke lambdas in a safe way. Primarily designed to help
@@ -45,7 +46,7 @@ public final class LambdaSafe {
 
 	private static final Method CLASS_GET_MODULE;
 
-	private static final Method MODULE_GET_NAME;
+	@Nullable private static final Method MODULE_GET_NAME;
 
 	static {
 		CLASS_GET_MODULE = ReflectionUtils.findMethod(Class.class, "getModule");
@@ -365,9 +366,9 @@ public final class LambdaSafe {
 
 		private static final InvocationResult<?> NONE = new InvocationResult<>(null);
 
-		private final R value;
+		@Nullable private final R value;
 
-		private InvocationResult(R value) {
+		private InvocationResult(@Nullable R value) {
 			this.value = value;
 		}
 
@@ -384,7 +385,7 @@ public final class LambdaSafe {
 		 * suitable.
 		 * @return the result of the invocation or {@code null}
 		 */
-		public R get() {
+		@Nullable public R get() {
 			return this.value;
 		}
 
@@ -394,7 +395,7 @@ public final class LambdaSafe {
 		 * @param fallback the fallback to use when there is no result
 		 * @return the result of the invocation or the fallback
 		 */
-		public R get(R fallback) {
+		@Nullable public R get(R fallback) {
 			return (this != NONE) ? this.value : fallback;
 		}
 

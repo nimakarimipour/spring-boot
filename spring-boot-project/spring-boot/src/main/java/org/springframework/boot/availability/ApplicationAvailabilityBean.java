@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Bean that provides an {@link ApplicationAvailability} implementation by listening for
@@ -58,13 +59,13 @@ public class ApplicationAvailabilityBean
 		return (state != null) ? state : defaultState;
 	}
 
-	@Override
+	@Nullable @Override
 	public <S extends AvailabilityState> S getState(Class<S> stateType) {
 		AvailabilityChangeEvent<S> event = getLastChangeEvent(stateType);
 		return (event != null) ? event.getState() : null;
 	}
 
-	@Override
+	@Nullable @Override
 	@SuppressWarnings("unchecked")
 	public <S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType) {
 		return (AvailabilityChangeEvent<S>) this.events.get(stateType);

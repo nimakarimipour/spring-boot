@@ -22,6 +22,7 @@ import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.core.env.Environment;
+import javax.annotation.Nullable;
 
 /**
  * Default Banner implementation which writes the 'Spring' banner.

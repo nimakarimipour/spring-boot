@@ -25,6 +25,7 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Strategy interface that can be used with {@link ConfigurableServletWebServerFactory}
@@ -49,7 +50,7 @@ public interface CookieSameSiteSupplier {
 	 * @return the {@link SameSite} value to use or {@code null} if the next supplier
 	 * should be checked
 	 */
-	SameSite getSameSite(Cookie cookie);
+	@Nullable SameSite getSameSite(Cookie cookie);
 
 	/**
 	 * Limit this supplier so that it's only called if the Cookie has the given name.

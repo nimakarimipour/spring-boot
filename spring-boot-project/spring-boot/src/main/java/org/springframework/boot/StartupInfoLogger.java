@@ -32,6 +32,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Logs application information on startup.
@@ -175,7 +176,7 @@ class StartupInfoLogger {
 		}
 	}
 
-	private Object callIfPossible(Callable<Object> call) {
+	@Nullable private Object callIfPossible(Callable<Object> call) {
 		try {
 			return call.call();
 		}

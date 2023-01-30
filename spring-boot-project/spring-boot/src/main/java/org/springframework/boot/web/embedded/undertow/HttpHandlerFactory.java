@@ -20,6 +20,7 @@ import java.io.Closeable;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.GracefulShutdownHandler;
+import javax.annotation.Nullable;
 
 /**
  * Factory used by {@link UndertowServletWebServer} to add {@link HttpHandler
@@ -41,6 +42,6 @@ public interface HttpHandlerFactory {
 	 * @param next the next handler in the chain
 	 * @return the new HTTP handler instance
 	 */
-	HttpHandler getHandler(HttpHandler next);
+	@Nullable HttpHandler getHandler(@Nullable HttpHandler next);
 
 }

@@ -84,6 +84,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ServletWebServerFactory} that can be used to create a {@link JettyWebServer}.
@@ -124,9 +125,9 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 
 	private Set<JettyServerCustomizer> jettyServerCustomizers = new LinkedHashSet<>();
 
-	private ResourceLoader resourceLoader;
+	@Nullable private ResourceLoader resourceLoader;
 
-	private ThreadPool threadPool;
+	@Nullable private ThreadPool threadPool;
 
 	/**
 	 * Create a new {@link JettyServletWebServerFactory} instance.
@@ -281,7 +282,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 				.forEach((locale, charset) -> context.addLocaleEncoding(locale.toString(), charset.toString()));
 	}
 
-	private File getTempDirectory() {
+	@Nullable private File getTempDirectory() {
 		String temp = System.getProperty("java.io.tmpdir");
 		return (temp != null) ? new File(temp) : null;
 	}
@@ -516,7 +517,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 	 * Returns a Jetty {@link ThreadPool} that should be used by the {@link Server}.
 	 * @return a Jetty {@link ThreadPool} or {@code null}
 	 */
-	public ThreadPool getThreadPool() {
+	@Nullable public ThreadPool getThreadPool() {
 		return this.threadPool;
 	}
 
@@ -551,7 +552,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 			this.delegate = delegate;
 		}
 
-		@Override
+		@Nullable @Override
 		public Resource addPath(String path) throws IOException {
 			if (path.startsWith("/org/springframework/boot")) {
 				return null;
@@ -711,7 +712,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 				};
 			}
 
-			private SameSite getSameSite(Cookie cookie) {
+			@Nullable private SameSite getSameSite(Cookie cookie) {
 				for (CookieSameSiteSupplier supplier : SuppliedSameSiteCookieHandlerWrapper.this.suppliers) {
 					SameSite sameSite = supplier.getSameSite(cookie);
 					if (sameSite != null) {

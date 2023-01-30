@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.core.Ordered;
+import javax.annotation.Nullable;
 
 /**
  * {@link BeanFactoryPostProcessor} to set lazy-init on bean definitions that are not
@@ -79,7 +80,7 @@ public final class LazyInitializationBeanFactoryPostProcessor implements BeanFac
 		}
 	}
 
-	private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
+	@Nullable private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
 		try {
 			return beanFactory.getType(beanName, false);
 		}
@@ -89,7 +90,7 @@ public final class LazyInitializationBeanFactoryPostProcessor implements BeanFac
 	}
 
 	private boolean isExcluded(Collection<LazyInitializationExcludeFilter> filters, String beanName,
-			AbstractBeanDefinition beanDefinition, Class<?> beanType) {
+			AbstractBeanDefinition beanDefinition, @Nullable Class<?> beanType) {
 		if (beanType != null) {
 			for (LazyInitializationExcludeFilter filter : filters) {
 				if (filter.isExcluded(beanName, beanDefinition, beanType)) {

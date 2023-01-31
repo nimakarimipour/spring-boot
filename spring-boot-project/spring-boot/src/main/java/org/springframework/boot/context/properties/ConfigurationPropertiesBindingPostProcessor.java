@@ -29,6 +29,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
+import org.springframework.boot.Initializer;
 
 /**
  * {@link BeanPostProcessor} to bind {@link PropertySources} to beans annotated with
@@ -60,7 +61,7 @@ public class ConfigurationPropertiesBindingPostProcessor
 		this.applicationContext = applicationContext;
 	}
 
-	@Override
+	@Initializer @Override
 	public void afterPropertiesSet() throws Exception {
 		// We can't use constructor injection of the application context because
 		// it causes eager factory bean initialization

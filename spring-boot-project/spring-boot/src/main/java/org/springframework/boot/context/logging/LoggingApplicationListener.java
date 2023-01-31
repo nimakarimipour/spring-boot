@@ -57,6 +57,8 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+import org.springframework.boot.Initializer;
+import javax.annotation.Nullable;
 
 /**
  * An {@link ApplicationListener} that configures the {@link LoggingSystem}. If the
@@ -181,9 +183,9 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
-	private LoggingSystem loggingSystem;
+	@Nullable private LoggingSystem loggingSystem;
 
-	private LogFile logFile;
+	@Nullable private LogFile logFile;
 
 	private LoggerGroups loggerGroups;
 
@@ -191,7 +193,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private boolean parseArgs = true;
 
-	private LogLevel springBootLogging = null;
+	@Nullable private LogLevel springBootLogging = null;
 
 	@Override
 	public boolean supportsEventType(ResolvableType resolvableType) {
@@ -287,7 +289,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param environment the environment
 	 * @param classLoader the classloader
 	 */
-	protected void initialize(ConfigurableEnvironment environment, ClassLoader classLoader) {
+	@Initializer protected void initialize(ConfigurableEnvironment environment, ClassLoader classLoader) {
 		getLoggingSystemProperties(environment).apply();
 		this.logFile = LogFile.get(environment);
 		if (this.logFile != null) {
@@ -417,7 +419,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		};
 	}
 
-	private void registerShutdownHookIfNecessary(Environment environment, LoggingSystem loggingSystem) {
+	private void registerShutdownHookIfNecessary(Environment environment, @Nullable LoggingSystem loggingSystem) {
 		if (environment.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, true)) {
 			Runnable shutdownHandler = loggingSystem.getShutdownHandler();
 			if (shutdownHandler != null && shutdownHookRegistered.compareAndSet(false, true)) {

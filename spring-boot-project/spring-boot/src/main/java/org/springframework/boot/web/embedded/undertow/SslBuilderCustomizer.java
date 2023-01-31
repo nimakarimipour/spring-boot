@@ -45,6 +45,7 @@ import org.springframework.boot.web.server.SslConfigurationValidator;
 import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link UndertowBuilderCustomizer} that configures SSL on the given builder instance.
@@ -158,7 +159,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		}
 	}
 
-	private KeyStore getTrustStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
+	@Nullable private KeyStore getTrustStore(Ssl ssl, SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getTrustStore();
 		}
@@ -170,7 +171,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 		return loadStore(type, provider, resource, password);
 	}
 
-	private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
+	@Nullable private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
 		if (resource == null) {
 			return null;
 		}

@@ -41,6 +41,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * An immutable tree structure of {@link ConfigDataEnvironmentContributors} used to
@@ -137,7 +138,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return this.bootstrapContext;
 	}
 
-	private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
+	@Nullable private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext, ImportPhase importPhase) {
 		for (ConfigDataEnvironmentContributor contributor : contributors.getRoot()) {
 			if (contributor.getKind() == Kind.UNBOUND_IMPORT
@@ -187,7 +188,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * @param options binder options to apply
 	 * @return a binder instance
 	 */
-	Binder getBinder(ConfigDataActivationContext activationContext, BinderOption... options) {
+	Binder getBinder(@Nullable ConfigDataActivationContext activationContext, BinderOption... options) {
 		return getBinder(activationContext, NO_CONTRIBUTOR_FILTER, options);
 	}
 
@@ -198,7 +199,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * @param options binder options to apply
 	 * @return a binder instance
 	 */
-	Binder getBinder(ConfigDataActivationContext activationContext, Predicate<ConfigDataEnvironmentContributor> filter,
+	Binder getBinder(@Nullable ConfigDataActivationContext activationContext, Predicate<ConfigDataEnvironmentContributor> filter,
 			BinderOption... options) {
 		return getBinder(activationContext, filter, asBinderOptionsSet(options));
 	}
@@ -262,7 +263,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 
 		private final ConfigDataActivationContext activationContext;
 
-		private volatile Binder binder;
+		@Nullable private volatile Binder binder;
 
 		ContributorConfigDataLocationResolverContext(ConfigDataEnvironmentContributors contributors,
 				ConfigDataEnvironmentContributor contributor, ConfigDataActivationContext activationContext) {

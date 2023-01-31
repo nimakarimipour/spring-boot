@@ -63,6 +63,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link LoggingSystem} for <a href="https://logback.qos.ch">logback</a>.
@@ -227,7 +228,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+			@Nullable LogFile logFile) {
 		if (initializationContext != null) {
 			applySystemProperties(initializationContext.getEnvironment(), logFile);
 		}
@@ -317,7 +318,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		return result;
 	}
 
-	@Override
+	@Nullable @Override
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		String name = getLoggerName(loggerName);
 		LoggerContext loggerContext = getLoggerContext();
@@ -331,7 +332,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		return name;
 	}
 
-	private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
+	@Nullable private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
 		if (logger == null) {
 			return null;
 		}
@@ -422,7 +423,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		private static final boolean PRESENT = ClassUtils.isPresent("ch.qos.logback.classic.LoggerContext",
 				Factory.class.getClassLoader());
 
-		@Override
+		@Nullable @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new LogbackLoggingSystem(classLoader);

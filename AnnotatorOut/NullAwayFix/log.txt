@@ -1,0 +1,5 @@
+Total number of nodes=1178
+Total number of Requested builds=44
+Total number of downstream builds=0
+Total time=610719
+Total time spent on builds=661600

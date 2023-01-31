@@ -61,6 +61,7 @@ import org.springframework.web.context.support.ServletContextAwareProcessor;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.context.support.ServletContextScope;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import javax.annotation.Nullable;
 
 /**
  * A {@link WebApplicationContext} that can be used to bootstrap itself from a contained

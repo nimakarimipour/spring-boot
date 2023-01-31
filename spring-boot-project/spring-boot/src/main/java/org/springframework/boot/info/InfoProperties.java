@@ -24,6 +24,7 @@ import java.util.Properties;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Base class for components exposing unstructured data with dedicated methods for well

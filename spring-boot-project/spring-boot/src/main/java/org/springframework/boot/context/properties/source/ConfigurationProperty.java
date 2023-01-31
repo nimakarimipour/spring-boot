@@ -22,6 +22,7 @@ import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * A single configuration property obtained from a {@link ConfigurationPropertySource}
@@ -38,7 +39,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 
 	private final Object value;
 
-	private final ConfigurationPropertySource source;
+	@Nullable private final ConfigurationPropertySource source;
 
 	private final Origin origin;
 
@@ -46,7 +47,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		this(null, name, value, origin);
 	}
 
-	private ConfigurationProperty(ConfigurationPropertySource source, ConfigurationPropertyName name, Object value,
+	private ConfigurationProperty(@Nullable ConfigurationPropertySource source, ConfigurationPropertyName name, Object value,
 			Origin origin) {
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(value, "Value must not be null");
@@ -62,7 +63,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 	 * @return the configuration property source
 	 * @since 2.6.0
 	 */
-	public ConfigurationPropertySource getSource() {
+	@Nullable public ConfigurationPropertySource getSource() {
 		return this.source;
 	}
 
@@ -120,14 +121,14 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		return this.name.compareTo(other.name);
 	}
 
-	static ConfigurationProperty of(ConfigurationPropertyName name, OriginTrackedValue value) {
+	@Nullable static ConfigurationProperty of(ConfigurationPropertyName name, OriginTrackedValue value) {
 		if (value == null) {
 			return null;
 		}
 		return new ConfigurationProperty(name, value.getValue(), value.getOrigin());
 	}
 
-	static ConfigurationProperty of(ConfigurationPropertySource source, ConfigurationPropertyName name, Object value,
+	@Nullable static ConfigurationProperty of(@Nullable ConfigurationPropertySource source, ConfigurationPropertyName name, Object value,
 			Origin origin) {
 		if (value == null) {
 			return null;

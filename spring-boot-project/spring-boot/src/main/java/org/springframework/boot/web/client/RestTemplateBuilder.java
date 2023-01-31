@@ -55,6 +55,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
+import javax.annotation.Nullable;
 
 /**
  * Builder that can be used to configure and create a {@link RestTemplate}. Provides
@@ -394,7 +395,7 @@ public class RestTemplateBuilder {
 	 * @return a new builder instance
 	 * @since 2.2.0
 	 */
-	public RestTemplateBuilder basicAuthentication(String username, String password, Charset charset) {
+	public RestTemplateBuilder basicAuthentication(String username, String password, @Nullable Charset charset) {
 		return new RestTemplateBuilder(this.requestFactoryCustomizer, this.detectRequestFactory, this.rootUri,
 				this.messageConverters, this.interceptors, this.requestFactory, this.uriTemplateHandler,
 				this.errorHandler, new BasicAuthentication(username, password, charset), this.defaultHeaders,
@@ -650,7 +651,7 @@ public class RestTemplateBuilder {
 	 * @return a {@link ClientHttpRequestFactory} or {@code null}
 	 * @since 2.2.0
 	 */
-	public ClientHttpRequestFactory buildRequestFactory() {
+	@Nullable public ClientHttpRequestFactory buildRequestFactory() {
 		ClientHttpRequestFactory requestFactory = null;
 		if (this.requestFactory != null) {
 			requestFactory = this.requestFactory.get();
@@ -708,17 +709,17 @@ public class RestTemplateBuilder {
 	 */
 	private static class RequestFactoryCustomizer implements Consumer<ClientHttpRequestFactory> {
 
-		private final Duration connectTimeout;
+		@Nullable private final Duration connectTimeout;
 
-		private final Duration readTimeout;
+		@Nullable private final Duration readTimeout;
 
-		private final Boolean bufferRequestBody;
+		@Nullable private final Boolean bufferRequestBody;
 
 		RequestFactoryCustomizer() {
 			this(null, null, null);
 		}
 
-		private RequestFactoryCustomizer(Duration connectTimeout, Duration readTimeout, Boolean bufferRequestBody) {
+		private RequestFactoryCustomizer(@Nullable Duration connectTimeout, @Nullable Duration readTimeout, @Nullable Boolean bufferRequestBody) {
 			this.connectTimeout = connectTimeout;
 			this.readTimeout = readTimeout;
 			this.bufferRequestBody = bufferRequestBody;
@@ -794,7 +795,7 @@ public class RestTemplateBuilder {
 			return method;
 		}
 
-		private void invoke(ClientHttpRequestFactory requestFactory, Method method, Object... parameters) {
+		private void invoke(ClientHttpRequestFactory requestFactory, Method method, @Nullable Object... parameters) {
 			ReflectionUtils.invokeMethod(method, requestFactory, parameters);
 		}
 

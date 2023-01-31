@@ -31,6 +31,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 /**
  * Base class for an {@link InitializingBean} that performs SQL database initialization
@@ -45,7 +46,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 
 	private final DatabaseInitializationSettings settings;
 
-	private volatile ResourceLoader resourceLoader;
+	@Nullable private volatile ResourceLoader resourceLoader;
 
 	/**
 	 * Creates a new {@link AbstractScriptDatabaseInitializer} that will initialize the
@@ -102,7 +103,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 		return applyScripts(this.settings.getDataLocations(), "data", locationResolver);
 	}
 
-	private boolean applyScripts(List<String> locations, String type, ScriptLocationResolver locationResolver) {
+	private boolean applyScripts(@Nullable List<String> locations, String type, ScriptLocationResolver locationResolver) {
 		List<Resource> scripts = getScripts(locations, type, locationResolver);
 		if (!scripts.isEmpty() && isEnabled()) {
 			runScripts(scripts);
@@ -111,7 +112,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 		return false;
 	}
 
-	private List<Resource> getScripts(List<String> locations, String type, ScriptLocationResolver locationResolver) {
+	private List<Resource> getScripts(@Nullable List<String> locations, String type, ScriptLocationResolver locationResolver) {
 		if (CollectionUtils.isEmpty(locations)) {
 			return Collections.emptyList();
 		}
@@ -158,7 +159,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 
 		private final ResourcePatternResolver resourcePatternResolver;
 
-		ScriptLocationResolver(ResourceLoader resourceLoader) {
+		ScriptLocationResolver(@Nullable ResourceLoader resourceLoader) {
 			this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
 		}
 
@@ -191,7 +192,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 
 		private String separator = ";";
 
-		private Charset encoding;
+		@Nullable private Charset encoding;
 
 		public Scripts(List<Resource> resources) {
 			this.resources = resources;
@@ -220,12 +221,12 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 			return this.separator;
 		}
 
-		public Scripts encoding(Charset encoding) {
+		public Scripts encoding(@Nullable Charset encoding) {
 			this.encoding = encoding;
 			return this;
 		}
 
-		public Charset getEncoding() {
+		@Nullable public Charset getEncoding() {
 			return this.encoding;
 		}
 

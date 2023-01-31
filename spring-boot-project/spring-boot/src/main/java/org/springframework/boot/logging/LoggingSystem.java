@@ -26,6 +26,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Common abstraction over logging systems.
@@ -83,7 +84,7 @@ public abstract class LoggingSystem {
 	 * @param logFile the log output file that should be written or {@code null} for
 	 * console only output
 	 */
-	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
+	public void initialize(LoggingInitializationContext initializationContext, @Nullable String configLocation, LogFile logFile) {
 	}
 
 	/**
@@ -99,7 +100,7 @@ public abstract class LoggingSystem {
 	 * shutdown is required.
 	 * @return the shutdown handler, or {@code null}
 	 */
-	public Runnable getShutdownHandler() {
+	@Nullable public Runnable getShutdownHandler() {
 		return null;
 	}
 
@@ -139,7 +140,7 @@ public abstract class LoggingSystem {
 	 * @return the current configuration
 	 * @since 1.5.0
 	 */
-	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
+	@Nullable public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		throw new UnsupportedOperationException("Unable to get logger configuration");
 	}
 
@@ -148,7 +149,7 @@ public abstract class LoggingSystem {
 	 * @param classLoader the classloader
 	 * @return the logging system
 	 */
-	public static LoggingSystem get(ClassLoader classLoader) {
+	@Nullable public static LoggingSystem get(ClassLoader classLoader) {
 		String loggingSystemClassName = System.getProperty(SYSTEM_PROPERTY);
 		if (StringUtils.hasLength(loggingSystemClassName)) {
 			if (NONE.equals(loggingSystemClassName)) {
@@ -193,7 +194,7 @@ public abstract class LoggingSystem {
 			return Collections.emptyList();
 		}
 
-		@Override
+		@Nullable @Override
 		public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 			return null;
 		}

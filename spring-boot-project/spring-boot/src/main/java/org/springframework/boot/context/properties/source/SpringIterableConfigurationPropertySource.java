@@ -38,6 +38,7 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
+import javax.annotation.Nullable;
 
 /**
  * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
@@ -57,7 +58,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 	private final SoftReferenceConfigurationPropertyCache<Mappings> cache;
 
-	private volatile ConfigurationPropertyName[] configurationPropertyNames;
+	@Nullable private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
 	SpringIterableConfigurationPropertySource(EnumerablePropertySource<?> propertySource, PropertyMapper... mappers) {
 		super(propertySource, mappers);
@@ -92,7 +93,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		return this.cache;
 	}
 
-	@Override
+	@Nullable @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
@@ -199,9 +200,9 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
-		private volatile ConfigurationPropertyName[] configurationPropertyNames;
+		@Nullable private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
-		private volatile String[] lastUpdated;
+		@Nullable private volatile String[] lastUpdated;
 
 		Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
 			this.mappers = mappers;

@@ -28,6 +28,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
+import javax.annotation.Nullable;
 
 /**
  * Abstract base class for {@link LoggingSystem} implementations.
@@ -173,7 +174,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 		return defaultPath;
 	}
 
-	protected final void applySystemProperties(Environment environment, LogFile logFile) {
+	protected final void applySystemProperties(Environment environment, @Nullable LogFile logFile) {
 		new LoggingSystemProperties(environment).apply(logFile);
 	}
 
@@ -202,7 +203,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 			return this.nativeToSystem.get(level);
 		}
 
-		public T convertSystemToNative(LogLevel level) {
+		@Nullable public T convertSystemToNative(LogLevel level) {
 			return this.systemToNative.get(level);
 		}
 

@@ -20,6 +20,7 @@ import java.io.Closeable;
 
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.GracefulShutdownHandler;
+import javax.annotation.Nullable;
 
 /**
  * Factory used by {@link UndertowServletWebServer} to add {@link HttpHandler

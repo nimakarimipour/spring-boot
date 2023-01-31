@@ -20,6 +20,7 @@ import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.style.ToStringCreator;
+import javax.annotation.Nullable;
 
 /**
  * Context information used when determining when to activate
@@ -31,7 +32,7 @@ class ConfigDataActivationContext {
 
 	private final CloudPlatform cloudPlatform;
 
-	private final Profiles profiles;
+	@Nullable private final Profiles profiles;
 
 	/**
 	 * Create a new {@link ConfigDataActivationContext} instance before any profiles have
@@ -55,7 +56,7 @@ class ConfigDataActivationContext {
 		this.profiles = profiles;
 	}
 
-	private CloudPlatform deduceCloudPlatform(Environment environment, Binder binder) {
+	@Nullable private CloudPlatform deduceCloudPlatform(Environment environment, Binder binder) {
 		for (CloudPlatform candidate : CloudPlatform.values()) {
 			if (candidate.isEnforced(binder)) {
 				return candidate;

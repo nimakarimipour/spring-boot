@@ -28,6 +28,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * An {@link EnvironmentPostProcessor} that replaces the systemEnvironment
@@ -80,14 +81,14 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 	protected static class OriginAwareSystemEnvironmentPropertySource extends SystemEnvironmentPropertySource
 			implements OriginLookup<String> {
 
-		private final String prefix;
+		@Nullable private final String prefix;
 
 		OriginAwareSystemEnvironmentPropertySource(String name, Map<String, Object> source, String environmentPrefix) {
 			super(name, source);
 			this.prefix = determinePrefix(environmentPrefix);
 		}
 
-		private String determinePrefix(String environmentPrefix) {
+		@Nullable private String determinePrefix(String environmentPrefix) {
 			if (!StringUtils.hasText(environmentPrefix)) {
 				return null;
 			}
@@ -107,7 +108,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			return super.getProperty(name);
 		}
 
-		@Override
+		@Nullable @Override
 		public Origin getOrigin(String key) {
 			String property = resolvePropertyName(key);
 			if (super.containsProperty(property)) {
@@ -116,7 +117,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			return null;
 		}
 
-		@Override
+		@Nullable @Override
 		public String getPrefix() {
 			return this.prefix;
 		}

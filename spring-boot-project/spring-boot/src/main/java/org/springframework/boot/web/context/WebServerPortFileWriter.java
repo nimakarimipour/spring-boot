@@ -29,6 +29,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * An {@link ApplicationListener} that saves embedded server port and management port into
@@ -123,7 +124,7 @@ public class WebServerPortFileWriter implements ApplicationListener<WebServerIni
 		return new File(this.file.getParentFile(), name);
 	}
 
-	private String getServerNamespace(ApplicationContext applicationContext) {
+	@Nullable private String getServerNamespace(ApplicationContext applicationContext) {
 		if (applicationContext instanceof WebServerApplicationContext webServerApplicationContext) {
 			return webServerApplicationContext.getServerNamespace();
 		}

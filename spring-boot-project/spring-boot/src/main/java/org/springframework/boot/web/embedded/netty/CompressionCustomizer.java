@@ -32,6 +32,7 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Configure the HTTP compression on a Reactor Netty request/response handler.
@@ -82,7 +83,7 @@ final class CompressionCustomizer implements NettyServerCustomizer {
 		};
 	}
 
-	private CompressionPredicate getExcludedUserAgentsPredicate(String[] excludedUserAgents) {
+	private CompressionPredicate getExcludedUserAgentsPredicate(@Nullable String[] excludedUserAgents) {
 		if (ObjectUtils.isEmpty(excludedUserAgents)) {
 			return ALWAYS_COMPRESS;
 		}

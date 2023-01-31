@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.source;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ConfigurationPropertySource} supporting name aliases.
@@ -37,7 +38,7 @@ class AliasedConfigurationPropertySource implements ConfigurationPropertySource 
 		this.aliases = aliases;
 	}
 
-	@Override
+	@Nullable @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		Assert.notNull(name, "Name must not be null");
 		ConfigurationProperty result = getSource().getConfigurationProperty(name);

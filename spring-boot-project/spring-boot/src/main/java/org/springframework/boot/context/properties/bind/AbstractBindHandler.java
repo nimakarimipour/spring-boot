@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Abstract base class for {@link BindHandler} implementations.

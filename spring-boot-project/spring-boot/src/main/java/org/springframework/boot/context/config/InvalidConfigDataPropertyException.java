@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.core.env.AbstractEnvironment;
+import javax.annotation.Nullable;
 
 /**
  * Exception thrown if an invalid property is found when processing config data.

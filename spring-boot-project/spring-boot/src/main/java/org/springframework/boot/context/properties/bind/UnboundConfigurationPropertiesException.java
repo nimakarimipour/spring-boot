@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BindException} thrown when {@link ConfigurationPropertySource} elements were
@@ -44,7 +45,7 @@ public class UnboundConfigurationPropertiesException extends RuntimeException {
 		return this.unboundProperties;
 	}
 
-	private static String buildMessage(Set<ConfigurationProperty> unboundProperties) {
+	@NullUnmarked private static String buildMessage(Set<ConfigurationProperty> unboundProperties) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("The elements [");
 		String message = unboundProperties.stream().map((p) -> p.getName().toString()).collect(Collectors.joining(","));

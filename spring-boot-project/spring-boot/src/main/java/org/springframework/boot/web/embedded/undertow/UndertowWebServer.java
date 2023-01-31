@@ -45,6 +45,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link WebServer} that can be used to control an Undertow web server. Usually this
@@ -139,7 +140,7 @@ public class UndertowWebServer implements WebServer {
 		}
 	}
 
-	private void stopSilently() {
+	@NullUnmarked private void stopSilently() {
 		try {
 			if (this.undertow != null) {
 				this.undertow.stop();
@@ -167,7 +168,7 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
-	@Nullable protected HttpHandler createHttpHandler() {
+	@NullUnmarked @Nullable protected HttpHandler createHttpHandler() {
 		HttpHandler handler = null;
 		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
 			handler = factory.getHandler(handler);
@@ -258,7 +259,7 @@ public class UndertowWebServer implements WebServer {
 		return new UndertowWebServer.Port(port, protocol);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void stop() throws WebServerException {
 		synchronized (this.monitor) {
 			if (!this.started) {
@@ -382,12 +383,12 @@ public class UndertowWebServer implements WebServer {
 			}
 			return new CloseableHttpHandler() {
 
-				@Override
+				@NullUnmarked @Override
 				public void handleRequest(HttpServerExchange exchange) throws Exception {
 					next.handleRequest(exchange);
 				}
 
-				@Override
+				@NullUnmarked @Override
 				public void close() throws IOException {
 					CloseableHttpHandlerFactory.this.closeable.close();
 				}

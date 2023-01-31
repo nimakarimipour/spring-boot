@@ -37,6 +37,7 @@ import org.springframework.validation.AbstractBindingResult;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Validator;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BindHandler} to apply {@link Validator Validators} to bound results.
@@ -155,7 +156,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			this.name = name;
 		}
 
-		@Override
+		@NullUnmarked @Override
 		public String getObjectName() {
 			return this.name.toString();
 		}
@@ -231,11 +232,11 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			return true;
 		}
 
-		private ConfigurationPropertyName getName(String field) {
+		@NullUnmarked private ConfigurationPropertyName getName(String field) {
 			return this.name.append(DataObjectPropertyName.toDashedForm(field));
 		}
 
-		ValidationErrors getValidationErrors() {
+		@NullUnmarked ValidationErrors getValidationErrors() {
 			Set<ConfigurationProperty> boundProperties = ValidationBindHandler.this.boundProperties.stream()
 					.filter((property) -> this.name.isAncestorOf(property.getName()))
 					.collect(Collectors.toCollection(LinkedHashSet::new));

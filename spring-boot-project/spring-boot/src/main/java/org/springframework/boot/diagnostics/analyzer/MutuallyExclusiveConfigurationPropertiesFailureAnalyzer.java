@@ -35,6 +35,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A {@link FailureAnalyzer} that performs analysis of failures caused by a
@@ -52,7 +53,7 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	@Nullable @Override
+	@NullUnmarked @Nullable @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, MutuallyExclusiveConfigurationPropertiesException cause) {
 		List<Descriptor> descriptors = new ArrayList<>();
 		for (String name : cause.getConfiguredNames()) {
@@ -101,7 +102,7 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 		return sortedStrings(input, Function.identity());
 	}
 
-	private <S> Set<String> sortedStrings(@Nullable Collection<S> input, Function<S, String> converter) {
+	@NullUnmarked private <S> Set<String> sortedStrings(@Nullable Collection<S> input, Function<S, String> converter) {
 		TreeSet<String> results = new TreeSet<>();
 		for (S item : input) {
 			results.add(converter.apply(item));

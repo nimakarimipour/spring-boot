@@ -32,6 +32,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BeanFactoryPostProcessor} that registers beans for Servlet components found via
@@ -86,7 +87,7 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 				&& webApplicationContext.getServletContext() == null;
 	}
 
-	private ClassPathScanningCandidateComponentProvider createComponentProvider() {
+	@NullUnmarked private ClassPathScanningCandidateComponentProvider createComponentProvider() {
 		ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(
 				false);
 		componentProvider.setEnvironment(this.applicationContext.getEnvironment());

@@ -59,6 +59,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.boot.Initializer;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An {@link ApplicationListener} that configures the {@link LoggingSystem}. If the
@@ -235,7 +236,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		}
 	}
 
-	private void onApplicationStartingEvent(ApplicationStartingEvent event) {
+	@NullUnmarked private void onApplicationStartingEvent(ApplicationStartingEvent event) {
 		this.loggingSystem = LoggingSystem.get(event.getSpringApplication().getClassLoader());
 		this.loggingSystem.beforeInitialize();
 	}
@@ -323,7 +324,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		return (value != null && !value.equals("false"));
 	}
 
-	private void initializeSystem(ConfigurableEnvironment environment, @Nullable LoggingSystem system, @Nullable LogFile logFile) {
+	@NullUnmarked private void initializeSystem(ConfigurableEnvironment environment, @Nullable LoggingSystem system, @Nullable LogFile logFile) {
 		String logConfig = environment.getProperty(CONFIG_PROPERTY);
 		if (StringUtils.hasLength(logConfig)) {
 			logConfig = logConfig.strip();
@@ -407,7 +408,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		configurer.accept(name, level);
 	}
 
-	private BiConsumer<String, LogLevel> getLogLevelConfigurer(@Nullable LoggingSystem system) {
+	@NullUnmarked private BiConsumer<String, LogLevel> getLogLevelConfigurer(@Nullable LoggingSystem system) {
 		return (name, level) -> {
 			try {
 				name = name.equalsIgnoreCase(LoggingSystem.ROOT_LOGGER_NAME) ? null : name;
@@ -419,7 +420,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		};
 	}
 
-	private void registerShutdownHookIfNecessary(Environment environment, @Nullable LoggingSystem loggingSystem) {
+	@NullUnmarked private void registerShutdownHookIfNecessary(Environment environment, @Nullable LoggingSystem loggingSystem) {
 		if (environment.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, true)) {
 			Runnable shutdownHandler = loggingSystem.getShutdownHandler();
 			if (shutdownHandler != null && shutdownHookRegistered.compareAndSet(false, true)) {

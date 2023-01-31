@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A standard set of {@link Period} units.
@@ -264,7 +265,7 @@ public enum PeriodStyle {
 			return intValue(value) == 0;
 		}
 
-		private int intValue(Period value) {
+		@NullUnmarked private int intValue(Period value) {
 			Assert.notNull(this.intValue, () -> "intValue cannot be extracted from " + this.name());
 			return this.intValue.apply(value);
 		}

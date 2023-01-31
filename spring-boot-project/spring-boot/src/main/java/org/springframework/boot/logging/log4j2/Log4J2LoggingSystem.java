@@ -72,6 +72,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
@@ -280,7 +281,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 	 * @param overrides the overriding locations
 	 * @since 2.6.0
 	 */
-	protected void loadConfiguration(String location, @Nullable LogFile logFile, @Nullable List<String> overrides) {
+	@NullUnmarked protected void loadConfiguration(String location, @Nullable LogFile logFile, @Nullable List<String> overrides) {
 		Assert.notNull(location, "Location must not be null");
 		try {
 			List<Configuration> configurations = new ArrayList<>();
@@ -371,7 +372,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		getLoggerContext().updateLoggers();
 	}
 
-	private void clearLogLevel(@Nullable String loggerName, @Nullable LoggerConfig logger) {
+	@NullUnmarked private void clearLogLevel(@Nullable String loggerName, @Nullable LoggerConfig logger) {
 		if (logger instanceof LevelSetLoggerConfig) {
 			getLoggerContext().getConfiguration().removeLogger(loggerName);
 		}

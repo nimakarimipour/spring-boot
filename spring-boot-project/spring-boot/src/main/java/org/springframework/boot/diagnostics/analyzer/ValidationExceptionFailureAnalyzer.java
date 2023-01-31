@@ -22,6 +22,7 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A {@link FailureAnalyzer} that performs analysis of failures caused by a
@@ -37,7 +38,7 @@ class ValidationExceptionFailureAnalyzer extends AbstractFailureAnalyzer<Validat
 	private static final String JAKARTA_MISSING_IMPLEMENTATION_MESSAGE = "Unable to create a "
 			+ "Configuration, because no Jakarta Bean Validation provider could be found";
 
-	@Nullable @Override
+	@NullUnmarked @Nullable @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, ValidationException cause) {
 		if (cause.getMessage().startsWith(JAVAX_MISSING_IMPLEMENTATION_MESSAGE)
 				|| cause.getMessage().startsWith(JAKARTA_MISSING_IMPLEMENTATION_MESSAGE)) {

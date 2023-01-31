@@ -22,6 +22,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by any
@@ -38,7 +39,7 @@ class UnboundConfigurationPropertyFailureAnalyzer
 		return analyzeUnboundConfigurationPropertiesException(exception, cause);
 	}
 
-	private FailureAnalysis analyzeUnboundConfigurationPropertiesException(@Nullable BindException cause,
+	@NullUnmarked private FailureAnalysis analyzeUnboundConfigurationPropertiesException(@Nullable BindException cause,
 			UnboundConfigurationPropertiesException exception) {
 		StringBuilder description = new StringBuilder(
 				String.format("Binding to target %s failed:%n", cause.getTarget()));

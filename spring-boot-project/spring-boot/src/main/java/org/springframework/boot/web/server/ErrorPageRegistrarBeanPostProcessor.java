@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BeanPostProcessor} that applies all {@link ErrorPageRegistrar}s from the bean
@@ -70,7 +71,7 @@ public class ErrorPageRegistrarBeanPostProcessor implements BeanPostProcessor, B
 		}
 	}
 
-	private Collection<ErrorPageRegistrar> getRegistrars() {
+	@NullUnmarked private Collection<ErrorPageRegistrar> getRegistrars() {
 		if (this.registrars == null) {
 			// Look up does not include the parent context
 			this.registrars = new ArrayList<>(

@@ -23,6 +23,7 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A single configuration property obtained from a {@link ConfigurationPropertySource}
@@ -116,7 +117,7 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 				.append("origin", this.origin).toString();
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public int compareTo(ConfigurationProperty other) {
 		return this.name.compareTo(other.name);
 	}

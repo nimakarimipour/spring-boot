@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.source;
 
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A {@link ConfigurationPropertySource} supporting name aliases.
@@ -49,7 +50,7 @@ class AliasedConfigurationPropertySource implements ConfigurationPropertySource 
 		return result;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		Assert.notNull(name, "Name must not be null");
 		ConfigurationPropertyState result = this.source.containsDescendantOf(name);

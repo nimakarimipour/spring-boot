@@ -34,6 +34,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Abstract base {@link ServletContextInitializer} to register {@link Filter}s in a
@@ -216,7 +217,7 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
 	 * additional configuration if required.
 	 * @param registration the registration
 	 */
-	@Override
+	@NullUnmarked @Override
 	protected void configure(FilterRegistration.Dynamic registration) {
 		super.configure(registration);
 		EnumSet<DispatcherType> dispatcherTypes = this.dispatcherTypes;

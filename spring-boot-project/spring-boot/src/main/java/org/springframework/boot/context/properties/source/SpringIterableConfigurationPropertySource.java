@@ -39,6 +39,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
@@ -276,7 +277,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 			map.computeIfAbsent(key, (k) -> new HashSet<>()).add(value);
 		}
 
-		Set<String> getMapped(ConfigurationPropertyName configurationPropertyName) {
+		@NullUnmarked Set<String> getMapped(ConfigurationPropertyName configurationPropertyName) {
 			return this.mappings.getOrDefault(configurationPropertyName, Collections.emptySet());
 		}
 
@@ -296,7 +297,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 			return names;
 		}
 
-		ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name,
+		@NullUnmarked ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name,
 				BiPredicate<ConfigurationPropertyName, ConfigurationPropertyName> ancestorOfCheck) {
 			if (name.isEmpty() && !this.descendants.isEmpty()) {
 				return ConfigurationPropertyState.PRESENT;

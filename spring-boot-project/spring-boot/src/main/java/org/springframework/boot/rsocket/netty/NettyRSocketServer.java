@@ -28,6 +28,7 @@ import org.springframework.boot.rsocket.server.RSocketServer;
 import org.springframework.boot.rsocket.server.RSocketServerException;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link RSocketServer} that is based on a Reactor Netty server. Usually this class
@@ -60,7 +61,7 @@ public class NettyRSocketServer implements RSocketServer {
 		return null;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void start() throws RSocketServerException {
 		this.channel = block(this.starter, this.lifecycleTimeout);
 		logger.info("Netty RSocket started on port(s): " + address().getPort());

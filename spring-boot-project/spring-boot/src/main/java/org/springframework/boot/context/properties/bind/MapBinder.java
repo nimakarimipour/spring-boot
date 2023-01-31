@@ -31,6 +31,7 @@ import org.springframework.boot.context.properties.source.IterableConfigurationP
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link AggregateBinder} for Maps.
@@ -161,14 +162,14 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 			}
 		}
 
-		private Bindable<?> getValueBindable(ConfigurationPropertyName name) {
+		@NullUnmarked private Bindable<?> getValueBindable(ConfigurationPropertyName name) {
 			if (!this.root.isParentOf(name) && isValueTreatedAsNestedMap()) {
 				return Bindable.of(this.mapType);
 			}
 			return Bindable.of(this.valueType);
 		}
 
-		private ConfigurationPropertyName getEntryName(ConfigurationPropertySource source,
+		@NullUnmarked private ConfigurationPropertyName getEntryName(ConfigurationPropertySource source,
 				ConfigurationPropertyName name) {
 			Class<?> resolved = this.valueType.resolve(Object.class);
 			if (Collection.class.isAssignableFrom(resolved) || this.valueType.isArray()) {
@@ -180,7 +181,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 			return name;
 		}
 
-		private ConfigurationPropertyName chopNameAtNumericIndex(ConfigurationPropertyName name) {
+		@NullUnmarked private ConfigurationPropertyName chopNameAtNumericIndex(ConfigurationPropertyName name) {
 			int start = this.root.getNumberOfElements() + 1;
 			int size = name.getNumberOfElements();
 			for (int i = start; i < size; i++) {
@@ -209,7 +210,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 			return getContext().getConverter().canConvert(value, this.valueType);
 		}
 
-		private String getKeyName(ConfigurationPropertyName name) {
+		@NullUnmarked private String getKeyName(ConfigurationPropertyName name) {
 			StringBuilder result = new StringBuilder();
 			for (int i = this.root.getNumberOfElements(); i < name.getNumberOfElements(); i++) {
 				if (result.length() != 0) {

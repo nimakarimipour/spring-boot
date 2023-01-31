@@ -31,6 +31,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BindHandler} to enforce that all configuration properties under the root name
@@ -115,7 +116,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		}
 	}
 
-	private boolean isUnbound(@Nullable ConfigurationPropertyName name, ConfigurationPropertyName candidate) {
+	@NullUnmarked private boolean isUnbound(@Nullable ConfigurationPropertyName name, ConfigurationPropertyName candidate) {
 		if (name.isAncestorOf(candidate)) {
 			return !this.boundNames.contains(candidate) && !isOverriddenCollectionElement(candidate);
 		}

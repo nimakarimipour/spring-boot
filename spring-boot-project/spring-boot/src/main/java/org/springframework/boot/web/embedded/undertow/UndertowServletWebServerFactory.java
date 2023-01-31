@@ -73,6 +73,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link ServletWebServerFactory} that can be used to create
@@ -625,7 +626,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 			this.suppliers = suppliers;
 		}
 
-		@Override
+		@NullUnmarked @Override
 		public void handleRequest(HttpServerExchange exchange) throws Exception {
 			exchange.addResponseCommitListener(this::beforeCommit);
 			this.next.handleRequest(exchange);

@@ -32,6 +32,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Utility to deduce the {@link ConversionService} to use for configuration properties
@@ -47,7 +48,7 @@ class ConversionServiceDeducer {
 		this.applicationContext = applicationContext;
 	}
 
-	@Nullable List<ConversionService> getConversionServices() {
+	@NullUnmarked @Nullable List<ConversionService> getConversionServices() {
 		if (hasUserDefinedConfigurationServiceBean()) {
 			return Collections.singletonList(this.applicationContext
 					.getBean(ConfigurableApplicationContext.CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));
@@ -72,7 +73,7 @@ class ConversionServiceDeducer {
 		return conversionServices;
 	}
 
-	private boolean hasUserDefinedConfigurationServiceBean() {
+	@NullUnmarked private boolean hasUserDefinedConfigurationServiceBean() {
 		String beanName = ConfigurableApplicationContext.CONVERSION_SERVICE_BEAN_NAME;
 		return this.applicationContext.containsBean(beanName) && this.applicationContext.getAutowireCapableBeanFactory()
 				.isTypeMatch(beanName, ConversionService.class);

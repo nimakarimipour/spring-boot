@@ -38,6 +38,7 @@ import org.springframework.boot.web.server.Ssl;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Delegate class used by {@link UndertowServletWebServerFactory} and
@@ -189,7 +190,7 @@ class UndertowWebServerFactoryDelegate {
 		return factories;
 	}
 
-	static List<HttpHandlerFactory> createHttpHandlerFactories(@Nullable Compression compression, boolean useForwardHeaders,
+	@NullUnmarked static List<HttpHandlerFactory> createHttpHandlerFactories(@Nullable Compression compression, boolean useForwardHeaders,
 			@Nullable String serverHeader, @Nullable Shutdown shutdown, HttpHandlerFactory... initialHttpHandlerFactories) {
 		List<HttpHandlerFactory> factories = new ArrayList<>(Arrays.asList(initialHttpHandlerFactories));
 		if (compression != null && compression.getEnabled()) {

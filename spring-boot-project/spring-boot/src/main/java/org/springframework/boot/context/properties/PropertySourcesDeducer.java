@@ -29,6 +29,7 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Utility to deduce the {@link PropertySources} to use for configuration binding.
@@ -56,7 +57,7 @@ class PropertySourcesDeducer {
 		return sources;
 	}
 
-	@Nullable private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
+	@NullUnmarked @Nullable private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
 		// Take care not to cause early instantiation of all FactoryBeans
 		Map<String, PropertySourcesPlaceholderConfigurer> beans = this.applicationContext
 				.getBeansOfType(PropertySourcesPlaceholderConfigurer.class, false, false);
@@ -70,7 +71,7 @@ class PropertySourcesDeducer {
 		return null;
 	}
 
-	@Nullable private MutablePropertySources extractEnvironmentPropertySources() {
+	@NullUnmarked @Nullable private MutablePropertySources extractEnvironmentPropertySources() {
 		Environment environment = this.applicationContext.getEnvironment();
 		if (environment instanceof ConfigurableEnvironment configurableEnvironment) {
 			return configurableEnvironment.getPropertySources();

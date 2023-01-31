@@ -22,6 +22,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.env.PropertySource;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Exception thrown when an attempt is made to resolve a property against an inactive
@@ -59,7 +60,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 		this.origin = origin;
 	}
 
-	private static String getMessage(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location, String propertyName,
+	@NullUnmarked private static String getMessage(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location, String propertyName,
 			@Nullable Origin origin) {
 		StringBuilder message = new StringBuilder("Inactive property source '");
 		message.append(propertySource.getName());
@@ -117,7 +118,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param contributor the contributor to check
 	 * @param name the name to check
 	 */
-	static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor, @Nullable ConfigurationPropertyName name) {
+	@NullUnmarked static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor, @Nullable ConfigurationPropertyName name) {
 		ConfigurationPropertySource source = contributor.getConfigurationPropertySource();
 		ConfigurationProperty property = (source != null) ? source.getConfigurationProperty(name) : null;
 		if (property != null) {

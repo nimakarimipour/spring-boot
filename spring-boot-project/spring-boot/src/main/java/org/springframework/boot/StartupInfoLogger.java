@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Logs application information on startup.
@@ -112,7 +113,7 @@ class StartupInfoLogger {
 				() -> (this.sourceClass != null) ? ClassUtils.getShortName(this.sourceClass) : "application");
 	}
 
-	private void appendVersion(StringBuilder message, @Nullable Class<?> source) {
+	@NullUnmarked private void appendVersion(StringBuilder message, @Nullable Class<?> source) {
 		append(message, "v", () -> source.getPackage().getImplementationVersion());
 	}
 

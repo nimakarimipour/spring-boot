@@ -23,6 +23,7 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures compression support on the given
@@ -48,7 +49,7 @@ class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 		}
 	}
 
-	private void customize(AbstractHttp11Protocol<?> protocol) {
+	@NullUnmarked private void customize(AbstractHttp11Protocol<?> protocol) {
 		Compression compression = this.compression;
 		protocol.setCompression("on");
 		protocol.setCompressionMinSize(getMinResponseSize(compression));
@@ -58,15 +59,15 @@ class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 		}
 	}
 
-	private int getMinResponseSize(@Nullable Compression compression) {
+	@NullUnmarked private int getMinResponseSize(@Nullable Compression compression) {
 		return (int) compression.getMinResponseSize().toBytes();
 	}
 
-	private String getMimeTypes(@Nullable Compression compression) {
+	@NullUnmarked private String getMimeTypes(@Nullable Compression compression) {
 		return StringUtils.arrayToCommaDelimitedString(compression.getMimeTypes());
 	}
 
-	private String getExcludedUserAgents() {
+	@NullUnmarked private String getExcludedUserAgents() {
 		return StringUtils.arrayToCommaDelimitedString(this.compression.getExcludedUserAgents());
 	}
 

@@ -49,6 +49,7 @@ import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An opinionated {@link WebApplicationInitializer} to run a {@link SpringApplication}
@@ -126,7 +127,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 		}
 	}
 
-	protected WebApplicationContext createRootApplicationContext(ServletContext servletContext) {
+	@NullUnmarked protected WebApplicationContext createRootApplicationContext(ServletContext servletContext) {
 		SpringApplicationBuilder builder = createSpringApplicationBuilder();
 		builder.main(getClass());
 		ApplicationContext parent = getExistingRootWebApplicationContext(servletContext);

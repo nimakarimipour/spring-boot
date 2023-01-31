@@ -27,6 +27,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.core.env.AbstractEnvironment;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Exception thrown if an invalid property is found when processing config data.
@@ -35,7 +36,7 @@ import javax.annotation.Nullable;
  * @author Madhura Bhave
  * @since 2.4.0
  */
-public class InvalidConfigDataPropertyException extends ConfigDataException {
+@NullUnmarked public class InvalidConfigDataPropertyException extends ConfigDataException {
 
 	private static final Map<ConfigurationPropertyName, ConfigurationPropertyName> ERRORS;
 	static {

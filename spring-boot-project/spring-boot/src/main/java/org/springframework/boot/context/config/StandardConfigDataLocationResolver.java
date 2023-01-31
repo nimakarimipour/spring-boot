@@ -47,6 +47,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link ConfigDataLocationResolver} for standard locations.
@@ -94,7 +95,7 @@ public class StandardConfigDataLocationResolver
 		this.resourceLoader = new LocationResourceLoader(resourceLoader);
 	}
 
-	@Nullable private String[] getConfigNames(Binder binder) {
+	@NullUnmarked @Nullable private String[] getConfigNames(Binder binder) {
 		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
 		for (String configName : configNames) {
 			validateConfigName(configName);
@@ -187,7 +188,7 @@ public class StandardConfigDataLocationResolver
 		return getReferencesForFile(configDataLocation, resourceLocation, profile);
 	}
 
-	private Set<StandardConfigDataReference> getReferencesForDirectory(ConfigDataLocation configDataLocation,
+	@NullUnmarked private Set<StandardConfigDataReference> getReferencesForDirectory(ConfigDataLocation configDataLocation,
 			String directory, @Nullable String profile) {
 		Set<StandardConfigDataReference> references = new LinkedHashSet<>();
 		for (String name : this.configNames) {

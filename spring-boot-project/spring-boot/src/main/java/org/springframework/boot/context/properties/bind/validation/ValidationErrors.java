@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A collection of {@link ObjectError ObjectErrors} caused by bind validation failures.
@@ -93,7 +94,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return null;
 	}
 
-	private boolean isForError(@Nullable ConfigurationPropertyName name, @Nullable ConfigurationPropertyName boundPropertyName,
+	@NullUnmarked private boolean isForError(@Nullable ConfigurationPropertyName name, @Nullable ConfigurationPropertyName boundPropertyName,
 			FieldError error) {
 		return name.isParentOf(boundPropertyName)
 				&& boundPropertyName.getLastElement(Form.UNIFORM).equalsIgnoreCase(error.getField());

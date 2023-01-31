@@ -37,6 +37,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link DataObjectBinder} for mutable Java Beans.
@@ -340,7 +341,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			}
 		}
 
-		@Nullable Supplier<Object> getValue(Supplier<?> instance) {
+		@NullUnmarked @Nullable Supplier<Object> getValue(Supplier<?> instance) {
 			if (this.getter == null) {
 				return null;
 			}
@@ -359,7 +360,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			return this.setter != null;
 		}
 
-		void setValue(Supplier<?> instance, Object value) {
+		@NullUnmarked void setValue(Supplier<?> instance, Object value) {
 			try {
 				this.setter.setAccessible(true);
 				this.setter.invoke(instance.get(), value);

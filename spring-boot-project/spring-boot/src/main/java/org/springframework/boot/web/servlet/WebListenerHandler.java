@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Handler for {@link WebListener @WebListener}-annotated classes.
@@ -36,7 +37,7 @@ class WebListenerHandler extends ServletComponentHandler {
 		super(WebListener.class);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	protected void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
 			@Nullable BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder

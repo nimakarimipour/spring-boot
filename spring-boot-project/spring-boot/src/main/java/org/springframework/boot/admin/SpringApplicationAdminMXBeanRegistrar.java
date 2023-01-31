@@ -42,6 +42,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Register a {@link SpringApplicationAdminMXBean} implementation to the platform
@@ -112,13 +113,13 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
-	void onApplicationReadyEvent(ApplicationReadyEvent event) {
+	@NullUnmarked void onApplicationReadyEvent(ApplicationReadyEvent event) {
 		if (this.applicationContext.equals(event.getApplicationContext())) {
 			this.ready = true;
 		}
 	}
 
-	void onWebServerInitializedEvent(WebServerInitializedEvent event) {
+	@NullUnmarked void onWebServerInitializedEvent(WebServerInitializedEvent event) {
 		if (this.applicationContext.equals(event.getApplicationContext())) {
 			this.embeddedWebApplication = true;
 		}
@@ -155,7 +156,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 			return SpringApplicationAdminMXBeanRegistrar.this.environment.getProperty(key);
 		}
 
-		@Override
+		@NullUnmarked @Override
 		public void shutdown() {
 			logger.info("Application shutdown requested.");
 			SpringApplicationAdminMXBeanRegistrar.this.applicationContext.close();

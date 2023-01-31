@@ -28,6 +28,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Bean to record and provide bound
@@ -72,7 +73,7 @@ public class BoundConfigurationProperties {
 	 * @param context the context to search
 	 * @return a {@link BoundConfigurationProperties} or {@code null}
 	 */
-	@Nullable public static BoundConfigurationProperties get(@Nullable ApplicationContext context) {
+	@NullUnmarked @Nullable public static BoundConfigurationProperties get(@Nullable ApplicationContext context) {
 		if (!context.containsBeanDefinition(BEAN_NAME)) {
 			return null;
 		}

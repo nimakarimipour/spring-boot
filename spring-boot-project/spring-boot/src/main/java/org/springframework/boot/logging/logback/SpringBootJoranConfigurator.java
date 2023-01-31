@@ -67,6 +67,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.SingletonSupplier;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Extended version of the Logback {@link JoranConfigurator} that adds additional Spring
@@ -275,7 +276,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			}
 		}
 
-		@Nullable private Object instantiate(@Nullable Class<?> type) {
+		@NullUnmarked @Nullable private Object instantiate(@Nullable Class<?> type) {
 			try {
 				return type.getConstructor().newInstance();
 			}

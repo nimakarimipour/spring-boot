@@ -28,6 +28,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Handler for {@link WebServlet @WebServlet}-annotated classes.
@@ -40,7 +41,7 @@ class WebServletHandler extends ServletComponentHandler {
 		super(WebServlet.class);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
 			@Nullable BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(ServletRegistrationBean.class);

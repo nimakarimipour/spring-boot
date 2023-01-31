@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 
 import org.springframework.boot.logging.DeferredLogFactory;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Imports {@link ConfigData} by {@link ConfigDataLocationResolver resolving} and
@@ -141,7 +142,7 @@ class ConfigDataImporter {
 		return Collections.unmodifiableMap(result);
 	}
 
-	private void handle(ConfigDataNotFoundException ex, ConfigDataLocation location, @Nullable ConfigDataResource resource) {
+	@NullUnmarked private void handle(ConfigDataNotFoundException ex, ConfigDataLocation location, @Nullable ConfigDataResource resource) {
 		if (ex instanceof ConfigDataResourceNotFoundException notFoundException) {
 			ex = notFoundException.withLocation(location);
 		}

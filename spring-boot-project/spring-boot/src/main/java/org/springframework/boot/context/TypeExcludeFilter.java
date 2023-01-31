@@ -27,6 +27,7 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Provides exclusion {@link TypeFilter TypeFilters} that are loaded from the
@@ -72,7 +73,7 @@ public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 		return false;
 	}
 
-	private Collection<TypeExcludeFilter> getDelegates() {
+	@NullUnmarked private Collection<TypeExcludeFilter> getDelegates() {
 		Collection<TypeExcludeFilter> delegates = this.delegates;
 		if (delegates == null) {
 			delegates = ((ListableBeanFactory) this.beanFactory).getBeansOfType(TypeExcludeFilter.class).values();

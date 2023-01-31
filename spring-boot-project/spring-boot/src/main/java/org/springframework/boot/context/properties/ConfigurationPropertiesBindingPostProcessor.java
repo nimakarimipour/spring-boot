@@ -31,6 +31,7 @@ import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
 import org.springframework.boot.Initializer;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BeanPostProcessor} to bind {@link PropertySources} to beans annotated with
@@ -62,7 +63,7 @@ public class ConfigurationPropertiesBindingPostProcessor
 		this.applicationContext = applicationContext;
 	}
 
-	@Initializer @Override
+	@NullUnmarked @Initializer @Override
 	public void afterPropertiesSet() throws Exception {
 		// We can't use constructor injection of the application context because
 		// it causes eager factory bean initialization

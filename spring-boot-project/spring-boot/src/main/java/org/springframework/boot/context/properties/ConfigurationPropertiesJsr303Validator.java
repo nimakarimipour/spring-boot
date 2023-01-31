@@ -24,6 +24,7 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Validator that supports configuration classes annotated with
@@ -52,7 +53,7 @@ final class ConfigurationPropertiesJsr303Validator implements Validator {
 		this.delegate.validate(target, errors);
 	}
 
-	static boolean isJsr303Present(@Nullable ApplicationContext applicationContext) {
+	@NullUnmarked static boolean isJsr303Present(@Nullable ApplicationContext applicationContext) {
 		ClassLoader classLoader = applicationContext.getClassLoader();
 		for (String validatorClass : VALIDATOR_CLASSES) {
 			if (!ClassUtils.isPresent(validatorClass, classLoader)) {

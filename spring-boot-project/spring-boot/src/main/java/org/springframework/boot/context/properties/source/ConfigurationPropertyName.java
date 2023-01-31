@@ -26,6 +26,7 @@ import java.util.function.Function;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A configuration property name composed of elements separated by dots. User created
@@ -273,7 +274,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @param name the name to check
 	 * @return {@code true} if this name is an ancestor
 	 */
-	public boolean isParentOf(@Nullable ConfigurationPropertyName name) {
+	@NullUnmarked public boolean isParentOf(@Nullable ConfigurationPropertyName name) {
 		Assert.notNull(name, "Name must not be null");
 		if (getNumberOfElements() != name.getNumberOfElements() - 1) {
 			return false;
@@ -287,7 +288,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @param name the name to check
 	 * @return {@code true} if this name is an ancestor
 	 */
-	public boolean isAncestorOf(@Nullable ConfigurationPropertyName name) {
+	@NullUnmarked public boolean isAncestorOf(@Nullable ConfigurationPropertyName name) {
 		Assert.notNull(name, "Name must not be null");
 		if (getNumberOfElements() >= name.getNumberOfElements()) {
 			return false;
@@ -300,7 +301,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return compare(this, other);
 	}
 
-	private int compare(ConfigurationPropertyName n1, @Nullable ConfigurationPropertyName n2) {
+	@NullUnmarked private int compare(ConfigurationPropertyName n1, @Nullable ConfigurationPropertyName n2) {
 		int l1 = n1.getNumberOfElements();
 		int l2 = n2.getNumberOfElements();
 		int i1 = 0;
@@ -323,7 +324,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return 0;
 	}
 
-	private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
+	@NullUnmarked private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
 		if (e1 == null) {
 			return -1;
 		}
@@ -755,7 +756,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			this.resolved = resolved;
 		}
 
-		Elements append(@Nullable Elements additional) {
+		@NullUnmarked Elements append(@Nullable Elements additional) {
 			int size = this.size + additional.size;
 			ElementType[] type = new ElementType[size];
 			System.arraycopy(this.type, 0, type, 0, this.size);

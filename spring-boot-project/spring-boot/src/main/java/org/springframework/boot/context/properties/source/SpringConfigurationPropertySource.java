@@ -28,6 +28,7 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link ConfigurationPropertySource} backed by a non-enumerable Spring
@@ -110,7 +111,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 		return ConfigurationPropertyState.UNKNOWN;
 	}
 
-	private static ConfigurationPropertyState containsDescendantOfForRandom(String prefix,
+	@NullUnmarked private static ConfigurationPropertyState containsDescendantOfForRandom(String prefix,
 			@Nullable ConfigurationPropertyName name) {
 		if (name.getNumberOfElements() > 1 && name.getElement(0, Form.DASHED).equals(prefix)) {
 			return ConfigurationPropertyState.PRESENT;

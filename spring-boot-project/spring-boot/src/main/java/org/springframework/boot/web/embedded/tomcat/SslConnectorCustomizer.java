@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures SSL support on the given connector.
@@ -69,7 +70,7 @@ class SslConnectorCustomizer implements TomcatConnectorCustomizer {
 	 * @param ssl the ssl details
 	 * @param sslStoreProvider the ssl store provider
 	 */
-	protected void configureSsl(AbstractHttp11JsseProtocol<?> protocol, @Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
+	@NullUnmarked protected void configureSsl(AbstractHttp11JsseProtocol<?> protocol, @Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		protocol.setSSLEnabled(true);
 		SSLHostConfig sslHostConfig = new SSLHostConfig();
 		sslHostConfig.setHostName(protocol.getDefaultSSLHostConfigName());

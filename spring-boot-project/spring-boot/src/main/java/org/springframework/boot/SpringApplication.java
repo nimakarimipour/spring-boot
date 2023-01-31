@@ -90,6 +90,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.function.ThrowingSupplier;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Class that can be used to bootstrap and launch a Spring application from a Java main
@@ -292,7 +293,7 @@ public class SpringApplication {
 	 * @param args the application arguments (usually passed from a Java main method)
 	 * @return a running {@link ApplicationContext}
 	 */
-	public ConfigurableApplicationContext run(String... args) {
+	@NullUnmarked public ConfigurableApplicationContext run(String... args) {
 		long startTime = System.nanoTime();
 		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
 		ConfigurableApplicationContext context = null;
@@ -413,7 +414,7 @@ public class SpringApplication {
 		listeners.contextLoaded(context);
 	}
 
-	private void addAotGeneratedInitializerIfNecessary(@Nullable List<ApplicationContextInitializer<?>> initializers) {
+	@NullUnmarked private void addAotGeneratedInitializerIfNecessary(@Nullable List<ApplicationContextInitializer<?>> initializers) {
 		if (AotDetector.useGeneratedArtifacts()) {
 			List<ApplicationContextInitializer<?>> aotInitializers = new ArrayList<>(
 					initializers.stream().filter(AotApplicationContextInitializer.class::isInstance).toList());
@@ -1212,7 +1213,7 @@ public class SpringApplication {
 	 * {@link ApplicationContext}.
 	 * @param initializers the initializers to add
 	 */
-	public void addInitializers(ApplicationContextInitializer<?>... initializers) {
+	@NullUnmarked public void addInitializers(ApplicationContextInitializer<?>... initializers) {
 		this.initializers.addAll(Arrays.asList(initializers));
 	}
 
@@ -1239,7 +1240,7 @@ public class SpringApplication {
 	 * registered with the {@link ApplicationContext}.
 	 * @param listeners the listeners to add
 	 */
-	public void addListeners(ApplicationListener<?>... listeners) {
+	@NullUnmarked public void addListeners(ApplicationListener<?>... listeners) {
 		this.listeners.addAll(Arrays.asList(listeners));
 	}
 

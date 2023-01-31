@@ -45,6 +45,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Wrapper around a {@link ConfigurableEnvironment} that can be used to import and apply
@@ -207,7 +208,7 @@ class ConfigDataEnvironment {
 		return binder.bind(propertyName, CONFIG_DATA_LOCATION_ARRAY).orElse(other);
 	}
 
-	private void addInitialImportContributors(List<ConfigDataEnvironmentContributor> initialContributors,
+	@NullUnmarked private void addInitialImportContributors(List<ConfigDataEnvironmentContributor> initialContributors,
 			@Nullable ConfigDataLocation[] locations) {
 		for (int i = locations.length - 1; i >= 0; i--) {
 			initialContributors.add(createInitialImportContributor(locations[i]));
@@ -286,7 +287,7 @@ class ConfigDataEnvironment {
 		}
 	}
 
-	private Collection<? extends String> getIncludedProfiles(ConfigDataEnvironmentContributors contributors,
+	@NullUnmarked private Collection<? extends String> getIncludedProfiles(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext) {
 		PlaceholdersResolver placeholdersResolver = new ConfigDataEnvironmentContributorPlaceholdersResolver(
 				contributors, activationContext, null, true);
@@ -322,7 +323,7 @@ class ConfigDataEnvironment {
 				.from(() -> contributors.getBinder(activationContext, binderOptions)).withScope(Scope.PROTOTYPE));
 	}
 
-	private void applyToEnvironment(ConfigDataEnvironmentContributors contributors,
+	@NullUnmarked private void applyToEnvironment(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext, Set<ConfigDataLocation> loadedLocations,
 			Set<ConfigDataLocation> optionalLocations) {
 		checkForInvalidProperties(contributors);
@@ -365,7 +366,7 @@ class ConfigDataEnvironment {
 		}
 	}
 
-	private void checkMandatoryLocations(ConfigDataEnvironmentContributors contributors,
+	@NullUnmarked private void checkMandatoryLocations(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext, Set<ConfigDataLocation> loadedLocations,
 			Set<ConfigDataLocation> optionalLocations) {
 		Set<ConfigDataLocation> mandatoryLocations = new LinkedHashSet<>();

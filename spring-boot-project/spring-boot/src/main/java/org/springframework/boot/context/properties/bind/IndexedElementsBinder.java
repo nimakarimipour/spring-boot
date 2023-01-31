@@ -33,6 +33,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Base class for {@link AggregateBinder AggregateBinders} that read a sequential run of
@@ -99,7 +100,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 		collection.addAll(elements);
 	}
 
-	private void bindIndexed(ConfigurationPropertySource source, @Nullable ConfigurationPropertyName root,
+	@NullUnmarked private void bindIndexed(ConfigurationPropertySource source, @Nullable ConfigurationPropertyName root,
 			AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType elementType) {
 		MultiValueMap<String, ConfigurationPropertyName> knownIndexedChildren = getKnownIndexedChildren(source, root);
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
@@ -114,7 +115,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 		assertNoUnboundChildren(source, knownIndexedChildren);
 	}
 
-	private MultiValueMap<String, ConfigurationPropertyName> getKnownIndexedChildren(ConfigurationPropertySource source,
+	@NullUnmarked private MultiValueMap<String, ConfigurationPropertyName> getKnownIndexedChildren(ConfigurationPropertySource source,
 			@Nullable ConfigurationPropertyName root) {
 		MultiValueMap<String, ConfigurationPropertyName> children = new LinkedMultiValueMap<>();
 		if (!(source instanceof IterableConfigurationPropertySource iterableSource)) {

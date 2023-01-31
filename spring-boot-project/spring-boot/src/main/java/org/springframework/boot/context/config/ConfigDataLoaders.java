@@ -33,6 +33,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A collection of {@link ConfigDataLoader} instances loaded via {@code spring.factories}.
@@ -90,7 +91,7 @@ class ConfigDataLoaders {
 	 * @return the loaded {@link ConfigData}
 	 * @throws IOException on IO error
 	 */
-	<R extends ConfigDataResource> ConfigData load(ConfigDataLoaderContext context, R resource) throws IOException {
+	@NullUnmarked <R extends ConfigDataResource> ConfigData load(ConfigDataLoaderContext context, R resource) throws IOException {
 		ConfigDataLoader<R> loader = getLoader(context, resource);
 		this.logger.trace(LogMessage.of(() -> "Loading " + resource + " using loader " + loader.getClass().getName()));
 		return loader.load(context, resource);

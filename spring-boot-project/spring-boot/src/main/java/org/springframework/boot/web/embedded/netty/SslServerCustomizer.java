@@ -50,6 +50,7 @@ import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link NettyServerCustomizer} that configures SSL for the given Reactor Netty server
@@ -82,7 +83,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		return server.secure((spec) -> spec.sslContext(sslContextSpec));
 	}
 
-	protected AbstractProtocolSslContextSpec<?> createSslContextSpec() {
+	@NullUnmarked protected AbstractProtocolSslContextSpec<?> createSslContextSpec() {
 		AbstractProtocolSslContextSpec<?> sslContextSpec;
 		if (this.http2 != null && this.http2.isEnabled()) {
 			sslContextSpec = Http2SslContextSpec.forServer(getKeyManagerFactory(this.ssl, this.sslStoreProvider));
@@ -108,7 +109,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		return sslContextSpec;
 	}
 
-	KeyManagerFactory getKeyManagerFactory(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
+	@NullUnmarked KeyManagerFactory getKeyManagerFactory(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		try {
 			KeyStore keyStore = getKeyStore(ssl, sslStoreProvider);
 			SslConfigurationValidator.validateKeyAlias(keyStore, ssl.getKeyAlias());
@@ -128,7 +129,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		}
 	}
 
-	private KeyStore getKeyStore(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) throws Exception {
+	@NullUnmarked private KeyStore getKeyStore(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getKeyStore();
 		}
@@ -149,7 +150,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		}
 	}
 
-	@Nullable private KeyStore getTrustStore(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) throws Exception {
+	@NullUnmarked @Nullable private KeyStore getTrustStore(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) throws Exception {
 		if (sslStoreProvider != null) {
 			return sslStoreProvider.getTrustStore();
 		}

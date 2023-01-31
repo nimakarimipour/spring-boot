@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.source;
 
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A {@link ConfigurationPropertySource} supporting a prefix.
@@ -51,7 +52,7 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 				configurationProperty.getOrigin());
 	}
 
-	private ConfigurationPropertyName getPrefixedName(@Nullable ConfigurationPropertyName name) {
+	@NullUnmarked private ConfigurationPropertyName getPrefixedName(@Nullable ConfigurationPropertyName name) {
 		return this.prefix.append(name);
 	}
 

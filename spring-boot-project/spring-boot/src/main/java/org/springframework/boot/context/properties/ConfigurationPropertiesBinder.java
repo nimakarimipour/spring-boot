@@ -53,6 +53,7 @@ import org.springframework.core.env.PropertySources;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Internal class used by the {@link ConfigurationPropertiesBindingPostProcessor} to
@@ -95,14 +96,14 @@ class ConfigurationPropertiesBinder {
 		return getBinder().bind(annotation.prefix(), target, bindHandler);
 	}
 
-	@Nullable Object bindOrCreate(@Nullable ConfigurationPropertiesBean propertiesBean) {
+	@NullUnmarked @Nullable Object bindOrCreate(@Nullable ConfigurationPropertiesBean propertiesBean) {
 		Bindable<?> target = propertiesBean.asBindTarget();
 		ConfigurationProperties annotation = propertiesBean.getAnnotation();
 		BindHandler bindHandler = getBindHandler(target, annotation);
 		return getBinder().bindOrCreate(annotation.prefix(), target, bindHandler);
 	}
 
-	@Nullable private Validator getConfigurationPropertiesValidator(@Nullable ApplicationContext applicationContext) {
+	@NullUnmarked @Nullable private Validator getConfigurationPropertiesValidator(@Nullable ApplicationContext applicationContext) {
 		if (applicationContext.containsBean(VALIDATOR_BEAN_NAME)) {
 			return applicationContext.getBean(VALIDATOR_BEAN_NAME, Validator.class);
 		}
@@ -157,7 +158,7 @@ class ConfigurationPropertiesBinder {
 		return this.jsr303Validator;
 	}
 
-	private List<ConfigurationPropertiesBindHandlerAdvisor> getBindHandlerAdvisors() {
+	@NullUnmarked private List<ConfigurationPropertiesBindHandlerAdvisor> getBindHandlerAdvisors() {
 		return this.applicationContext.getBeanProvider(ConfigurationPropertiesBindHandlerAdvisor.class).orderedStream()
 				.toList();
 	}

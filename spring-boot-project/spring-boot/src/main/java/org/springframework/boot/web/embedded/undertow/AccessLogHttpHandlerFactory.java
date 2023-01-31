@@ -32,6 +32,7 @@ import org.xnio.XnioWorker;
 
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A {@link HttpHandlerFactory} for an {@link AccessLogHandler}.
@@ -74,7 +75,7 @@ class AccessLogHttpHandlerFactory implements HttpHandlerFactory {
 		}
 	}
 
-	private void createAccessLogDirectoryIfNecessary() {
+	@NullUnmarked private void createAccessLogDirectoryIfNecessary() {
 		Assert.state(this.directory != null, "Access log directory is not set");
 		if (!this.directory.isDirectory() && !this.directory.mkdirs()) {
 			throw new IllegalStateException("Failed to create access log directory '" + this.directory + "'");

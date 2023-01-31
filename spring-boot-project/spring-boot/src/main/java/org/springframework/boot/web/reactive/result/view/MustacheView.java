@@ -40,6 +40,7 @@ import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.server.ServerWebExchange;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Spring WebFlux {@link View} using the Mustache template engine.
@@ -76,7 +77,7 @@ public class MustacheView extends AbstractUrlBasedView {
 		return resolveResource() != null;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	protected Mono<Void> renderInternal(Map<String, Object> model, MediaType contentType, ServerWebExchange exchange) {
 		Resource resource = resolveResource();
 		if (resource == null) {

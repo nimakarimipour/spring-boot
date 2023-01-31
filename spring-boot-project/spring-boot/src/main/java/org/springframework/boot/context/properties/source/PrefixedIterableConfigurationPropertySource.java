@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.source;
 
 import java.util.stream.Stream;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An iterable {@link PrefixedConfigurationPropertySource}.
@@ -35,7 +36,7 @@ class PrefixedIterableConfigurationPropertySource extends PrefixedConfigurationP
 		return getSource().stream().map(this::stripPrefix);
 	}
 
-	private ConfigurationPropertyName stripPrefix(ConfigurationPropertyName name) {
+	@NullUnmarked private ConfigurationPropertyName stripPrefix(ConfigurationPropertyName name) {
 		return (getPrefix().isAncestorOf(name)) ? name.subName(getPrefix().getNumberOfElements()) : name;
 	}
 

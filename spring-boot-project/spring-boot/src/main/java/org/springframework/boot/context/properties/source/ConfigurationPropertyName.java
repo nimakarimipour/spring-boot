@@ -26,6 +26,7 @@ import java.util.function.Function;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A configuration property name composed of elements separated by dots. User created
@@ -323,7 +324,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return 0;
 	}
 
-	private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
+	@NullUnmarked private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
 		if (e1 == null) {
 			return -1;
 		}
@@ -583,7 +584,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid and
 	 * {@code returnNullIfInvalid} is {@code false}
 	 */
-	static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
+	@NullUnmarked static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
 		Elements elements = elementsOf(name, returnNullIfInvalid);
 		return (elements != null) ? new ConfigurationPropertyName(elements) : null;
 	}
@@ -755,7 +756,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			this.resolved = resolved;
 		}
 
-		Elements append(@Nullable Elements additional) {
+		@NullUnmarked Elements append(@Nullable Elements additional) {
 			int size = this.size + additional.size;
 			ElementType[] type = new ElementType[size];
 			System.arraycopy(this.type, 0, type, 0, this.size);

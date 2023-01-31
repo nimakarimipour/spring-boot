@@ -29,6 +29,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Handler for {@link WebFilter @WebFilter}-annotated classes.
@@ -56,7 +57,7 @@ class WebFilterHandler extends ServletComponentHandler {
 		registry.registerBeanDefinition(name, builder.getBeanDefinition());
 	}
 
-	private EnumSet<DispatcherType> extractDispatcherTypes(Map<String, Object> attributes) {
+	@NullUnmarked private EnumSet<DispatcherType> extractDispatcherTypes(Map<String, Object> attributes) {
 		DispatcherType[] dispatcherTypes = (DispatcherType[]) attributes.get("dispatcherTypes");
 		if (dispatcherTypes.length == 0) {
 			return EnumSet.noneOf(DispatcherType.class);

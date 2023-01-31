@@ -26,6 +26,7 @@ import reactor.netty.DisposableServer;
 import org.springframework.boot.web.server.GracefulShutdownCallback;
 import org.springframework.boot.web.server.GracefulShutdownResult;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Handles Netty graceful shutdown.
@@ -73,7 +74,7 @@ final class GracefulShutdown {
 		}
 	}
 
-	void abort() {
+	@NullUnmarked void abort() {
 		Thread shutdownThread = this.shutdownThread;
 		if (shutdownThread != null) {
 			while (!this.shuttingDown) {

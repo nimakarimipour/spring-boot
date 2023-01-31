@@ -56,7 +56,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 	private static final Log logger = LogFactory.getLog(SpringApplicationAdmin.class);
 
-	private ConfigurableApplicationContext applicationContext;
+	@SuppressWarnings("NullAway.Init") private ConfigurableApplicationContext applicationContext;
 
 	private Environment environment = new StandardEnvironment();
 

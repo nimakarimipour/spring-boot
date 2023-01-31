@@ -47,6 +47,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Loads bean definitions from underlying sources, including XML and JavaConfig. Acts as a
@@ -158,7 +159,7 @@ class BeanDefinitionLoader {
 		throw new IllegalArgumentException("Invalid source type " + source.getClass());
 	}
 
-	private void load(Class<?> source) {
+	@NullUnmarked private void load(Class<?> source) {
 		if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
 			// Any GroovyLoaders added in beans{} DSL can contribute beans here
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);

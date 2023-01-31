@@ -32,6 +32,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ConcurrentReferenceHashMap.ReferenceType;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Adapter to convert Spring's {@link MutablePropertySources} to
@@ -55,7 +56,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 		return this.sources == sources;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Iterator<ConfigurationPropertySource> iterator() {
 		return new SourcesIterator(this.sources.iterator(), this::adapt);
 	}

@@ -37,6 +37,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link DataObjectBinder} for mutable Java Beans.
@@ -281,13 +282,13 @@ class JavaBeanBinder implements DataObjectBinder {
 
 		private final ResolvableType declaringClassType;
 
-		private Method getter;
+		@SuppressWarnings("NullAway.Init") private Method getter;
 
-		private Method setter;
+		@SuppressWarnings("NullAway.Init") private Method setter;
 
 		@Nullable private Field field;
 
-		BeanProperty(String name, ResolvableType declaringClassType) {
+		@NullUnmarked BeanProperty(String name, ResolvableType declaringClassType) {
 			this.name = DataObjectPropertyName.toDashedForm(name);
 			this.declaringClassType = declaringClassType;
 		}

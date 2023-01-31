@@ -23,6 +23,7 @@ import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An {@link SslStoreProvider} that creates key and trust stores from certificate and
@@ -114,7 +115,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 	 * @param ssl the SSL properties
 	 * @return an {@code SslStoreProvider} or {@code null}
 	 */
-	public static SslStoreProvider from(@Nullable Ssl ssl) {
+	@NullUnmarked public static SslStoreProvider from(@Nullable Ssl ssl) {
 		if (ssl != null && ssl.isEnabled()) {
 			if (ssl.getCertificate() != null && ssl.getCertificatePrivateKey() != null) {
 				return new CertificateFileSslStoreProvider(ssl);

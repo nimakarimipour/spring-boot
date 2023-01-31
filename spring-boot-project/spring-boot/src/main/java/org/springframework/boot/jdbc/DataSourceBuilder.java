@@ -46,6 +46,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Convenience class for building a {@link DataSource}. Provides a limited subset of the
@@ -470,7 +471,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			this.setter = setter;
 		}
 
-		void set(T dataSource, @Nullable String value) {
+		@NullUnmarked void set(T dataSource, @Nullable String value) {
 			try {
 				if (this.setter == null) {
 					UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),
@@ -484,7 +485,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			}
 		}
 
-		@Nullable String get(@Nullable T dataSource) {
+		@NullUnmarked @Nullable String get(@Nullable T dataSource) {
 			try {
 				if (this.getter == null) {
 					UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),

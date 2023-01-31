@@ -30,6 +30,7 @@ import org.springframework.boot.util.LambdaSafe;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BeanPostProcessor} that applies all {@link WebServerFactoryCustomizer} beans
@@ -83,7 +84,7 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 		return this.customizers;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@NullUnmarked @SuppressWarnings({ "unchecked", "rawtypes" })
 	private Collection<WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
 		return (Collection) this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false).values();
 	}

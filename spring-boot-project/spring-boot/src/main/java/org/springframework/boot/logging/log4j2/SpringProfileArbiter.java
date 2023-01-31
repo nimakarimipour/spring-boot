@@ -32,6 +32,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An Arbiter that uses the active Spring profile to determine if configuration should be
@@ -92,7 +93,7 @@ final class SpringProfileArbiter implements Arbiter {
 			return this;
 		}
 
-		@Nullable @Override
+		@NullUnmarked @Nullable @Override
 		public SpringProfileArbiter build() {
 			Environment environment = Log4J2LoggingSystem.getEnvironment(this.loggerContext);
 			if (environment == null) {

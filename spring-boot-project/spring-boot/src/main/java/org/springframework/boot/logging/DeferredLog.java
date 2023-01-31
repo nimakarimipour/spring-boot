@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Deferred {@link Log} that can be used to store messages that shouldn't be written until
@@ -45,7 +46,7 @@ public class DeferredLog implements Log {
 	/**
 	 * Create a new {@link DeferredLog} instance.
 	 */
-	public DeferredLog() {
+	@NullUnmarked public DeferredLog() {
 		this.destinationSupplier = null;
 		this.lines = new Lines();
 	}

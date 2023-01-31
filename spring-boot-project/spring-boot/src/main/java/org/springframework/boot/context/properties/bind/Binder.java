@@ -43,6 +43,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.util.Assert;
 import javax.annotation.Nullable;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A container object which Binds objects from one or more
@@ -179,7 +180,7 @@ public class Binder {
 	 * constructor to use when binding
 	 * @since 2.5.0
 	 */
-	public Binder(@Nullable Iterable<ConfigurationPropertySource> sources, @Nullable PlaceholdersResolver placeholdersResolver,
+	@NullUnmarked public Binder(@Nullable Iterable<ConfigurationPropertySource> sources, @Nullable PlaceholdersResolver placeholdersResolver,
 			@Nullable List<ConversionService> conversionServices, @Nullable Consumer<PropertyEditorRegistry> propertyEditorInitializer,
 			@Nullable BindHandler defaultBindHandler, @Nullable BindConstructorProvider constructorProvider) {
 		Assert.notNull(sources, "Sources must not be null");

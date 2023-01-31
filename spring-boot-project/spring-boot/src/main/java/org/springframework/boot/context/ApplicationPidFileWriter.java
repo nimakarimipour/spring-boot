@@ -37,6 +37,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * An {@link ApplicationListener} that saves application PID into file. This application
@@ -163,7 +164,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		return Boolean.parseBoolean(value);
 	}
 
-	private String getProperty(SpringApplicationEvent event, List<Property> candidates) {
+	@NullUnmarked private String getProperty(SpringApplicationEvent event, List<Property> candidates) {
 		for (Property candidate : candidates) {
 			String value = candidate.getValue(event);
 			if (value != null) {
@@ -212,7 +213,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			this.key = key;
 		}
 
-		@Override
+		@NullUnmarked @Override
 		public String getValue(SpringApplicationEvent event) {
 			Environment environment = getEnvironment(event);
 			if (environment == null) {
@@ -221,7 +222,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			return environment.getProperty(this.prefix + this.key);
 		}
 
-		private Environment getEnvironment(SpringApplicationEvent event) {
+		@NullUnmarked private Environment getEnvironment(SpringApplicationEvent event) {
 			if (event instanceof ApplicationEnvironmentPreparedEvent environmentPreparedEvent) {
 				return environmentPreparedEvent.getEnvironment();
 			}

@@ -17,6 +17,7 @@
 package org.springframework.boot.jdbc.metadata;
 
 import javax.sql.DataSource;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A base {@link DataSourcePoolMetadata} implementation.
@@ -37,7 +38,7 @@ public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> imple
 		this.dataSource = dataSource;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Float getUsage() {
 		Integer maxSize = getMax();
 		Integer currentSize = getActive();

@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriTemplateHandler;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link UriTemplateHandler} to set the root for URI that starts with {@code '/'}.
@@ -38,7 +39,7 @@ public class RootUriTemplateHandler implements UriTemplateHandler {
 
 	private final UriTemplateHandler handler;
 
-	protected RootUriTemplateHandler(UriTemplateHandler handler) {
+	@NullUnmarked protected RootUriTemplateHandler(UriTemplateHandler handler) {
 		Assert.notNull(handler, "Handler must not be null");
 		this.rootUri = null;
 		this.handler = handler;

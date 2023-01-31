@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Manages a {@link ServletWebServerFactory} document root.
@@ -38,7 +39,7 @@ class DocumentRoot {
 
 	private final Log logger;
 
-	private File directory;
+	@SuppressWarnings("NullAway.Init") private File directory;
 
 	DocumentRoot(Log logger) {
 		this.logger = logger;
@@ -75,7 +76,7 @@ class DocumentRoot {
 		return getArchiveFileDocumentRoot(".war");
 	}
 
-	private File getArchiveFileDocumentRoot(String extension) {
+	@NullUnmarked private File getArchiveFileDocumentRoot(String extension) {
 		File file = getCodeSourceArchive();
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Code archive: " + file);
@@ -95,7 +96,7 @@ class DocumentRoot {
 		return getCodeSourceArchive(getClass().getProtectionDomain().getCodeSource());
 	}
 
-	File getCodeSourceArchive(CodeSource codeSource) {
+	@NullUnmarked File getCodeSourceArchive(CodeSource codeSource) {
 		try {
 			URL location = (codeSource != null) ? codeSource.getLocation() : null;
 			if (location == null) {
@@ -120,7 +121,7 @@ class DocumentRoot {
 		}
 	}
 
-	final File getExplodedWarFileDocumentRoot(File codeSourceFile) {
+	@NullUnmarked final File getExplodedWarFileDocumentRoot(File codeSourceFile) {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Code archive: " + codeSourceFile);
 		}
@@ -135,7 +136,7 @@ class DocumentRoot {
 		return null;
 	}
 
-	private File getCommonDocumentRoot() {
+	@NullUnmarked private File getCommonDocumentRoot() {
 		for (String commonDocRoot : COMMON_DOC_ROOTS) {
 			File root = new File(commonDocRoot);
 			if (root.exists() && root.isDirectory()) {

@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.system;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Access to system properties.
@@ -27,7 +28,7 @@ public final class SystemProperties {
 	private SystemProperties() {
 	}
 
-	public static String get(String... properties) {
+	@NullUnmarked public static String get(String... properties) {
 		for (String property : properties) {
 			try {
 				String override = System.getProperty(property);

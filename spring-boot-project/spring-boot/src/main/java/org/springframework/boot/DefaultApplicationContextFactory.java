@@ -25,6 +25,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Default {@link ApplicationContextFactory} implementation that will create an
@@ -34,12 +35,12 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  */
 class DefaultApplicationContextFactory implements ApplicationContextFactory {
 
-	@Override
+	@NullUnmarked @Override
 	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
 		return getFromSpringFactories(webApplicationType, ApplicationContextFactory::getEnvironmentType, null);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
 		return getFromSpringFactories(webApplicationType, ApplicationContextFactory::createEnvironment, null);
 	}
@@ -63,7 +64,7 @@ class DefaultApplicationContextFactory implements ApplicationContextFactory {
 		return new GenericApplicationContext();
 	}
 
-	private <T> T getFromSpringFactories(WebApplicationType webApplicationType,
+	@NullUnmarked private <T> T getFromSpringFactories(WebApplicationType webApplicationType,
 			BiFunction<ApplicationContextFactory, WebApplicationType, T> action, Supplier<T> defaultResult) {
 		for (ApplicationContextFactory candidate : SpringFactoriesLoader.loadFactories(ApplicationContextFactory.class,
 				getClass().getClassLoader())) {

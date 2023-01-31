@@ -36,6 +36,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.AbstractBindingResult;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Validator;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link BindHandler} to apply {@link Validator Validators} to bound results.
@@ -54,7 +55,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 
 	private final Set<ConfigurationProperty> boundProperties = new LinkedHashSet<>();
 
-	private BindValidationException exception;
+	@SuppressWarnings("NullAway.Init") private BindValidationException exception;
 
 	public ValidationBindHandler(Validator... validators) {
 		this.validators = validators;
@@ -92,7 +93,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 		return result;
 	}
 
-	private void clear() {
+	@NullUnmarked private void clear() {
 		this.boundTypes.clear();
 		this.boundResults.clear();
 		this.boundProperties.clear();
@@ -119,7 +120,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 		}
 	}
 
-	private Object getValidationTarget(Bindable<?> target, BindContext context, Object result) {
+	@NullUnmarked private Object getValidationTarget(Bindable<?> target, BindContext context, Object result) {
 		if (result != null) {
 			return result;
 		}
@@ -169,7 +170,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			return super.getFieldType(field);
 		}
 
-		@Override
+		@NullUnmarked @Override
 		protected Object getActualFieldValue(String field) {
 			Object boundField = getBoundField(ValidationBindHandler.this.boundResults, field);
 			if (boundField != null) {
@@ -196,7 +197,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			return false;
 		}
 
-		private <T> T getBoundField(Map<ConfigurationPropertyName, T> boundFields, String field) {
+		@NullUnmarked private <T> T getBoundField(Map<ConfigurationPropertyName, T> boundFields, String field) {
 			try {
 				ConfigurationPropertyName name = getName(field);
 				T bound = boundFields.get(name);

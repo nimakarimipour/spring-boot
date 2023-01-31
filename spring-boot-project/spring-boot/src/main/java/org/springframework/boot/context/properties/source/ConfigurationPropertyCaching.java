@@ -20,6 +20,7 @@ import java.time.Duration;
 
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Interface that can be used to control configuration property source caches.
@@ -56,7 +57,7 @@ public interface ConfigurationPropertyCaching {
 	 * @param environment the spring environment
 	 * @return a caching instance that controls all sources in the environment
 	 */
-	static ConfigurationPropertyCaching get(Environment environment) {
+	@NullUnmarked static ConfigurationPropertyCaching get(Environment environment) {
 		return get(environment, null);
 	}
 
@@ -78,7 +79,7 @@ public interface ConfigurationPropertyCaching {
 	 * @param sources the configuration property sources
 	 * @return a caching instance that controls the sources
 	 */
-	static ConfigurationPropertyCaching get(Iterable<ConfigurationPropertySource> sources) {
+	@NullUnmarked static ConfigurationPropertyCaching get(Iterable<ConfigurationPropertySource> sources) {
 		return get(sources, null);
 	}
 

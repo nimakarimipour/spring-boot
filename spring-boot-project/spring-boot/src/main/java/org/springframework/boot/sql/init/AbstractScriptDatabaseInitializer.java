@@ -31,6 +31,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Base class for an {@link InitializingBean} that performs SQL database initialization
@@ -45,7 +46,7 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 
 	private final DatabaseInitializationSettings settings;
 
-	private volatile ResourceLoader resourceLoader;
+	@SuppressWarnings("NullAway.Init") private volatile ResourceLoader resourceLoader;
 
 	/**
 	 * Creates a new {@link AbstractScriptDatabaseInitializer} that will initialize the
@@ -191,9 +192,9 @@ public abstract class AbstractScriptDatabaseInitializer implements ResourceLoade
 
 		private String separator = ";";
 
-		private Charset encoding;
+		@SuppressWarnings("NullAway.Init") private Charset encoding;
 
-		public Scripts(List<Resource> resources) {
+		@NullUnmarked public Scripts(List<Resource> resources) {
 			this.resources = resources;
 		}
 

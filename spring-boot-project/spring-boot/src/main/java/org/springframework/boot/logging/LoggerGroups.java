@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Logger groups configured via the Spring Environment.
@@ -51,7 +52,7 @@ public final class LoggerGroups implements Iterable<LoggerGroup> {
 		this.groups.put(loggerGroup.getName(), loggerGroup);
 	}
 
-	public LoggerGroup get(String name) {
+	@NullUnmarked public LoggerGroup get(String name) {
 		return this.groups.get(name);
 	}
 

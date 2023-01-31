@@ -21,6 +21,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySource;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link PropertySource} that exposes {@link ConfigurationPropertySource} instances so
@@ -42,7 +43,7 @@ class ConfigurationPropertySourcesPropertySource extends PropertySource<Iterable
 		return findConfigurationProperty(name) != null;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Object getProperty(String name) {
 		ConfigurationProperty configurationProperty = findConfigurationProperty(name);
 		return (configurationProperty != null) ? configurationProperty.getValue() : null;
@@ -53,7 +54,7 @@ class ConfigurationPropertySourcesPropertySource extends PropertySource<Iterable
 		return Origin.from(findConfigurationProperty(name));
 	}
 
-	private ConfigurationProperty findConfigurationProperty(String name) {
+	@NullUnmarked private ConfigurationProperty findConfigurationProperty(String name) {
 		try {
 			return findConfigurationProperty(ConfigurationPropertyName.of(name, true));
 		}
@@ -62,7 +63,7 @@ class ConfigurationPropertySourcesPropertySource extends PropertySource<Iterable
 		}
 	}
 
-	ConfigurationProperty findConfigurationProperty(ConfigurationPropertyName name) {
+	@NullUnmarked ConfigurationProperty findConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
 		}

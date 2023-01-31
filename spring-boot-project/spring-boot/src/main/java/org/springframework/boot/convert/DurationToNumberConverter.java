@@ -25,6 +25,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link Converter} to convert from a {@link Duration} to a {@link Number}.
@@ -40,7 +41,7 @@ final class DurationToNumberConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Duration.class, Number.class));
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;
@@ -48,7 +49,7 @@ final class DurationToNumberConverter implements GenericConverter {
 		return convert((Duration) source, getDurationUnit(sourceType), targetType.getObjectType());
 	}
 
-	private ChronoUnit getDurationUnit(TypeDescriptor sourceType) {
+	@NullUnmarked private ChronoUnit getDurationUnit(TypeDescriptor sourceType) {
 		DurationUnit annotation = sourceType.getAnnotation(DurationUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}

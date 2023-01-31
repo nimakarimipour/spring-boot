@@ -25,6 +25,7 @@ import org.apache.catalina.loader.ParallelWebappClassLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tomcat.util.compat.JreCompat;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Extension of Tomcat's {@link ParallelWebappClassLoader} that does not consider the
@@ -53,7 +54,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		super(parent);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public URL findResource(String name) {
 		return null;
 	}
@@ -105,7 +106,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		}
 	}
 
-	private Class<?> loadFromParent(String name) {
+	@NullUnmarked private Class<?> loadFromParent(String name) {
 		if (this.parent == null) {
 			return null;
 		}
@@ -117,7 +118,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		}
 	}
 
-	private Class<?> findClassIgnoringNotFound(String name) {
+	@NullUnmarked private Class<?> findClassIgnoringNotFound(String name) {
 		try {
 			return findClass(name);
 		}

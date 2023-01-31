@@ -25,6 +25,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link Converter} to convert from a {@link String} to a {@link DataSize}. Supports
@@ -40,7 +41,7 @@ final class StringToDataSizeConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(String.class, DataSize.class));
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (ObjectUtils.isEmpty(source)) {
 			return null;
@@ -48,7 +49,7 @@ final class StringToDataSizeConverter implements GenericConverter {
 		return convert(source.toString(), getDataUnit(targetType));
 	}
 
-	private DataUnit getDataUnit(TypeDescriptor targetType) {
+	@NullUnmarked private DataUnit getDataUnit(TypeDescriptor targetType) {
 		DataSizeUnit annotation = targetType.getAnnotation(DataSizeUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}

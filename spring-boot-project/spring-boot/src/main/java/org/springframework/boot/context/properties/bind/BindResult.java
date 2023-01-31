@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A container object to return the result of a {@link Binder} bind operation. May contain
@@ -39,7 +40,7 @@ public final class BindResult<T> {
 
 	private final T value;
 
-	private BindResult(T value) {
+	@NullUnmarked private BindResult(T value) {
 		this.value = value;
 	}
 
@@ -86,7 +87,7 @@ public final class BindResult<T> {
 	 * @return an {@code BindResult} describing the result of applying a mapping function
 	 * to the value of this {@code BindResult}.
 	 */
-	public <U> BindResult<U> map(Function<? super T, ? extends U> mapper) {
+	@NullUnmarked public <U> BindResult<U> map(Function<? super T, ? extends U> mapper) {
 		Assert.notNull(mapper, "Mapper must not be null");
 		return of((this.value != null) ? mapper.apply(this.value) : null);
 	}

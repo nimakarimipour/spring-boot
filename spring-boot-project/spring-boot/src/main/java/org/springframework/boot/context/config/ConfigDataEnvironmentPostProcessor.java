@@ -33,6 +33,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link EnvironmentPostProcessor} that loads and applies {@link ConfigData} to Spring's
@@ -65,7 +66,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 
 	private final ConfigDataEnvironmentUpdateListener environmentUpdateListener;
 
-	public ConfigDataEnvironmentPostProcessor(DeferredLogFactory logFactory,
+	@NullUnmarked public ConfigDataEnvironmentPostProcessor(DeferredLogFactory logFactory,
 			ConfigurableBootstrapContext bootstrapContext) {
 		this(logFactory, bootstrapContext, null);
 	}
@@ -108,7 +109,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 	 * directly and not necessarily as part of a {@link SpringApplication}.
 	 * @param environment the environment to apply {@link ConfigData} to
 	 */
-	public static void applyTo(ConfigurableEnvironment environment) {
+	@NullUnmarked public static void applyTo(ConfigurableEnvironment environment) {
 		applyTo(environment, null, null, Collections.emptyList());
 	}
 

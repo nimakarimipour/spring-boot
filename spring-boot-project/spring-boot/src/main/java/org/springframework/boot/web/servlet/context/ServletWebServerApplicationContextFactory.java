@@ -21,6 +21,7 @@ import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link ApplicationContextFactory} registered in {@code spring.factories} to support
@@ -32,17 +33,17 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 class ServletWebServerApplicationContextFactory implements ApplicationContextFactory {
 
-	@Override
+	@NullUnmarked @Override
 	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
 		return (webApplicationType != WebApplicationType.SERVLET) ? null : ApplicationServletEnvironment.class;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
 		return (webApplicationType != WebApplicationType.SERVLET) ? null : new ApplicationServletEnvironment();
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
 		return (webApplicationType != WebApplicationType.SERVLET) ? null : createContext();
 	}

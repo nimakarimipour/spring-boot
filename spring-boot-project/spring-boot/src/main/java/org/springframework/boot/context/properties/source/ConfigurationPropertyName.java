@@ -25,6 +25,7 @@ import java.util.function.Function;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A configuration property name composed of elements separated by dots. User created
@@ -63,7 +64,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 	private final CharSequence[] uniformElements;
 
-	private String string;
+	@SuppressWarnings("NullAway.Init") private String string;
 
 	private int hashCode;
 
@@ -299,7 +300,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return compare(this, other);
 	}
 
-	private int compare(ConfigurationPropertyName n1, ConfigurationPropertyName n2) {
+	@NullUnmarked private int compare(ConfigurationPropertyName n1, ConfigurationPropertyName n2) {
 		int l1 = n1.getNumberOfElements();
 		int l2 = n2.getNumberOfElements();
 		int i1 = 0;
@@ -582,7 +583,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid and
 	 * {@code returnNullIfInvalid} is {@code false}
 	 */
-	static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
+	@NullUnmarked static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
 		Elements elements = elementsOf(name, returnNullIfInvalid);
 		return (elements != null) ? new ConfigurationPropertyName(elements) : null;
 	}
@@ -595,7 +596,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return elementsOf(name, returnNullIfInvalid, ElementsParser.DEFAULT_CAPACITY);
 	}
 
-	private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
+	@NullUnmarked private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
 		if (name == null) {
 			Assert.isTrue(returnNullIfInvalid, "Name must not be null");
 			return null;
@@ -639,7 +640,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @param separator the separator used to split the name
 	 * @return a {@link ConfigurationPropertyName}
 	 */
-	public static ConfigurationPropertyName adapt(CharSequence name, char separator) {
+	@NullUnmarked public static ConfigurationPropertyName adapt(CharSequence name, char separator) {
 		return adapt(name, separator, null);
 	}
 
@@ -744,7 +745,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		 */
 		private final CharSequence[] resolved;
 
-		Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, CharSequence[] resolved) {
+		@NullUnmarked Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, CharSequence[] resolved) {
 			super();
 			this.source = source;
 			this.size = size;
@@ -883,13 +884,13 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 		private ElementType[] type;
 
-		private CharSequence[] resolved;
+		@SuppressWarnings("NullAway.Init") private CharSequence[] resolved;
 
 		ElementsParser(CharSequence source, char separator) {
 			this(source, separator, DEFAULT_CAPACITY);
 		}
 
-		ElementsParser(CharSequence source, char separator, int capacity) {
+		@NullUnmarked ElementsParser(CharSequence source, char separator, int capacity) {
 			this.source = source;
 			this.separator = separator;
 			this.start = new int[capacity];
@@ -897,7 +898,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			this.type = new ElementType[capacity];
 		}
 
-		Elements parse() {
+		@NullUnmarked Elements parse() {
 			return parse(null);
 		}
 
@@ -1000,7 +1001,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			return dest;
 		}
 
-		private CharSequence[] expand(CharSequence[] src) {
+		@NullUnmarked private CharSequence[] expand(CharSequence[] src) {
 			if (src == null) {
 				return null;
 			}

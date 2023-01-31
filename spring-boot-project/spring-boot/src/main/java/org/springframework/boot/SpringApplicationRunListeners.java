@@ -27,6 +27,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A collection of {@link SpringApplicationRunListener}.
@@ -108,7 +109,7 @@ class SpringApplicationRunListeners {
 		}
 	}
 
-	private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction) {
+	@NullUnmarked private void doWithListeners(String stepName, Consumer<SpringApplicationRunListener> listenerAction) {
 		doWithListeners(stepName, listenerAction, null);
 	}
 

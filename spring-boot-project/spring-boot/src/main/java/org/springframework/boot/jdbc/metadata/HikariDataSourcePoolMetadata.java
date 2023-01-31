@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
 
 import org.springframework.beans.DirectFieldAccessor;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * {@link DataSourcePoolMetadata} for a Hikari {@link DataSource}.
@@ -35,7 +36,7 @@ public class HikariDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata
 		super(dataSource);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Integer getActive() {
 		try {
 			return getHikariPool().getActiveConnections();
@@ -45,7 +46,7 @@ public class HikariDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata
 		}
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Integer getIdle() {
 		try {
 			return getHikariPool().getIdleConnections();

@@ -89,6 +89,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.function.ThrowingSupplier;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Class that can be used to bootstrap and launch a Spring application from a Java main
@@ -200,13 +201,13 @@ public class SpringApplication {
 
 	private boolean addConversionService = true;
 
-	private Banner banner;
+	@SuppressWarnings("NullAway.Init") private Banner banner;
 
 	private ResourceLoader resourceLoader;
 
-	private BeanNameGenerator beanNameGenerator;
+	@SuppressWarnings("NullAway.Init") private BeanNameGenerator beanNameGenerator;
 
-	private ConfigurableEnvironment environment;
+	@SuppressWarnings("NullAway.Init") private ConfigurableEnvironment environment;
 
 	private WebApplicationType webApplicationType;
 
@@ -214,11 +215,11 @@ public class SpringApplication {
 
 	private boolean registerShutdownHook = true;
 
-	private List<ApplicationContextInitializer<?>> initializers;
+	@SuppressWarnings("NullAway.Init") private List<ApplicationContextInitializer<?>> initializers;
 
-	private List<ApplicationListener<?>> listeners;
+	@SuppressWarnings("NullAway.Init") private List<ApplicationListener<?>> listeners;
 
-	private Map<String, Object> defaultProperties;
+	@SuppressWarnings("NullAway.Init") private Map<String, Object> defaultProperties;
 
 	private List<BootstrapRegistryInitializer> bootstrapRegistryInitializers;
 
@@ -232,7 +233,7 @@ public class SpringApplication {
 
 	private boolean lazyInitialization = false;
 
-	private String environmentPrefix;
+	@SuppressWarnings("NullAway.Init") private String environmentPrefix;
 
 	private ApplicationContextFactory applicationContextFactory = ApplicationContextFactory.DEFAULT;
 
@@ -248,7 +249,7 @@ public class SpringApplication {
 	 * @see #SpringApplication(ResourceLoader, Class...)
 	 * @see #setSources(Set)
 	 */
-	public SpringApplication(Class<?>... primarySources) {
+	@NullUnmarked public SpringApplication(Class<?>... primarySources) {
 		this(null, primarySources);
 	}
 
@@ -275,7 +276,7 @@ public class SpringApplication {
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
-	private Class<?> deduceMainApplicationClass() {
+	@NullUnmarked private Class<?> deduceMainApplicationClass() {
 		return StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).walk(this::findMainClass)
 				.orElse(null);
 	}
@@ -291,7 +292,7 @@ public class SpringApplication {
 	 * @param args the application arguments (usually passed from a Java main method)
 	 * @return a running {@link ApplicationContext}
 	 */
-	public ConfigurableApplicationContext run(String... args) {
+	@NullUnmarked public ConfigurableApplicationContext run(String... args) {
 		long startTime = System.nanoTime();
 		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
 		ConfigurableApplicationContext context = null;
@@ -451,7 +452,7 @@ public class SpringApplication {
 		return new SpringApplicationRunListeners(logger, listeners, this.applicationStartup);
 	}
 
-	private <T> List<T> getSpringFactoriesInstances(Class<T> type) {
+	@NullUnmarked private <T> List<T> getSpringFactoriesInstances(Class<T> type) {
 		return getSpringFactoriesInstances(type, null);
 	}
 
@@ -541,7 +542,7 @@ public class SpringApplication {
 		}
 	}
 
-	private Banner printBanner(ConfigurableEnvironment environment) {
+	@NullUnmarked private Banner printBanner(ConfigurableEnvironment environment) {
 		if (this.bannerMode == Banner.Mode.OFF) {
 			return null;
 		}
@@ -875,7 +876,7 @@ public class SpringApplication {
 		return getExitCodeFromExitCodeGeneratorException(exception.getCause());
 	}
 
-	SpringBootExceptionHandler getSpringBootExceptionHandler() {
+	@NullUnmarked SpringBootExceptionHandler getSpringBootExceptionHandler() {
 		if (isMainThread(Thread.currentThread())) {
 			return SpringBootExceptionHandler.forCurrentThread();
 		}
@@ -1447,7 +1448,7 @@ public class SpringApplication {
 		/**
 		 * Create a new {@link AbandonedRunException} instance.
 		 */
-		public AbandonedRunException() {
+		@NullUnmarked public AbandonedRunException() {
 			this(null);
 		}
 

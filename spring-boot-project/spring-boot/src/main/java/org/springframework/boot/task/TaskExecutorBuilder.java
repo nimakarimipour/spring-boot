@@ -29,6 +29,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Builder that can be used to configure and create a {@link TaskExecutor}. Provides
@@ -65,7 +66,7 @@ public class TaskExecutorBuilder {
 
 	private final Set<TaskExecutorCustomizer> customizers;
 
-	public TaskExecutorBuilder() {
+	@NullUnmarked public TaskExecutorBuilder() {
 		this.queueCapacity = null;
 		this.corePoolSize = null;
 		this.maxPoolSize = null;
@@ -233,7 +234,7 @@ public class TaskExecutorBuilder {
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(TaskExecutorCustomizer...)
 	 */
-	public TaskExecutorBuilder customizers(Iterable<TaskExecutorCustomizer> customizers) {
+	@NullUnmarked public TaskExecutorBuilder customizers(Iterable<TaskExecutorCustomizer> customizers) {
 		Assert.notNull(customizers, "Customizers must not be null");
 		return new TaskExecutorBuilder(this.queueCapacity, this.corePoolSize, this.maxPoolSize,
 				this.allowCoreThreadTimeOut, this.keepAlive, this.awaitTermination, this.awaitTerminationPeriod,

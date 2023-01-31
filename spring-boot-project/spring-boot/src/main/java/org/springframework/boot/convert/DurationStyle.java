@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Duration format styles.
@@ -101,7 +102,7 @@ public enum DurationStyle {
 	 * @param value the value to parse
 	 * @return a duration
 	 */
-	public Duration parse(String value) {
+	@NullUnmarked public Duration parse(String value) {
 		return parse(value, null);
 	}
 
@@ -119,7 +120,7 @@ public enum DurationStyle {
 	 * @param value the value to print
 	 * @return the printed result
 	 */
-	public String print(Duration value) {
+	@NullUnmarked public String print(Duration value) {
 		return print(value, null);
 	}
 
@@ -138,7 +139,7 @@ public enum DurationStyle {
 	 * @throws IllegalArgumentException if the value is not a known style or cannot be
 	 * parsed
 	 */
-	public static Duration detectAndParse(String value) {
+	@NullUnmarked public static Duration detectAndParse(String value) {
 		return detectAndParse(value, null);
 	}
 

@@ -17,6 +17,7 @@
 package org.springframework.boot.origin;
 
 import org.springframework.util.ObjectUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * A wrapper for an {@link Object} value and {@link Origin}.
@@ -64,12 +65,12 @@ public class OriginTrackedValue implements OriginProvider {
 		return ObjectUtils.nullSafeHashCode(this.value);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public String toString() {
 		return (this.value != null) ? this.value.toString() : null;
 	}
 
-	public static OriginTrackedValue of(Object value) {
+	@NullUnmarked public static OriginTrackedValue of(Object value) {
 		return of(value, null);
 	}
 
@@ -82,7 +83,7 @@ public class OriginTrackedValue implements OriginProvider {
 	 * @return an {@link OriginTrackedValue} or {@code null} if the source value was
 	 * {@code null}.
 	 */
-	public static OriginTrackedValue of(Object value, Origin origin) {
+	@NullUnmarked public static OriginTrackedValue of(Object value, Origin origin) {
 		if (value == null) {
 			return null;
 		}

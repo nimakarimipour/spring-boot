@@ -43,6 +43,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.util.CollectionUtils;
+import org.springframework.boot.NullUnmarked;
 
 /**
  * Utility to handle any conversion needed during binding. This class is not thread-safe
@@ -53,7 +54,7 @@ import org.springframework.util.CollectionUtils;
  */
 final class BindConverter {
 
-	private static BindConverter sharedInstance;
+	@SuppressWarnings("NullAway.Init") private static BindConverter sharedInstance;
 
 	private final List<ConversionService> delegates;
 
@@ -92,7 +93,7 @@ final class BindConverter {
 		return convert(source, target.getType(), target.getAnnotations());
 	}
 
-	@SuppressWarnings("unchecked")
+	@NullUnmarked @SuppressWarnings("unchecked")
 	<T> T convert(Object source, ResolvableType targetType, Annotation... targetAnnotations) {
 		if (source == null) {
 			return null;
@@ -128,7 +129,7 @@ final class BindConverter {
 		return new BindConverter(conversionServices, propertyEditorInitializer);
 	}
 
-	private static BindConverter getSharedInstance() {
+	@NullUnmarked private static BindConverter getSharedInstance() {
 		if (sharedInstance == null) {
 			sharedInstance = new BindConverter(null, null);
 		}

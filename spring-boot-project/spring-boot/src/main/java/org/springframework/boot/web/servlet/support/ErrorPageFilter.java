@@ -44,7 +44,7 @@ import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.core.Ordered;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A Servlet {@link Filter} that provides an {@link ErrorPageRegistry} for non-embedded
@@ -86,7 +86,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		CLIENT_ABORT_EXCEPTIONS = Collections.unmodifiableSet(clientAbortExceptions);
 	}
 
-	@SuppressWarnings("NullAway.Init") private String global;
+	 private String global;
 
 	private final Map<Integer, String> statuses = new HashMap<>();
 
@@ -144,7 +144,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		}
 	}
 
-	@NullUnmarked private void handleErrorStatus(HttpServletRequest request, HttpServletResponse response, int status, String message)
+	 private void handleErrorStatus(HttpServletRequest request, HttpServletResponse response, int status, String message)
 			throws ServletException, IOException {
 		if (response.isCommitted()) {
 			handleCommittedResponse(request, null);
@@ -175,7 +175,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		forwardToErrorPage(errorPath, request, wrapped, ex);
 	}
 
-	@NullUnmarked private void forwardToErrorPage(String path, HttpServletRequest request, HttpServletResponse response, Throwable ex)
+	 private void forwardToErrorPage(String path, HttpServletRequest request, HttpServletResponse response, Throwable ex)
 			throws ServletException, IOException {
 		if (logger.isErrorEnabled()) {
 			String message = "Forwarding to error page from request " + getDescription(request) + " due to exception ["
@@ -312,15 +312,15 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 
 		private int status;
 
-		@SuppressWarnings("NullAway.Init") private String message;
+		 private String message;
 
 		private boolean hasErrorToSend = false;
 
-		@NullUnmarked ErrorWrapperResponse(HttpServletResponse response) {
+		 ErrorWrapperResponse(HttpServletResponse response) {
 			super(response);
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public void sendError(int status) throws IOException {
 			sendError(status, null);
 		}

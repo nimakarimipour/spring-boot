@@ -43,7 +43,7 @@ import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Abstract base class for {@link ConfigurableServletWebServerFactory} implementations.
@@ -64,7 +64,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	private String contextPath = "";
 
-	@SuppressWarnings("NullAway.Init") private String displayName;
+	 private String displayName;
 
 	private Session session = new Session();
 
@@ -348,7 +348,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 			map.from(cookie::getMaxAge).asInt(Duration::getSeconds).to(config::setMaxAge);
 		}
 
-		@NullUnmarked private Set<jakarta.servlet.SessionTrackingMode> unwrap(Set<Session.SessionTrackingMode> modes) {
+		 private Set<jakarta.servlet.SessionTrackingMode> unwrap(Set<Session.SessionTrackingMode> modes) {
 			if (modes == null) {
 				return null;
 			}

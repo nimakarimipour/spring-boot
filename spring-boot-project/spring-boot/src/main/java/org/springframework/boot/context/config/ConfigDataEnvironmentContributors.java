@@ -41,7 +41,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.ObjectUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An immutable tree structure of {@link ConfigDataEnvironmentContributors} used to
@@ -138,7 +138,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return this.bootstrapContext;
 	}
 
-	@NullUnmarked private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
+	 private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext, ImportPhase importPhase) {
 		for (ConfigDataEnvironmentContributor contributor : contributors.getRoot()) {
 			if (contributor.getKind() == Kind.UNBOUND_IMPORT
@@ -209,7 +209,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 				: EnumSet.copyOf(Arrays.asList(options));
 	}
 
-	@NullUnmarked private Binder getBinder(ConfigDataActivationContext activationContext,
+	 private Binder getBinder(ConfigDataActivationContext activationContext,
 			Predicate<ConfigDataEnvironmentContributor> filter, Set<BinderOption> options) {
 		boolean failOnInactiveSource = options.contains(BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		Iterable<ConfigurationPropertySource> sources = () -> getBinderSources(
@@ -263,9 +263,9 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 
 		private final ConfigDataActivationContext activationContext;
 
-		@SuppressWarnings("NullAway.Init") private volatile Binder binder;
+		 private volatile Binder binder;
 
-		@NullUnmarked ContributorConfigDataLocationResolverContext(ConfigDataEnvironmentContributors contributors,
+		 ContributorConfigDataLocationResolverContext(ConfigDataEnvironmentContributors contributors,
 				ConfigDataEnvironmentContributor contributor, ConfigDataActivationContext activationContext) {
 			this.contributors = contributors;
 			this.contributor = contributor;

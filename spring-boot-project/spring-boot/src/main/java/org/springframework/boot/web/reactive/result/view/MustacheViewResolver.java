@@ -34,7 +34,7 @@ public class MustacheViewResolver extends UrlBasedViewResolver {
 
 	private final Compiler compiler;
 
-	@SuppressWarnings("NullAway.Init") private String charset;
+	 private String charset;
 
 	/**
 	 * Create a {@code MustacheViewResolver} backed by a default instance of a

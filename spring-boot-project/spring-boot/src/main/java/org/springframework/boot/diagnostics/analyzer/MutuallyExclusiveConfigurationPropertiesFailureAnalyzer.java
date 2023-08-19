@@ -34,7 +34,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A {@link FailureAnalyzer} that performs analysis of failures caused by a
@@ -52,7 +52,7 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, MutuallyExclusiveConfigurationPropertiesException cause) {
 		List<Descriptor> descriptors = new ArrayList<>();
 		for (String name : cause.getConfiguredNames()) {

@@ -26,7 +26,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Default {@link ConfigurableBootstrapContext} implementation.
@@ -71,7 +71,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	@SuppressWarnings("unchecked")
 	public <T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type) {
 		synchronized (this.instanceSuppliers) {

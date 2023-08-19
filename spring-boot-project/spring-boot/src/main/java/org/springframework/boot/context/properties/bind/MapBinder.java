@@ -30,7 +30,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link AggregateBinder} for Maps.
@@ -51,7 +51,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		return true;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		Map<Object, Object> map = CollectionFactory
@@ -106,7 +106,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		}
 	}
 
-	@NullUnmarked private Map<Object, Object> getExistingIfPossible(Supplier<Map<Object, Object>> existing) {
+	 private Map<Object, Object> getExistingIfPossible(Supplier<Map<Object, Object>> existing) {
 		try {
 			return existing.get();
 		}

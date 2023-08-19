@@ -32,7 +32,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Utility that can be used to invoke lambdas in a safe way. Primarily designed to help
@@ -42,11 +42,11 @@ import org.springframework.boot.NullUnmarked;
  * @author Phillip Webb
  * @since 2.0.0
  */
-@NullUnmarked public final class LambdaSafe {
+ public final class LambdaSafe {
 
 	private static final Method CLASS_GET_MODULE;
 
-	@SuppressWarnings("NullAway.Init") private static final Method MODULE_GET_NAME;
+	 private static final Method MODULE_GET_NAME;
 
 	static {
 		CLASS_GET_MODULE = ReflectionUtils.findMethod(Class.class, "getModule");
@@ -368,7 +368,7 @@ import org.springframework.boot.NullUnmarked;
 
 		private final R value;
 
-		@NullUnmarked private InvocationResult(R value) {
+		 private InvocationResult(R value) {
 			this.value = value;
 		}
 

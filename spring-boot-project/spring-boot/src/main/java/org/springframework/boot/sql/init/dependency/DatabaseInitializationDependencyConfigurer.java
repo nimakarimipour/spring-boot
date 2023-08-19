@@ -43,7 +43,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Configures beans that depend upon SQL database initialization with
@@ -82,7 +82,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 	static class DependsOnDatabaseInitializationPostProcessor
 			implements BeanFactoryPostProcessor, EnvironmentAware, Ordered {
 
-		@SuppressWarnings("NullAway.Init") private Environment environment;
+		 private Environment environment;
 
 		@Override
 		public void setEnvironment(Environment environment) {
@@ -94,7 +94,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 			return 0;
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 			InitializerBeanNames initializerBeanNames = detectInitializerBeanNames(beanFactory);
 			if (initializerBeanNames.isEmpty()) {

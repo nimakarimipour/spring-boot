@@ -46,7 +46,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link PropertySource} backed by a directory tree that contains files for each value.
@@ -115,13 +115,13 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 		return this.names.clone();
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Value getProperty(String name) {
 		PropertyFile propertyFile = this.propertyFiles.get(name);
 		return (propertyFile != null) ? propertyFile.getContent() : null;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Origin getOrigin(String name) {
 		PropertyFile propertyFile = this.propertyFiles.get(name);
 		return (propertyFile != null) ? propertyFile.getOrigin() : null;
@@ -182,7 +182,7 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 
 		private final boolean autoTrimTrailingNewLine;
 
-		@NullUnmarked private PropertyFile(Path path, Set<Option> options) {
+		 private PropertyFile(Path path, Set<Option> options) {
 			this.path = path;
 			this.resource = new PathResource(path);
 			this.origin = new TextResourceOrigin(this.resource, START_OF_FILE);
@@ -266,9 +266,9 @@ public class ConfigTreePropertySource extends EnumerablePropertySource<Path> imp
 
 		private final boolean autoTrimTrailingNewLine;
 
-		@SuppressWarnings("NullAway.Init") private volatile byte[] content;
+		 private volatile byte[] content;
 
-		@NullUnmarked private PropertyFileContent(Path path, Resource resource, Origin origin, boolean cacheContent,
+		 private PropertyFileContent(Path path, Resource resource, Origin origin, boolean cacheContent,
 				boolean autoTrimTrailingNewLine) {
 			this.path = path;
 			this.resource = resource;

@@ -24,7 +24,7 @@ import org.apache.logging.log4j.core.lookup.StrLookup;
 
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Lookup for Spring properties.
@@ -35,14 +35,14 @@ import org.springframework.boot.NullUnmarked;
 @Plugin(name = "spring", category = StrLookup.CATEGORY)
 class SpringEnvironmentLookup implements LoggerContextAware, StrLookup {
 
-	@SuppressWarnings("NullAway.Init") private volatile Environment environment;
+	 private volatile Environment environment;
 
 	@Override
 	public String lookup(LogEvent event, String key) {
 		return lookup(key);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public String lookup(String key) {
 		Assert.state(this.environment != null, "Unable to obtain Spring Environment from LoggerContext");
 		return (this.environment != null) ? this.environment.getProperty(key) : null;

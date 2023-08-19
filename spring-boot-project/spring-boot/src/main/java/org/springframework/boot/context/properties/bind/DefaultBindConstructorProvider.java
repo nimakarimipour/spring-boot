@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.KotlinDetector;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Default {@link BindConstructorProvider} implementation.
@@ -40,7 +40,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 		return getBindConstructor(bindable.getType().resolve(), isNestedConstructorBinding);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Constructor<?> getBindConstructor(Class<?> type, boolean isNestedConstructorBinding) {
 		if (type == null) {
 			return null;
@@ -127,7 +127,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return false;
 		}
 
-		@NullUnmarked private static Constructor<?> getConstructorBindingAnnotated(Class<?> type, Constructor<?>[] candidates,
+		 private static Constructor<?> getConstructorBindingAnnotated(Class<?> type, Constructor<?>[] candidates,
 				MergedAnnotations[] mergedAnnotations) {
 			Constructor<?> result = null;
 			for (int i = 0; i < candidates.length; i++) {
@@ -143,7 +143,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 
 		}
 
-		@NullUnmarked private static Constructor<?> deduceBindConstructor(Class<?> type, Constructor<?>[] candidates) {
+		 private static Constructor<?> deduceBindConstructor(Class<?> type, Constructor<?>[] candidates) {
 			if (candidates.length == 1 && candidates[0].getParameterCount() > 0) {
 				if (type.isMemberClass() && Modifier.isPrivate(candidates[0].getModifiers())) {
 					return null;
@@ -166,7 +166,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return KotlinDetector.isKotlinPresent() && KotlinDetector.isKotlinType(type);
 		}
 
-		@NullUnmarked private static Constructor<?> deduceKotlinBindConstructor(Class<?> type) {
+		 private static Constructor<?> deduceKotlinBindConstructor(Class<?> type) {
 			Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(type);
 			if (primaryConstructor != null && primaryConstructor.getParameterCount() > 0) {
 				return primaryConstructor;

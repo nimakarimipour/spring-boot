@@ -21,7 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Simple cache that uses a {@link SoftReference} to cache a value for as long as
@@ -36,7 +36,7 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 
 	private final boolean neverExpire;
 
-	@SuppressWarnings("NullAway.Init") private volatile Duration timeToLive;
+	 private volatile Duration timeToLive;
 
 	private volatile SoftReference<T> value = new SoftReference<>(null);
 
@@ -51,17 +51,17 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 		this.timeToLive = UNLIMITED;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void disable() {
 		this.timeToLive = null;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void setTimeToLive(Duration timeToLive) {
 		this.timeToLive = (timeToLive == null || timeToLive.isZero()) ? null : timeToLive;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void clear() {
 		this.lastAccessed = null;
 	}
@@ -104,7 +104,7 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 		return Instant.now();
 	}
 
-	@NullUnmarked protected T getValue() {
+	 protected T getValue() {
 		return this.value.get();
 	}
 

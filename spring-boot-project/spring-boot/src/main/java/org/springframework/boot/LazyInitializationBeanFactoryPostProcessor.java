@@ -27,7 +27,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.core.Ordered;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link BeanFactoryPostProcessor} to set lazy-init on bean definitions that are not
@@ -80,7 +80,7 @@ public final class LazyInitializationBeanFactoryPostProcessor implements BeanFac
 		}
 	}
 
-	@NullUnmarked private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
+	 private Class<?> getBeanType(ConfigurableListableBeanFactory beanFactory, String beanName) {
 		try {
 			return beanFactory.getType(beanName, false);
 		}

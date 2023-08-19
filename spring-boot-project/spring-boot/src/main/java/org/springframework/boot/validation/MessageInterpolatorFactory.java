@@ -29,7 +29,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.util.ClassUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ObjectFactory} that can be used to create a {@link MessageInterpolator}.
@@ -51,7 +51,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 
 	private final MessageSource messageSource;
 
-	@NullUnmarked public MessageInterpolatorFactory() {
+	 public MessageInterpolatorFactory() {
 		this(null);
 	}
 
@@ -88,7 +88,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 		}
 	}
 
-	@NullUnmarked private MessageInterpolator getFallback() {
+	 private MessageInterpolator getFallback() {
 		for (String fallback : FALLBACKS) {
 			try {
 				return getFallback(fallback);

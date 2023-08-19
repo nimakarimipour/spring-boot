@@ -28,7 +28,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link EnvironmentPostProcessor} that replaces the systemEnvironment
@@ -88,7 +88,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			this.prefix = determinePrefix(environmentPrefix);
 		}
 
-		@NullUnmarked private String determinePrefix(String environmentPrefix) {
+		 private String determinePrefix(String environmentPrefix) {
 			if (!StringUtils.hasText(environmentPrefix)) {
 				return null;
 			}
@@ -108,7 +108,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			return super.getProperty(name);
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public Origin getOrigin(String key) {
 			String property = resolvePropertyName(key);
 			if (super.containsProperty(property)) {

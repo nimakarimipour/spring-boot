@@ -58,7 +58,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.boot.Initializer;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link ApplicationListener} that configures the {@link LoggingSystem}. If the
@@ -183,7 +183,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
-	@SuppressWarnings("NullAway.Init") private LoggingSystem loggingSystem;
+	 private LoggingSystem loggingSystem;
 
 	private LogFile logFile;
 
@@ -193,7 +193,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private boolean parseArgs = true;
 
-	@SuppressWarnings("NullAway") private LogLevel springBootLogging = null;
+	 private LogLevel springBootLogging = null;
 
 	@Override
 	public boolean supportsEventType(ResolvableType resolvableType) {
@@ -289,7 +289,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param environment the environment
 	 * @param classLoader the classloader
 	 */
-	@NullUnmarked @Initializer protected void initialize(ConfigurableEnvironment environment, ClassLoader classLoader) {
+	 protected void initialize(ConfigurableEnvironment environment, ClassLoader classLoader) {
 		getLoggingSystemProperties(environment).apply();
 		this.logFile = LogFile.get(environment);
 		if (this.logFile != null) {
@@ -323,7 +323,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		return (value != null && !value.equals("false"));
 	}
 
-	@NullUnmarked private void initializeSystem(ConfigurableEnvironment environment, LoggingSystem system, LogFile logFile) {
+	 private void initializeSystem(ConfigurableEnvironment environment, LoggingSystem system, LogFile logFile) {
 		String logConfig = environment.getProperty(CONFIG_PROPERTY);
 		if (StringUtils.hasLength(logConfig)) {
 			logConfig = logConfig.strip();
@@ -407,7 +407,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		configurer.accept(name, level);
 	}
 
-	@NullUnmarked private BiConsumer<String, LogLevel> getLogLevelConfigurer(LoggingSystem system) {
+	 private BiConsumer<String, LogLevel> getLogLevelConfigurer(LoggingSystem system) {
 		return (name, level) -> {
 			try {
 				name = name.equalsIgnoreCase(LoggingSystem.ROOT_LOGGER_NAME) ? null : name;

@@ -27,7 +27,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ConfigurationPropertySource} backed by a non-enumerable Spring
@@ -74,7 +74,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 		this.mappers = mappers;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;

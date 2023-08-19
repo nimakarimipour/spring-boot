@@ -35,27 +35,27 @@ public class Cookie {
 	/**
 	 * Name for the cookie.
 	 */
-	@SuppressWarnings("NullAway.Init") private String name;
+	 private String name;
 
 	/**
 	 * Domain for the cookie.
 	 */
-	@SuppressWarnings("NullAway.Init") private String domain;
+	 private String domain;
 
 	/**
 	 * Path of the cookie.
 	 */
-	@SuppressWarnings("NullAway.Init") private String path;
+	 private String path;
 
 	/**
 	 * Whether to use "HttpOnly" cookies for the cookie.
 	 */
-	@SuppressWarnings("NullAway.Init") private Boolean httpOnly;
+	 private Boolean httpOnly;
 
 	/**
 	 * Whether to always mark the cookie as secure.
 	 */
-	@SuppressWarnings("NullAway.Init") private Boolean secure;
+	 private Boolean secure;
 
 	/**
 	 * Maximum age of the cookie. If a duration suffix is not specified, seconds will be
@@ -63,13 +63,13 @@ public class Cookie {
 	 * time. A value of 0 means the cookie should expire immediately. A negative value
 	 * means no "Max-Age".
 	 */
-	@SuppressWarnings("NullAway.Init") @DurationUnit(ChronoUnit.SECONDS)
+	 @DurationUnit(ChronoUnit.SECONDS)
 	private Duration maxAge;
 
 	/**
 	 * SameSite setting for the cookie.
 	 */
-	@SuppressWarnings("NullAway.Init") private SameSite sameSite;
+	 private SameSite sameSite;
 
 	public String getName() {
 		return this.name;

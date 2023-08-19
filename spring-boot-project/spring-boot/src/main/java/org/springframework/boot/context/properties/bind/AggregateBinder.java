@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Internal strategy used by {@link Binder} to bind aggregates (Maps, Lists, Arrays).
@@ -97,9 +97,9 @@ abstract class AggregateBinder<T> {
 
 		private final Supplier<T> supplier;
 
-		@SuppressWarnings("NullAway.Init") private T supplied;
+		 private T supplied;
 
-		@NullUnmarked public AggregateSupplier(Supplier<T> supplier) {
+		 public AggregateSupplier(Supplier<T> supplier) {
 			this.supplier = supplier;
 		}
 

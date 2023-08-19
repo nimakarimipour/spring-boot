@@ -18,7 +18,7 @@ package org.springframework.boot.logging;
 
 import java.util.List;
 import java.util.function.Function;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link LoggingSystemFactory} that delegates to other factories.
@@ -37,7 +37,7 @@ class DelegatingLoggingSystemFactory implements LoggingSystemFactory {
 		this.delegates = delegates;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 		List<LoggingSystemFactory> delegates = (this.delegates != null) ? this.delegates.apply(classLoader) : null;
 		if (delegates != null) {

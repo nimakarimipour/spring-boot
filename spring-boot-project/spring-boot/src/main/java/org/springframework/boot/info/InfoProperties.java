@@ -24,7 +24,7 @@ import java.util.Properties;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Base class for components exposing unstructured data with dedicated methods for well
@@ -61,7 +61,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 	 * @param key the key of the property
 	 * @return the property value
 	 */
-	@NullUnmarked public Instant getInstant(String key) {
+	 public Instant getInstant(String key) {
 		String s = get(key);
 		if (s != null) {
 			try {

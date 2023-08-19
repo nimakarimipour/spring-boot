@@ -35,7 +35,7 @@ public class JacksonJsonParser extends AbstractJsonParser {
 
 	private static final ListTypeReference LIST_TYPE = new ListTypeReference();
 
-	@SuppressWarnings("NullAway.Init") private ObjectMapper objectMapper; // Late binding
+	 private ObjectMapper objectMapper; // Late binding
 
 	/**
 	 * Creates an instance with the specified {@link ObjectMapper}.

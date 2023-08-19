@@ -23,7 +23,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link PlaceholdersResolver} backed by one or more
@@ -63,7 +63,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 		return value;
 	}
 
-	@NullUnmarked private String resolvePlaceholder(String placeholder) {
+	 private String resolvePlaceholder(String placeholder) {
 		Object result = null;
 		for (ConfigDataEnvironmentContributor contributor : this.contributors) {
 			PropertySource<?> propertySource = contributor.getPropertySource();

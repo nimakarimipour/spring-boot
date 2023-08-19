@@ -23,7 +23,7 @@ import java.nio.file.Path;
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ConfigDataNotFoundException} thrown when a {@link ConfigDataResource} cannot be
@@ -42,7 +42,7 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * Create a new {@link ConfigDataResourceNotFoundException} instance.
 	 * @param resource the resource that could not be found
 	 */
-	@NullUnmarked public ConfigDataResourceNotFoundException(ConfigDataResource resource) {
+	 public ConfigDataResourceNotFoundException(ConfigDataResource resource) {
 		this(resource, null);
 	}
 
@@ -51,7 +51,7 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * @param resource the resource that could not be found
 	 * @param cause the exception cause
 	 */
-	@NullUnmarked public ConfigDataResourceNotFoundException(ConfigDataResource resource, Throwable cause) {
+	 public ConfigDataResourceNotFoundException(ConfigDataResource resource, Throwable cause) {
 		this(resource, null, cause);
 	}
 

@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.ResolvableType;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link AggregateBinder} for arrays.
@@ -38,7 +38,7 @@ class ArrayBinder extends IndexedElementsBinder<Object> {
 		super(context);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		IndexedCollectionSupplier result = new IndexedCollectionSupplier(ArrayList::new);

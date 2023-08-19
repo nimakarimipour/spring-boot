@@ -26,7 +26,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Abstract base class for handlers of Servlet components discovered via classpath
@@ -49,7 +49,7 @@ abstract class ServletComponentHandler {
 		return this.typeFilter;
 	}
 
-	@NullUnmarked protected String[] extractUrlPatterns(Map<String, Object> attributes) {
+	 protected String[] extractUrlPatterns(Map<String, Object> attributes) {
 		String[] value = (String[]) attributes.get("value");
 		String[] urlPatterns = (String[]) attributes.get("urlPatterns");
 		if (urlPatterns.length > 0) {
@@ -59,7 +59,7 @@ abstract class ServletComponentHandler {
 		return value;
 	}
 
-	@NullUnmarked protected final Map<String, String> extractInitParameters(Map<String, Object> attributes) {
+	 protected final Map<String, String> extractInitParameters(Map<String, Object> attributes) {
 		Map<String, String> initParameters = new HashMap<>();
 		for (AnnotationAttributes initParam : (AnnotationAttributes[]) attributes.get("initParams")) {
 			String name = (String) initParam.get("name");

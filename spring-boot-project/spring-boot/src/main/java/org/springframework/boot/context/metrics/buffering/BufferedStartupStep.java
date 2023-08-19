@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link StartupStep} implementation to be buffered by
@@ -79,7 +79,7 @@ class BufferedStartupStep implements StartupStep {
 		return this.startTime;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Long getParentId() {
 		return (this.parent != null) ? this.parent.getId() : null;
 	}

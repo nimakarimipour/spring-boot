@@ -44,7 +44,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link WebServer} that can be used to control a Reactor Netty web server. Usually this
@@ -77,9 +77,9 @@ public class NettyWebServer implements WebServer {
 
 	private List<NettyRouteProvider> routeProviders = Collections.emptyList();
 
-	@SuppressWarnings("NullAway.Init") private volatile DisposableServer disposableServer;
+	 private volatile DisposableServer disposableServer;
 
-	@NullUnmarked public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
+	 public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
 			Shutdown shutdown) {
 		Assert.notNull(httpServer, "HttpServer must not be null");
 		Assert.notNull(handlerAdapter, "HandlerAdapter must not be null");
@@ -187,7 +187,7 @@ public class NettyWebServer implements WebServer {
 		awaitThread.start();
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void stop() throws WebServerException {
 		if (this.disposableServer != null) {
 			if (this.gracefulShutdown != null) {

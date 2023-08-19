@@ -25,7 +25,7 @@ import java.util.Map;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Maintains a mapping of {@link ConfigurationPropertyName} aliases.
@@ -67,7 +67,7 @@ public final class ConfigurationPropertyNameAliases implements Iterable<Configur
 		return this.aliases.getOrDefault(name, Collections.emptyList());
 	}
 
-	@NullUnmarked public ConfigurationPropertyName getNameForAlias(ConfigurationPropertyName alias) {
+	 public ConfigurationPropertyName getNameForAlias(ConfigurationPropertyName alias) {
 		return this.aliases.entrySet().stream().filter((e) -> e.getValue().contains(alias)).map(Map.Entry::getKey)
 				.findFirst().orElse(null);
 	}

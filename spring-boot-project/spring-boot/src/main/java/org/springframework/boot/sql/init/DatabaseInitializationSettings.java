@@ -27,15 +27,15 @@ import java.util.List;
  */
 public class DatabaseInitializationSettings {
 
-	@SuppressWarnings("NullAway.Init") private List<String> schemaLocations;
+	 private List<String> schemaLocations;
 
-	@SuppressWarnings("NullAway.Init") private List<String> dataLocations;
+	 private List<String> dataLocations;
 
 	private boolean continueOnError = false;
 
 	private String separator = ";";
 
-	@SuppressWarnings("NullAway.Init") private Charset encoding;
+	 private Charset encoding;
 
 	private DatabaseInitializationMode mode = DatabaseInitializationMode.EMBEDDED;
 

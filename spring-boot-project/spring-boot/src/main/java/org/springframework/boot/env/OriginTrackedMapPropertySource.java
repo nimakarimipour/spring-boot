@@ -22,7 +22,7 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.MapPropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link OriginLookup} backed by a {@link Map} containing {@link OriginTrackedValue
@@ -69,7 +69,7 @@ public final class OriginTrackedMapPropertySource extends MapPropertySource impl
 		return value;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Origin getOrigin(String name) {
 		Object value = super.getProperty(name);
 		if (value instanceof OriginTrackedValue originTrackedValue) {

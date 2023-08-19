@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Default implementation of {@link ErrorAttributes}. Provides the following attributes
@@ -109,7 +109,7 @@ public class DefaultErrorAttributes implements ErrorAttributes {
 		return responseStatusAnnotation.getValue("code", HttpStatus.class).orElse(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@NullUnmarked private String determineMessage(Throwable error, MergedAnnotation<ResponseStatus> responseStatusAnnotation) {
+	 private String determineMessage(Throwable error, MergedAnnotation<ResponseStatus> responseStatusAnnotation) {
 		if (error instanceof BindingResult) {
 			return error.getMessage();
 		}

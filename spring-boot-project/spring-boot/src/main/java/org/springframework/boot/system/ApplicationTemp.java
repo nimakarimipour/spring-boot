@@ -31,7 +31,7 @@ import java.util.HexFormat;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Provides access to an application specific temporary directory. Generally speaking
@@ -50,12 +50,12 @@ public class ApplicationTemp {
 
 	private final Class<?> sourceClass;
 
-	@SuppressWarnings("NullAway.Init") private volatile Path path;
+	 private volatile Path path;
 
 	/**
 	 * Create a new {@link ApplicationTemp} instance.
 	 */
-	@NullUnmarked public ApplicationTemp() {
+	 public ApplicationTemp() {
 		this(null);
 	}
 

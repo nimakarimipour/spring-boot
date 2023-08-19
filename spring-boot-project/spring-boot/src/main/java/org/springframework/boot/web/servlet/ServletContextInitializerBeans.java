@@ -42,7 +42,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A collection {@link ServletContextInitializer}s obtained from a
@@ -156,7 +156,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		}
 	}
 
-	@NullUnmarked private MultipartConfigElement getMultipartConfig(ListableBeanFactory beanFactory) {
+	 private MultipartConfigElement getMultipartConfig(ListableBeanFactory beanFactory) {
 		List<Entry<String, MultipartConfigElement>> beans = getOrderedBeansOfType(beanFactory,
 				MultipartConfigElement.class);
 		return beans.isEmpty() ? null : beans.get(0).getValue();

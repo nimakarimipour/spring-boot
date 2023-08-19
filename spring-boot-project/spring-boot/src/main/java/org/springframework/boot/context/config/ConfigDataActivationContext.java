@@ -20,7 +20,7 @@ import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.style.ToStringCreator;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Context information used when determining when to activate
@@ -40,7 +40,7 @@ class ConfigDataActivationContext {
 	 * @param environment the source environment
 	 * @param binder a binder providing access to relevant config data contributions
 	 */
-	@NullUnmarked ConfigDataActivationContext(Environment environment, Binder binder) {
+	 ConfigDataActivationContext(Environment environment, Binder binder) {
 		this.cloudPlatform = deduceCloudPlatform(environment, binder);
 		this.profiles = null;
 	}

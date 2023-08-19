@@ -28,7 +28,7 @@ import org.springframework.boot.diagnostics.analyzer.AbstractInjectionFailureAna
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link AbstractInjectionFailureAnalyzer} for
@@ -45,7 +45,7 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return 0;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, NoSuchBeanDefinitionException cause, String description) {
 		InjectionPoint injectionPoint = findInjectionPoint(rootFailure);
 		if (isConstructorBindingConfigurationProperties(injectionPoint)) {
@@ -73,7 +73,7 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return false;
 	}
 
-	@NullUnmarked private InjectionPoint findInjectionPoint(Throwable failure) {
+	 private InjectionPoint findInjectionPoint(Throwable failure) {
 		UnsatisfiedDependencyException unsatisfiedDependencyException = findCause(failure,
 				UnsatisfiedDependencyException.class);
 		if (unsatisfiedDependencyException == null) {

@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.util.function.SingletonSupplier;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Utility that can be used to map values from a supplied source to a destination.
@@ -67,7 +67,7 @@ public final class PropertyMapper {
 
 	private final SourceOperator sourceOperator;
 
-	@NullUnmarked private PropertyMapper(PropertyMapper parent, SourceOperator sourceOperator) {
+	 private PropertyMapper(PropertyMapper parent, SourceOperator sourceOperator) {
 		this.parent = parent;
 		this.sourceOperator = sourceOperator;
 	}
@@ -355,7 +355,7 @@ public final class PropertyMapper {
 			this.supplier = supplier;
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public T get() {
 			try {
 				return this.supplier.get();

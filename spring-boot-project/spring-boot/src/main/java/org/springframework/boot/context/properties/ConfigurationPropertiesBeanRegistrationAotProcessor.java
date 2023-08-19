@@ -35,7 +35,7 @@ import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBean.BindMethod;
 import org.springframework.javapoet.CodeBlock;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link BeanRegistrationAotProcessor} for immutable configuration properties.
@@ -45,7 +45,7 @@ import org.springframework.boot.NullUnmarked;
  */
 class ConfigurationPropertiesBeanRegistrationAotProcessor implements BeanRegistrationAotProcessor {
 
-	@NullUnmarked @Override
+	 @Override
 	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
 		if (!isImmutableConfigurationPropertiesBeanDefinition(registeredBean.getMergedBeanDefinition())) {
 			return null;

@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.env.PropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Exception thrown when an attempt is made to resolve a property against an inactive
@@ -50,7 +50,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param propertyName the name of the property
 	 * @param origin the origin or the property or {@code null}
 	 */
-	@NullUnmarked InactiveConfigDataAccessException(PropertySource<?> propertySource, ConfigDataResource location,
+	 InactiveConfigDataAccessException(PropertySource<?> propertySource, ConfigDataResource location,
 			String propertyName, Origin origin) {
 		super(getMessage(propertySource, location, propertyName, origin), null);
 		this.propertySource = propertySource;

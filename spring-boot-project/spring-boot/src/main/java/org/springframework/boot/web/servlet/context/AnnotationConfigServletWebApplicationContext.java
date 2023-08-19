@@ -65,7 +65,7 @@ public class AnnotationConfigServletWebApplicationContext extends GenericWebAppl
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
-	@SuppressWarnings("NullAway.Init") private String[] basePackages;
+	 private String[] basePackages;
 
 	/**
 	 * Create a new {@link AnnotationConfigServletWebApplicationContext} that needs to be

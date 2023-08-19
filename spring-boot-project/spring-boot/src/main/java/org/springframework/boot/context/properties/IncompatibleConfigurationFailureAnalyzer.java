@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A {@code FailureAnalyzer} that performs analysis of failures caused by a
@@ -30,7 +30,7 @@ import org.springframework.boot.NullUnmarked;
  */
 class IncompatibleConfigurationFailureAnalyzer extends AbstractFailureAnalyzer<IncompatibleConfigurationException> {
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, IncompatibleConfigurationException cause) {
 		String action = String.format("Review the docs for %s and change the configured values.",
 				cause.getIncompatibleKeys().stream().collect(Collectors.joining(", ")));

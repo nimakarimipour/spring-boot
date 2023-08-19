@@ -17,7 +17,7 @@
 package org.springframework.boot.context.properties.source;
 
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A {@link ConfigurationPropertySource} supporting a prefix.
@@ -41,7 +41,7 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 		return this.prefix;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		ConfigurationProperty configurationProperty = this.source.getConfigurationProperty(getPrefixedName(name));
 		if (configurationProperty == null) {

@@ -15,7 +15,7 @@
  */
 
 package org.springframework.boot.json;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link IllegalArgumentException} thrown when source JSON is invalid.
@@ -26,7 +26,7 @@ import org.springframework.boot.NullUnmarked;
  */
 public class JsonParseException extends IllegalArgumentException {
 
-	@NullUnmarked public JsonParseException() {
+	 public JsonParseException() {
 		this(null);
 	}
 

@@ -23,7 +23,7 @@ import java.util.Set;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link Converter} to convert from a {@link Number} to a {@link Duration}. Supports
@@ -42,7 +42,7 @@ final class NumberToDurationConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Number.class, Duration.class));
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		return this.delegate.convert((source != null) ? source.toString() : null, TypeDescriptor.valueOf(String.class),
 				targetType);

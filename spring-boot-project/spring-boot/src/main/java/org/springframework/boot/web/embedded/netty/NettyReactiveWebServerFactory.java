@@ -50,13 +50,13 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private List<NettyRouteProvider> routeProviders = new ArrayList<>();
 
-	@SuppressWarnings("NullAway.Init") private Duration lifecycleTimeout;
+	 private Duration lifecycleTimeout;
 
 	private boolean useForwardHeaders;
 
-	@SuppressWarnings("NullAway.Init") private ReactorResourceFactory resourceFactory;
+	 private ReactorResourceFactory resourceFactory;
 
-	@SuppressWarnings("NullAway.Init") private Shutdown shutdown;
+	 private Shutdown shutdown;
 
 	public NettyReactiveWebServerFactory() {
 	}

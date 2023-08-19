@@ -25,7 +25,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ObjectUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link Converter} to convert from a {@link Period} to a {@link String}.
@@ -42,7 +42,7 @@ final class PeriodToStringConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Period.class, String.class));
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (ObjectUtils.isEmpty(source)) {
 			return null;
@@ -50,7 +50,7 @@ final class PeriodToStringConverter implements GenericConverter {
 		return convert((Period) source, getPeriodStyle(sourceType), getPeriodUnit(sourceType));
 	}
 
-	@NullUnmarked private PeriodStyle getPeriodStyle(TypeDescriptor sourceType) {
+	 private PeriodStyle getPeriodStyle(TypeDescriptor sourceType) {
 		PeriodFormat annotation = sourceType.getAnnotation(PeriodFormat.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
@@ -60,7 +60,7 @@ final class PeriodToStringConverter implements GenericConverter {
 		return style.print(source, unit);
 	}
 
-	@NullUnmarked private ChronoUnit getPeriodUnit(TypeDescriptor sourceType) {
+	 private ChronoUnit getPeriodUnit(TypeDescriptor sourceType) {
 		PeriodUnit annotation = sourceType.getAnnotation(PeriodUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}

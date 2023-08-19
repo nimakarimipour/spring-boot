@@ -38,7 +38,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Banner implementation that prints from a source text {@link Resource}.
@@ -103,7 +103,7 @@ public class ResourceBanner implements Banner {
 		return versions;
 	}
 
-	@NullUnmarked protected String getApplicationVersion(Class<?> sourceClass) {
+	 protected String getApplicationVersion(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationVersion() : null;
 	}
@@ -134,7 +134,7 @@ public class ResourceBanner implements Banner {
 		return new PropertySourcesPropertyResolver(sources);
 	}
 
-	@NullUnmarked protected String getApplicationTitle(Class<?> sourceClass) {
+	 protected String getApplicationTitle(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationTitle() : null;
 	}

@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An application process ID.
@@ -49,7 +49,7 @@ public class ApplicationPid {
 		this.pid = pid;
 	}
 
-	@NullUnmarked private String getPid() {
+	 private String getPid() {
 		try {
 			return Long.toString(ProcessHandle.current().pid());
 		}

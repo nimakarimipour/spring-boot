@@ -25,7 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Deferred {@link Log} that can be used to store messages that shouldn't be written until
@@ -36,7 +36,7 @@ import org.springframework.boot.NullUnmarked;
  */
 public class DeferredLog implements Log {
 
-	@SuppressWarnings("NullAway.Init") private volatile Log destination;
+	 private volatile Log destination;
 
 	private final Supplier<Log> destinationSupplier;
 
@@ -45,7 +45,7 @@ public class DeferredLog implements Log {
 	/**
 	 * Create a new {@link DeferredLog} instance.
 	 */
-	@NullUnmarked public DeferredLog() {
+	 public DeferredLog() {
 		this.destinationSupplier = null;
 		this.lines = new Lines();
 	}
@@ -104,7 +104,7 @@ public class DeferredLog implements Log {
 		}
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void trace(Object message) {
 		log(LogLevel.TRACE, message, null);
 	}
@@ -114,7 +114,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.TRACE, message, t);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void debug(Object message) {
 		log(LogLevel.DEBUG, message, null);
 	}
@@ -124,7 +124,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.DEBUG, message, t);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void info(Object message) {
 		log(LogLevel.INFO, message, null);
 	}
@@ -134,7 +134,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.INFO, message, t);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void warn(Object message) {
 		log(LogLevel.WARN, message, null);
 	}
@@ -144,7 +144,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.WARN, message, t);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void error(Object message) {
 		log(LogLevel.ERROR, message, null);
 	}
@@ -154,7 +154,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.ERROR, message, t);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void fatal(Object message) {
 		log(LogLevel.FATAL, message, null);
 	}

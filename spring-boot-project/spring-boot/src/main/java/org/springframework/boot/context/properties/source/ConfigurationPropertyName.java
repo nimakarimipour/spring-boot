@@ -25,7 +25,7 @@ import java.util.function.Function;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A configuration property name composed of elements separated by dots. User created
@@ -64,7 +64,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 	private final CharSequence[] uniformElements;
 
-	@SuppressWarnings("NullAway.Init") private String string;
+	 private String string;
 
 	private int hashCode;
 
@@ -300,7 +300,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return compare(this, other);
 	}
 
-	@NullUnmarked private int compare(ConfigurationPropertyName n1, ConfigurationPropertyName n2) {
+	 private int compare(ConfigurationPropertyName n1, ConfigurationPropertyName n2) {
 		int l1 = n1.getNumberOfElements();
 		int l2 = n2.getNumberOfElements();
 		int i1 = 0;
@@ -583,7 +583,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid and
 	 * {@code returnNullIfInvalid} is {@code false}
 	 */
-	@NullUnmarked static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
+	 static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
 		Elements elements = elementsOf(name, returnNullIfInvalid);
 		return (elements != null) ? new ConfigurationPropertyName(elements) : null;
 	}
@@ -596,7 +596,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return elementsOf(name, returnNullIfInvalid, ElementsParser.DEFAULT_CAPACITY);
 	}
 
-	@NullUnmarked private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
+	 private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
 		if (name == null) {
 			Assert.isTrue(returnNullIfInvalid, "Name must not be null");
 			return null;
@@ -640,7 +640,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @param separator the separator used to split the name
 	 * @return a {@link ConfigurationPropertyName}
 	 */
-	@NullUnmarked public static ConfigurationPropertyName adapt(CharSequence name, char separator) {
+	 public static ConfigurationPropertyName adapt(CharSequence name, char separator) {
 		return adapt(name, separator, null);
 	}
 
@@ -745,7 +745,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		 */
 		private final CharSequence[] resolved;
 
-		@NullUnmarked Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, CharSequence[] resolved) {
+		 Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, CharSequence[] resolved) {
 			super();
 			this.source = source;
 			this.size = size;
@@ -884,13 +884,13 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 		private ElementType[] type;
 
-		@SuppressWarnings("NullAway.Init") private CharSequence[] resolved;
+		 private CharSequence[] resolved;
 
 		ElementsParser(CharSequence source, char separator) {
 			this(source, separator, DEFAULT_CAPACITY);
 		}
 
-		@NullUnmarked ElementsParser(CharSequence source, char separator, int capacity) {
+		 ElementsParser(CharSequence source, char separator, int capacity) {
 			this.source = source;
 			this.separator = separator;
 			this.start = new int[capacity];
@@ -898,7 +898,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			this.type = new ElementType[capacity];
 		}
 
-		@NullUnmarked Elements parse() {
+		 Elements parse() {
 			return parse(null);
 		}
 
@@ -1001,7 +1001,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			return dest;
 		}
 
-		@NullUnmarked private CharSequence[] expand(CharSequence[] src) {
+		 private CharSequence[] expand(CharSequence[] src) {
 			if (src == null) {
 				return null;
 			}

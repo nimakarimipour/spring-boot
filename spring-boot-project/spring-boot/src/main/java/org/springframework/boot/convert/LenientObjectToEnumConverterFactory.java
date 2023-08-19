@@ -27,7 +27,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Abstract base class for converting from a type to a {@link java.lang.Enum}.
@@ -68,7 +68,7 @@ abstract class LenientObjectToEnumConverterFactory<T> implements ConverterFactor
 			this.enumType = enumType;
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public E convert(T source) {
 			String value = source.toString().trim();
 			if (value.isEmpty()) {

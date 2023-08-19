@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import oracle.ucp.jdbc.PoolDataSource;
 
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link DataSourcePoolMetadata} for an Oracle UCP {@link DataSource}.
@@ -37,7 +37,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		super(dataSource);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Integer getActive() {
 		try {
 			return getDataSource().getBorrowedConnectionsCount();
@@ -47,7 +47,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		}
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Integer getIdle() {
 		try {
 			return getDataSource().getAvailableConnectionsCount();
@@ -72,7 +72,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		return getDataSource().getSQLForValidateConnection();
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Boolean getDefaultAutoCommit() {
 		String autoCommit = getDataSource().getConnectionProperty("autoCommit");
 		return StringUtils.hasText(autoCommit) ? Boolean.valueOf(autoCommit) : null;

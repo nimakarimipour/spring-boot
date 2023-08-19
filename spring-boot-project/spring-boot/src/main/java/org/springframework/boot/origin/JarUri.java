@@ -17,7 +17,7 @@
 package org.springframework.boot.origin;
 
 import java.net.URI;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Simple class that understands Jar URLs can can provide short descriptions.
@@ -73,7 +73,7 @@ final class JarUri {
 		return from(uri.toString());
 	}
 
-	@NullUnmarked static JarUri from(String uri) {
+	 static JarUri from(String uri) {
 		if (uri.startsWith(JAR_SCHEME) && uri.contains(JAR_EXTENSION)) {
 			return new JarUri(uri);
 		}

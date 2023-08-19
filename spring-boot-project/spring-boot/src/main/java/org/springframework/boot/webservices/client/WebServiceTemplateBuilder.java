@@ -37,7 +37,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.destination.DestinationProvider;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.transport.WebServiceMessageSender;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Builder that can be used to configure and create a {@link WebServiceTemplate}. Provides
@@ -77,7 +77,7 @@ public class WebServiceTemplateBuilder {
 
 	private final WebServiceMessageFactory messageFactory;
 
-	@NullUnmarked public WebServiceTemplateBuilder(WebServiceTemplateCustomizer... customizers) {
+	 public WebServiceTemplateBuilder(WebServiceTemplateCustomizer... customizers) {
 		this.detectHttpMessageSender = true;
 		this.interceptors = null;
 		this.internalCustomizers = null;

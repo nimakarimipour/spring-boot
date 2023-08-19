@@ -30,7 +30,7 @@ import ch.qos.logback.core.spi.ContextAware;
 import ch.qos.logback.core.spi.LifeCycle;
 
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Allows programmatic configuration of logback which is usually faster than parsing XML.
@@ -76,7 +76,7 @@ class LogbackConfigurator {
 		logger(name, level, true);
 	}
 
-	@NullUnmarked void logger(String name, Level level, boolean additive) {
+	 void logger(String name, Level level, boolean additive) {
 		logger(name, level, additive, null);
 	}
 

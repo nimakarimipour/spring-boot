@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Interface that uniquely represents the origin of an item. For example, an item loaded
@@ -47,7 +47,7 @@ public interface Origin {
 	 * @since 2.4.0
 	 * @see Origin#parentsFrom(Object)
 	 */
-	@NullUnmarked default Origin getParent() {
+	 default Origin getParent() {
 		return null;
 	}
 
@@ -57,7 +57,7 @@ public interface Origin {
 	 * @param source the source object or {@code null}
 	 * @return an optional {@link Origin}
 	 */
-	@NullUnmarked static Origin from(Object source) {
+	 static Origin from(Object source) {
 		if (source instanceof Origin origin) {
 			return origin;
 		}

@@ -17,7 +17,7 @@
 package org.springframework.boot.jdbc.metadata;
 
 import javax.sql.DataSource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Provides access meta-data that is commonly available from most pooled
@@ -58,7 +58,7 @@ public interface DataSourcePoolMetadata {
 	 * @since 2.2.0
 	 * @see #getActive()
 	 */
-	@NullUnmarked default Integer getIdle() {
+	 default Integer getIdle() {
 		return null;
 	}
 

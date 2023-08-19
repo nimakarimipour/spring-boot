@@ -45,7 +45,7 @@ import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.unit.DataSize;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link RSocketServerFactory} that can be used to create {@link RSocketServer}s backed
@@ -60,21 +60,21 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 
 	private int port = 9898;
 
-	@SuppressWarnings("NullAway.Init") private DataSize fragmentSize;
+	 private DataSize fragmentSize;
 
-	@SuppressWarnings("NullAway.Init") private InetAddress address;
+	 private InetAddress address;
 
 	private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
 
-	@SuppressWarnings("NullAway.Init") private ReactorResourceFactory resourceFactory;
+	 private ReactorResourceFactory resourceFactory;
 
-	@SuppressWarnings("NullAway.Init") private Duration lifecycleTimeout;
+	 private Duration lifecycleTimeout;
 
 	private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
 
-	@SuppressWarnings("NullAway.Init") private Ssl ssl;
+	 private Ssl ssl;
 
-	@SuppressWarnings("NullAway.Init") private SslStoreProvider sslStoreProvider;
+	 private SslStoreProvider sslStoreProvider;
 
 	@Override
 	public void setPort(int port) {
@@ -179,7 +179,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 		return WebsocketServerTransport.create(httpServer.bindAddress(this::getListenAddress));
 	}
 
-	@NullUnmarked @SuppressWarnings("deprecation")
+	 @SuppressWarnings("deprecation")
 	private HttpServer customizeSslConfiguration(HttpServer httpServer) {
 		org.springframework.boot.web.embedded.netty.SslServerCustomizer sslServerCustomizer = new org.springframework.boot.web.embedded.netty.SslServerCustomizer(
 				this.ssl, null, getOrCreateSslStoreProvider());
@@ -217,7 +217,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 	private static final class TcpSslServerCustomizer
 			extends org.springframework.boot.web.embedded.netty.SslServerCustomizer {
 
-		@NullUnmarked private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+		 private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
 			super(ssl, null, sslStoreProvider);
 		}
 

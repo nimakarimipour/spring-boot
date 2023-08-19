@@ -20,7 +20,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.core.env.ConfigurablePropertyResolver;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link StandardReactiveWebEnvironment} for typical use in a typical
@@ -30,12 +30,12 @@ import org.springframework.boot.NullUnmarked;
  */
 class ApplicationReactiveWebEnvironment extends StandardReactiveWebEnvironment {
 
-	@NullUnmarked @Override
+	 @Override
 	protected String doGetActiveProfilesProperty() {
 		return null;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected String doGetDefaultProfilesProperty() {
 		return null;
 	}

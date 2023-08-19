@@ -32,7 +32,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.io.support.SpringFactoriesLoader.FailureHandler;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Utility to trigger {@link FailureAnalyzer} and {@link FailureAnalysisReporter}
@@ -97,7 +97,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return analyzers;
 	}
 
-	@NullUnmarked private static ArgumentResolver getArgumentResolver(ConfigurableApplicationContext context) {
+	 private static ArgumentResolver getArgumentResolver(ConfigurableApplicationContext context) {
 		if (context == null) {
 			return null;
 		}
@@ -112,7 +112,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return report(analysis);
 	}
 
-	@NullUnmarked private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
+	 private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
 		for (FailureAnalyzer analyzer : analyzers) {
 			try {
 				FailureAnalysis analysis = analyzer.analyze(failure);

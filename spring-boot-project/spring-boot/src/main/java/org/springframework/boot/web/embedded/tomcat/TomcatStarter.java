@@ -39,7 +39,7 @@ class TomcatStarter implements ServletContainerInitializer {
 
 	private final ServletContextInitializer[] initializers;
 
-	@SuppressWarnings("NullAway.Init") private volatile Exception startUpException;
+	 private volatile Exception startUpException;
 
 	TomcatStarter(ServletContextInitializer[] initializers) {
 		this.initializers = initializers;

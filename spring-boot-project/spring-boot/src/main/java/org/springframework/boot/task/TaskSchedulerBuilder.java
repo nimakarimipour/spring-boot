@@ -27,7 +27,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Builder that can be used to configure and create a {@link TaskScheduler}. Provides
@@ -52,7 +52,7 @@ public class TaskSchedulerBuilder {
 
 	private final Set<TaskSchedulerCustomizer> customizers;
 
-	@NullUnmarked public TaskSchedulerBuilder() {
+	 public TaskSchedulerBuilder() {
 		this.poolSize = null;
 		this.awaitTermination = null;
 		this.awaitTerminationPeriod = null;
@@ -139,7 +139,7 @@ public class TaskSchedulerBuilder {
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(TaskSchedulerCustomizer...)
 	 */
-	@NullUnmarked public TaskSchedulerBuilder customizers(Iterable<TaskSchedulerCustomizer> customizers) {
+	 public TaskSchedulerBuilder customizers(Iterable<TaskSchedulerCustomizer> customizers) {
 		Assert.notNull(customizers, "Customizers must not be null");
 		return new TaskSchedulerBuilder(this.poolSize, this.awaitTermination, this.awaitTerminationPeriod,
 				this.threadNamePrefix, append(null, customizers));

@@ -31,7 +31,7 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Simple server-independent abstraction for mime mappings. Roughly equivalent to the
@@ -92,7 +92,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param mimeType the mime type to map
 	 * @return any previous mapping or {@code null}
 	 */
-	@NullUnmarked public String add(String extension, String mimeType) {
+	 public String add(String extension, String mimeType) {
 		Assert.notNull(extension, "Extension must not be null");
 		Assert.notNull(mimeType, "MimeType must not be null");
 		Mapping previous = this.map.put(extension.toLowerCase(Locale.ENGLISH), new Mapping(extension, mimeType));
@@ -104,7 +104,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param extension the file extension (excluding '.')
 	 * @return the removed mime mapping or {@code null} if no item was removed
 	 */
-	@NullUnmarked public String remove(String extension) {
+	 public String remove(String extension) {
 		Assert.notNull(extension, "Extension must not be null");
 		Mapping previous = this.map.remove(extension.toLowerCase(Locale.ENGLISH));
 		return (previous != null) ? previous.getMimeType() : null;
@@ -115,7 +115,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param extension the file extension (excluding '.')
 	 * @return a mime mapping or {@code null}
 	 */
-	@NullUnmarked public String get(String extension) {
+	 public String get(String extension) {
 		Assert.notNull(extension, "Extension must not be null");
 		Mapping mapping = this.map.get(extension.toLowerCase(Locale.ENGLISH));
 		return (mapping != null) ? mapping.getMimeType() : null;
@@ -282,9 +282,9 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			COMMON = unmodifiableMappings(mappings);
 		}
 
-		@SuppressWarnings("NullAway.Init") private volatile Map<String, Mapping> loaded;
+		 private volatile Map<String, Mapping> loaded;
 
-		@NullUnmarked DefaultMimeMappings() {
+		 DefaultMimeMappings() {
 			super(new MimeMappings(), false);
 		}
 
@@ -309,7 +309,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			return get(loaded, extension);
 		}
 
-		@NullUnmarked private String get(Map<String, Mapping> mappings, String extension) {
+		 private String get(Map<String, Mapping> mappings, String extension) {
 			Mapping mapping = mappings.get(extension);
 			return (mapping != null) ? mapping.getMimeType() : null;
 		}

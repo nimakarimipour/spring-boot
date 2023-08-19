@@ -35,7 +35,7 @@ public class RSocketServerBootstrap implements ApplicationEventPublisherAware, S
 
 	private final RSocketServer server;
 
-	@SuppressWarnings("NullAway.Init") private ApplicationEventPublisher eventPublisher;
+	 private ApplicationEventPublisher eventPublisher;
 
 	public RSocketServerBootstrap(RSocketServerFactory serverFactory, SocketAcceptor socketAcceptor) {
 		Assert.notNull(serverFactory, "ServerFactory must not be null");

@@ -49,9 +49,9 @@ import org.springframework.core.type.filter.TypeFilter;
  */
 public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 
-	@SuppressWarnings("NullAway.Init") private BeanFactory beanFactory;
+	 private BeanFactory beanFactory;
 
-	@SuppressWarnings("NullAway.Init") private Collection<TypeExcludeFilter> delegates;
+	 private Collection<TypeExcludeFilter> delegates;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

@@ -44,7 +44,7 @@ import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.boot.origin.TextResourceOrigin;
 import org.springframework.boot.origin.TextResourceOrigin.Location;
 import org.springframework.core.io.Resource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Class to load {@code .yml} files into a map of {@code String} to
@@ -94,7 +94,7 @@ class OriginTrackedYamlLoader extends YamlProcessor {
 			super(loadingConfig);
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public Object getData() throws NoSuchElementException {
 			Object data = super.getData();
 			if (data instanceof CharSequence charSequence && charSequence.isEmpty()) {

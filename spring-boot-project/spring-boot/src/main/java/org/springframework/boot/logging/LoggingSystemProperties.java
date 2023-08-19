@@ -26,7 +26,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Utility to set system properties that can later be used by log configuration files.
@@ -126,7 +126,7 @@ public class LoggingSystemProperties {
 		return StandardCharsets.UTF_8;
 	}
 
-	@NullUnmarked public final void apply() {
+	 public final void apply() {
 		apply(null);
 	}
 
@@ -160,7 +160,7 @@ public class LoggingSystemProperties {
 		return this.environment;
 	}
 
-	@NullUnmarked protected final void setSystemProperty(PropertyResolver resolver, String systemPropertyName, String propertyName) {
+	 protected final void setSystemProperty(PropertyResolver resolver, String systemPropertyName, String propertyName) {
 		setSystemProperty(resolver, systemPropertyName, propertyName, null);
 	}
 

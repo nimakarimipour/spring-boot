@@ -32,7 +32,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.CollectionUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A single element that may directly or indirectly contribute configuration data to the
@@ -232,7 +232,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param activationContext the activation context
 	 * @return a new contributor instance
 	 */
-	@NullUnmarked ConfigDataEnvironmentContributor withBoundProperties(Iterable<ConfigDataEnvironmentContributor> contributors,
+	 ConfigDataEnvironmentContributor withBoundProperties(Iterable<ConfigDataEnvironmentContributor> contributors,
 			ConfigDataActivationContext activationContext) {
 		Iterable<ConfigurationPropertySource> sources = Collections.singleton(getConfigurationPropertySource());
 		PlaceholdersResolver placeholdersResolver = new ConfigDataEnvironmentContributorPlaceholdersResolver(
@@ -266,7 +266,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 				this.configDataOptions, updatedChildren);
 	}
 
-	@NullUnmarked private void moveProfileSpecific(Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children) {
+	 private void moveProfileSpecific(Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children) {
 		List<ConfigDataEnvironmentContributor> before = children.get(ImportPhase.BEFORE_PROFILE_ACTIVATION);
 		if (!hasAnyProfileSpecificChildren(before)) {
 			return;
@@ -372,7 +372,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param contributors the immediate children of the root
 	 * @return a new {@link ConfigDataEnvironmentContributor} instance
 	 */
-	@NullUnmarked static ConfigDataEnvironmentContributor of(List<ConfigDataEnvironmentContributor> contributors) {
+	 static ConfigDataEnvironmentContributor of(List<ConfigDataEnvironmentContributor> contributors) {
 		Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children = new LinkedHashMap<>();
 		children.put(ImportPhase.BEFORE_PROFILE_ACTIVATION, Collections.unmodifiableList(contributors));
 		return new ConfigDataEnvironmentContributor(Kind.ROOT, null, null, false, null, null, null, null, children);
@@ -385,7 +385,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param initialImport the initial import location (with placeholders resolved)
 	 * @return a new {@link ConfigDataEnvironmentContributor} instance
 	 */
-	@NullUnmarked static ConfigDataEnvironmentContributor ofInitialImport(ConfigDataLocation initialImport) {
+	 static ConfigDataEnvironmentContributor ofInitialImport(ConfigDataLocation initialImport) {
 		List<ConfigDataLocation> imports = Collections.singletonList(initialImport);
 		ConfigDataProperties properties = new ConfigDataProperties(imports, null);
 		return new ConfigDataEnvironmentContributor(Kind.INITIAL_IMPORT, null, null, false, null, null, properties,
@@ -399,7 +399,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param propertySource the property source to wrap
 	 * @return a new {@link ConfigDataEnvironmentContributor} instance
 	 */
-	@NullUnmarked static ConfigDataEnvironmentContributor ofExisting(PropertySource<?> propertySource) {
+	 static ConfigDataEnvironmentContributor ofExisting(PropertySource<?> propertySource) {
 		return new ConfigDataEnvironmentContributor(Kind.EXISTING, null, null, false, propertySource,
 				ConfigurationPropertySource.from(propertySource), null, null, null);
 	}
@@ -415,7 +415,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param propertySourceIndex the index of the property source that should be used
 	 * @return a new {@link ConfigDataEnvironmentContributor} instance
 	 */
-	@NullUnmarked static ConfigDataEnvironmentContributor ofUnboundImport(ConfigDataLocation location, ConfigDataResource resource,
+	 static ConfigDataEnvironmentContributor ofUnboundImport(ConfigDataLocation location, ConfigDataResource resource,
 			boolean profileSpecific, ConfigData configData, int propertySourceIndex) {
 		PropertySource<?> propertySource = configData.getPropertySources().get(propertySourceIndex);
 		ConfigData.Options options = configData.getOptions(propertySource);
@@ -430,7 +430,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param profileSpecific if the contributor is from a profile specific import
 	 * @return a new {@link ConfigDataEnvironmentContributor} instance
 	 */
-	@NullUnmarked static ConfigDataEnvironmentContributor ofEmptyLocation(ConfigDataLocation location, boolean profileSpecific) {
+	 static ConfigDataEnvironmentContributor ofEmptyLocation(ConfigDataLocation location, boolean profileSpecific) {
 		return new ConfigDataEnvironmentContributor(Kind.EMPTY_LOCATION, location, null, profileSpecific, null, null,
 				null, EMPTY_LOCATION_OPTIONS, null);
 	}
@@ -514,9 +514,9 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 
 		private Iterator<ConfigDataEnvironmentContributor> current;
 
-		@SuppressWarnings("NullAway.Init") private ConfigDataEnvironmentContributor next;
+		 private ConfigDataEnvironmentContributor next;
 
-		@NullUnmarked private ContributorIterator() {
+		 private ContributorIterator() {
 			this.phase = ImportPhase.AFTER_PROFILE_ACTIVATION;
 			this.children = getChildren(this.phase).iterator();
 			this.current = Collections.emptyIterator();
@@ -527,7 +527,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 			return fetchIfNecessary() != null;
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public ConfigDataEnvironmentContributor next() {
 			ConfigDataEnvironmentContributor next = fetchIfNecessary();
 			if (next == null) {
@@ -537,7 +537,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 			return next;
 		}
 
-		@NullUnmarked private ConfigDataEnvironmentContributor fetchIfNecessary() {
+		 private ConfigDataEnvironmentContributor fetchIfNecessary() {
 			if (this.next != null) {
 				return this.next;
 			}

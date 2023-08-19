@@ -38,7 +38,7 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
@@ -58,7 +58,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 	private final SoftReferenceConfigurationPropertyCache<Mappings> cache;
 
-	@SuppressWarnings("NullAway.Init") private volatile ConfigurationPropertyName[] configurationPropertyNames;
+	 private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
 	SpringIterableConfigurationPropertySource(EnumerablePropertySource<?> propertySource, PropertyMapper... mappers) {
 		super(propertySource, mappers);
@@ -93,7 +93,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		return this.cache;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
@@ -194,17 +194,17 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private final boolean trackDescendants;
 
-		@SuppressWarnings("NullAway.Init") private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
+		 private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
 
-		@SuppressWarnings("NullAway.Init") private volatile Map<String, ConfigurationPropertyName> reverseMappings;
+		 private volatile Map<String, ConfigurationPropertyName> reverseMappings;
 
-		@SuppressWarnings("NullAway.Init") private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
+		 private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
-		@SuppressWarnings("NullAway.Init") private volatile ConfigurationPropertyName[] configurationPropertyNames;
+		 private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
-		@SuppressWarnings("NullAway.Init") private volatile String[] lastUpdated;
+		 private volatile String[] lastUpdated;
 
-		@NullUnmarked Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
+		 Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
 			this.mappers = mappers;
 			this.immutable = immutable;
 			this.trackDescendants = trackDescendants;
@@ -227,7 +227,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 			}
 		}
 
-		@NullUnmarked private void updateMappings(String[] propertyNames) {
+		 private void updateMappings(String[] propertyNames) {
 			String[] lastUpdated = this.lastUpdated;
 			if (lastUpdated != null && Arrays.equals(lastUpdated, propertyNames)) {
 				return;

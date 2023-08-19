@@ -32,7 +32,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolver;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A collection of {@link ConfigDataLoader} instances loaded via {@code spring.factories}.
@@ -96,7 +96,7 @@ class ConfigDataLoaders {
 		return loader.load(context, resource);
 	}
 
-	@NullUnmarked @SuppressWarnings("unchecked")
+	 @SuppressWarnings("unchecked")
 	private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
 		ConfigDataLoader<R> result = null;
 		for (int i = 0; i < this.loaders.size(); i++) {

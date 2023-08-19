@@ -24,7 +24,7 @@ import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.util.ClassUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Unwraps a {@link DataSource} that may have been proxied or wrapped in a custom
@@ -54,7 +54,7 @@ public final class DataSourceUnwrapper {
 	 * @since 2.3.8
 	 * @see Wrapper#unwrap(Class)
 	 */
-	@NullUnmarked public static <I, T extends I> T unwrap(DataSource dataSource, Class<I> unwrapInterface, Class<T> target) {
+	 public static <I, T extends I> T unwrap(DataSource dataSource, Class<I> unwrapInterface, Class<T> target) {
 		if (target.isInstance(dataSource)) {
 			return target.cast(dataSource);
 		}
@@ -91,7 +91,7 @@ public final class DataSourceUnwrapper {
 		return unwrap(dataSource, target, target);
 	}
 
-	@NullUnmarked private static <S> S safeUnwrap(Wrapper wrapper, Class<S> target) {
+	 private static <S> S safeUnwrap(Wrapper wrapper, Class<S> target) {
 		try {
 			if (target.isInterface() && wrapper.isWrapperFor(target)) {
 				return wrapper.unwrap(target);
@@ -105,7 +105,7 @@ public final class DataSourceUnwrapper {
 
 	private static class DelegatingDataSourceUnwrapper {
 
-		@NullUnmarked private static DataSource getTargetDataSource(DataSource dataSource) {
+		 private static DataSource getTargetDataSource(DataSource dataSource) {
 			if (dataSource instanceof DelegatingDataSource delegatingDataSource) {
 				return delegatingDataSource.getTargetDataSource();
 			}

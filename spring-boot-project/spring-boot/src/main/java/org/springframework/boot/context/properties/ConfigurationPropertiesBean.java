@@ -45,7 +45,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Provides access to {@link ConfigurationProperties @ConfigurationProperties} bean
@@ -215,7 +215,7 @@ public final class ConfigurationPropertiesBean {
 		return create(beanName, bean, bean.getClass(), factoryMethod);
 	}
 
-	@NullUnmarked private static Method findFactoryMethod(ApplicationContext applicationContext, String beanName) {
+	 private static Method findFactoryMethod(ApplicationContext applicationContext, String beanName) {
 		if (applicationContext instanceof ConfigurableApplicationContext configurableContext) {
 			return findFactoryMethod(configurableContext, beanName);
 		}
@@ -226,7 +226,7 @@ public final class ConfigurationPropertiesBean {
 		return findFactoryMethod(applicationContext.getBeanFactory(), beanName);
 	}
 
-	@NullUnmarked private static Method findFactoryMethod(ConfigurableListableBeanFactory beanFactory, String beanName) {
+	 private static Method findFactoryMethod(ConfigurableListableBeanFactory beanFactory, String beanName) {
 		if (beanFactory.containsBeanDefinition(beanName)) {
 			BeanDefinition beanDefinition = beanFactory.getMergedBeanDefinition(beanName);
 			if (beanDefinition instanceof RootBeanDefinition rootBeanDefinition) {
@@ -240,7 +240,7 @@ public final class ConfigurationPropertiesBean {
 		return null;
 	}
 
-	@NullUnmarked private static Method findFactoryMethodUsingReflection(ConfigurableListableBeanFactory beanFactory,
+	 private static Method findFactoryMethodUsingReflection(ConfigurableListableBeanFactory beanFactory,
 			BeanDefinition beanDefinition) {
 		String factoryMethodName = beanDefinition.getFactoryMethodName();
 		String factoryBeanName = beanDefinition.getFactoryBeanName();
@@ -260,14 +260,14 @@ public final class ConfigurationPropertiesBean {
 		return factoryMethod.get();
 	}
 
-	@NullUnmarked static ConfigurationPropertiesBean forValueObject(Class<?> beanClass, String beanName) {
+	 static ConfigurationPropertiesBean forValueObject(Class<?> beanClass, String beanName) {
 		ConfigurationPropertiesBean propertiesBean = create(beanName, null, beanClass, null);
 		Assert.state(propertiesBean != null && propertiesBean.getBindMethod() == BindMethod.VALUE_OBJECT,
 				() -> "Bean '" + beanName + "' is not a @ConfigurationProperties value object");
 		return propertiesBean;
 	}
 
-	@NullUnmarked private static ConfigurationPropertiesBean create(String name, Object instance, Class<?> type, Method factory) {
+	 private static ConfigurationPropertiesBean create(String name, Object instance, Class<?> type, Method factory) {
 		ConfigurationProperties annotation = findAnnotation(instance, type, factory, ConfigurationProperties.class);
 		if (annotation == null) {
 			return null;
@@ -287,7 +287,7 @@ public final class ConfigurationPropertiesBean {
 		return new ConfigurationPropertiesBean(name, instance, annotation, bindable);
 	}
 
-	@NullUnmarked private static <A extends Annotation> A findAnnotation(Object instance, Class<?> type, Method factory,
+	 private static <A extends Annotation> A findAnnotation(Object instance, Class<?> type, Method factory,
 			Class<A> annotationType) {
 		MergedAnnotation<A> annotation = MergedAnnotation.missing();
 		if (factory != null) {

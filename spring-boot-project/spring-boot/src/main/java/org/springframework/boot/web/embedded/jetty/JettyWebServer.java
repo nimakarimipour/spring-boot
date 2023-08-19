@@ -40,7 +40,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link WebServer} that can be used to control a Jetty web server.
@@ -91,7 +91,7 @@ public class JettyWebServer implements WebServer {
 		initialize();
 	}
 
-	@NullUnmarked private GracefulShutdown createGracefulShutdown(Server server) {
+	 private GracefulShutdown createGracefulShutdown(Server server) {
 		StatisticsHandler statisticsHandler = findStatisticsHandler(server);
 		if (statisticsHandler == null) {
 			return null;
@@ -103,7 +103,7 @@ public class JettyWebServer implements WebServer {
 		return findStatisticsHandler(server.getHandler());
 	}
 
-	@NullUnmarked private StatisticsHandler findStatisticsHandler(Handler handler) {
+	 private StatisticsHandler findStatisticsHandler(Handler handler) {
 		if (handler instanceof StatisticsHandler statisticsHandler) {
 			return statisticsHandler;
 		}
@@ -204,7 +204,7 @@ public class JettyWebServer implements WebServer {
 				.map(ContextHandler::getContextPath).collect(Collectors.joining(" "));
 	}
 
-	@NullUnmarked private ContextHandler findContextHandler(Handler handler) {
+	 private ContextHandler findContextHandler(Handler handler) {
 		while (handler instanceof HandlerWrapper handlerWrapper) {
 			if (handler instanceof ContextHandler contextHandler) {
 				return contextHandler;

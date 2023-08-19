@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Parser for PKCS private key files in PEM format.
@@ -86,7 +86,7 @@ final class PrivateKeyParser {
 	private PrivateKeyParser() {
 	}
 
-	@NullUnmarked private static PKCS8EncodedKeySpec createKeySpecForPkcs1(byte[] bytes) {
+	 private static PKCS8EncodedKeySpec createKeySpecForPkcs1(byte[] bytes) {
 		return createKeySpecForAlgorithm(bytes, RSA_ALGORITHM, null);
 	}
 
@@ -157,7 +157,7 @@ final class PrivateKeyParser {
 			this.keySpecFactory = keySpecFactory;
 		}
 
-		@NullUnmarked PrivateKey parse(String text) {
+		 PrivateKey parse(String text) {
 			Matcher matcher = this.pattern.matcher(text);
 			return (!matcher.find()) ? null : parse(decodeBase64(matcher.group(1)));
 		}
@@ -231,7 +231,7 @@ final class PrivateKeyParser {
 			}
 		}
 
-		@NullUnmarked private static byte[] bytes(int... elements) {
+		 private static byte[] bytes(int... elements) {
 			if (elements == null) {
 				return null;
 			}

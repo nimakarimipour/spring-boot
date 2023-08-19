@@ -25,7 +25,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Converts a {@link Delimiter delimited} String to an Array.
@@ -52,7 +52,7 @@ final class DelimitedStringToArrayConverter implements ConditionalGenericConvert
 				|| this.conversionService.canConvert(sourceType, targetType.getElementTypeDescriptor());
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;

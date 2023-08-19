@@ -45,7 +45,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Convenience class for building a {@link DataSource}. Provides a limited subset of the
@@ -92,11 +92,11 @@ public final class DataSourceBuilder<T extends DataSource> {
 
 	private final Map<DataSourceProperty, String> values = new HashMap<>();
 
-	@SuppressWarnings("NullAway.Init") private Class<T> type;
+	 private Class<T> type;
 
 	private final DataSource deriveFrom;
 
-	@NullUnmarked private DataSourceBuilder(ClassLoader classLoader) {
+	 private DataSourceBuilder(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 		this.deriveFrom = null;
 	}
@@ -195,7 +195,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 		return dataSource;
 	}
 
-	@NullUnmarked @SuppressWarnings("unchecked")
+	 @SuppressWarnings("unchecked")
 	private DataSourceProperties<DataSource> getDeriveFromProperties() {
 		if (this.deriveFrom == null) {
 			return null;
@@ -207,7 +207,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 	 * Create a new {@link DataSourceBuilder} instance.
 	 * @return a new datasource builder instance
 	 */
-	@NullUnmarked public static DataSourceBuilder<?> create() {
+	 public static DataSourceBuilder<?> create() {
 		return create(null);
 	}
 
@@ -263,7 +263,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 	 * @param classLoader the classloader used to discover preferred settings
 	 * @return the preferred {@link DataSource} type
 	 */
-	@NullUnmarked public static Class<? extends DataSource> findType(ClassLoader classLoader) {
+	 public static Class<? extends DataSource> findType(ClassLoader classLoader) {
 		MappedDataSourceProperties<?> mappings = MappedDataSourceProperties.forType(classLoader, null);
 		return (mappings != null) ? mappings.getDataSourceInstanceType() : null;
 	}
@@ -307,7 +307,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return findMethod("get", type);
 		}
 
-		@NullUnmarked private Method findMethod(String prefix, Class<?> type, Class<?>... paramTypes) {
+		 private Method findMethod(String prefix, Class<?> type, Class<?>... paramTypes) {
 			for (String name : this.names) {
 				String candidate = prefix + StringUtils.capitalize(name);
 				Method method = ReflectionUtils.findMethod(type, candidate, paramTypes);
@@ -375,7 +375,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			}
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public String get(T dataSource, DataSourceProperty property) {
 			MappedDataSourceProperty<T, ?> mappedProperty = getMapping(property);
 			if (mappedProperty != null) {
@@ -384,7 +384,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return null;
 		}
 
-		@NullUnmarked private MappedDataSourceProperty<T, ?> getMapping(DataSourceProperty property) {
+		 private MappedDataSourceProperty<T, ?> getMapping(DataSourceProperty property) {
 			MappedDataSourceProperty<T, ?> mappedProperty = this.mappedProperties.get(property);
 			UnsupportedDataSourcePropertyException.throwIf(!property.isOptional() && mappedProperty == null,
 					() -> "No mapping found for " + property);
@@ -399,7 +399,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return lookupBasic(classLoader, type);
 		}
 
-		@NullUnmarked private static <T extends DataSource> MappedDataSourceProperties<T> lookupPooled(ClassLoader classLoader,
+		 private static <T extends DataSource> MappedDataSourceProperties<T> lookupPooled(ClassLoader classLoader,
 				Class<T> type) {
 			MappedDataSourceProperties<T> result = null;
 			result = lookup(classLoader, type, result, "com.zaxxer.hikari.HikariDataSource",
@@ -415,7 +415,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return result;
 		}
 
-		@NullUnmarked private static <T extends DataSource> MappedDataSourceProperties<T> lookupBasic(ClassLoader classLoader,
+		 private static <T extends DataSource> MappedDataSourceProperties<T> lookupBasic(ClassLoader classLoader,
 				Class<T> dataSourceType) {
 			MappedDataSourceProperties<T> result = null;
 			result = lookup(classLoader, dataSourceType, result,
@@ -429,7 +429,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return result;
 		}
 
-		@NullUnmarked @SuppressWarnings("unchecked")
+		 @SuppressWarnings("unchecked")
 		private static <T extends DataSource> MappedDataSourceProperties<T> lookup(ClassLoader classLoader,
 				Class<T> dataSourceType, MappedDataSourceProperties<T> existing, String dataSourceClassName,
 				Supplier<MappedDataSourceProperties<?>> propertyMappingsSupplier, String... requiredClassNames) {
@@ -484,7 +484,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			}
 		}
 
-		@NullUnmarked String get(T dataSource) {
+		 String get(T dataSource) {
 			try {
 				if (this.getter == null) {
 					UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),
@@ -566,7 +566,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			}
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public String get(T dataSource, DataSourceProperty property) {
 			Method method = getMethod(property, this.getters);
 			if (method != null) {
@@ -575,7 +575,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return null;
 		}
 
-		@NullUnmarked private Method getMethod(DataSourceProperty property, Map<DataSourceProperty, Method> methods) {
+		 private Method getMethod(DataSourceProperty property, Map<DataSourceProperty, Method> methods) {
 			Method method = methods.get(property);
 			if (method == null) {
 				UnsupportedDataSourcePropertyException.throwIf(!property.isOptional(),
@@ -661,7 +661,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 			return PoolDataSourceImpl.class;
 		}
 
-		@NullUnmarked OraclePoolDataSourceProperties() {
+		 OraclePoolDataSourceProperties() {
 			add(DataSourceProperty.URL, PoolDataSource::getURL, PoolDataSource::setURL);
 			add(DataSourceProperty.DRIVER_CLASS_NAME, PoolDataSource::getConnectionFactoryClassName,
 					PoolDataSource::setConnectionFactoryClassName);
@@ -715,7 +715,7 @@ public final class DataSourceBuilder<T extends DataSource> {
 	 */
 	private static class OracleDataSourceProperties extends MappedDataSourceProperties<OracleDataSource> {
 
-		@NullUnmarked OracleDataSourceProperties() {
+		 OracleDataSourceProperties() {
 			add(DataSourceProperty.URL, OracleDataSource::getURL, OracleDataSource::setURL);
 			add(DataSourceProperty.USERNAME, OracleDataSource::getUser, OracleDataSource::setUser);
 			add(DataSourceProperty.PASSWORD, null, OracleDataSource::setPassword);

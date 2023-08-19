@@ -22,7 +22,7 @@ import io.r2dbc.spi.ConnectionFactoryMetadata;
 import io.r2dbc.spi.ConnectionFactoryOptions;
 import io.r2dbc.spi.Wrapped;
 import org.reactivestreams.Publisher;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ConnectionFactory} capable of providing access to the
@@ -78,7 +78,7 @@ public class OptionsCapableConnectionFactory implements Wrapped<ConnectionFactor
 	 * @return the {@code OptionsCapableConnectionFactory} or {@code null}
 	 * @since 2.5.1
 	 */
-	@NullUnmarked public static OptionsCapableConnectionFactory unwrapFrom(ConnectionFactory connectionFactory) {
+	 public static OptionsCapableConnectionFactory unwrapFrom(ConnectionFactory connectionFactory) {
 		if (connectionFactory instanceof OptionsCapableConnectionFactory) {
 			return (OptionsCapableConnectionFactory) connectionFactory;
 		}

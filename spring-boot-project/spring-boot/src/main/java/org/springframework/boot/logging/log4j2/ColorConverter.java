@@ -36,7 +36,7 @@ import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiElement;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Log4j2 {@link LogEventPatternConverter} colors output using the {@link AnsiOutput}
@@ -90,7 +90,7 @@ public final class ColorConverter extends LogEventPatternConverter {
 	 * @param options the options
 	 * @return a new instance, or {@code null} if the options are invalid
 	 */
-	@NullUnmarked public static ColorConverter newInstance(Configuration config, String[] options) {
+	 public static ColorConverter newInstance(Configuration config, String[] options) {
 		if (options.length < 1) {
 			LOGGER.error("Incorrect number of options on style. Expected at least 1, received {}", options.length);
 			return null;

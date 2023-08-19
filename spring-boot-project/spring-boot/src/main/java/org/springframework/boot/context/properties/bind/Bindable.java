@@ -30,7 +30,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Source that can be bound by a {@link Binder}.
@@ -105,7 +105,7 @@ public final class Bindable<T> {
 	 * @param type annotation type
 	 * @return the associated annotation or {@code null}
 	 */
-	@NullUnmarked @SuppressWarnings("unchecked")
+	 @SuppressWarnings("unchecked")
 	public <A extends Annotation> A getAnnotation(Class<A> type) {
 		for (Annotation annotation : this.annotations) {
 			if (type.isInstance(annotation)) {
@@ -179,7 +179,7 @@ public final class Bindable<T> {
 	 * @param existingValue the existing value
 	 * @return an updated {@link Bindable}
 	 */
-	@NullUnmarked public Bindable<T> withExistingValue(T existingValue) {
+	 public Bindable<T> withExistingValue(T existingValue) {
 		Assert.isTrue(
 				existingValue == null || this.type.isArray() || this.boxedType.resolve().isInstance(existingValue),
 				() -> "ExistingValue must be an instance of " + this.type);
@@ -275,7 +275,7 @@ public final class Bindable<T> {
 	 * @return a {@link Bindable} instance
 	 * @see #of(Class)
 	 */
-	@NullUnmarked public static <T> Bindable<T> of(ResolvableType type) {
+	 public static <T> Bindable<T> of(ResolvableType type) {
 		Assert.notNull(type, "Type must not be null");
 		ResolvableType boxedType = box(type);
 		return new Bindable<>(type, boxedType, null, NO_ANNOTATIONS, NO_BIND_RESTRICTIONS);

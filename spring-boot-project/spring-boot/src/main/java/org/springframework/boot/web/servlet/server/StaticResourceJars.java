@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Logic to extract URLs of static resource jars (those containing
@@ -69,7 +69,7 @@ class StaticResourceJars {
 		}
 	}
 
-	@NullUnmarked private File toFile(URL url) {
+	 private File toFile(URL url) {
 		try {
 			return new File(url.toURI());
 		}

@@ -25,7 +25,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Simple detection for well known cloud platforms. Detection can be forced using the
@@ -182,7 +182,7 @@ public enum CloudPlatform {
 	 * @return if the platform is enforced
 	 * @since 2.4.0
 	 */
-	@NullUnmarked public boolean isEnforced(Binder binder) {
+	 public boolean isEnforced(Binder binder) {
 		return isEnforced(binder.bind(PROPERTY_NAME, String.class).orElse(null));
 	}
 
@@ -213,7 +213,7 @@ public enum CloudPlatform {
 	 * @param environment the environment
 	 * @return the {@link CloudPlatform} or {@code null}
 	 */
-	@NullUnmarked public static CloudPlatform getActive(Environment environment) {
+	 public static CloudPlatform getActive(Environment environment) {
 		if (environment != null) {
 			for (CloudPlatform cloudPlatform : values()) {
 				if (cloudPlatform.isActive(environment)) {

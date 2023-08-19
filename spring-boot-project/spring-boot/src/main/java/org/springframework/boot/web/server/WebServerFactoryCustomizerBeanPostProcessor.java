@@ -41,9 +41,9 @@ import org.springframework.util.Assert;
  */
 public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-	@SuppressWarnings("NullAway.Init") private ListableBeanFactory beanFactory;
+	 private ListableBeanFactory beanFactory;
 
-	@SuppressWarnings("NullAway.Init") private List<WebServerFactoryCustomizer<?>> customizers;
+	 private List<WebServerFactoryCustomizer<?>> customizers;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {

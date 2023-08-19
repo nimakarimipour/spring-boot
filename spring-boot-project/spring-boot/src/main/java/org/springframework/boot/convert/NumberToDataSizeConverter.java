@@ -23,7 +23,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.unit.DataSize;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link Converter} to convert from a {@link Number} to a {@link DataSize}.
@@ -40,7 +40,7 @@ final class NumberToDataSizeConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Number.class, DataSize.class));
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		return this.delegate.convert((source != null) ? source.toString() : null, TypeDescriptor.valueOf(String.class),
 				targetType);

@@ -66,7 +66,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.SingletonSupplier;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Extended version of the Logback {@link JoranConfigurator} that adds additional Spring
@@ -222,7 +222,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			return reflectionTypes;
 		}
 
-		@NullUnmarked private Class<?> determineType(Model model, Supplier<Object> parentSupplier) {
+		 private Class<?> determineType(Model model, Supplier<Object> parentSupplier) {
 			String className = null;
 			if (model instanceof ComponentModel) {
 				className = ((ComponentModel) model).getClassName();
@@ -247,7 +247,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			return null;
 		}
 
-		@NullUnmarked private Class<?> inferTypeFromParent(Supplier<Object> parentSupplier, String tag) {
+		 private Class<?> inferTypeFromParent(Supplier<Object> parentSupplier, String tag) {
 			Object parent = parentSupplier.get();
 			if (parent != null) {
 				try {
@@ -275,7 +275,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			}
 		}
 
-		@NullUnmarked private Object instantiate(Class<?> type) {
+		 private Object instantiate(Class<?> type) {
 			try {
 				return type.getConstructor().newInstance();
 			}

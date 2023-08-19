@@ -24,7 +24,7 @@ import java.util.Set;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link Converter} to convert from a {@link Duration} to a {@link String}.
@@ -40,7 +40,7 @@ final class DurationToStringConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Duration.class, String.class));
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;
@@ -48,12 +48,12 @@ final class DurationToStringConverter implements GenericConverter {
 		return convert((Duration) source, getDurationStyle(sourceType), getDurationUnit(sourceType));
 	}
 
-	@NullUnmarked private ChronoUnit getDurationUnit(TypeDescriptor sourceType) {
+	 private ChronoUnit getDurationUnit(TypeDescriptor sourceType) {
 		DurationUnit annotation = sourceType.getAnnotation(DurationUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
 
-	@NullUnmarked private DurationStyle getDurationStyle(TypeDescriptor sourceType) {
+	 private DurationStyle getDurationStyle(TypeDescriptor sourceType) {
 		DurationFormat annotation = sourceType.getAnnotation(DurationFormat.class);
 		return (annotation != null) ? annotation.value() : null;
 	}

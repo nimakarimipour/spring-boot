@@ -23,7 +23,7 @@ import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link PlaceholdersResolver} to resolve placeholders from {@link PropertySources}.
@@ -38,11 +38,11 @@ public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver
 
 	private final PropertyPlaceholderHelper helper;
 
-	@NullUnmarked public PropertySourcesPlaceholdersResolver(Environment environment) {
+	 public PropertySourcesPlaceholdersResolver(Environment environment) {
 		this(getSources(environment), null);
 	}
 
-	@NullUnmarked public PropertySourcesPlaceholdersResolver(Iterable<PropertySource<?>> sources) {
+	 public PropertySourcesPlaceholdersResolver(Iterable<PropertySource<?>> sources) {
 		this(sources, null);
 	}
 
@@ -60,7 +60,7 @@ public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver
 		return value;
 	}
 
-	@NullUnmarked protected String resolvePlaceholder(String placeholder) {
+	 protected String resolvePlaceholder(String placeholder) {
 		if (this.sources != null) {
 			for (PropertySource<?> source : this.sources) {
 				Object value = source.getProperty(placeholder);

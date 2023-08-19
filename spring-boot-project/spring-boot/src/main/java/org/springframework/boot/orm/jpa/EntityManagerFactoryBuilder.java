@@ -34,7 +34,7 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Convenient builder for JPA EntityManagerFactory instances. Collects common
@@ -59,9 +59,9 @@ public class EntityManagerFactoryBuilder {
 
 	private final URL persistenceUnitRootLocation;
 
-	@SuppressWarnings("NullAway.Init") private AsyncTaskExecutor bootstrapExecutor;
+	 private AsyncTaskExecutor bootstrapExecutor;
 
-	@SuppressWarnings("NullAway.Init") private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
+	 private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
 
 	/**
 	 * Create a new instance passing in the common pieces that will be shared if multiple
@@ -71,7 +71,7 @@ public class EntityManagerFactoryBuilder {
 	 * @param persistenceUnitManager optional source of persistence unit information (can
 	 * be null)
 	 */
-	@NullUnmarked public EntityManagerFactoryBuilder(JpaVendorAdapter jpaVendorAdapter, Map<String, ?> jpaProperties,
+	 public EntityManagerFactoryBuilder(JpaVendorAdapter jpaVendorAdapter, Map<String, ?> jpaProperties,
 			PersistenceUnitManager persistenceUnitManager) {
 		this(jpaVendorAdapter, jpaProperties, persistenceUnitManager, null);
 	}
@@ -127,19 +127,19 @@ public class EntityManagerFactoryBuilder {
 
 		private DataSource dataSource;
 
-		@SuppressWarnings("NullAway.Init") private PersistenceManagedTypes managedTypes;
+		 private PersistenceManagedTypes managedTypes;
 
-		@SuppressWarnings("NullAway.Init") private String[] packagesToScan;
+		 private String[] packagesToScan;
 
-		@SuppressWarnings("NullAway.Init") private String persistenceUnit;
+		 private String persistenceUnit;
 
 		private Map<String, Object> properties = new HashMap<>();
 
-		@SuppressWarnings("NullAway.Init") private String[] mappingResources;
+		 private String[] mappingResources;
 
 		private boolean jta;
 
-		@NullUnmarked private Builder(DataSource dataSource) {
+		 private Builder(DataSource dataSource) {
 			this.dataSource = dataSource;
 		}
 

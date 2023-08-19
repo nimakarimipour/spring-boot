@@ -30,7 +30,7 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
@@ -43,7 +43,7 @@ import org.springframework.boot.NullUnmarked;
  */
 class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, BindException cause) {
 		Throwable rootCause = cause.getCause();
 		if (rootCause instanceof BindValidationException

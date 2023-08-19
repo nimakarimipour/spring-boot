@@ -30,7 +30,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link BindHandler} to enforce that all configuration properties under the root name
@@ -143,7 +143,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		return this.attemptedNames.contains(ConfigurationPropertyName.of(nestedZeroethProperty));
 	}
 
-	@NullUnmarked private Indexed getIndexed(ConfigurationPropertyName candidate) {
+	 private Indexed getIndexed(ConfigurationPropertyName candidate) {
 		for (int i = 0; i < candidate.getNumberOfElements(); i++) {
 			if (candidate.isNumericIndex(i)) {
 				return new Indexed(candidate.chop(i).toString(),

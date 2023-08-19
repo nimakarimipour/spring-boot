@@ -37,7 +37,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link EnvironmentPostProcessor} that knows where to find VCAP (a.k.a. Cloud
@@ -176,7 +176,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 		}
 	}
 
-	@NullUnmarked private void extractPropertiesFromServices(Properties properties, Map<String, Object> map) {
+	 private void extractPropertiesFromServices(Properties properties, Map<String, Object> map) {
 		if (map != null) {
 			for (Object services : map.values()) {
 				@SuppressWarnings("unchecked")

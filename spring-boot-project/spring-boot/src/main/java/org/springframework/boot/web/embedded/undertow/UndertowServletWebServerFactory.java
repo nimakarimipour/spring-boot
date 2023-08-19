@@ -72,7 +72,7 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ServletWebServerFactory} that can be used to create
@@ -99,7 +99,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 	private Set<UndertowDeploymentInfoCustomizer> deploymentInfoCustomizers = new LinkedHashSet<>();
 
-	@SuppressWarnings("NullAway.Init") private ResourceLoader resourceLoader;
+	 private ResourceLoader resourceLoader;
 
 	private boolean eagerFilterInit = true;
 
@@ -477,7 +477,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		return new UndertowServletWebServer(builder, httpHandlerFactories, getContextPath(), port >= 0);
 	}
 
-	@NullUnmarked private HttpHandlerFactory getCookieHandlerFactory(Deployment deployment) {
+	 private HttpHandlerFactory getCookieHandlerFactory(Deployment deployment) {
 		SameSite sessionSameSite = getSession().getCookie().getSameSite();
 		List<CookieSameSiteSupplier> suppliers = new ArrayList<>();
 		if (sessionSameSite != null) {
@@ -527,7 +527,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		public void close() throws IOException {
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public Resource getResource(String path) {
 			for (URL url : this.metaInfResourceJarUrls) {
 				URLResource resource = getMetaInfResource(url, path);
@@ -552,7 +552,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 		}
 
-		@NullUnmarked private URLResource getMetaInfResource(URL resourceJar, String path) {
+		 private URLResource getMetaInfResource(URL resourceJar, String path) {
 			try {
 				String urlPath = URLEncoder.encode(ENCODED_SLASH.matcher(path).replaceAll("/"), "UTF-8");
 				URL resourceUrl = new URL(resourceJar + "META-INF/resources" + urlPath);
@@ -580,7 +580,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 			this.delegate = delegate;
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public Resource getResource(String path) throws IOException {
 			if (path.startsWith("/org/springframework/boot")) {
 				return null;
@@ -653,7 +653,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 			return result;
 		}
 
-		@NullUnmarked private SameSite getSameSite(jakarta.servlet.http.Cookie cookie) {
+		 private SameSite getSameSite(jakarta.servlet.http.Cookie cookie) {
 			for (CookieSameSiteSupplier supplier : this.suppliers) {
 				SameSite sameSite = supplier.getSameSite(cookie);
 				if (sameSite != null) {

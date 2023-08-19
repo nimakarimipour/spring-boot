@@ -24,7 +24,7 @@ import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link AggregateBinder} for collections.
@@ -38,7 +38,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 		super(context);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		Class<?> collectionType = (target.getValue() != null) ? List.class : target.getType().resolve(Object.class);
@@ -70,7 +70,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 		}
 	}
 
-	@NullUnmarked private Collection<Object> getExistingIfPossible(Supplier<Collection<Object>> existing) {
+	 private Collection<Object> getExistingIfPossible(Supplier<Collection<Object>> existing) {
 		try {
 			return existing.get();
 		}

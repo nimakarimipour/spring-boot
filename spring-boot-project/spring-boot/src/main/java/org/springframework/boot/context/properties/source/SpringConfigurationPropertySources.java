@@ -31,7 +31,7 @@ import org.springframework.core.env.PropertySource.StubPropertySource;
 import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ConcurrentReferenceHashMap.ReferenceType;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Adapter to convert Spring's {@link MutablePropertySources} to
@@ -79,11 +79,11 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 
 		private final Deque<Iterator<PropertySource<?>>> iterators;
 
-		@SuppressWarnings("NullAway.Init") private ConfigurationPropertySource next;
+		 private ConfigurationPropertySource next;
 
 		private final Function<PropertySource<?>, ConfigurationPropertySource> adapter;
 
-		@NullUnmarked SourcesIterator(Iterator<PropertySource<?>> iterator,
+		 SourcesIterator(Iterator<PropertySource<?>> iterator,
 				Function<PropertySource<?>, ConfigurationPropertySource> adapter) {
 			this.iterators = new ArrayDeque<>(4);
 			this.iterators.push(iterator);
@@ -95,7 +95,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 			return fetchNext() != null;
 		}
 
-		@NullUnmarked @Override
+		 @Override
 		public ConfigurationPropertySource next() {
 			ConfigurationPropertySource next = fetchNext();
 			if (next == null) {
@@ -105,7 +105,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 			return next;
 		}
 
-		@NullUnmarked private ConfigurationPropertySource fetchNext() {
+		 private ConfigurationPropertySource fetchNext() {
 			if (this.next == null) {
 				if (this.iterators.isEmpty()) {
 					return null;

@@ -20,7 +20,7 @@ import org.springframework.core.env.AbstractPropertyResolver;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Alternative {@link PropertySourcesPropertyResolver} implementation that recognizes
@@ -71,7 +71,7 @@ class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResol
 		return getProperty(key, String.class, false);
 	}
 
-	@NullUnmarked private <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
+	 private <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
 		Object value = findPropertyValue(key);
 		if (value == null) {
 			return null;
@@ -82,7 +82,7 @@ class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResol
 		return convertValueIfNecessary(value, targetValueType);
 	}
 
-	@NullUnmarked private Object findPropertyValue(String key) {
+	 private Object findPropertyValue(String key) {
 		ConfigurationPropertySourcesPropertySource attached = getAttached();
 		if (attached != null) {
 			ConfigurationPropertyName name = ConfigurationPropertyName.of(key, true);
@@ -98,7 +98,7 @@ class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResol
 		return this.defaultResolver.getProperty(key, Object.class, false);
 	}
 
-	@NullUnmarked private ConfigurationPropertySourcesPropertySource getAttached() {
+	 private ConfigurationPropertySourcesPropertySource getAttached() {
 		ConfigurationPropertySourcesPropertySource attached = (ConfigurationPropertySourcesPropertySource) ConfigurationPropertySources
 				.getAttached(this.propertySources);
 		Iterable<ConfigurationPropertySource> attachedSource = (attached != null) ? attached.getSource() : null;

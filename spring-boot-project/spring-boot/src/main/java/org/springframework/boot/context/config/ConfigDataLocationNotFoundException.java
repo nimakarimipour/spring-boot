@@ -18,7 +18,7 @@ package org.springframework.boot.context.config;
 
 import org.springframework.boot.origin.Origin;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link ConfigDataNotFoundException} thrown when a {@link ConfigDataLocation} cannot be
@@ -35,7 +35,7 @@ public class ConfigDataLocationNotFoundException extends ConfigDataNotFoundExcep
 	 * Create a new {@link ConfigDataLocationNotFoundException} instance.
 	 * @param location the location that could not be found
 	 */
-	@NullUnmarked public ConfigDataLocationNotFoundException(ConfigDataLocation location) {
+	 public ConfigDataLocationNotFoundException(ConfigDataLocation location) {
 		this(location, null);
 	}
 

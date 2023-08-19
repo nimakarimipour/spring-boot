@@ -27,7 +27,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Enumeration of common database drivers.
@@ -218,15 +218,15 @@ public enum DatabaseDriver {
 
 	private final String validationQuery;
 
-	@NullUnmarked DatabaseDriver(String productName, String driverClassName) {
+	 DatabaseDriver(String productName, String driverClassName) {
 		this(productName, driverClassName, null);
 	}
 
-	@NullUnmarked DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName) {
+	 DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName) {
 		this(productName, driverClassName, xaDataSourceClassName, null);
 	}
 
-	@NullUnmarked DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName, String validationQuery) {
+	 DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName, String validationQuery) {
 		this.productName = productName;
 		this.driverClassName = driverClassName;
 		this.xaDataSourceClassName = xaDataSourceClassName;

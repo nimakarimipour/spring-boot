@@ -31,7 +31,7 @@ import java.util.jar.Manifest;
 
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Provides access to the application home directory. Attempts to pick a sensible home for
@@ -50,7 +50,7 @@ public class ApplicationHome {
 	/**
 	 * Create a new {@link ApplicationHome} instance.
 	 */
-	@NullUnmarked public ApplicationHome() {
+	 public ApplicationHome() {
 		this(null);
 	}
 
@@ -63,7 +63,7 @@ public class ApplicationHome {
 		this.dir = findHomeDir(this.source);
 	}
 
-	@NullUnmarked private Class<?> getStartClass() {
+	 private Class<?> getStartClass() {
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
 			return getStartClass(classLoader.getResources("META-INF/MANIFEST.MF"));
@@ -73,7 +73,7 @@ public class ApplicationHome {
 		}
 	}
 
-	@NullUnmarked private Class<?> getStartClass(Enumeration<URL> manifestResources) {
+	 private Class<?> getStartClass(Enumeration<URL> manifestResources) {
 		while (manifestResources.hasMoreElements()) {
 			try (InputStream inputStream = manifestResources.nextElement().openStream()) {
 				Manifest manifest = new Manifest(inputStream);
@@ -88,7 +88,7 @@ public class ApplicationHome {
 		return null;
 	}
 
-	@NullUnmarked private File findSource(Class<?> sourceClass) {
+	 private File findSource(Class<?> sourceClass) {
 		try {
 			ProtectionDomain domain = (sourceClass != null) ? sourceClass.getProtectionDomain() : null;
 			CodeSource codeSource = (domain != null) ? domain.getCodeSource() : null;

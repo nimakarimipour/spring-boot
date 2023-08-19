@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.env.ConfigurablePropertyResolver;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.web.context.support.StandardServletEnvironment;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link StandardServletEnvironment} for typical use in a typical
@@ -31,12 +31,12 @@ import org.springframework.boot.NullUnmarked;
  */
 class ApplicationServletEnvironment extends StandardServletEnvironment {
 
-	@NullUnmarked @Override
+	 @Override
 	protected String doGetActiveProfilesProperty() {
 		return null;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected String doGetDefaultProfilesProperty() {
 		return null;
 	}

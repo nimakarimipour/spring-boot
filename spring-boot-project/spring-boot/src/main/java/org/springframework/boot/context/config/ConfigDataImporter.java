@@ -28,7 +28,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 
 import org.springframework.boot.logging.DeferredLogFactory;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Imports {@link ConfigData} by {@link ConfigDataLocationResolver resolving} and
@@ -78,7 +78,7 @@ class ConfigDataImporter {
 	 * @param locations the locations to resolve
 	 * @return a map of the loaded locations and data
 	 */
-	@NullUnmarked Map<ConfigDataResolutionResult, ConfigData> resolveAndLoad(ConfigDataActivationContext activationContext,
+	 Map<ConfigDataResolutionResult, ConfigData> resolveAndLoad(ConfigDataActivationContext activationContext,
 			ConfigDataLocationResolverContext locationResolverContext, ConfigDataLoaderContext loaderContext,
 			List<ConfigDataLocation> locations) {
 		try {
@@ -100,7 +100,7 @@ class ConfigDataImporter {
 		return Collections.unmodifiableList(resolved);
 	}
 
-	@NullUnmarked private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
+	 private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
 			Profiles profiles, ConfigDataLocation location) {
 		try {
 			return this.resolvers.resolve(locationResolverContext, location, profiles);

@@ -28,7 +28,7 @@ import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFact
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
@@ -41,7 +41,7 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 
 	private final AbstractAutowireCapableBeanFactory beanFactory;
 
-	@NullUnmarked BeanCurrentlyInCreationFailureAnalyzer(BeanFactory beanFactory) {
+	 BeanCurrentlyInCreationFailureAnalyzer(BeanFactory beanFactory) {
 		if (beanFactory instanceof AbstractAutowireCapableBeanFactory autowireCapableBeanFactory) {
 			this.beanFactory = autowireCapableBeanFactory;
 		}
@@ -50,7 +50,7 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 		}
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, BeanCurrentlyInCreationException cause) {
 		DependencyCycle dependencyCycle = findCycle(rootFailure);
 		if (dependencyCycle == null) {
@@ -70,7 +70,7 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 				+ "spring.main.allow-circular-references to true.";
 	}
 
-	@NullUnmarked private DependencyCycle findCycle(Throwable rootFailure) {
+	 private DependencyCycle findCycle(Throwable rootFailure) {
 		List<BeanInCycle> beansInCycle = new ArrayList<>();
 		Throwable candidate = rootFailure;
 		int cycleStart = -1;
@@ -157,7 +157,7 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 			return "";
 		}
 
-		@NullUnmarked private InjectionPoint findFailedInjectionPoint(BeanCreationException ex) {
+		 private InjectionPoint findFailedInjectionPoint(BeanCreationException ex) {
 			if (ex instanceof UnsatisfiedDependencyException unsatisfiedDependencyException) {
 				return unsatisfiedDependencyException.getInjectionPoint();
 			}
@@ -185,14 +185,14 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 			return this.name + this.description;
 		}
 
-		@NullUnmarked static BeanInCycle get(Throwable ex) {
+		 static BeanInCycle get(Throwable ex) {
 			if (ex instanceof BeanCreationException beanCreationException) {
 				return get(beanCreationException);
 			}
 			return null;
 		}
 
-		@NullUnmarked private static BeanInCycle get(BeanCreationException ex) {
+		 private static BeanInCycle get(BeanCreationException ex) {
 			if (StringUtils.hasText(ex.getBeanName())) {
 				return new BeanInCycle(ex);
 			}

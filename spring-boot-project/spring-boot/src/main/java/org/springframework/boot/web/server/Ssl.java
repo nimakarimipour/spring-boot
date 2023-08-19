@@ -29,39 +29,39 @@ public class Ssl {
 
 	private boolean enabled = true;
 
-	@SuppressWarnings("NullAway.Init") private ClientAuth clientAuth;
+	 private ClientAuth clientAuth;
 
-	@SuppressWarnings("NullAway.Init") private String[] ciphers;
+	 private String[] ciphers;
 
-	@SuppressWarnings("NullAway.Init") private String[] enabledProtocols;
+	 private String[] enabledProtocols;
 
-	@SuppressWarnings("NullAway.Init") private String keyAlias;
+	 private String keyAlias;
 
-	@SuppressWarnings("NullAway.Init") private String keyPassword;
+	 private String keyPassword;
 
-	@SuppressWarnings("NullAway.Init") private String keyStore;
+	 private String keyStore;
 
-	@SuppressWarnings("NullAway.Init") private String keyStorePassword;
+	 private String keyStorePassword;
 
-	@SuppressWarnings("NullAway.Init") private String keyStoreType;
+	 private String keyStoreType;
 
-	@SuppressWarnings("NullAway.Init") private String keyStoreProvider;
+	 private String keyStoreProvider;
 
-	@SuppressWarnings("NullAway.Init") private String trustStore;
+	 private String trustStore;
 
-	@SuppressWarnings("NullAway.Init") private String trustStorePassword;
+	 private String trustStorePassword;
 
-	@SuppressWarnings("NullAway.Init") private String trustStoreType;
+	 private String trustStoreType;
 
-	@SuppressWarnings("NullAway.Init") private String trustStoreProvider;
+	 private String trustStoreProvider;
 
-	@SuppressWarnings("NullAway.Init") private String certificate;
+	 private String certificate;
 
-	@SuppressWarnings("NullAway.Init") private String certificatePrivateKey;
+	 private String certificatePrivateKey;
 
-	@SuppressWarnings("NullAway.Init") private String trustCertificate;
+	 private String trustCertificate;
 
-	@SuppressWarnings("NullAway.Init") private String trustCertificatePrivateKey;
+	 private String trustCertificatePrivateKey;
 
 	private String protocol = "TLS";
 

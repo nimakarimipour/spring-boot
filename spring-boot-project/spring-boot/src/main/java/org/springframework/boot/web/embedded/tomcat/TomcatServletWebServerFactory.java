@@ -83,7 +83,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link AbstractServletWebServerFactory} that can be used to create
@@ -118,7 +118,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 	 */
 	public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
 
-	@SuppressWarnings("NullAway.Init") private File baseDirectory;
+	 private File baseDirectory;
 
 	private List<Valve> engineValves = new ArrayList<>();
 
@@ -136,7 +136,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 
 	private final List<Connector> additionalTomcatConnectors = new ArrayList<>();
 
-	@SuppressWarnings("NullAway.Init") private ResourceLoader resourceLoader;
+	 private ResourceLoader resourceLoader;
 
 	private String protocol = DEFAULT_PROTOCOL;
 
@@ -940,7 +940,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			return delegate.generateHeader(cookie, request);
 		}
 
-		@NullUnmarked private SameSite getSameSite(Cookie cookie) {
+		 private SameSite getSameSite(Cookie cookie) {
 			for (CookieSameSiteSupplier supplier : this.suppliers) {
 				SameSite sameSite = supplier.getSameSite(cookie);
 				if (sameSite != null) {

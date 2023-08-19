@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A simple object registry that is available during startup and {@link Environment}
@@ -157,7 +157,7 @@ public interface BootstrapRegistry {
 		 * @param supplier the supplier that will provide the instance
 		 * @return a new {@link InstanceSupplier}
 		 */
-		@NullUnmarked static <T> InstanceSupplier<T> from(Supplier<T> supplier) {
+		 static <T> InstanceSupplier<T> from(Supplier<T> supplier) {
 			return (registry) -> (supplier != null) ? supplier.get() : null;
 		}
 

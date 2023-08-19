@@ -40,7 +40,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Provides access to environment profiles that have either been set directly on the
@@ -127,7 +127,7 @@ public class Profiles implements Iterable<String> {
 		return result;
 	}
 
-	@NullUnmarked private List<String> expandProfiles(List<String> profiles) {
+	 private List<String> expandProfiles(List<String> profiles) {
 		Deque<String> stack = new ArrayDeque<>();
 		asReversedList(profiles).forEach(stack::push);
 		Set<String> expandedProfiles = new LinkedHashSet<>();
@@ -149,7 +149,7 @@ public class Profiles implements Iterable<String> {
 		return reversed;
 	}
 
-	@NullUnmarked private List<String> asUniqueItemList(Collection<String> profiles) {
+	 private List<String> asUniqueItemList(Collection<String> profiles) {
 		return asUniqueItemList(profiles, null);
 	}
 

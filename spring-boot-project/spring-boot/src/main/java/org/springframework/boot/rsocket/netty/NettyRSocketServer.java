@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.boot.rsocket.server.RSocketServer;
 import org.springframework.boot.rsocket.server.RSocketServerException;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link RSocketServer} that is based on a Reactor Netty server. Usually this class
@@ -44,7 +44,7 @@ public class NettyRSocketServer implements RSocketServer {
 
 	private final Duration lifecycleTimeout;
 
-	@SuppressWarnings("NullAway.Init") private CloseableChannel channel;
+	 private CloseableChannel channel;
 
 	public NettyRSocketServer(Mono<CloseableChannel> starter, Duration lifecycleTimeout) {
 		Assert.notNull(starter, "starter must not be null");
@@ -52,7 +52,7 @@ public class NettyRSocketServer implements RSocketServer {
 		this.lifecycleTimeout = lifecycleTimeout;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public InetSocketAddress address() {
 		if (this.channel != null) {
 			return this.channel.address();
@@ -74,7 +74,7 @@ public class NettyRSocketServer implements RSocketServer {
 		awaitThread.start();
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public void stop() throws RSocketServerException {
 		if (this.channel != null) {
 			this.channel.dispose();

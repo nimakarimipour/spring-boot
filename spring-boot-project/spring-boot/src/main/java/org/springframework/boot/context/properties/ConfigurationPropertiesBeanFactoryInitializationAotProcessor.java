@@ -27,7 +27,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegistrar;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link BeanFactoryInitializationAotProcessor} that contributes runtime hints for
@@ -40,7 +40,7 @@ import org.springframework.boot.NullUnmarked;
  */
 class ConfigurationPropertiesBeanFactoryInitializationAotProcessor implements BeanFactoryInitializationAotProcessor {
 
-	@NullUnmarked @Override
+	 @Override
 	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
 		String[] beanNames = beanFactory.getBeanNamesForAnnotation(ConfigurationProperties.class);
 		List<Class<?>> types = new ArrayList<>();

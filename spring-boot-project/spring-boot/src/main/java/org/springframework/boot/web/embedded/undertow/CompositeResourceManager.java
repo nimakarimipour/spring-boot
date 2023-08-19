@@ -24,7 +24,7 @@ import io.undertow.UndertowMessages;
 import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A {@link ResourceManager} that delegates to multiple {@code ResourceManager} instances.
@@ -46,7 +46,7 @@ class CompositeResourceManager implements ResourceManager {
 		}
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Resource getResource(String path) throws IOException {
 		for (ResourceManager resourceManager : this.resourceManagers) {
 			Resource resource = resourceManager.getResource(path);

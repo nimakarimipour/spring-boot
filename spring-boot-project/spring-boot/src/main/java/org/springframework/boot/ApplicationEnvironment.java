@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.env.ConfigurablePropertyResolver;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link StandardEnvironment} for typical use in a typical {@link SpringApplication}.
@@ -29,12 +29,12 @@ import org.springframework.boot.NullUnmarked;
  */
 class ApplicationEnvironment extends StandardEnvironment {
 
-	@NullUnmarked @Override
+	 @Override
 	protected String doGetActiveProfilesProperty() {
 		return null;
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected String doGetDefaultProfilesProperty() {
 		return null;
 	}

@@ -30,7 +30,7 @@ import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.Assert;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A collection of {@link ObjectError ObjectErrors} caused by bind validation failures.
@@ -83,7 +83,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return OriginTrackedFieldError.of(error, findFieldErrorOrigin(name, boundProperties, error));
 	}
 
-	@NullUnmarked private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	 private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			FieldError error) {
 		for (ConfigurationProperty boundProperty : boundProperties) {
 			if (isForError(name, boundProperty.getName(), error)) {

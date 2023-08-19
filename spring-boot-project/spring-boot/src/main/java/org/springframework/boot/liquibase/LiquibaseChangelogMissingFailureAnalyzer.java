@@ -20,7 +20,7 @@ import liquibase.exception.ChangeLogParseException;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link AbstractFailureAnalyzer} that analyzes exceptions of type
@@ -32,7 +32,7 @@ class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<C
 
 	private static final String MESSAGE_SUFFIX = " does not exist";
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, ChangeLogParseException cause) {
 		if (cause.getMessage().endsWith(MESSAGE_SUFFIX)) {
 			String changelogPath = extractChangelogPath(cause);
@@ -42,7 +42,7 @@ class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<C
 		return null;
 	}
 
-	@NullUnmarked private String extractChangelogPath(ChangeLogParseException cause) {
+	 private String extractChangelogPath(ChangeLogParseException cause) {
 		return cause.getMessage().substring(0, cause.getMessage().length() - MESSAGE_SUFFIX.length());
 	}
 

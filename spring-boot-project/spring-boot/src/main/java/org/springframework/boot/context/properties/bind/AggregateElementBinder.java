@@ -18,7 +18,7 @@ package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Binder that can be used by {@link AggregateBinder} implementations to recursively bind
@@ -36,7 +36,7 @@ interface AggregateElementBinder {
 	 * @param target the target bindable
 	 * @return a bound object or {@code null}
 	 */
-	@NullUnmarked default Object bind(ConfigurationPropertyName name, Bindable<?> target) {
+	 default Object bind(ConfigurationPropertyName name, Bindable<?> target) {
 		return bind(name, target, null);
 	}
 

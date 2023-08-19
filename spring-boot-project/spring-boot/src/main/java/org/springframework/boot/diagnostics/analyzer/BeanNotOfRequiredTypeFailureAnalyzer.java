@@ -23,7 +23,7 @@ import java.lang.reflect.Proxy;
 import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
@@ -39,7 +39,7 @@ public class BeanNotOfRequiredTypeFailureAnalyzer extends AbstractFailureAnalyze
 			+ "interfaces or forcing the use of CGLib-based "
 			+ "proxies by setting proxyTargetClass=true on @EnableAsync and/or @EnableCaching.";
 
-	@NullUnmarked @Override
+	 @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, BeanNotOfRequiredTypeException cause) {
 		if (!Proxy.isProxyClass(cause.getActualType())) {
 			return null;

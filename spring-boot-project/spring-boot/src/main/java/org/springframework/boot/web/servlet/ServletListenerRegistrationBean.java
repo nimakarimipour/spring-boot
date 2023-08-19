@@ -71,7 +71,7 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 		SUPPORTED_TYPES = Collections.unmodifiableSet(types);
 	}
 
-	@SuppressWarnings("NullAway.Init") private T listener;
+	 private T listener;
 
 	/**
 	 * Create a new {@link ServletListenerRegistrationBean} instance.

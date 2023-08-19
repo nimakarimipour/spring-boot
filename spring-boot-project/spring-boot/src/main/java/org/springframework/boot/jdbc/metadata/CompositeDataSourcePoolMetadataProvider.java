@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * A {@link DataSourcePoolMetadataProvider} implementation that returns the first
@@ -45,7 +45,7 @@ public class CompositeDataSourcePoolMetadataProvider implements DataSourcePoolMe
 				: Collections.emptyList();
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource) {
 		for (DataSourcePoolMetadataProvider provider : this.providers) {
 			DataSourcePoolMetadata metadata = provider.getDataSourcePoolMetadata(dataSource);

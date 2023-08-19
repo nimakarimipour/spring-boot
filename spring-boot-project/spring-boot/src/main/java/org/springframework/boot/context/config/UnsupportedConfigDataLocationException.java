@@ -15,7 +15,7 @@
  */
 
 package org.springframework.boot.context.config;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Exception throw if a {@link ConfigDataLocation} is not supported.
@@ -32,7 +32,7 @@ public class UnsupportedConfigDataLocationException extends ConfigDataException 
 	 * Create a new {@link UnsupportedConfigDataLocationException} instance.
 	 * @param location the unsupported location
 	 */
-	@NullUnmarked UnsupportedConfigDataLocationException(ConfigDataLocation location) {
+	 UnsupportedConfigDataLocationException(ConfigDataLocation location) {
 		super("Unsupported config data location '" + location + "'", null);
 		this.location = location;
 	}

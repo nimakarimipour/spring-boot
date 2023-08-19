@@ -22,7 +22,7 @@ import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.convert.ConverterNotFoundException;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link BindHandler} that can be used to ignore top-level
@@ -48,7 +48,7 @@ public class IgnoreTopLevelConverterNotFoundBindHandler extends AbstractBindHand
 		super(parent);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		if (context.getDepth() == 0 && error instanceof ConverterNotFoundException) {

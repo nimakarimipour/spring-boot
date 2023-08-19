@@ -42,7 +42,7 @@ import org.springframework.util.Assert;
  */
 public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegistrationBean<T> {
 
-	@SuppressWarnings("NullAway.Init") private T filter;
+	 private T filter;
 
 	/**
 	 * Create a new {@link FilterRegistrationBean} instance.

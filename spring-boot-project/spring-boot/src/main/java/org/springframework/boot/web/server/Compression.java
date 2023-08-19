@@ -33,7 +33,7 @@ public class Compression {
 	private String[] mimeTypes = new String[] { "text/html", "text/xml", "text/plain", "text/css", "text/javascript",
 			"application/javascript", "application/json", "application/xml" };
 
-	@SuppressWarnings("NullAway") private String[] excludedUserAgents = null;
+	 private String[] excludedUserAgents = null;
 
 	private DataSize minResponseSize = DataSize.ofKilobytes(2);
 

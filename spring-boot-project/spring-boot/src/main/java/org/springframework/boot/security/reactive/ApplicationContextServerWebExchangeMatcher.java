@@ -42,7 +42,7 @@ public abstract class ApplicationContextServerWebExchangeMatcher<C> implements S
 
 	private final Class<? extends C> contextClass;
 
-	@SuppressWarnings("NullAway.Init") private volatile Supplier<C> context;
+	 private volatile Supplier<C> context;
 
 	private final Object contextLock = new Object();
 

@@ -68,7 +68,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	 */
 	public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
 
-	@SuppressWarnings("NullAway.Init") private File baseDirectory;
+	 private File baseDirectory;
 
 	private final List<Valve> engineValves = new ArrayList<>();
 

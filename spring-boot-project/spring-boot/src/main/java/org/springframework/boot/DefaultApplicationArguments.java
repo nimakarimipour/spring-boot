@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Default implementation of {@link ApplicationArguments}.
@@ -60,7 +60,7 @@ public class DefaultApplicationArguments implements ApplicationArguments {
 		return this.source.containsProperty(name);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public List<String> getOptionValues(String name) {
 		List<String> values = this.source.getOptionValues(name);
 		return (values != null) ? Collections.unmodifiableList(values) : null;

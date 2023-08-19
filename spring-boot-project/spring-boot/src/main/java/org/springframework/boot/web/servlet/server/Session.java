@@ -34,14 +34,14 @@ public class Session {
 	@DurationUnit(ChronoUnit.SECONDS)
 	private Duration timeout = Duration.ofMinutes(30);
 
-	@SuppressWarnings("NullAway.Init") private Set<Session.SessionTrackingMode> trackingModes;
+	 private Set<Session.SessionTrackingMode> trackingModes;
 
 	private boolean persistent;
 
 	/**
 	 * Directory used to store session data.
 	 */
-	@SuppressWarnings("NullAway.Init") private File storeDir;
+	 private File storeDir;
 
 	private final Cookie cookie = new Cookie();
 
@@ -108,7 +108,7 @@ public class Session {
 		/**
 		 * Comment for the session cookie.
 		 */
-		@SuppressWarnings("NullAway.Init") private String comment;
+		 private String comment;
 
 		/**
 		 * Return the comment for the session cookie.

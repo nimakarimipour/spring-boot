@@ -55,7 +55,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Builder that can be used to configure and create a {@link RestTemplate}. Provides
@@ -110,7 +110,7 @@ public class RestTemplateBuilder {
 	 * @param customizers any {@link RestTemplateCustomizer RestTemplateCustomizers} that
 	 * should be applied when the {@link RestTemplate} is built
 	 */
-	@NullUnmarked public RestTemplateBuilder(RestTemplateCustomizer... customizers) {
+	 public RestTemplateBuilder(RestTemplateCustomizer... customizers) {
 		Assert.notNull(customizers, "Customizers must not be null");
 		this.requestFactoryCustomizer = new RequestFactoryCustomizer();
 		this.detectRequestFactory = true;
@@ -382,7 +382,7 @@ public class RestTemplateBuilder {
 	 * @since 2.1.0
 	 * @see #basicAuthentication(String, String, Charset)
 	 */
-	@NullUnmarked public RestTemplateBuilder basicAuthentication(String username, String password) {
+	 public RestTemplateBuilder basicAuthentication(String username, String password) {
 		return basicAuthentication(username, password, null);
 	}
 
@@ -651,7 +651,7 @@ public class RestTemplateBuilder {
 	 * @return a {@link ClientHttpRequestFactory} or {@code null}
 	 * @since 2.2.0
 	 */
-	@NullUnmarked public ClientHttpRequestFactory buildRequestFactory() {
+	 public ClientHttpRequestFactory buildRequestFactory() {
 		ClientHttpRequestFactory requestFactory = null;
 		if (this.requestFactory != null) {
 			requestFactory = this.requestFactory.get();
@@ -715,7 +715,7 @@ public class RestTemplateBuilder {
 
 		private final Boolean bufferRequestBody;
 
-		@NullUnmarked RequestFactoryCustomizer() {
+		 RequestFactoryCustomizer() {
 			this(null, null, null);
 		}
 

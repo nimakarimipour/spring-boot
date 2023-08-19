@@ -15,7 +15,7 @@
  */
 
 package org.springframework.boot.origin;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * An interface that may be implemented by an object that can lookup {@link Origin}
@@ -55,7 +55,7 @@ public interface OriginLookup<K> {
 	 * @return the prefix applied by the lookup class or {@code null}.
 	 * @since 2.5.0
 	 */
-	@NullUnmarked default String getPrefix() {
+	 default String getPrefix() {
 		return null;
 	}
 
@@ -68,7 +68,7 @@ public interface OriginLookup<K> {
 	 * @param <K> the key type
 	 * @return an {@link Origin} or {@code null}
 	 */
-	@NullUnmarked @SuppressWarnings("unchecked")
+	 @SuppressWarnings("unchecked")
 	static <K> Origin getOrigin(Object source, K key) {
 		if (!(source instanceof OriginLookup)) {
 			return null;

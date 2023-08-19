@@ -44,7 +44,7 @@ import org.springframework.boot.web.server.Shutdown;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link WebServer} that can be used to control a Tomcat web server. Usually this class
@@ -97,7 +97,7 @@ public class TomcatWebServer implements WebServer {
 	 * @param shutdown type of shutdown supported by the server
 	 * @since 2.3.0
 	 */
-	@NullUnmarked public TomcatWebServer(Tomcat tomcat, boolean autoStart, Shutdown shutdown) {
+	 public TomcatWebServer(Tomcat tomcat, boolean autoStart, Shutdown shutdown) {
 		Assert.notNull(tomcat, "Tomcat Server must not be null");
 		this.tomcat = tomcat;
 		this.autoStart = autoStart;

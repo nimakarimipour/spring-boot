@@ -17,7 +17,7 @@
 package org.springframework.boot.web.server;
 
 import java.security.KeyStore;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * Interface to provide SSL key stores for an {@link WebServer} to use. Can be used when
@@ -47,7 +47,7 @@ public interface SslStoreProvider {
 	 * @return the key password
 	 * @since 2.7.2
 	 */
-	@NullUnmarked default String getKeyPassword() {
+	 default String getKeyPassword() {
 		return null;
 	}
 

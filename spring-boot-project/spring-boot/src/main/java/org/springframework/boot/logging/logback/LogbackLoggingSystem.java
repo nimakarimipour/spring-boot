@@ -63,7 +63,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link LoggingSystem} for <a href="https://logback.qos.ch">logback</a>.
@@ -301,7 +301,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		context.getTurboFilterList().remove(FILTER);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected void reinitialize(LoggingInitializationContext initializationContext) {
 		getLoggerContext().reset();
 		getLoggerContext().getStatusManager().clear();
@@ -332,7 +332,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		return name;
 	}
 
-	@NullUnmarked private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
+	 private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
 		if (logger == null) {
 			return null;
 		}
@@ -423,7 +423,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		private static final boolean PRESENT = ClassUtils.isPresent("ch.qos.logback.classic.LoggerContext",
 				Factory.class.getClassLoader());
 
-		@NullUnmarked @Override
+		 @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new LogbackLoggingSystem(classLoader);

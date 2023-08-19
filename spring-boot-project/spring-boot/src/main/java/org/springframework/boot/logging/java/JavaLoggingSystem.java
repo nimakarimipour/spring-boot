@@ -42,7 +42,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.boot.NullUnmarked;
+
 
 /**
  * {@link LoggingSystem} for {@link Logger java.util.logging}.
@@ -84,7 +84,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		Logger.getLogger("").setLevel(Level.SEVERE);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
 		if (logFile != null) {
 			loadConfiguration(getPackagedConfigFile("logging-file.properties"), logFile);
@@ -143,7 +143,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		return Collections.unmodifiableList(result);
 	}
 
-	@NullUnmarked @Override
+	 @Override
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		Logger logger = Logger.getLogger(loggerName);
 		if (logger == null) {
@@ -182,7 +182,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		private static final boolean PRESENT = ClassUtils.isPresent("java.util.logging.LogManager",
 				Factory.class.getClassLoader());
 
-		@NullUnmarked @Override
+		 @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new JavaLoggingSystem(classLoader);

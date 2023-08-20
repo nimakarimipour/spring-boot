@@ -24,6 +24,7 @@ import java.util.Properties;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -61,7 +62,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 	 * @param key the key of the property
 	 * @return the property value
 	 */
-	 public Instant getInstant(String key) {
+	 @Nullable public Instant getInstant(String key) {
 		String s = get(key);
 		if (s != null) {
 			try {

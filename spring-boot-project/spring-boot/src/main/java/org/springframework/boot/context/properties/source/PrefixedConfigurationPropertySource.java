@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.source;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -28,7 +29,7 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 
 	private final ConfigurationPropertySource source;
 
-	private final ConfigurationPropertyName prefix;
+	@Nullable private final ConfigurationPropertyName prefix;
 
 	PrefixedConfigurationPropertySource(ConfigurationPropertySource source, String prefix) {
 		Assert.notNull(source, "Source must not be null");
@@ -37,12 +38,12 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 		this.prefix = ConfigurationPropertyName.of(prefix);
 	}
 
-	protected final ConfigurationPropertyName getPrefix() {
+	@Nullable protected final ConfigurationPropertyName getPrefix() {
 		return this.prefix;
 	}
 
-	 @Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	 @Nullable @Override
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		ConfigurationProperty configurationProperty = this.source.getConfigurationProperty(getPrefixedName(name));
 		if (configurationProperty == null) {
 			return null;
@@ -51,16 +52,16 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 				configurationProperty.getOrigin());
 	}
 
-	private ConfigurationPropertyName getPrefixedName(ConfigurationPropertyName name) {
+	private ConfigurationPropertyName getPrefixedName(@Nullable ConfigurationPropertyName name) {
 		return this.prefix.append(name);
 	}
 
 	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+	public ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		return this.source.containsDescendantOf(getPrefixedName(name));
 	}
 
-	@Override
+	@Nullable @Override
 	public Object getUnderlyingSource() {
 		return this.source.getUnderlyingSource();
 	}

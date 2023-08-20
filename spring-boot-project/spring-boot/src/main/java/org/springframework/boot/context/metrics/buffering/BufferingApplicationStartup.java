@@ -30,6 +30,7 @@ import org.springframework.boot.context.metrics.buffering.StartupTimeline.Timeli
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -134,7 +135,7 @@ public class BufferingApplicationStartup implements ApplicationStartup {
 		}
 	}
 
-	private BufferedStartupStep getLatestActive(BufferedStartupStep step) {
+	@Nullable private BufferedStartupStep getLatestActive(@Nullable BufferedStartupStep step) {
 		while (step != null && step.isEnded()) {
 			step = step.getParent();
 		}

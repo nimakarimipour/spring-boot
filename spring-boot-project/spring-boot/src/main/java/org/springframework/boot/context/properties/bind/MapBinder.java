@@ -30,6 +30,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
+import javax.annotation.Nullable;
 
 
 /**
@@ -47,12 +48,12 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 	}
 
 	@Override
-	protected boolean isAllowRecursiveBinding(ConfigurationPropertySource source) {
+	protected boolean isAllowRecursiveBinding(@Nullable ConfigurationPropertySource source) {
 		return true;
 	}
 
-	 @Override
-	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
+	 @Nullable @Override
+	protected Object bindAggregate(@Nullable ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder) {
 		Map<Object, Object> map = CollectionFactory
 				.createMap((target.getValue() != null) ? Map.class : target.getType().resolve(Object.class), 0);
@@ -72,7 +73,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		return map.isEmpty() ? null : map;
 	}
 
-	private boolean hasDescendants(ConfigurationPropertyName name) {
+	private boolean hasDescendants(@Nullable ConfigurationPropertyName name) {
 		for (ConfigurationPropertySource source : getContext().getSources()) {
 			if (source.containsDescendantOf(name) == ConfigurationPropertyState.PRESENT) {
 				return true;
@@ -106,7 +107,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		}
 	}
 
-	 private Map<Object, Object> getExistingIfPossible(Supplier<Map<Object, Object>> existing) {
+	 @Nullable private Map<Object, Object> getExistingIfPossible(Supplier<Map<Object, Object>> existing) {
 		try {
 			return existing.get();
 		}
@@ -132,7 +133,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 
 	private class EntryBinder {
 
-		private final ConfigurationPropertyName root;
+		@Nullable private final ConfigurationPropertyName root;
 
 		private final AggregateElementBinder elementBinder;
 
@@ -142,7 +143,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 
 		private final ResolvableType valueType;
 
-		EntryBinder(ConfigurationPropertyName root, Bindable<?> target, AggregateElementBinder elementBinder) {
+		EntryBinder(@Nullable ConfigurationPropertyName root, Bindable<?> target, AggregateElementBinder elementBinder) {
 			this.root = root;
 			this.elementBinder = elementBinder;
 			this.mapType = target.getType().asMap();

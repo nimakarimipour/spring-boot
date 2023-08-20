@@ -27,6 +27,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -54,7 +55,7 @@ public class BoundConfigurationProperties {
 	 * @param name the property name
 	 * @return the bound property or {@code null}
 	 */
-	 public ConfigurationProperty get(ConfigurationPropertyName name) {
+	 @Nullable public ConfigurationProperty get(ConfigurationPropertyName name) {
 		return this.properties.get(name);
 	}
 
@@ -72,7 +73,7 @@ public class BoundConfigurationProperties {
 	 * @param context the context to search
 	 * @return a {@link BoundConfigurationProperties} or {@code null}
 	 */
-	 public static BoundConfigurationProperties get(ApplicationContext context) {
+	 @Nullable public static BoundConfigurationProperties get(@Nullable ApplicationContext context) {
 		if (!context.containsBeanDefinition(BEAN_NAME)) {
 			return null;
 		}

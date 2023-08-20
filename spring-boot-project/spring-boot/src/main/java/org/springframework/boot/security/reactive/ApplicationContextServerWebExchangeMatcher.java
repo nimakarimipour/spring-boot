@@ -25,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
+import javax.annotation.Nullable;
 
 /**
  * {@link ApplicationContext} backed {@link ServerWebExchangeMatcher}. Can work directly
@@ -42,7 +43,7 @@ public abstract class ApplicationContextServerWebExchangeMatcher<C> implements S
 
 	private final Class<? extends C> contextClass;
 
-	 private volatile Supplier<C> context;
+	 @Nullable private volatile Supplier<C> context;
 
 	private final Object contextLock = new Object();
 

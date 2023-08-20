@@ -21,6 +21,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.env.PropertySource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -34,13 +35,13 @@ import org.springframework.core.env.PropertySource;
  */
 public class InactiveConfigDataAccessException extends ConfigDataException {
 
-	private final PropertySource<?> propertySource;
+	@Nullable private final PropertySource<?> propertySource;
 
-	private final ConfigDataResource location;
+	@Nullable private final ConfigDataResource location;
 
 	private final String propertyName;
 
-	private final Origin origin;
+	@Nullable private final Origin origin;
 
 	/**
 	 * Create a new {@link InactiveConfigDataAccessException} instance.
@@ -50,8 +51,8 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param propertyName the name of the property
 	 * @param origin the origin or the property or {@code null}
 	 */
-	 InactiveConfigDataAccessException(PropertySource<?> propertySource, ConfigDataResource location,
-			String propertyName, Origin origin) {
+	 InactiveConfigDataAccessException(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location,
+			String propertyName, @Nullable Origin origin) {
 		super(getMessage(propertySource, location, propertyName, origin), null);
 		this.propertySource = propertySource;
 		this.location = location;
@@ -59,8 +60,8 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 		this.origin = origin;
 	}
 
-	private static String getMessage(PropertySource<?> propertySource, ConfigDataResource location, String propertyName,
-			Origin origin) {
+	private static String getMessage(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location, String propertyName,
+			@Nullable Origin origin) {
 		StringBuilder message = new StringBuilder("Inactive property source '");
 		message.append(propertySource.getName());
 		if (location != null) {
@@ -82,7 +83,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the inactive property source that contained the property.
 	 * @return the property source
 	 */
-	public PropertySource<?> getPropertySource() {
+	@Nullable public PropertySource<?> getPropertySource() {
 		return this.propertySource;
 	}
 
@@ -91,7 +92,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * source was not loaded from {@link ConfigData}.
 	 * @return the config data location or {@code null}
 	 */
-	public ConfigDataResource getLocation() {
+	@Nullable public ConfigDataResource getLocation() {
 		return this.location;
 	}
 
@@ -107,7 +108,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the origin or the property or {@code null}.
 	 * @return the property origin
 	 */
-	public Origin getOrigin() {
+	@Nullable public Origin getOrigin() {
 		return this.origin;
 	}
 
@@ -117,7 +118,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param contributor the contributor to check
 	 * @param name the name to check
 	 */
-	static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor, ConfigurationPropertyName name) {
+	static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor, @Nullable ConfigurationPropertyName name) {
 		ConfigurationPropertySource source = contributor.getConfigurationPropertySource();
 		ConfigurationProperty property = (source != null) ? source.getConfigurationProperty(name) : null;
 		if (property != null) {

@@ -22,6 +22,7 @@ import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.convert.ConverterNotFoundException;
+import javax.annotation.Nullable;
 
 
 /**
@@ -48,8 +49,8 @@ public class IgnoreTopLevelConverterNotFoundBindHandler extends AbstractBindHand
 		super(parent);
 	}
 
-	 @Override
-	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
+	 @Nullable @Override
+	public Object onFailure(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		if (context.getDepth() == 0 && error instanceof ConverterNotFoundException) {
 			return null;

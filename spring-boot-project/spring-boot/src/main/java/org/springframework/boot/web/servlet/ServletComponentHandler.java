@@ -26,6 +26,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -49,7 +50,7 @@ abstract class ServletComponentHandler {
 		return this.typeFilter;
 	}
 
-	 protected String[] extractUrlPatterns(Map<String, Object> attributes) {
+	 @Nullable protected String[] extractUrlPatterns(Map<String, Object> attributes) {
 		String[] value = (String[]) attributes.get("value");
 		String[] urlPatterns = (String[]) attributes.get("urlPatterns");
 		if (urlPatterns.length > 0) {
@@ -69,7 +70,7 @@ abstract class ServletComponentHandler {
 		return initParameters;
 	}
 
-	void handle(AnnotatedBeanDefinition beanDefinition, BeanDefinitionRegistry registry) {
+	void handle(AnnotatedBeanDefinition beanDefinition, @Nullable BeanDefinitionRegistry registry) {
 		Map<String, Object> attributes = beanDefinition.getMetadata()
 				.getAnnotationAttributes(this.annotationType.getName());
 		if (attributes != null) {
@@ -78,6 +79,6 @@ abstract class ServletComponentHandler {
 	}
 
 	protected abstract void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry);
+			@Nullable BeanDefinitionRegistry registry);
 
 }

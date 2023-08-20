@@ -43,6 +43,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -82,7 +83,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 	static class DependsOnDatabaseInitializationPostProcessor
 			implements BeanFactoryPostProcessor, EnvironmentAware, Ordered {
 
-		 private Environment environment;
+		 @Nullable private Environment environment;
 
 		@Override
 		public void setEnvironment(Environment environment) {
@@ -115,7 +116,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 			}
 		}
 
-		private String[] merge(String[] source, Set<String> additional) {
+		private String[] merge(String[] source, @Nullable Set<String> additional) {
 			if (CollectionUtils.isEmpty(additional)) {
 				return source;
 			}

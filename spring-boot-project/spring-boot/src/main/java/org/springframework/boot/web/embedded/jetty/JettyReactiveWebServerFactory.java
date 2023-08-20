@@ -49,6 +49,7 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.JettyHttpHandlerAdapter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link JettyWebServer}s.
@@ -75,9 +76,9 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private Set<JettyServerCustomizer> jettyServerCustomizers = new LinkedHashSet<>();
 
-	 private JettyResourceFactory resourceFactory;
+	 @Nullable private JettyResourceFactory resourceFactory;
 
-	 private ThreadPool threadPool;
+	 @Nullable private ThreadPool threadPool;
 
 	/**
 	 * Create a new {@link JettyServletWebServerFactory} instance.
@@ -140,7 +141,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	 * Returns a Jetty {@link ThreadPool} that should be used by the {@link Server}.
 	 * @return a Jetty {@link ThreadPool} or {@code null}
 	 */
-	public ThreadPool getThreadPool() {
+	@Nullable public ThreadPool getThreadPool() {
 		return this.threadPool;
 	}
 
@@ -163,7 +164,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 		this.resourceFactory = resourceFactory;
 	}
 
-	protected JettyResourceFactory getResourceFactory() {
+	@Nullable protected JettyResourceFactory getResourceFactory() {
 		return this.resourceFactory;
 	}
 

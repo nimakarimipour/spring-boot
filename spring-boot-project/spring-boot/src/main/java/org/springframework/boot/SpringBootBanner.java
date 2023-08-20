@@ -22,6 +22,7 @@ import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.core.env.Environment;
+import javax.annotation.Nullable;
 
 /**
  * Default Banner implementation which writes the 'Spring' banner.
@@ -40,7 +41,7 @@ class SpringBootBanner implements Banner {
 	private static final int STRAP_LINE_SIZE = 42;
 
 	@Override
-	public void printBanner(Environment environment, Class<?> sourceClass, PrintStream printStream) {
+	public void printBanner(Environment environment, @Nullable Class<?> sourceClass, PrintStream printStream) {
 		for (String line : BANNER) {
 			printStream.println(line);
 		}

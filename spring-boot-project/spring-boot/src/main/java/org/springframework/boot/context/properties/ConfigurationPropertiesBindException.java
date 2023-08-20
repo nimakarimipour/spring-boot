@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * Exception thrown when {@link ConfigurationProperties @ConfigurationProperties} binding
@@ -31,7 +32,7 @@ public class ConfigurationPropertiesBindException extends BeanCreationException 
 
 	private final ConfigurationPropertiesBean bean;
 
-	ConfigurationPropertiesBindException(ConfigurationPropertiesBean bean, Exception cause) {
+	ConfigurationPropertiesBindException(@Nullable ConfigurationPropertiesBean bean, Exception cause) {
 		super(bean.getName(), getMessage(bean), cause);
 		this.bean = bean;
 	}

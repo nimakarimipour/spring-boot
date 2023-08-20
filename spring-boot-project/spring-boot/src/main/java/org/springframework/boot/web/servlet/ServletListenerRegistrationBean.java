@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpSessionListener;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ServletContextInitializer} to register {@link EventListener}s in a Servlet
@@ -71,7 +72,7 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 		SUPPORTED_TYPES = Collections.unmodifiableSet(types);
 	}
 
-	 private T listener;
+	 @Nullable private T listener;
 
 	/**
 	 * Create a new {@link ServletListenerRegistrationBean} instance.
@@ -103,7 +104,7 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 	 * Return the listener to be registered.
 	 * @return the listener to be registered
 	 */
-	public T getListener() {
+	@Nullable public T getListener() {
 		return this.listener;
 	}
 

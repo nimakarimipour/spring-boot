@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import javax.annotation.Nullable;
 
 /**
  * Abstract base {@link ServletContextInitializer} to register {@link Filter}s in a
@@ -53,7 +54,7 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
 
 	private Set<String> urlPatterns = new LinkedHashSet<>();
 
-	 private EnumSet<DispatcherType> dispatcherTypes;
+	 @Nullable private EnumSet<DispatcherType> dispatcherTypes;
 
 	private boolean matchAfter = false;
 
@@ -253,7 +254,7 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
 	 * Return the {@link Filter} to be registered.
 	 * @return the filter
 	 */
-	public abstract T getFilter();
+	@Nullable public abstract T getFilter();
 
 	@Override
 	public String toString() {

@@ -19,6 +19,7 @@ package org.springframework.boot.context.properties.source;
 import java.util.function.Predicate;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -41,14 +42,14 @@ class FilteredConfigurationPropertiesSource implements ConfigurationPropertySour
 		this.filter = filter;
 	}
 
-	 @Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	 @Nullable @Override
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		boolean filtered = getFilter().test(name);
 		return filtered ? getSource().getConfigurationProperty(name) : null;
 	}
 
 	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+	public ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		ConfigurationPropertyState result = this.source.containsDescendantOf(name);
 		if (result == ConfigurationPropertyState.PRESENT) {
 			// We can't be sure a contained descendant won't be filtered
@@ -57,7 +58,7 @@ class FilteredConfigurationPropertiesSource implements ConfigurationPropertySour
 		return result;
 	}
 
-	@Override
+	@Nullable @Override
 	public Object getUnderlyingSource() {
 		return this.source.getUnderlyingSource();
 	}

@@ -21,6 +21,7 @@ import org.springframework.boot.context.properties.bind.BindContext;
 import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
+import javax.annotation.Nullable;
 
 
 /**
@@ -39,8 +40,8 @@ public class IgnoreErrorsBindHandler extends AbstractBindHandler {
 		super(parent);
 	}
 
-	 @Override
-	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
+	 @Nullable @Override
+	public Object onFailure(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		return (target.getValue() != null) ? target.getValue().get() : null;
 	}

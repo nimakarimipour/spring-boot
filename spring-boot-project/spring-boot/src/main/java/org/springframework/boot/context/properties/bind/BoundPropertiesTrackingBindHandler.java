@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link BindHandler} that can be used to track bound configuration properties.
@@ -38,7 +39,7 @@ public class BoundPropertiesTrackingBindHandler extends AbstractBindHandler {
 	}
 
 	@Override
-	public Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	public Object onSuccess(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
 		if (context.getConfigurationProperty() != null && name.equals(context.getConfigurationProperty().getName())) {
 			this.consumer.accept(context.getConfigurationProperty());
 		}

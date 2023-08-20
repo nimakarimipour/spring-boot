@@ -32,6 +32,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -46,9 +47,9 @@ class StartupInfoLogger {
 
 	private static final long HOST_NAME_RESOLVE_THRESHOLD = 200;
 
-	private final Class<?> sourceClass;
+	@Nullable private final Class<?> sourceClass;
 
-	StartupInfoLogger(Class<?> sourceClass) {
+	StartupInfoLogger(@Nullable Class<?> sourceClass) {
 		this.sourceClass = sourceClass;
 	}
 
@@ -112,7 +113,7 @@ class StartupInfoLogger {
 				() -> (this.sourceClass != null) ? ClassUtils.getShortName(this.sourceClass) : "application");
 	}
 
-	private void appendVersion(StringBuilder message, Class<?> source) {
+	private void appendVersion(StringBuilder message, @Nullable Class<?> source) {
 		append(message, "v", () -> source.getPackage().getImplementationVersion());
 	}
 
@@ -176,7 +177,7 @@ class StartupInfoLogger {
 		}
 	}
 
-	 private Object callIfPossible(Callable<Object> call) {
+	 @Nullable private Object callIfPossible(Callable<Object> call) {
 		try {
 			return call.call();
 		}

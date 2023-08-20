@@ -38,6 +38,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -61,7 +62,7 @@ public class ResourceBanner implements Banner {
 	}
 
 	@Override
-	public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
+	public void printBanner(Environment environment, @Nullable Class<?> sourceClass, PrintStream out) {
 		try {
 			String banner = StreamUtils.copyToString(this.resource.getInputStream(),
 					environment.getProperty("spring.banner.charset", Charset.class, StandardCharsets.UTF_8));
@@ -77,7 +78,7 @@ public class ResourceBanner implements Banner {
 		}
 	}
 
-	protected List<PropertyResolver> getPropertyResolvers(Environment environment, Class<?> sourceClass) {
+	protected List<PropertyResolver> getPropertyResolvers(Environment environment, @Nullable Class<?> sourceClass) {
 		List<PropertyResolver> resolvers = new ArrayList<>();
 		resolvers.add(environment);
 		resolvers.add(getVersionResolver(sourceClass));
@@ -86,13 +87,13 @@ public class ResourceBanner implements Banner {
 		return resolvers;
 	}
 
-	private PropertyResolver getVersionResolver(Class<?> sourceClass) {
+	private PropertyResolver getVersionResolver(@Nullable Class<?> sourceClass) {
 		MutablePropertySources propertySources = new MutablePropertySources();
 		propertySources.addLast(new MapPropertySource("version", getVersionsMap(sourceClass)));
 		return new PropertySourcesPropertyResolver(propertySources);
 	}
 
-	private Map<String, Object> getVersionsMap(Class<?> sourceClass) {
+	private Map<String, Object> getVersionsMap(@Nullable Class<?> sourceClass) {
 		String appVersion = getApplicationVersion(sourceClass);
 		String bootVersion = getBootVersion();
 		Map<String, Object> versions = new HashMap<>();
@@ -103,7 +104,7 @@ public class ResourceBanner implements Banner {
 		return versions;
 	}
 
-	 protected String getApplicationVersion(Class<?> sourceClass) {
+	 @Nullable protected String getApplicationVersion(@Nullable Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationVersion() : null;
 	}
@@ -112,7 +113,7 @@ public class ResourceBanner implements Banner {
 		return SpringBootVersion.getVersion();
 	}
 
-	private String getVersionString(String version, boolean format) {
+	private String getVersionString(@Nullable String version, boolean format) {
 		if (version == null) {
 			return "";
 		}
@@ -125,7 +126,7 @@ public class ResourceBanner implements Banner {
 		return new PropertySourcesPropertyResolver(sources);
 	}
 
-	private PropertyResolver getTitleResolver(Class<?> sourceClass) {
+	private PropertyResolver getTitleResolver(@Nullable Class<?> sourceClass) {
 		MutablePropertySources sources = new MutablePropertySources();
 		String applicationTitle = getApplicationTitle(sourceClass);
 		Map<String, Object> titleMap = Collections.singletonMap("application.title",
@@ -134,7 +135,7 @@ public class ResourceBanner implements Banner {
 		return new PropertySourcesPropertyResolver(sources);
 	}
 
-	 protected String getApplicationTitle(Class<?> sourceClass) {
+	 @Nullable protected String getApplicationTitle(@Nullable Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationTitle() : null;
 	}

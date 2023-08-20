@@ -30,6 +30,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -62,19 +63,19 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 	}
 
 	@Override
-	public <T> Bindable<T> onStart(ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
+	public <T> Bindable<T> onStart(@Nullable ConfigurationPropertyName name, Bindable<T> target, BindContext context) {
 		this.attemptedNames.add(name);
 		return super.onStart(name, target, context);
 	}
 
 	@Override
-	public Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	public Object onSuccess(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
 		this.boundNames.add(name);
 		return super.onSuccess(name, target, context, result);
 	}
 
-	@Override
-	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
+	@Nullable @Override
+	public Object onFailure(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		if (error instanceof UnboundConfigurationPropertiesException) {
 			throw error;
@@ -83,14 +84,14 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 	}
 
 	@Override
-	public void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result)
+	public void onFinish(@Nullable ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result)
 			throws Exception {
 		if (context.getDepth() == 0) {
 			checkNoUnboundElements(name, context);
 		}
 	}
 
-	private void checkNoUnboundElements(ConfigurationPropertyName name, BindContext context) {
+	private void checkNoUnboundElements(@Nullable ConfigurationPropertyName name, BindContext context) {
 		Set<ConfigurationProperty> unbound = new TreeSet<>();
 		for (ConfigurationPropertySource source : context.getSources()) {
 			if (source instanceof IterableConfigurationPropertySource && this.filter.apply(source)) {
@@ -102,7 +103,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		}
 	}
 
-	private void collectUnbound(ConfigurationPropertyName name, Set<ConfigurationProperty> unbound,
+	private void collectUnbound(@Nullable ConfigurationPropertyName name, Set<ConfigurationProperty> unbound,
 			IterableConfigurationPropertySource source) {
 		IterableConfigurationPropertySource filtered = source.filter((candidate) -> isUnbound(name, candidate));
 		for (ConfigurationPropertyName unboundName : filtered) {
@@ -115,7 +116,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		}
 	}
 
-	private boolean isUnbound(ConfigurationPropertyName name, ConfigurationPropertyName candidate) {
+	private boolean isUnbound(@Nullable ConfigurationPropertyName name, ConfigurationPropertyName candidate) {
 		if (name.isAncestorOf(candidate)) {
 			return !this.boundNames.contains(candidate) && !isOverriddenCollectionElement(candidate);
 		}
@@ -143,7 +144,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		return this.attemptedNames.contains(ConfigurationPropertyName.of(nestedZeroethProperty));
 	}
 
-	 private Indexed getIndexed(ConfigurationPropertyName candidate) {
+	 @Nullable private Indexed getIndexed(ConfigurationPropertyName candidate) {
 		for (int i = 0; i < candidate.getNumberOfElements(); i++) {
 			if (candidate.isNumericIndex(i)) {
 				return new Indexed(candidate.chop(i).toString(),

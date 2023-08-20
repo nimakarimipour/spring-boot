@@ -32,6 +32,7 @@ import org.springframework.boot.context.properties.source.IterableConfigurationP
 import org.springframework.core.ResolvableType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import javax.annotation.Nullable;
 
 /**
  * Base class for {@link AggregateBinder AggregateBinders} that read a sequential run of
@@ -50,7 +51,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	}
 
 	@Override
-	protected boolean isAllowRecursiveBinding(ConfigurationPropertySource source) {
+	protected boolean isAllowRecursiveBinding(@Nullable ConfigurationPropertySource source) {
 		return source == null || source instanceof IterableConfigurationPropertySource;
 	}
 
@@ -63,7 +64,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	 * @param elementType the element type
 	 * @param result the destination for results
 	 */
-	protected final void bindIndexed(ConfigurationPropertyName name, Bindable<?> target,
+	protected final void bindIndexed(@Nullable ConfigurationPropertyName name, Bindable<?> target,
 			AggregateElementBinder elementBinder, ResolvableType aggregateType, ResolvableType elementType,
 			IndexedCollectionSupplier result) {
 		for (ConfigurationPropertySource source : getContext().getSources()) {
@@ -74,7 +75,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 		}
 	}
 
-	private void bindIndexed(ConfigurationPropertySource source, ConfigurationPropertyName root, Bindable<?> target,
+	private void bindIndexed(ConfigurationPropertySource source, @Nullable ConfigurationPropertyName root, Bindable<?> target,
 			AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType aggregateType,
 			ResolvableType elementType) {
 		ConfigurationProperty property = source.getConfigurationProperty(root);
@@ -98,7 +99,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 		collection.addAll(elements);
 	}
 
-	private void bindIndexed(ConfigurationPropertySource source, ConfigurationPropertyName root,
+	private void bindIndexed(ConfigurationPropertySource source, @Nullable ConfigurationPropertyName root,
 			AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType elementType) {
 		MultiValueMap<String, ConfigurationPropertyName> knownIndexedChildren = getKnownIndexedChildren(source, root);
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
@@ -114,7 +115,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	}
 
 	private MultiValueMap<String, ConfigurationPropertyName> getKnownIndexedChildren(ConfigurationPropertySource source,
-			ConfigurationPropertyName root) {
+			@Nullable ConfigurationPropertyName root) {
 		MultiValueMap<String, ConfigurationPropertyName> children = new LinkedMultiValueMap<>();
 		if (!(source instanceof IterableConfigurationPropertySource iterableSource)) {
 			return children;
@@ -137,7 +138,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 		}
 	}
 
-	private <C> C convert(Object value, ResolvableType type, Annotation... annotations) {
+	@Nullable private <C> C convert(@Nullable Object value, ResolvableType type, Annotation... annotations) {
 		value = getContext().getPlaceholdersResolver().resolvePlaceholders(value);
 		return getContext().getConverter().convert(value, type, annotations);
 	}

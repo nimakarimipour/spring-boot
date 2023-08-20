@@ -30,6 +30,7 @@ import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.Assert;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import javax.annotation.Nullable;
 
 
 /**
@@ -42,13 +43,13 @@ import org.springframework.validation.ObjectError;
  */
 public class ValidationErrors implements Iterable<ObjectError> {
 
-	private final ConfigurationPropertyName name;
+	@Nullable private final ConfigurationPropertyName name;
 
 	private final Set<ConfigurationProperty> boundProperties;
 
 	private final List<ObjectError> errors;
 
-	ValidationErrors(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	ValidationErrors(@Nullable ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			List<ObjectError> errors) {
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(boundProperties, "BoundProperties must not be null");
@@ -58,7 +59,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		this.errors = convertErrors(name, boundProperties, errors);
 	}
 
-	private List<ObjectError> convertErrors(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	private List<ObjectError> convertErrors(@Nullable ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			List<ObjectError> errors) {
 		List<ObjectError> converted = new ArrayList<>(errors.size());
 		for (ObjectError error : errors) {
@@ -67,7 +68,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return Collections.unmodifiableList(converted);
 	}
 
-	private ObjectError convertError(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	private ObjectError convertError(@Nullable ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			ObjectError error) {
 		if (error instanceof FieldError fieldError) {
 			return convertFieldError(name, boundProperties, fieldError);
@@ -75,7 +76,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return error;
 	}
 
-	private FieldError convertFieldError(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	private FieldError convertFieldError(@Nullable ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			FieldError error) {
 		if (error instanceof OriginProvider) {
 			return error;
@@ -83,7 +84,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return OriginTrackedFieldError.of(error, findFieldErrorOrigin(name, boundProperties, error));
 	}
 
-	 private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	 @Nullable private Origin findFieldErrorOrigin(@Nullable ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			FieldError error) {
 		for (ConfigurationProperty boundProperty : boundProperties) {
 			if (isForError(name, boundProperty.getName(), error)) {
@@ -93,7 +94,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return null;
 	}
 
-	private boolean isForError(ConfigurationPropertyName name, ConfigurationPropertyName boundPropertyName,
+	private boolean isForError(@Nullable ConfigurationPropertyName name, @Nullable ConfigurationPropertyName boundPropertyName,
 			FieldError error) {
 		return name.isParentOf(boundPropertyName)
 				&& boundPropertyName.getLastElement(Form.UNIFORM).equalsIgnoreCase(error.getField());
@@ -103,7 +104,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 	 * Return the name of the item that was being validated.
 	 * @return the name of the item
 	 */
-	public ConfigurationPropertyName getName() {
+	@Nullable public ConfigurationPropertyName getName() {
 		return this.name;
 	}
 

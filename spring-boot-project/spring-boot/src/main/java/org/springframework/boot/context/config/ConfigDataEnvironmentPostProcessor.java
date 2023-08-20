@@ -33,6 +33,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
+import javax.annotation.Nullable;
 
 
 /**
@@ -64,7 +65,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 
 	private final ConfigurableBootstrapContext bootstrapContext;
 
-	private final ConfigDataEnvironmentUpdateListener environmentUpdateListener;
+	@Nullable private final ConfigDataEnvironmentUpdateListener environmentUpdateListener;
 
 	 public ConfigDataEnvironmentPostProcessor(DeferredLogFactory logFactory,
 			ConfigurableBootstrapContext bootstrapContext) {
@@ -73,7 +74,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 
 	private ConfigDataEnvironmentPostProcessor(DeferredLogFactory logFactory,
 			ConfigurableBootstrapContext bootstrapContext,
-			ConfigDataEnvironmentUpdateListener environmentUpdateListener) {
+			@Nullable ConfigDataEnvironmentUpdateListener environmentUpdateListener) {
 		this.logFactory = logFactory;
 		this.logger = logFactory.getLog(getClass());
 		this.bootstrapContext = bootstrapContext;
@@ -90,7 +91,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 		postProcessEnvironment(environment, application.getResourceLoader(), application.getAdditionalProfiles());
 	}
 
-	void postProcessEnvironment(ConfigurableEnvironment environment, ResourceLoader resourceLoader,
+	void postProcessEnvironment(ConfigurableEnvironment environment, @Nullable ResourceLoader resourceLoader,
 			Collection<String> additionalProfiles) {
 		this.logger.trace("Post-processing environment to add config data");
 		resourceLoader = (resourceLoader != null) ? resourceLoader : new DefaultResourceLoader();
@@ -138,8 +139,8 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 	 * throw-away context
 	 * @param additionalProfiles any additional profiles that should be applied
 	 */
-	public static void applyTo(ConfigurableEnvironment environment, ResourceLoader resourceLoader,
-			ConfigurableBootstrapContext bootstrapContext, Collection<String> additionalProfiles) {
+	public static void applyTo(ConfigurableEnvironment environment, @Nullable ResourceLoader resourceLoader,
+			@Nullable ConfigurableBootstrapContext bootstrapContext, Collection<String> additionalProfiles) {
 		DeferredLogFactory logFactory = Supplier::get;
 		bootstrapContext = (bootstrapContext != null) ? bootstrapContext : new DefaultBootstrapContext();
 		ConfigDataEnvironmentPostProcessor postProcessor = new ConfigDataEnvironmentPostProcessor(logFactory,

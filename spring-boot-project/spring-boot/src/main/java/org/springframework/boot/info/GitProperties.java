@@ -25,6 +25,7 @@ import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.boot.info.GitProperties.GitPropertiesRuntimeHints;
 import org.springframework.context.annotation.ImportRuntimeHints;
+import javax.annotation.Nullable;
 
 
 /**
@@ -60,7 +61,7 @@ public class GitProperties extends InfoProperties {
 	 * Return the abbreviated id of the commit or {@code null}.
 	 * @return the short commit id
 	 */
-	 public String getShortCommitId() {
+	 @Nullable public String getShortCommitId() {
 		String shortId = get("commit.id.abbrev");
 		if (shortId != null) {
 			return shortId;
@@ -80,7 +81,7 @@ public class GitProperties extends InfoProperties {
 	 * @return the commit time
 	 * @see #get(String)
 	 */
-	public Instant getCommitTime() {
+	@Nullable public Instant getCommitTime() {
 		return getInstant("commit.time");
 	}
 
@@ -124,7 +125,7 @@ public class GitProperties extends InfoProperties {
 		}
 	}
 
-	 private static Long parseEpochSecond(String s) {
+	 @Nullable private static Long parseEpochSecond(String s) {
 		try {
 			return Long.parseLong(s) * 1000;
 		}

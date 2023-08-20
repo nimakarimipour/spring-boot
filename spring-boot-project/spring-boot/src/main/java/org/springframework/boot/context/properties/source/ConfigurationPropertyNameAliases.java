@@ -25,6 +25,7 @@ import java.util.Map;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import javax.annotation.Nullable;
 
 
 /**
@@ -57,17 +58,17 @@ public final class ConfigurationPropertyNameAliases implements Iterable<Configur
 				Arrays.stream(aliases).map(ConfigurationPropertyName::of).toArray(ConfigurationPropertyName[]::new));
 	}
 
-	public void addAliases(ConfigurationPropertyName name, ConfigurationPropertyName... aliases) {
+	public void addAliases(@Nullable ConfigurationPropertyName name, ConfigurationPropertyName... aliases) {
 		Assert.notNull(name, "Name must not be null");
 		Assert.notNull(aliases, "Aliases must not be null");
 		this.aliases.addAll(name, Arrays.asList(aliases));
 	}
 
-	public List<ConfigurationPropertyName> getAliases(ConfigurationPropertyName name) {
+	public List<ConfigurationPropertyName> getAliases(@Nullable ConfigurationPropertyName name) {
 		return this.aliases.getOrDefault(name, Collections.emptyList());
 	}
 
-	 public ConfigurationPropertyName getNameForAlias(ConfigurationPropertyName alias) {
+	 @Nullable public ConfigurationPropertyName getNameForAlias(@Nullable ConfigurationPropertyName alias) {
 		return this.aliases.entrySet().stream().filter((e) -> e.getValue().contains(alias)).map(Map.Entry::getKey)
 				.findFirst().orElse(null);
 	}

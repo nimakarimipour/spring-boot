@@ -72,6 +72,7 @@ import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -99,7 +100,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 	private Set<UndertowDeploymentInfoCustomizer> deploymentInfoCustomizers = new LinkedHashSet<>();
 
-	 private ResourceLoader resourceLoader;
+	 @Nullable private ResourceLoader resourceLoader;
 
 	private boolean eagerFilterInit = true;
 
@@ -187,7 +188,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		this.delegate.setAccessLogPrefix(accessLogPrefix);
 	}
 
-	public String getAccessLogPrefix() {
+	@Nullable public String getAccessLogPrefix() {
 		return this.delegate.getAccessLogPrefix();
 	}
 
@@ -413,7 +414,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		return new CompositeResourceManager(managers.toArray(new ResourceManager[0]));
 	}
 
-	private File getCanonicalDocumentRoot(File docBase) {
+	private File getCanonicalDocumentRoot(@Nullable File docBase) {
 		try {
 			File root = (docBase != null) ? docBase : createTempDir("undertow-docbase");
 			return root.getCanonicalFile();
@@ -477,7 +478,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		return new UndertowServletWebServer(builder, httpHandlerFactories, getContextPath(), port >= 0);
 	}
 
-	 private HttpHandlerFactory getCookieHandlerFactory(Deployment deployment) {
+	 @Nullable private HttpHandlerFactory getCookieHandlerFactory(Deployment deployment) {
 		SameSite sessionSameSite = getSession().getCookie().getSameSite();
 		List<CookieSameSiteSupplier> suppliers = new ArrayList<>();
 		if (sessionSameSite != null) {
@@ -527,7 +528,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 		public void close() throws IOException {
 		}
 
-		 @Override
+		 @Nullable @Override
 		public Resource getResource(String path) {
 			for (URL url : this.metaInfResourceJarUrls) {
 				URLResource resource = getMetaInfResource(url, path);
@@ -552,7 +553,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 
 		}
 
-		 private URLResource getMetaInfResource(URL resourceJar, String path) {
+		 @Nullable private URLResource getMetaInfResource(URL resourceJar, String path) {
 			try {
 				String urlPath = URLEncoder.encode(ENCODED_SLASH.matcher(path).replaceAll("/"), "UTF-8");
 				URL resourceUrl = new URL(resourceJar + "META-INF/resources" + urlPath);
@@ -580,7 +581,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 			this.delegate = delegate;
 		}
 
-		 @Override
+		 @Nullable @Override
 		public Resource getResource(String path) throws IOException {
 			if (path.startsWith("/org/springframework/boot")) {
 				return null;
@@ -616,11 +617,11 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 	 */
 	private static class SuppliedSameSiteCookieHandler implements HttpHandler {
 
-		private final HttpHandler next;
+		@Nullable private final HttpHandler next;
 
 		private final List<CookieSameSiteSupplier> suppliers;
 
-		SuppliedSameSiteCookieHandler(HttpHandler next, List<CookieSameSiteSupplier> suppliers) {
+		SuppliedSameSiteCookieHandler(@Nullable HttpHandler next, List<CookieSameSiteSupplier> suppliers) {
 			this.next = next;
 			this.suppliers = suppliers;
 		}
@@ -653,7 +654,7 @@ public class UndertowServletWebServerFactory extends AbstractServletWebServerFac
 			return result;
 		}
 
-		 private SameSite getSameSite(jakarta.servlet.http.Cookie cookie) {
+		 @Nullable private SameSite getSameSite(jakarta.servlet.http.Cookie cookie) {
 			for (CookieSameSiteSupplier supplier : this.suppliers) {
 				SameSite sameSite = supplier.getSameSite(cookie);
 				if (sameSite != null) {

@@ -28,6 +28,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -43,7 +44,7 @@ class WebFilterHandler extends ServletComponentHandler {
 
 	@Override
 	public void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry) {
+			@Nullable BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(FilterRegistrationBean.class);
 		builder.addPropertyValue("asyncSupported", attributes.get("asyncSupported"));
 		builder.addPropertyValue("dispatcherTypes", extractDispatcherTypes(attributes));
@@ -67,7 +68,7 @@ class WebFilterHandler extends ServletComponentHandler {
 		return EnumSet.of(dispatcherTypes[0], Arrays.copyOfRange(dispatcherTypes, 1, dispatcherTypes.length));
 	}
 
-	 private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
+	 @Nullable private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
 		return (String) (StringUtils.hasText((String) attributes.get("filterName")) ? attributes.get("filterName")
 				: beanDefinition.getBeanClassName());
 	}

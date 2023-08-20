@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
+import javax.annotation.Nullable;
 
 
 /**
@@ -39,13 +40,13 @@ class DocumentRoot {
 
 	private final Log logger;
 
-	 private File directory;
+	 @Nullable private File directory;
 
 	DocumentRoot(Log logger) {
 		this.logger = logger;
 	}
 
-	File getDirectory() {
+	@Nullable File getDirectory() {
 		return this.directory;
 	}
 
@@ -58,7 +59,7 @@ class DocumentRoot {
 	 * warning and returning {@code null} otherwise.
 	 * @return the valid document root
 	 */
-	final File getValidDirectory() {
+	@Nullable final File getValidDirectory() {
 		File file = this.directory;
 		file = (file != null) ? file : getWarFileDocumentRoot();
 		file = (file != null) ? file : getExplodedWarFileDocumentRoot();
@@ -72,11 +73,11 @@ class DocumentRoot {
 		return file;
 	}
 
-	private File getWarFileDocumentRoot() {
+	@Nullable private File getWarFileDocumentRoot() {
 		return getArchiveFileDocumentRoot(".war");
 	}
 
-	 private File getArchiveFileDocumentRoot(String extension) {
+	 @Nullable private File getArchiveFileDocumentRoot(String extension) {
 		File file = getCodeSourceArchive();
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Code archive: " + file);
@@ -88,15 +89,15 @@ class DocumentRoot {
 		return null;
 	}
 
-	private File getExplodedWarFileDocumentRoot() {
+	@Nullable private File getExplodedWarFileDocumentRoot() {
 		return getExplodedWarFileDocumentRoot(getCodeSourceArchive());
 	}
 
-	private File getCodeSourceArchive() {
+	@Nullable private File getCodeSourceArchive() {
 		return getCodeSourceArchive(getClass().getProtectionDomain().getCodeSource());
 	}
 
-	 File getCodeSourceArchive(CodeSource codeSource) {
+	 @Nullable File getCodeSourceArchive(CodeSource codeSource) {
 		try {
 			URL location = (codeSource != null) ? codeSource.getLocation() : null;
 			if (location == null) {
@@ -121,7 +122,7 @@ class DocumentRoot {
 		}
 	}
 
-	 final File getExplodedWarFileDocumentRoot(File codeSourceFile) {
+	 @Nullable final File getExplodedWarFileDocumentRoot(@Nullable File codeSourceFile) {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Code archive: " + codeSourceFile);
 		}
@@ -136,7 +137,7 @@ class DocumentRoot {
 		return null;
 	}
 
-	 private File getCommonDocumentRoot() {
+	 @Nullable private File getCommonDocumentRoot() {
 		for (String commonDocRoot : COMMON_DOC_ROOTS) {
 			File root = new File(commonDocRoot);
 			if (root.exists() && root.isDirectory()) {

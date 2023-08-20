@@ -28,6 +28,7 @@ import io.undertow.server.handlers.resource.ResourceManager;
 import io.undertow.server.handlers.resource.URLResource;
 
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -49,7 +50,7 @@ class JarResourceManager implements ResourceManager {
 		}
 	}
 
-	 @Override
+	 @Nullable @Override
 	public Resource getResource(String path) throws IOException {
 		URL url = new URL("jar:" + this.jarPath + "!" + (path.startsWith("/") ? path : "/" + path));
 		URLResource resource = new URLResource(url, path);

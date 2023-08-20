@@ -23,6 +23,7 @@ import jakarta.servlet.annotation.WebListener;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import javax.annotation.Nullable;
 
 /**
  * Handler for {@link WebListener @WebListener}-annotated classes.
@@ -37,7 +38,7 @@ class WebListenerHandler extends ServletComponentHandler {
 
 	@Override
 	protected void doHandle(Map<String, Object> attributes, AnnotatedBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry) {
+			@Nullable BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder
 				.rootBeanDefinition(ServletComponentWebListenerRegistrar.class);
 		builder.addConstructorArgValue(beanDefinition.getBeanClassName());

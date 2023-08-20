@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -43,7 +44,7 @@ public enum PeriodStyle {
 			Pattern.CASE_INSENSITIVE) {
 
 		@Override
-		public Period parse(String value, ChronoUnit unit) {
+		public Period parse(String value, @Nullable ChronoUnit unit) {
 			try {
 				if (NUMERIC.matcher(value).matches()) {
 					return Unit.fromChronoUnit(unit).parse(value);
@@ -82,7 +83,7 @@ public enum PeriodStyle {
 		}
 
 		@Override
-		public String print(Period value, ChronoUnit unit) {
+		public String print(Period value, @Nullable ChronoUnit unit) {
 			if (value.isZero()) {
 				return Unit.fromChronoUnit(unit).print(value);
 			}
@@ -107,7 +108,7 @@ public enum PeriodStyle {
 	ISO8601("^[+-]?P.*$", Pattern.CASE_INSENSITIVE) {
 
 		@Override
-		public Period parse(String value, ChronoUnit unit) {
+		public Period parse(String value, @Nullable ChronoUnit unit) {
 			try {
 				return Period.parse(value);
 			}
@@ -117,7 +118,7 @@ public enum PeriodStyle {
 		}
 
 		@Override
-		public String print(Period value, ChronoUnit unit) {
+		public String print(Period value, @Nullable ChronoUnit unit) {
 			return value.toString();
 		}
 
@@ -155,7 +156,7 @@ public enum PeriodStyle {
 	 * will default to d)
 	 * @return a period
 	 */
-	public abstract Period parse(String value, ChronoUnit unit);
+	public abstract Period parse(String value, @Nullable ChronoUnit unit);
 
 	/**
 	 * Print the specified period.
@@ -172,7 +173,7 @@ public enum PeriodStyle {
 	 * @param unit the value to use for printing
 	 * @return the printed result
 	 */
-	public abstract String print(Period value, ChronoUnit unit);
+	public abstract String print(Period value, @Nullable ChronoUnit unit);
 
 	/**
 	 * Detect the style then parse the value to return a period.
@@ -194,7 +195,7 @@ public enum PeriodStyle {
 	 * @throws IllegalArgumentException if the value is not a known style or cannot be
 	 * parsed
 	 */
-	public static Period detectAndParse(String value, ChronoUnit unit) {
+	public static Period detectAndParse(String value, @Nullable ChronoUnit unit) {
 		return detect(value).parse(value, unit);
 	}
 
@@ -240,11 +241,11 @@ public enum PeriodStyle {
 
 		private final String suffix;
 
-		private final Function<Period, Integer> intValue;
+		@Nullable private final Function<Period, Integer> intValue;
 
 		private final Function<Integer, Period> factory;
 
-		 Unit(ChronoUnit chronoUnit, String suffix, Function<Period, Integer> intValue,
+		 Unit(ChronoUnit chronoUnit, String suffix, @Nullable Function<Period, Integer> intValue,
 				Function<Integer, Period> factory) {
 			this.chronoUnit = chronoUnit;
 			this.suffix = suffix;
@@ -269,7 +270,7 @@ public enum PeriodStyle {
 			return this.intValue.apply(value);
 		}
 
-		private static Unit fromChronoUnit(ChronoUnit chronoUnit) {
+		private static Unit fromChronoUnit(@Nullable ChronoUnit chronoUnit) {
 			if (chronoUnit == null) {
 				return Unit.DAYS;
 			}

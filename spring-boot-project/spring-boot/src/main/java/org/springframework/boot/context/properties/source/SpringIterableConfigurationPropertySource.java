@@ -38,6 +38,7 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -58,7 +59,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 	private final SoftReferenceConfigurationPropertyCache<Mappings> cache;
 
-	 private volatile ConfigurationPropertyName[] configurationPropertyNames;
+	 @Nullable private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
 	SpringIterableConfigurationPropertySource(EnumerablePropertySource<?> propertySource, PropertyMapper... mappers) {
 		super(propertySource, mappers);
@@ -93,8 +94,8 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		return this.cache;
 	}
 
-	 @Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	 @Nullable @Override
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
 		}
@@ -124,7 +125,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 	}
 
 	@Override
-	public ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name) {
+	public ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name) {
 		ConfigurationPropertyState result = super.containsDescendantOf(name);
 		if (result != ConfigurationPropertyState.UNKNOWN) {
 			return result;
@@ -194,15 +195,15 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private final boolean trackDescendants;
 
-		 private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
+		 @Nullable private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
 
-		 private volatile Map<String, ConfigurationPropertyName> reverseMappings;
+		 @Nullable private volatile Map<String, ConfigurationPropertyName> reverseMappings;
 
-		 private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
+		 @Nullable private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
-		 private volatile ConfigurationPropertyName[] configurationPropertyNames;
+		 @Nullable private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
-		 private volatile String[] lastUpdated;
+		 @Nullable private volatile String[] lastUpdated;
 
 		 Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
 			this.mappers = mappers;
@@ -259,7 +260,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 					? reverseMappings.values().toArray(new ConfigurationPropertyName[0]) : null;
 		}
 
-		private <K, V> Map<K, V> cloneOrCreate(Map<K, V> source, int size) {
+		private <K, V> Map<K, V> cloneOrCreate(@Nullable Map<K, V> source, int size) {
 			return (source != null) ? new LinkedHashMap<>(source) : new LinkedHashMap<>(size);
 		}
 
@@ -296,7 +297,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 			return names;
 		}
 
-		ConfigurationPropertyState containsDescendantOf(ConfigurationPropertyName name,
+		ConfigurationPropertyState containsDescendantOf(@Nullable ConfigurationPropertyName name,
 				BiPredicate<ConfigurationPropertyName, ConfigurationPropertyName> ancestorOfCheck) {
 			if (name.isEmpty() && !this.descendants.isEmpty()) {
 				return ConfigurationPropertyState.PRESENT;

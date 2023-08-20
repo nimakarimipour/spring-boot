@@ -46,6 +46,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -69,11 +70,11 @@ class BeanDefinitionLoader {
 
 	private final AbstractBeanDefinitionReader xmlReader;
 
-	private final BeanDefinitionReader groovyReader;
+	@Nullable private final BeanDefinitionReader groovyReader;
 
 	private final ClassPathBeanDefinitionScanner scanner;
 
-	 private ResourceLoader resourceLoader;
+	 @Nullable private ResourceLoader resourceLoader;
 
 	/**
 	 * Create a new {@link BeanDefinitionLoader} that will load beans into the specified

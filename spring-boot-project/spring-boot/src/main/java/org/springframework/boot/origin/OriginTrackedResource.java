@@ -28,6 +28,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Decorator that can be used to add {@link Origin} information to a {@link Resource} or
@@ -43,14 +44,14 @@ public class OriginTrackedResource implements Resource, OriginProvider {
 
 	private final Resource resource;
 
-	private final Origin origin;
+	@Nullable private final Origin origin;
 
 	/**
 	 * Create a new {@link OriginTrackedResource} instance.
 	 * @param resource the resource to track
 	 * @param origin the origin of the resource
 	 */
-	OriginTrackedResource(Resource resource, Origin origin) {
+	OriginTrackedResource(Resource resource, @Nullable Origin origin) {
 		Assert.notNull(resource, "Resource must not be null");
 		this.resource = resource;
 		this.origin = origin;
@@ -130,7 +131,7 @@ public class OriginTrackedResource implements Resource, OriginProvider {
 		return this.resource;
 	}
 
-	@Override
+	@Nullable @Override
 	public Origin getOrigin() {
 		return this.origin;
 	}
@@ -178,7 +179,7 @@ public class OriginTrackedResource implements Resource, OriginProvider {
 	 * @param origin the origin of the resource
 	 * @return an {@link OriginTrackedResource} instance
 	 */
-	public static OriginTrackedResource of(Resource resource, Origin origin) {
+	public static OriginTrackedResource of(Resource resource, @Nullable Origin origin) {
 		if (resource instanceof WritableResource writableResource) {
 			return new OriginTrackedWritableResource(writableResource, origin);
 		}
@@ -195,7 +196,7 @@ public class OriginTrackedResource implements Resource, OriginProvider {
 		 * @param resource the resource to track
 		 * @param origin the origin of the resource
 		 */
-		OriginTrackedWritableResource(WritableResource resource, Origin origin) {
+		OriginTrackedWritableResource(WritableResource resource, @Nullable Origin origin) {
 			super(resource, origin);
 		}
 

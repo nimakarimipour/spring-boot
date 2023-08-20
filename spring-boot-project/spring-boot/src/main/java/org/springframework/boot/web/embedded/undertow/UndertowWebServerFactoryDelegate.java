@@ -37,6 +37,7 @@ import org.springframework.boot.web.server.Shutdown;
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Delegate class used by {@link UndertowServletWebServerFactory} and
@@ -49,21 +50,21 @@ class UndertowWebServerFactoryDelegate {
 
 	private Set<UndertowBuilderCustomizer> builderCustomizers = new LinkedHashSet<>();
 
-	 private Integer bufferSize;
+	 @Nullable private Integer bufferSize;
 
-	 private Integer ioThreads;
+	 @Nullable private Integer ioThreads;
 
-	 private Integer workerThreads;
+	 @Nullable private Integer workerThreads;
 
-	 private Boolean directBuffers;
+	 @Nullable private Boolean directBuffers;
 
-	 private File accessLogDirectory;
+	 @Nullable private File accessLogDirectory;
 
-	 private String accessLogPattern;
+	 @Nullable private String accessLogPattern;
 
-	 private String accessLogPrefix;
+	 @Nullable private String accessLogPrefix;
 
-	 private String accessLogSuffix;
+	 @Nullable private String accessLogSuffix;
 
 	private boolean accessLogEnabled = false;
 
@@ -113,7 +114,7 @@ class UndertowWebServerFactoryDelegate {
 		this.accessLogPrefix = accessLogPrefix;
 	}
 
-	String getAccessLogPrefix() {
+	@Nullable String getAccessLogPrefix() {
 		return this.accessLogPrefix;
 	}
 
@@ -188,8 +189,8 @@ class UndertowWebServerFactoryDelegate {
 		return factories;
 	}
 
-	static List<HttpHandlerFactory> createHttpHandlerFactories(Compression compression, boolean useForwardHeaders,
-			String serverHeader, Shutdown shutdown, HttpHandlerFactory... initialHttpHandlerFactories) {
+	static List<HttpHandlerFactory> createHttpHandlerFactories(@Nullable Compression compression, boolean useForwardHeaders,
+			@Nullable String serverHeader, @Nullable Shutdown shutdown, HttpHandlerFactory... initialHttpHandlerFactories) {
 		List<HttpHandlerFactory> factories = new ArrayList<>(Arrays.asList(initialHttpHandlerFactories));
 		if (compression != null && compression.getEnabled()) {
 			factories.add(new CompressionHttpHandlerFactory(compression));

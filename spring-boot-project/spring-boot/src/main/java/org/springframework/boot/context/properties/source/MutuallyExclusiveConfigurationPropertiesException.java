@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -38,9 +39,9 @@ import org.springframework.util.Assert;
 @SuppressWarnings("serial")
 public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeException {
 
-	private final Set<String> configuredNames;
+	@Nullable private final Set<String> configuredNames;
 
-	private final Set<String> mutuallyExclusiveNames;
+	@Nullable private final Set<String> mutuallyExclusiveNames;
 
 	/**
 	 * Creates a new instance for mutually exclusive configuration properties when two or
@@ -54,8 +55,8 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 		this(asSet(configuredNames), asSet(mutuallyExclusiveNames));
 	}
 
-	private MutuallyExclusiveConfigurationPropertiesException(Set<String> configuredNames,
-			Set<String> mutuallyExclusiveNames) {
+	private MutuallyExclusiveConfigurationPropertiesException(@Nullable Set<String> configuredNames,
+			@Nullable Set<String> mutuallyExclusiveNames) {
 		super(buildMessage(mutuallyExclusiveNames, configuredNames));
 		this.configuredNames = configuredNames;
 		this.mutuallyExclusiveNames = mutuallyExclusiveNames;
@@ -65,7 +66,7 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 	 * Return the names of the properties that have been configured.
 	 * @return the names of the configured properties
 	 */
-	public Set<String> getConfiguredNames() {
+	@Nullable public Set<String> getConfiguredNames() {
 		return this.configuredNames;
 	}
 
@@ -73,15 +74,15 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 	 * Return the names of the properties that are mutually exclusive.
 	 * @return the names of the mutually exclusive properties
 	 */
-	public Set<String> getMutuallyExclusiveNames() {
+	@Nullable public Set<String> getMutuallyExclusiveNames() {
 		return this.mutuallyExclusiveNames;
 	}
 
-	 private static Set<String> asSet(Collection<String> collection) {
+	 @Nullable private static Set<String> asSet(Collection<String> collection) {
 		return (collection != null) ? new LinkedHashSet<>(collection) : null;
 	}
 
-	private static String buildMessage(Set<String> mutuallyExclusiveNames, Set<String> configuredNames) {
+	private static String buildMessage(@Nullable Set<String> mutuallyExclusiveNames, @Nullable Set<String> configuredNames) {
 		Assert.isTrue(configuredNames != null && configuredNames.size() > 1,
 				"ConfiguredNames must contain 2 or more names");
 		Assert.isTrue(mutuallyExclusiveNames != null && mutuallyExclusiveNames.size() > 1,

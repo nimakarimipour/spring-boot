@@ -30,6 +30,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Strategy interface for loading resources from a location. Supports single resource and
@@ -61,7 +62,7 @@ class LocationResourceLoader {
 	 * @param location the location to check
 	 * @return if the location is a pattern
 	 */
-	boolean isPattern(String location) {
+	boolean isPattern(@Nullable String location) {
 		return StringUtils.hasLength(location) && location.contains("*");
 	}
 
@@ -71,7 +72,7 @@ class LocationResourceLoader {
 	 * @return the resource
 	 * @see #isPattern(String)
 	 */
-	Resource getResource(String location) {
+	Resource getResource(@Nullable String location) {
 		validateNonPattern(location);
 		location = StringUtils.cleanPath(location);
 		if (!ResourceUtils.isUrl(location)) {
@@ -80,7 +81,7 @@ class LocationResourceLoader {
 		return this.resourceLoader.getResource(location);
 	}
 
-	private void validateNonPattern(String location) {
+	private void validateNonPattern(@Nullable String location) {
 		Assert.state(!isPattern(location), () -> String.format("Location '%s' must not be a pattern", location));
 	}
 
@@ -91,7 +92,7 @@ class LocationResourceLoader {
 	 * @return the resources
 	 * @see #isPattern(String)
 	 */
-	Resource[] getResources(String location, ResourceType type) {
+	Resource[] getResources(@Nullable String location, ResourceType type) {
 		validatePattern(location, type);
 		String directoryPath = location.substring(0, location.indexOf("*/"));
 		String fileName = location.substring(location.lastIndexOf("/") + 1);
@@ -123,7 +124,7 @@ class LocationResourceLoader {
 		return resources.toArray(EMPTY_RESOURCES);
 	}
 
-	private void validatePattern(String location, ResourceType type) {
+	private void validatePattern(@Nullable String location, ResourceType type) {
 		Assert.state(isPattern(location), () -> String.format("Location '%s' must be a pattern", location));
 		Assert.state(!location.startsWith(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX),
 				() -> String.format("Location '%s' cannot use classpath wildcards", location));

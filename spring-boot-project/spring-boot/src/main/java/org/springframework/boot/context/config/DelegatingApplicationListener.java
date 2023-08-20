@@ -32,6 +32,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ApplicationListener} that delegates to other listeners that are specified under
@@ -49,7 +50,7 @@ public class DelegatingApplicationListener implements ApplicationListener<Applic
 
 	private int order = 0;
 
-	 private SimpleApplicationEventMulticaster multicaster;
+	 @Nullable private SimpleApplicationEventMulticaster multicaster;
 
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {

@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.function.BiPredicate;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
+import javax.annotation.Nullable;
 
 /**
  * {@link PropertyMapper} for system environment variables. Names are mapped by removing
@@ -120,7 +121,7 @@ final class SystemEnvironmentPropertyMapper implements PropertyMapper {
 		return legacyCompatibleName != null && legacyCompatibleName.isAncestorOf(candidate);
 	}
 
-	private ConfigurationPropertyName buildLegacyCompatibleName(ConfigurationPropertyName name) {
+	@Nullable private ConfigurationPropertyName buildLegacyCompatibleName(ConfigurationPropertyName name) {
 		StringBuilder legacyCompatibleName = new StringBuilder();
 		for (int i = 0; i < name.getNumberOfElements(); i++) {
 			if (i != 0) {

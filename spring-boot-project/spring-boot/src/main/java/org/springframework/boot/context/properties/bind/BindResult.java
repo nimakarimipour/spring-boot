@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -38,9 +39,9 @@ public final class BindResult<T> {
 
 	private static final BindResult<?> UNBOUND = new BindResult<>(null);
 
-	private final T value;
+	@Nullable private final T value;
 
-	 private BindResult(T value) {
+	 private BindResult(@Nullable T value) {
 		this.value = value;
 	}
 
@@ -98,7 +99,7 @@ public final class BindResult<T> {
 	 * {@code null})
 	 * @return the value, if bound, otherwise {@code other}
 	 */
-	public T orElse(T other) {
+	@Nullable public T orElse(@Nullable T other) {
 		return (this.value != null) ? this.value : other;
 	}
 
@@ -145,7 +146,7 @@ public final class BindResult<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	static <T> BindResult<T> of(T value) {
+	static <T> BindResult<T> of(@Nullable T value) {
 		if (value == null) {
 			return (BindResult<T>) UNBOUND;
 		}

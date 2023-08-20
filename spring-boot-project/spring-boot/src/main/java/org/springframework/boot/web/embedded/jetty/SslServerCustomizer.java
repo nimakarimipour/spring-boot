@@ -44,6 +44,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link JettyServerCustomizer} that configures SSL on the given Jetty server instance.
@@ -56,13 +57,13 @@ class SslServerCustomizer implements JettyServerCustomizer {
 
 	private final InetSocketAddress address;
 
-	private final Ssl ssl;
+	@Nullable private final Ssl ssl;
 
-	private final SslStoreProvider sslStoreProvider;
+	@Nullable private final SslStoreProvider sslStoreProvider;
 
-	private final Http2 http2;
+	@Nullable private final Http2 http2;
 
-	SslServerCustomizer(InetSocketAddress address, Ssl ssl, SslStoreProvider sslStoreProvider, Http2 http2) {
+	SslServerCustomizer(InetSocketAddress address, @Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider, @Nullable Http2 http2) {
 		this.address = address;
 		this.ssl = ssl;
 		this.sslStoreProvider = sslStoreProvider;
@@ -169,7 +170,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 	 * @param ssl the ssl details.
 	 * @param sslStoreProvider the ssl store provider
 	 */
-	protected void configureSsl(SslContextFactory.Server factory, Ssl ssl, SslStoreProvider sslStoreProvider) {
+	protected void configureSsl(SslContextFactory.Server factory, @Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		factory.setProtocol(ssl.getProtocol());
 		configureSslClientAuth(factory, ssl);
 		configureSslPasswords(factory, ssl);
@@ -263,16 +264,16 @@ class SslServerCustomizer implements JettyServerCustomizer {
 
 		private final SslContextFactory sslContextFactory;
 
-		private final String keyAlias;
+		@Nullable private final String keyAlias;
 
-		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, String keyAlias,
+		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, @Nullable String keyAlias,
 				SslConnectionFactory sslConnectionFactory, HttpConnectionFactory connectionFactory) {
 			super(server, sslConnectionFactory, connectionFactory);
 			this.sslContextFactory = sslContextFactory;
 			this.keyAlias = keyAlias;
 		}
 
-		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, String keyAlias,
+		SslValidatingServerConnector(Server server, SslContextFactory sslContextFactory, @Nullable String keyAlias,
 				ConnectionFactory... factories) {
 			super(server, factories);
 			this.sslContextFactory = sslContextFactory;

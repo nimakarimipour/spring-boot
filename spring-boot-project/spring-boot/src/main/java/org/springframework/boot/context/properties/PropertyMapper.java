@@ -27,6 +27,7 @@ import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.util.function.SingletonSupplier;
+import javax.annotation.Nullable;
 
 
 /**
@@ -63,11 +64,11 @@ public final class PropertyMapper {
 
 	private static final PropertyMapper INSTANCE = new PropertyMapper(null, null);
 
-	private final PropertyMapper parent;
+	@Nullable private final PropertyMapper parent;
 
-	private final SourceOperator sourceOperator;
+	@Nullable private final SourceOperator sourceOperator;
 
-	 private PropertyMapper(PropertyMapper parent, SourceOperator sourceOperator) {
+	 private PropertyMapper(@Nullable PropertyMapper parent, @Nullable SourceOperator sourceOperator) {
 		this.parent = parent;
 		this.sourceOperator = sourceOperator;
 	}
@@ -120,7 +121,7 @@ public final class PropertyMapper {
 	 * @param value the value
 	 * @return a {@link Source} that can be used to complete the mapping
 	 */
-	public <T> Source<T> from(T value) {
+	public <T> Source<T> from(@Nullable T value) {
 		return from(() -> value);
 	}
 
@@ -355,7 +356,7 @@ public final class PropertyMapper {
 			this.supplier = supplier;
 		}
 
-		 @Override
+		 @Nullable @Override
 		public T get() {
 			try {
 				return this.supplier.get();

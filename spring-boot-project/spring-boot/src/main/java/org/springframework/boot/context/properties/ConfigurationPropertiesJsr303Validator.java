@@ -23,6 +23,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import javax.annotation.Nullable;
 
 /**
  * Validator that supports configuration classes annotated with
@@ -37,7 +38,7 @@ final class ConfigurationPropertiesJsr303Validator implements Validator {
 
 	private final Delegate delegate;
 
-	ConfigurationPropertiesJsr303Validator(ApplicationContext applicationContext) {
+	ConfigurationPropertiesJsr303Validator(@Nullable ApplicationContext applicationContext) {
 		this.delegate = new Delegate(applicationContext);
 	}
 
@@ -51,7 +52,7 @@ final class ConfigurationPropertiesJsr303Validator implements Validator {
 		this.delegate.validate(target, errors);
 	}
 
-	static boolean isJsr303Present(ApplicationContext applicationContext) {
+	static boolean isJsr303Present(@Nullable ApplicationContext applicationContext) {
 		ClassLoader classLoader = applicationContext.getClassLoader();
 		for (String validatorClass : VALIDATOR_CLASSES) {
 			if (!ClassUtils.isPresent(validatorClass, classLoader)) {
@@ -63,7 +64,7 @@ final class ConfigurationPropertiesJsr303Validator implements Validator {
 
 	private static class Delegate extends LocalValidatorFactoryBean {
 
-		Delegate(ApplicationContext applicationContext) {
+		Delegate(@Nullable ApplicationContext applicationContext) {
 			setApplicationContext(applicationContext);
 			setMessageInterpolator(new MessageInterpolatorFactory(applicationContext).getObject());
 			afterPropertiesSet();

@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
+import javax.annotation.Nullable;
 
 
 /**
@@ -109,7 +110,7 @@ public class DefaultErrorAttributes implements ErrorAttributes {
 		return responseStatusAnnotation.getValue("code", HttpStatus.class).orElse(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	 private String determineMessage(Throwable error, MergedAnnotation<ResponseStatus> responseStatusAnnotation) {
+	 @Nullable private String determineMessage(Throwable error, MergedAnnotation<ResponseStatus> responseStatusAnnotation) {
 		if (error instanceof BindingResult) {
 			return error.getMessage();
 		}

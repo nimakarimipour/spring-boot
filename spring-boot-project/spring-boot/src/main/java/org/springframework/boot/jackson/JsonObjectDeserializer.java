@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -83,7 +84,7 @@ public abstract class JsonObjectDeserializer<T> extends com.fasterxml.jackson.da
 	 * @param <D> the data type requested
 	 * @return the node value or {@code null}
 	 */
-	 @SuppressWarnings({ "unchecked" })
+	 @Nullable @SuppressWarnings({ "unchecked" })
 	protected final <D> D nullSafeValue(JsonNode jsonNode, Class<D> type) {
 		Assert.notNull(type, "Type must not be null");
 		if (jsonNode == null) {

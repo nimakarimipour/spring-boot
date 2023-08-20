@@ -32,6 +32,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -46,7 +47,7 @@ import org.springframework.util.ReflectionUtils;
 
 	private static final Method CLASS_GET_MODULE;
 
-	 private static final Method MODULE_GET_NAME;
+	 @Nullable private static final Method MODULE_GET_NAME;
 
 	static {
 		CLASS_GET_MODULE = ReflectionUtils.findMethod(Class.class, "getModule");
@@ -368,7 +369,7 @@ import org.springframework.util.ReflectionUtils;
 
 		private final R value;
 
-		 private InvocationResult(R value) {
+		 private InvocationResult(@Nullable R value) {
 			this.value = value;
 		}
 

@@ -25,6 +25,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
+import javax.annotation.Nullable;
 
 
 /**
@@ -213,7 +214,7 @@ public enum CloudPlatform {
 	 * @param environment the environment
 	 * @return the {@link CloudPlatform} or {@code null}
 	 */
-	 public static CloudPlatform getActive(Environment environment) {
+	 @Nullable public static CloudPlatform getActive(Environment environment) {
 		if (environment != null) {
 			for (CloudPlatform cloudPlatform : values()) {
 				if (cloudPlatform.isActive(environment)) {

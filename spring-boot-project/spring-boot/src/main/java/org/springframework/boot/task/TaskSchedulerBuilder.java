@@ -27,6 +27,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -201,7 +202,7 @@ public class TaskSchedulerBuilder {
 		return taskScheduler;
 	}
 
-	private <T> Set<T> append(Set<T> set, Iterable<? extends T> additions) {
+	private <T> Set<T> append(@Nullable Set<T> set, Iterable<? extends T> additions) {
 		Set<T> result = new LinkedHashSet<>((set != null) ? set : Collections.emptySet());
 		additions.forEach(result::add);
 		return Collections.unmodifiableSet(result);

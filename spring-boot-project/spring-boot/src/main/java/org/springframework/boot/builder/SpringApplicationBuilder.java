@@ -45,6 +45,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -79,7 +80,7 @@ public class SpringApplicationBuilder {
 
 	 private ConfigurableApplicationContext context;
 
-	 private SpringApplicationBuilder parent;
+	 @Nullable private SpringApplicationBuilder parent;
 
 	private final AtomicBoolean running = new AtomicBoolean();
 
@@ -99,7 +100,7 @@ public class SpringApplicationBuilder {
 		this(null, sources);
 	}
 
-	public SpringApplicationBuilder(ResourceLoader resourceLoader, Class<?>... sources) {
+	public SpringApplicationBuilder(@Nullable ResourceLoader resourceLoader, Class<?>... sources) {
 		this.application = createSpringApplication(resourceLoader, sources);
 	}
 
@@ -112,7 +113,7 @@ public class SpringApplicationBuilder {
 	 * @return the {@link SpringApplication} instance
 	 * @since 2.6.0
 	 */
-	protected SpringApplication createSpringApplication(ResourceLoader resourceLoader, Class<?>... sources) {
+	protected SpringApplication createSpringApplication(@Nullable ResourceLoader resourceLoader, Class<?>... sources) {
 		return new SpringApplication(resourceLoader, sources);
 	}
 

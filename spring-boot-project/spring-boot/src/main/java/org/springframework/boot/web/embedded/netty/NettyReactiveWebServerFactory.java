@@ -37,6 +37,7 @@ import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link NettyWebServer}s.
@@ -54,7 +55,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private boolean useForwardHeaders;
 
-	 private ReactorResourceFactory resourceFactory;
+	 @Nullable private ReactorResourceFactory resourceFactory;
 
 	 private Shutdown shutdown;
 

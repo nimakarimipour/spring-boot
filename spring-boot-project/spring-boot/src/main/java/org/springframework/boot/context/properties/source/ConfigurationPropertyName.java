@@ -25,6 +25,7 @@ import java.util.function.Function;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -64,7 +65,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 	private final CharSequence[] uniformElements;
 
-	 private String string;
+	 @Nullable private String string;
 
 	private int hashCode;
 
@@ -323,7 +324,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return 0;
 	}
 
-	private int compare(String e1, ElementType type1, String e2, ElementType type2) {
+	private int compare(@Nullable String e1, @Nullable ElementType type1, @Nullable String e2, @Nullable ElementType type2) {
 		if (e1 == null) {
 			return -1;
 		}
@@ -588,15 +589,15 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		return (elements != null) ? new ConfigurationPropertyName(elements) : null;
 	}
 
-	private static Elements probablySingleElementOf(CharSequence name) {
+	@Nullable private static Elements probablySingleElementOf(CharSequence name) {
 		return elementsOf(name, false, 1);
 	}
 
-	private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid) {
+	@Nullable private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid) {
 		return elementsOf(name, returnNullIfInvalid, ElementsParser.DEFAULT_CAPACITY);
 	}
 
-	 private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
+	 @Nullable private static Elements elementsOf(CharSequence name, boolean returnNullIfInvalid, int parserCapacity) {
 		if (name == null) {
 			Assert.isTrue(returnNullIfInvalid, "Name must not be null");
 			return null;
@@ -658,7 +659,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @return a {@link ConfigurationPropertyName}
 	 */
 	static ConfigurationPropertyName adapt(CharSequence name, char separator,
-			Function<CharSequence, CharSequence> elementValueProcessor) {
+			@Nullable Function<CharSequence, CharSequence> elementValueProcessor) {
 		Assert.notNull(name, "Name must not be null");
 		if (name.length() == 0) {
 			return EMPTY;
@@ -743,9 +744,9 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 		 * {@link #canShortcutWithSource} will always return false which may hurt
 		 * performance.
 		 */
-		private final CharSequence[] resolved;
+		@Nullable private final CharSequence[] resolved;
 
-		 Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, CharSequence[] resolved) {
+		 Elements(CharSequence source, int size, int[] start, int[] end, ElementType[] type, @Nullable CharSequence[] resolved) {
 			super();
 			this.source = source;
 			this.size = size;
@@ -755,7 +756,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			this.resolved = resolved;
 		}
 
-		Elements append(Elements additional) {
+		Elements append(@Nullable Elements additional) {
 			int size = this.size + additional.size;
 			ElementType[] type = new ElementType[size];
 			System.arraycopy(this.type, 0, type, 0, this.size);
@@ -884,7 +885,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 
 		private ElementType[] type;
 
-		 private CharSequence[] resolved;
+		 @Nullable private CharSequence[] resolved;
 
 		ElementsParser(CharSequence source, char separator) {
 			this(source, separator, DEFAULT_CAPACITY);
@@ -1001,7 +1002,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			return dest;
 		}
 
-		 private CharSequence[] expand(CharSequence[] src) {
+		 @Nullable private CharSequence[] expand(CharSequence[] src) {
 			if (src == null) {
 				return null;
 			}

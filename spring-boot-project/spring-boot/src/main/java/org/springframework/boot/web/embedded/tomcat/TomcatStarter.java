@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import javax.annotation.Nullable;
 
 /**
  * {@link ServletContainerInitializer} used to trigger {@link ServletContextInitializer
@@ -39,7 +40,7 @@ class TomcatStarter implements ServletContainerInitializer {
 
 	private final ServletContextInitializer[] initializers;
 
-	 private volatile Exception startUpException;
+	 @Nullable private volatile Exception startUpException;
 
 	TomcatStarter(ServletContextInitializer[] initializers) {
 		this.initializers = initializers;
@@ -63,7 +64,7 @@ class TomcatStarter implements ServletContainerInitializer {
 		}
 	}
 
-	Exception getStartUpException() {
+	@Nullable Exception getStartUpException() {
 		return this.startUpException;
 	}
 

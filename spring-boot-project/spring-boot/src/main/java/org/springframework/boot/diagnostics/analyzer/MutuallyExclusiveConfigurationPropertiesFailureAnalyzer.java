@@ -34,6 +34,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -52,7 +53,7 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	 @Override
+	 @Nullable @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, MutuallyExclusiveConfigurationPropertiesException cause) {
 		List<Descriptor> descriptors = new ArrayList<>();
 		for (String name : cause.getConfiguredNames()) {

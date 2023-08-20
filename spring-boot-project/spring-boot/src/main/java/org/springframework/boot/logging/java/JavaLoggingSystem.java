@@ -42,6 +42,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -100,7 +101,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		loadConfiguration(location, logFile);
 	}
 
-	protected void loadConfiguration(String location, LogFile logFile) {
+	protected void loadConfiguration(String location, @Nullable LogFile logFile) {
 		Assert.notNull(location, "Location must not be null");
 		try {
 			String configuration = FileCopyUtils
@@ -143,7 +144,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		return Collections.unmodifiableList(result);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		Logger logger = Logger.getLogger(loggerName);
 		if (logger == null) {
@@ -182,7 +183,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		private static final boolean PRESENT = ClassUtils.isPresent("java.util.logging.LogManager",
 				Factory.class.getClassLoader());
 
-		 @Override
+		 @Nullable @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new JavaLoggingSystem(classLoader);

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 
 /**
@@ -47,7 +48,7 @@ public interface Origin {
 	 * @since 2.4.0
 	 * @see Origin#parentsFrom(Object)
 	 */
-	 default Origin getParent() {
+	 @Nullable default Origin getParent() {
 		return null;
 	}
 
@@ -57,7 +58,7 @@ public interface Origin {
 	 * @param source the source object or {@code null}
 	 * @return an optional {@link Origin}
 	 */
-	 static Origin from(Object source) {
+	 static Origin from(@Nullable Object source) {
 		if (source instanceof Origin origin) {
 			return origin;
 		}

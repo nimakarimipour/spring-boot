@@ -46,6 +46,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -233,7 +234,7 @@ public class StandardConfigDataLocationResolver
 				+ "If the location is meant to reference a directory, it must end in '/' or File.separator");
 	}
 
-	 private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
+	 @Nullable private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
 		for (String fileExtension : loader.getFileExtensions()) {
 			if (StringUtils.endsWithIgnoreCase(file, fileExtension)) {
 				return fileExtension;

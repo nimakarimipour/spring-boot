@@ -45,6 +45,7 @@ import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.unit.DataSize;
+import javax.annotation.Nullable;
 
 
 /**
@@ -60,21 +61,21 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 
 	private int port = 9898;
 
-	 private DataSize fragmentSize;
+	 @Nullable private DataSize fragmentSize;
 
-	 private InetAddress address;
+	 @Nullable private InetAddress address;
 
 	private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
 
-	 private ReactorResourceFactory resourceFactory;
+	 @Nullable private ReactorResourceFactory resourceFactory;
 
-	 private Duration lifecycleTimeout;
+	 @Nullable private Duration lifecycleTimeout;
 
 	private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
 
 	 private Ssl ssl;
 
-	 private SslStoreProvider sslStoreProvider;
+	 @Nullable private SslStoreProvider sslStoreProvider;
 
 	@Override
 	public void setPort(int port) {

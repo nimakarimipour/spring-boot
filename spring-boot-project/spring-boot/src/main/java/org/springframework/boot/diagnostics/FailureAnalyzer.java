@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.diagnostics;
+import javax.annotation.Nullable;
 
 /**
  * A {@code FailureAnalyzer} is used to analyze a failure and provide diagnostic
@@ -32,6 +33,6 @@ public interface FailureAnalyzer {
 	 * @param failure the failure
 	 * @return the analysis or {@code null}
 	 */
-	FailureAnalysis analyze(Throwable failure);
+	@Nullable FailureAnalysis analyze(Throwable failure);
 
 }

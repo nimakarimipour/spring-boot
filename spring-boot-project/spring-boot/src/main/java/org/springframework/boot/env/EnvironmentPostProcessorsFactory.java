@@ -21,6 +21,7 @@ import java.util.List;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import javax.annotation.Nullable;
 
 
 /**
@@ -81,7 +82,7 @@ public interface EnvironmentPostProcessorsFactory {
 	 * @return an {@link EnvironmentPostProcessorsFactory} instance
 	 * @since 2.4.8
 	 */
-	static EnvironmentPostProcessorsFactory of(ClassLoader classLoader, String... classNames) {
+	static EnvironmentPostProcessorsFactory of(@Nullable ClassLoader classLoader, String... classNames) {
 		return new ReflectionEnvironmentPostProcessorsFactory(classLoader, classNames);
 	}
 

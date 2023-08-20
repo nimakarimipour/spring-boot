@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -51,12 +52,12 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * @param resource the resource that could not be found
 	 * @param cause the exception cause
 	 */
-	 public ConfigDataResourceNotFoundException(ConfigDataResource resource, Throwable cause) {
+	 public ConfigDataResourceNotFoundException(ConfigDataResource resource, @Nullable Throwable cause) {
 		this(resource, null, cause);
 	}
 
 	private ConfigDataResourceNotFoundException(ConfigDataResource resource, ConfigDataLocation location,
-			Throwable cause) {
+			@Nullable Throwable cause) {
 		super(getMessage(resource, location), cause);
 		Assert.notNull(resource, "Resource must not be null");
 		this.resource = resource;

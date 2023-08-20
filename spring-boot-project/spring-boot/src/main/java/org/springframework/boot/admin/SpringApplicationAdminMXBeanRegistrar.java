@@ -41,6 +41,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Register a {@link SpringApplicationAdminMXBean} implementation to the platform

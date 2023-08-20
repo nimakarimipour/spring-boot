@@ -31,6 +31,7 @@ import java.util.HexFormat;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -48,9 +49,9 @@ public class ApplicationTemp {
 	private static final EnumSet<PosixFilePermission> DIRECTORY_PERMISSIONS = EnumSet.of(PosixFilePermission.OWNER_READ,
 			PosixFilePermission.OWNER_WRITE, PosixFilePermission.OWNER_EXECUTE);
 
-	private final Class<?> sourceClass;
+	@Nullable private final Class<?> sourceClass;
 
-	 private volatile Path path;
+	 @Nullable private volatile Path path;
 
 	/**
 	 * Create a new {@link ApplicationTemp} instance.
@@ -63,7 +64,7 @@ public class ApplicationTemp {
 	 * Create a new {@link ApplicationTemp} instance for the specified source class.
 	 * @param sourceClass the source class or {@code null}
 	 */
-	public ApplicationTemp(Class<?> sourceClass) {
+	public ApplicationTemp(@Nullable Class<?> sourceClass) {
 		this.sourceClass = sourceClass;
 	}
 
@@ -128,7 +129,7 @@ public class ApplicationTemp {
 		return tempDirectory;
 	}
 
-	private byte[] generateHash(Class<?> sourceClass) {
+	private byte[] generateHash(@Nullable Class<?> sourceClass) {
 		ApplicationHome home = new ApplicationHome(sourceClass);
 		MessageDigest digest;
 		try {

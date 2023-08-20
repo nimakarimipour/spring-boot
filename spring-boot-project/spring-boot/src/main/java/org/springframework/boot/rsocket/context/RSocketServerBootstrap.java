@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Bootstrap an {@link RSocketServer} and start it with the application context.
@@ -35,7 +36,7 @@ public class RSocketServerBootstrap implements ApplicationEventPublisherAware, S
 
 	private final RSocketServer server;
 
-	 private ApplicationEventPublisher eventPublisher;
+	 @Nullable private ApplicationEventPublisher eventPublisher;
 
 	public RSocketServerBootstrap(RSocketServerFactory serverFactory, SocketAcceptor socketAcceptor) {
 		Assert.notNull(serverFactory, "ServerFactory must not be null");

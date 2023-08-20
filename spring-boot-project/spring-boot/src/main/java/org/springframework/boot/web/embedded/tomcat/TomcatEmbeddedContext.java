@@ -34,6 +34,7 @@ import org.apache.catalina.session.ManagerBase;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -45,9 +46,9 @@ import org.springframework.util.ClassUtils;
  */
 class TomcatEmbeddedContext extends StandardContext {
 
-	 private TomcatStarter starter;
+	 @Nullable private TomcatStarter starter;
 
-	 private MimeMappings mimeMappings;
+	 @Nullable private MimeMappings mimeMappings;
 
 	@Override
 	public boolean loadOnStartup(Container[] children) {
@@ -119,7 +120,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		this.starter = starter;
 	}
 
-	TomcatStarter getStarter() {
+	@Nullable TomcatStarter getStarter() {
 		return this.starter;
 	}
 
@@ -137,7 +138,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		return mappings.toArray(String[]::new);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public String findMimeMapping(String extension) {
 		String mimeMapping = super.findMimeMapping(extension);
 		if (mimeMapping != null) {

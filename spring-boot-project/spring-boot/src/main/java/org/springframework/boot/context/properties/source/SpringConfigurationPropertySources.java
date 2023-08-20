@@ -31,6 +31,7 @@ import org.springframework.core.env.PropertySource.StubPropertySource;
 import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ConcurrentReferenceHashMap.ReferenceType;
+import javax.annotation.Nullable;
 
 
 /**
@@ -79,7 +80,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 
 		private final Deque<Iterator<PropertySource<?>>> iterators;
 
-		 private ConfigurationPropertySource next;
+		 @Nullable private ConfigurationPropertySource next;
 
 		private final Function<PropertySource<?>, ConfigurationPropertySource> adapter;
 
@@ -105,7 +106,7 @@ class SpringConfigurationPropertySources implements Iterable<ConfigurationProper
 			return next;
 		}
 
-		 private ConfigurationPropertySource fetchNext() {
+		 @Nullable private ConfigurationPropertySource fetchNext() {
 			if (this.next == null) {
 				if (this.iterators.isEmpty()) {
 					return null;

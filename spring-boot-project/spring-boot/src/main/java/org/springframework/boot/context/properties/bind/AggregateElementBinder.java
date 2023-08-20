@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import javax.annotation.Nullable;
 
 
 /**

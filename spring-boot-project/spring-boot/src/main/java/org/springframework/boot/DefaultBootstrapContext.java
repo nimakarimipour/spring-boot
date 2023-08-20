@@ -26,6 +26,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -71,7 +72,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	 @Override
+	 @Nullable @Override
 	@SuppressWarnings("unchecked")
 	public <T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type) {
 		synchronized (this.instanceSuppliers) {

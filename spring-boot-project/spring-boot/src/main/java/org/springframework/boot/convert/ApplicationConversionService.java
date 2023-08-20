@@ -38,6 +38,7 @@ import org.springframework.format.Printer;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.StringValueResolver;
+import javax.annotation.Nullable;
 
 
 /**
@@ -54,7 +55,7 @@ import org.springframework.util.StringValueResolver;
  */
 public class ApplicationConversionService extends FormattingConversionService {
 
-	 private static volatile ApplicationConversionService sharedInstance;
+	 @Nullable private static volatile ApplicationConversionService sharedInstance;
 
 	private final boolean unmodifiable;
 
@@ -62,11 +63,11 @@ public class ApplicationConversionService extends FormattingConversionService {
 		this(null);
 	}
 
-	public ApplicationConversionService(StringValueResolver embeddedValueResolver) {
+	public ApplicationConversionService(@Nullable StringValueResolver embeddedValueResolver) {
 		this(embeddedValueResolver, false);
 	}
 
-	private ApplicationConversionService(StringValueResolver embeddedValueResolver, boolean unmodifiable) {
+	private ApplicationConversionService(@Nullable StringValueResolver embeddedValueResolver, boolean unmodifiable) {
 		if (embeddedValueResolver != null) {
 			setEmbeddedValueResolver(embeddedValueResolver);
 		}

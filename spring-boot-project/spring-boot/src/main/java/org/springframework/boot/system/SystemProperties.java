@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.system;
+import javax.annotation.Nullable;
 
 
 /**
@@ -28,7 +29,7 @@ public final class SystemProperties {
 	private SystemProperties() {
 	}
 
-	 public static String get(String... properties) {
+	 @Nullable public static String get(String... properties) {
 		for (String property : properties) {
 			try {
 				String override = System.getProperty(property);

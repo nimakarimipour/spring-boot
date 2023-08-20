@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -79,7 +80,7 @@ public interface BootstrapRegistry {
 	 * @param type the instance type
 	 * @return the registered {@link InstanceSupplier} or {@code null}
 	 */
-	<T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type);
+	@Nullable <T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type);
 
 	/**
 	 * Add an {@link ApplicationListener} that will be called with a

@@ -22,6 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 import org.springframework.boot.convert.DurationUnit;
+import javax.annotation.Nullable;
 
 /**
  * Session properties.
@@ -34,14 +35,14 @@ public class Session {
 	@DurationUnit(ChronoUnit.SECONDS)
 	private Duration timeout = Duration.ofMinutes(30);
 
-	 private Set<Session.SessionTrackingMode> trackingModes;
+	 @Nullable private Set<Session.SessionTrackingMode> trackingModes;
 
 	private boolean persistent;
 
 	/**
 	 * Directory used to store session data.
 	 */
-	 private File storeDir;
+	 @Nullable private File storeDir;
 
 	private final Cookie cookie = new Cookie();
 
@@ -59,7 +60,7 @@ public class Session {
 	 * Return the {@link SessionTrackingMode session tracking modes}.
 	 * @return the session tracking modes
 	 */
-	public Set<Session.SessionTrackingMode> getTrackingModes() {
+	@Nullable public Set<Session.SessionTrackingMode> getTrackingModes() {
 		return this.trackingModes;
 	}
 
@@ -83,7 +84,7 @@ public class Session {
 	 * Return the directory used to store session data.
 	 * @return the session data store directory
 	 */
-	public File getStoreDir() {
+	@Nullable public File getStoreDir() {
 		return this.storeDir;
 	}
 
@@ -108,13 +109,13 @@ public class Session {
 		/**
 		 * Comment for the session cookie.
 		 */
-		 private String comment;
+		 @Nullable private String comment;
 
 		/**
 		 * Return the comment for the session cookie.
 		 * @return the session cookie comment
 		 */
-		public String getComment() {
+		@Nullable public String getComment() {
 			return this.comment;
 		}
 

@@ -23,6 +23,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -42,10 +43,10 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 
 	private final PropertyPlaceholderHelper helper;
 
-	private final ConfigDataEnvironmentContributor activeContributor;
+	@Nullable private final ConfigDataEnvironmentContributor activeContributor;
 
 	ConfigDataEnvironmentContributorPlaceholdersResolver(Iterable<ConfigDataEnvironmentContributor> contributors,
-			ConfigDataActivationContext activationContext, ConfigDataEnvironmentContributor activeContributor,
+			ConfigDataActivationContext activationContext, @Nullable ConfigDataEnvironmentContributor activeContributor,
 			boolean failOnResolveFromInactiveContributor) {
 		this.contributors = contributors;
 		this.activationContext = activationContext;
@@ -63,7 +64,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 		return value;
 	}
 
-	 private String resolvePlaceholder(String placeholder) {
+	 @Nullable private String resolvePlaceholder(String placeholder) {
 		Object result = null;
 		for (ConfigDataEnvironmentContributor contributor : this.contributors) {
 			PropertySource<?> propertySource = contributor.getPropertySource();

@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.origin;
+import javax.annotation.Nullable;
 
 
 /**
@@ -34,7 +35,7 @@ public interface OriginLookup<K> {
 	 * @param key the key to lookup
 	 * @return the origin of the key or {@code null}
 	 */
-	Origin getOrigin(K key);
+	@Nullable Origin getOrigin(K key);
 
 	/**
 	 * Return {@code true} if this lookup is immutable and has contents that will never
@@ -55,7 +56,7 @@ public interface OriginLookup<K> {
 	 * @return the prefix applied by the lookup class or {@code null}.
 	 * @since 2.5.0
 	 */
-	 default String getPrefix() {
+	 @Nullable default String getPrefix() {
 		return null;
 	}
 
@@ -68,7 +69,7 @@ public interface OriginLookup<K> {
 	 * @param <K> the key type
 	 * @return an {@link Origin} or {@code null}
 	 */
-	 @SuppressWarnings("unchecked")
+	 @Nullable @SuppressWarnings("unchecked")
 	static <K> Origin getOrigin(Object source, K key) {
 		if (!(source instanceof OriginLookup)) {
 			return null;

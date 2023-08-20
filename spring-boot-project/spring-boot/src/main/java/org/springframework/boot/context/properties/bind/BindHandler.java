@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
+import javax.annotation.Nullable;
 
 /**
  * Callback interface that can be used to handle additional logic during element
@@ -71,7 +72,7 @@ public interface BindHandler {
 	 * @return the actual result that should be used (must not be {@code null})
 	 * @since 2.2.2
 	 */
-	default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	@Nullable default Object onCreate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result) {
 		return result;
 	}
 

@@ -44,6 +44,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -73,11 +74,11 @@ public class NettyWebServer implements WebServer {
 
 	private final Duration lifecycleTimeout;
 
-	private final GracefulShutdown gracefulShutdown;
+	@Nullable private final GracefulShutdown gracefulShutdown;
 
 	private List<NettyRouteProvider> routeProviders = Collections.emptyList();
 
-	 private volatile DisposableServer disposableServer;
+	 @Nullable private volatile DisposableServer disposableServer;
 
 	 public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
 			Shutdown shutdown) {

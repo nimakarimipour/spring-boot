@@ -28,6 +28,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 
 import org.springframework.boot.logging.DeferredLogFactory;
+import javax.annotation.Nullable;
 
 
 /**
@@ -92,7 +93,7 @@ class ConfigDataImporter {
 	}
 
 	private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
-			Profiles profiles, List<ConfigDataLocation> locations) {
+			@Nullable Profiles profiles, List<ConfigDataLocation> locations) {
 		List<ConfigDataResolutionResult> resolved = new ArrayList<>(locations.size());
 		for (ConfigDataLocation location : locations) {
 			resolved.addAll(resolve(locationResolverContext, profiles, location));
@@ -101,7 +102,7 @@ class ConfigDataImporter {
 	}
 
 	 private List<ConfigDataResolutionResult> resolve(ConfigDataLocationResolverContext locationResolverContext,
-			Profiles profiles, ConfigDataLocation location) {
+			@Nullable Profiles profiles, ConfigDataLocation location) {
 		try {
 			return this.resolvers.resolve(locationResolverContext, location, profiles);
 		}
@@ -141,14 +142,14 @@ class ConfigDataImporter {
 		return Collections.unmodifiableMap(result);
 	}
 
-	private void handle(ConfigDataNotFoundException ex, ConfigDataLocation location, ConfigDataResource resource) {
+	private void handle(ConfigDataNotFoundException ex, ConfigDataLocation location, @Nullable ConfigDataResource resource) {
 		if (ex instanceof ConfigDataResourceNotFoundException notFoundException) {
 			ex = notFoundException.withLocation(location);
 		}
 		getNotFoundAction(location, resource).handle(this.logger, ex);
 	}
 
-	private ConfigDataNotFoundAction getNotFoundAction(ConfigDataLocation location, ConfigDataResource resource) {
+	private ConfigDataNotFoundAction getNotFoundAction(ConfigDataLocation location, @Nullable ConfigDataResource resource) {
 		if (location.isOptional() || (resource != null && resource.isOptional())) {
 			return ConfigDataNotFoundAction.IGNORE;
 		}

@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.KotlinDetector;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -40,7 +41,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 		return getBindConstructor(bindable.getType().resolve(), isNestedConstructorBinding);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public Constructor<?> getBindConstructor(Class<?> type, boolean isNestedConstructorBinding) {
 		if (type == null) {
 			return null;
@@ -60,9 +61,9 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 
 		private final boolean hasAutowired;
 
-		private final Constructor<?> bind;
+		@Nullable private final Constructor<?> bind;
 
-		private Constructors(boolean hasAutowired, Constructor<?> bind) {
+		private Constructors(boolean hasAutowired, @Nullable Constructor<?> bind) {
 			this.hasAutowired = hasAutowired;
 			this.bind = bind;
 		}
@@ -71,7 +72,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return this.hasAutowired;
 		}
 
-		Constructor<?> getBind() {
+		@Nullable Constructor<?> getBind() {
 			return this.bind;
 		}
 
@@ -127,7 +128,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return false;
 		}
 
-		 private static Constructor<?> getConstructorBindingAnnotated(Class<?> type, Constructor<?>[] candidates,
+		 @Nullable private static Constructor<?> getConstructorBindingAnnotated(Class<?> type, Constructor<?>[] candidates,
 				MergedAnnotations[] mergedAnnotations) {
 			Constructor<?> result = null;
 			for (int i = 0; i < candidates.length; i++) {
@@ -143,7 +144,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 
 		}
 
-		 private static Constructor<?> deduceBindConstructor(Class<?> type, Constructor<?>[] candidates) {
+		 @Nullable private static Constructor<?> deduceBindConstructor(Class<?> type, Constructor<?>[] candidates) {
 			if (candidates.length == 1 && candidates[0].getParameterCount() > 0) {
 				if (type.isMemberClass() && Modifier.isPrivate(candidates[0].getModifiers())) {
 					return null;
@@ -166,7 +167,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return KotlinDetector.isKotlinPresent() && KotlinDetector.isKotlinType(type);
 		}
 
-		 private static Constructor<?> deduceKotlinBindConstructor(Class<?> type) {
+		 @Nullable private static Constructor<?> deduceKotlinBindConstructor(Class<?> type) {
 			Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(type);
 			if (primaryConstructor != null && primaryConstructor.getParameterCount() > 0) {
 				return primaryConstructor;

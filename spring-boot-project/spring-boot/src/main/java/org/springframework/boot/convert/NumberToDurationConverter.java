@@ -23,6 +23,7 @@ import java.util.Set;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
+import javax.annotation.Nullable;
 
 
 /**
@@ -42,7 +43,7 @@ final class NumberToDurationConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Number.class, Duration.class));
 	}
 
-	 @Override
+	 @Nullable @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		return this.delegate.convert((source != null) ? source.toString() : null, TypeDescriptor.valueOf(String.class),
 				targetType);

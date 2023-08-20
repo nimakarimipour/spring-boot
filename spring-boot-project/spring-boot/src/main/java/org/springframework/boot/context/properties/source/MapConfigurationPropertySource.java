@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ConfigurationPropertySource} backed by a {@link Map} and using standard name
@@ -84,7 +85,7 @@ public class MapConfigurationPropertySource implements IterableConfigurationProp
 		return this.source;
 	}
 
-	@Override
+	@Nullable @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		return this.delegate.getConfigurationProperty(name);
 	}

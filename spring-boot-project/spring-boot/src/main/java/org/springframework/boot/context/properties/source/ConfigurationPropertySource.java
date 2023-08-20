@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -42,7 +43,7 @@ public interface ConfigurationPropertySource {
 	 * @param name the name of the property (must not be {@code null})
 	 * @return the associated object or {@code null}.
 	 */
-	ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name);
+	@Nullable ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name);
 
 	/**
 	 * Returns if the source contains any descendants of the specified name. May return
@@ -82,7 +83,7 @@ public interface ConfigurationPropertySource {
 	 * @return a {@link ConfigurationPropertySource} instance supporting a prefix
 	 * @since 2.5.0
 	 */
-	default ConfigurationPropertySource withPrefix(String prefix) {
+	default ConfigurationPropertySource withPrefix(@Nullable String prefix) {
 		return (StringUtils.hasText(prefix)) ? new PrefixedConfigurationPropertySource(this, prefix) : this;
 	}
 
@@ -101,7 +102,7 @@ public interface ConfigurationPropertySource {
 	 * @return an adapted source or {@code null} {@link SpringConfigurationPropertySource}
 	 * @since 2.4.0
 	 */
-	 static ConfigurationPropertySource from(PropertySource<?> source) {
+	 @Nullable static ConfigurationPropertySource from(PropertySource<?> source) {
 		if (source instanceof ConfigurationPropertySourcesPropertySource) {
 			return null;
 		}

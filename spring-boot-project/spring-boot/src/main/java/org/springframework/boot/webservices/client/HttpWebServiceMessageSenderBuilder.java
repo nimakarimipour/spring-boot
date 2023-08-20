@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
+import javax.annotation.Nullable;
 
 /**
  * {@link WebServiceMessageSender} builder that can detect a suitable HTTP library based
@@ -36,11 +37,11 @@ import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
  */
 public class HttpWebServiceMessageSenderBuilder {
 
-	 private Duration connectTimeout;
+	 @Nullable private Duration connectTimeout;
 
-	 private Duration readTimeout;
+	 @Nullable private Duration readTimeout;
 
-	 private Supplier<ClientHttpRequestFactory> requestFactorySupplier;
+	 @Nullable private Supplier<ClientHttpRequestFactory> requestFactorySupplier;
 
 	/**
 	 * Set the connection timeout.

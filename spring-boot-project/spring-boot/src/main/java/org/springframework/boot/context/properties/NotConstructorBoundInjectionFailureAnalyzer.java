@@ -28,6 +28,7 @@ import org.springframework.boot.diagnostics.analyzer.AbstractInjectionFailureAna
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
+import javax.annotation.Nullable;
 
 
 /**
@@ -45,8 +46,8 @@ class NotConstructorBoundInjectionFailureAnalyzer
 		return 0;
 	}
 
-	 @Override
-	protected FailureAnalysis analyze(Throwable rootFailure, NoSuchBeanDefinitionException cause, String description) {
+	 @Nullable @Override
+	protected FailureAnalysis analyze(Throwable rootFailure, NoSuchBeanDefinitionException cause, @Nullable String description) {
 		InjectionPoint injectionPoint = findInjectionPoint(rootFailure);
 		if (isConstructorBindingConfigurationProperties(injectionPoint)) {
 			String simpleName = injectionPoint.getMember().getDeclaringClass().getSimpleName();

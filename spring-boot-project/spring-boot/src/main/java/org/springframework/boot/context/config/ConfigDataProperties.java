@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -42,14 +43,14 @@ class ConfigDataProperties {
 
 	private final List<ConfigDataLocation> imports;
 
-	private final Activate activate;
+	@Nullable private final Activate activate;
 
 	/**
 	 * Create a new {@link ConfigDataProperties} instance.
 	 * @param imports the imports requested
 	 * @param activate the activate properties
 	 */
-	ConfigDataProperties(@Name("import") List<ConfigDataLocation> imports, Activate activate) {
+	ConfigDataProperties(@Nullable @Name("import") List<ConfigDataLocation> imports, @Nullable Activate activate) {
 		this.imports = (imports != null) ? imports : Collections.emptyList();
 		this.activate = activate;
 	}

@@ -22,6 +22,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import javax.annotation.Nullable;
 
 
 /**
@@ -53,7 +54,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 				this.ssl.getKeyStoreType(), this.ssl.getKeyAlias());
 	}
 
-	 @Override
+	 @Nullable @Override
 	public KeyStore getTrustStore() throws Exception {
 		if (this.ssl.getTrustCertificate() == null) {
 			return null;
@@ -76,7 +77,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 	 * @param keyAlias the alias to use when adding keys to the {@code KeyStore}
 	 * @return the {@code KeyStore}
 	 */
-	 private KeyStore createKeyStore(String certPath, String keyPath, String storeType, String keyAlias) {
+	 private KeyStore createKeyStore(@Nullable String certPath, @Nullable String keyPath, String storeType, String keyAlias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance((storeType != null) ? storeType : KeyStore.getDefaultType());
 			keyStore.load(null);
@@ -95,7 +96,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 		}
 	}
 
-	private void addCertificates(KeyStore keyStore, X509Certificate[] certificates, PrivateKey privateKey,
+	private void addCertificates(KeyStore keyStore, X509Certificate[] certificates, @Nullable PrivateKey privateKey,
 			String keyAlias) throws KeyStoreException {
 		String alias = (keyAlias != null) ? keyAlias : DEFAULT_KEY_ALIAS;
 		if (privateKey != null) {

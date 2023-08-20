@@ -19,6 +19,7 @@ package org.springframework.boot.web.context;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -35,7 +36,7 @@ public interface WebServerApplicationContext extends ApplicationContext {
 	 * the server has not yet been created.
 	 * @return the web server
 	 */
-	WebServer getWebServer();
+	@Nullable WebServer getWebServer();
 
 	/**
 	 * Returns the namespace of the web server application context or {@code null} if no
@@ -67,7 +68,7 @@ public interface WebServerApplicationContext extends ApplicationContext {
 	 * {@link WebServerApplicationContext}
 	 * @since 2.6.0
 	 */
-	 static String getServerNamespace(ApplicationContext context) {
+	 @Nullable static String getServerNamespace(ApplicationContext context) {
 		return (context instanceof WebServerApplicationContext configurableContext)
 				? configurableContext.getServerNamespace() : null;
 

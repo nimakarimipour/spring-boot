@@ -17,6 +17,7 @@
 package org.springframework.boot.origin;
 
 import java.net.URI;
+import javax.annotation.Nullable;
 
 
 /**
@@ -69,11 +70,11 @@ final class JarUri {
 		return this.uri;
 	}
 
-	static JarUri from(URI uri) {
+	@Nullable static JarUri from(URI uri) {
 		return from(uri.toString());
 	}
 
-	 static JarUri from(String uri) {
+	 @Nullable static JarUri from(String uri) {
 		if (uri.startsWith(JAR_SCHEME) && uri.contains(JAR_EXTENSION)) {
 			return new JarUri(uri);
 		}

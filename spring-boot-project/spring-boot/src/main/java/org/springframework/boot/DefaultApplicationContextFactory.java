@@ -25,6 +25,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import javax.annotation.Nullable;
 
 
 /**
@@ -65,7 +66,7 @@ class DefaultApplicationContextFactory implements ApplicationContextFactory {
 	}
 
 	 private <T> T getFromSpringFactories(WebApplicationType webApplicationType,
-			BiFunction<ApplicationContextFactory, WebApplicationType, T> action, Supplier<T> defaultResult) {
+			BiFunction<ApplicationContextFactory, WebApplicationType, T> action, @Nullable Supplier<T> defaultResult) {
 		for (ApplicationContextFactory candidate : SpringFactoriesLoader.loadFactories(ApplicationContextFactory.class,
 				getClass().getClassLoader())) {
 			T result = action.apply(candidate, webApplicationType);

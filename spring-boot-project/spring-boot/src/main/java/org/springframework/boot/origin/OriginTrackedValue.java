@@ -17,6 +17,7 @@
 package org.springframework.boot.origin;
 
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -65,7 +66,7 @@ public class OriginTrackedValue implements OriginProvider {
 		return ObjectUtils.nullSafeHashCode(this.value);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public String toString() {
 		return (this.value != null) ? this.value.toString() : null;
 	}

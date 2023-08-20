@@ -30,6 +30,7 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -43,7 +44,7 @@ import org.springframework.util.StringUtils;
  */
 class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 
-	 @Override
+	 @Nullable @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, BindException cause) {
 		Throwable rootCause = cause.getCause();
 		if (rootCause instanceof BindValidationException

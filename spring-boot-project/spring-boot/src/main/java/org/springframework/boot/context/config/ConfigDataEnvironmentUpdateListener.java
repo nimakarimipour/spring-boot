@@ -20,6 +20,7 @@ import java.util.EventListener;
 
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
+import javax.annotation.Nullable;
 
 /**
  * {@link EventListener} to listen to {@link Environment} updates triggered by the
@@ -42,7 +43,7 @@ public interface ConfigDataEnvironmentUpdateListener extends EventListener {
 	 * @param location the original {@link ConfigDataLocation} of the source.
 	 * @param resource the {@link ConfigDataResource} of the source.
 	 */
-	default void onPropertySourceAdded(PropertySource<?> propertySource, ConfigDataLocation location,
+	default void onPropertySourceAdded(PropertySource<?> propertySource, @Nullable ConfigDataLocation location,
 			ConfigDataResource resource) {
 	}
 

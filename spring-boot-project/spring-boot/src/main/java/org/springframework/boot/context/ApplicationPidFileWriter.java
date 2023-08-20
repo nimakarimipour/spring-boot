@@ -37,6 +37,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -164,7 +165,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		return Boolean.parseBoolean(value);
 	}
 
-	 private String getProperty(SpringApplicationEvent event, List<Property> candidates) {
+	 @Nullable private String getProperty(SpringApplicationEvent event, List<Property> candidates) {
 		for (Property candidate : candidates) {
 			String value = candidate.getValue(event);
 			if (value != null) {
@@ -195,7 +196,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 	 */
 	private interface Property {
 
-		String getValue(SpringApplicationEvent event);
+		@Nullable String getValue(SpringApplicationEvent event);
 
 	}
 
@@ -213,7 +214,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			this.key = key;
 		}
 
-		 @Override
+		 @Nullable @Override
 		public String getValue(SpringApplicationEvent event) {
 			Environment environment = getEnvironment(event);
 			if (environment == null) {
@@ -222,7 +223,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			return environment.getProperty(this.prefix + this.key);
 		}
 
-		 private Environment getEnvironment(SpringApplicationEvent event) {
+		 @Nullable private Environment getEnvironment(SpringApplicationEvent event) {
 			if (event instanceof ApplicationEnvironmentPreparedEvent environmentPreparedEvent) {
 				return environmentPreparedEvent.getEnvironment();
 			}
@@ -248,7 +249,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 			this.properties = new String[] { name.toUpperCase(Locale.ENGLISH), name.toLowerCase(Locale.ENGLISH) };
 		}
 
-		@Override
+		@Nullable @Override
 		public String getValue(SpringApplicationEvent event) {
 			return SystemProperties.get(this.properties);
 		}

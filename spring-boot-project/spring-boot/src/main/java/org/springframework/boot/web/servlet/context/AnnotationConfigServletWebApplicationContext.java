@@ -38,6 +38,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.support.GenericWebApplicationContext;
+import javax.annotation.Nullable;
 
 /**
  * {@link GenericWebApplicationContext}that accepts annotated classes as input - in
@@ -65,7 +66,7 @@ public class AnnotationConfigServletWebApplicationContext extends GenericWebAppl
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
-	 private String[] basePackages;
+	 @Nullable private String[] basePackages;
 
 	/**
 	 * Create a new {@link AnnotationConfigServletWebApplicationContext} that needs to be

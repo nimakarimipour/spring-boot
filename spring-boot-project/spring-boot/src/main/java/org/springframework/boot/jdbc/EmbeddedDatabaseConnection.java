@@ -31,6 +31,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -69,22 +70,22 @@ public enum EmbeddedDatabaseConnection {
 	HSQLDB(EmbeddedDatabaseType.HSQL, DatabaseDriver.HSQLDB.getDriverClassName(), "org.hsqldb.jdbcDriver",
 			"jdbc:hsqldb:mem:%s", (url) -> url.contains(":hsqldb:mem:"));
 
-	private final EmbeddedDatabaseType type;
+	@Nullable private final EmbeddedDatabaseType type;
 
-	private final String driverClass;
+	@Nullable private final String driverClass;
 
-	private final String alternativeDriverClass;
+	@Nullable private final String alternativeDriverClass;
 
-	private final String url;
+	@Nullable private final String url;
 
 	private final Predicate<String> embeddedUrl;
 
-	 EmbeddedDatabaseConnection(EmbeddedDatabaseType type, String driverClass, String url,
+	 EmbeddedDatabaseConnection(@Nullable EmbeddedDatabaseType type, @Nullable String driverClass, @Nullable String url,
 			Predicate<String> embeddedUrl) {
 		this(type, driverClass, null, url, embeddedUrl);
 	}
 
-	EmbeddedDatabaseConnection(EmbeddedDatabaseType type, String driverClass, String fallbackDriverClass, String url,
+	EmbeddedDatabaseConnection(@Nullable EmbeddedDatabaseType type, @Nullable String driverClass, @Nullable String fallbackDriverClass, @Nullable String url,
 			Predicate<String> embeddedUrl) {
 		this.type = type;
 		this.driverClass = driverClass;
@@ -97,7 +98,7 @@ public enum EmbeddedDatabaseConnection {
 	 * Returns the driver class name.
 	 * @return the driver class name
 	 */
-	public String getDriverClassName() {
+	@Nullable public String getDriverClassName() {
 		return this.driverClass;
 	}
 
@@ -105,7 +106,7 @@ public enum EmbeddedDatabaseConnection {
 	 * Returns the {@link EmbeddedDatabaseType} for the connection.
 	 * @return the database type
 	 */
-	public EmbeddedDatabaseType getType() {
+	@Nullable public EmbeddedDatabaseType getType() {
 		return this.type;
 	}
 
@@ -114,7 +115,7 @@ public enum EmbeddedDatabaseConnection {
 	 * @param databaseName the name of the database
 	 * @return the connection URL
 	 */
-	 public String getUrl(String databaseName) {
+	 @Nullable public String getUrl(String databaseName) {
 		Assert.hasText(databaseName, "DatabaseName must not be empty");
 		return (this.url != null) ? String.format(this.url, databaseName) : null;
 	}

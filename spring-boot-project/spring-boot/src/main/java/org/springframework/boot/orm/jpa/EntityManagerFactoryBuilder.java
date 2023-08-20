@@ -34,6 +34,7 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -57,11 +58,11 @@ public class EntityManagerFactoryBuilder {
 
 	private final Map<String, Object> jpaProperties;
 
-	private final URL persistenceUnitRootLocation;
+	@Nullable private final URL persistenceUnitRootLocation;
 
-	 private AsyncTaskExecutor bootstrapExecutor;
+	 @Nullable private AsyncTaskExecutor bootstrapExecutor;
 
-	 private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
+	 @Nullable private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
 
 	/**
 	 * Create a new instance passing in the common pieces that will be shared if multiple
@@ -88,7 +89,7 @@ public class EntityManagerFactoryBuilder {
 	 * @since 1.4.1
 	 */
 	public EntityManagerFactoryBuilder(JpaVendorAdapter jpaVendorAdapter, Map<String, ?> jpaProperties,
-			PersistenceUnitManager persistenceUnitManager, URL persistenceUnitRootLocation) {
+			PersistenceUnitManager persistenceUnitManager, @Nullable URL persistenceUnitRootLocation) {
 		this.jpaVendorAdapter = jpaVendorAdapter;
 		this.persistenceUnitManager = persistenceUnitManager;
 		this.jpaProperties = new LinkedHashMap<>(jpaProperties);
@@ -127,15 +128,15 @@ public class EntityManagerFactoryBuilder {
 
 		private DataSource dataSource;
 
-		 private PersistenceManagedTypes managedTypes;
+		 @Nullable private PersistenceManagedTypes managedTypes;
 
-		 private String[] packagesToScan;
+		 @Nullable private String[] packagesToScan;
 
-		 private String persistenceUnit;
+		 @Nullable private String persistenceUnit;
 
 		private Map<String, Object> properties = new HashMap<>();
 
-		 private String[] mappingResources;
+		 @Nullable private String[] mappingResources;
 
 		private boolean jta;
 

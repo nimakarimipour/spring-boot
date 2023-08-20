@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -60,7 +61,7 @@ public class DefaultApplicationArguments implements ApplicationArguments {
 		return this.source.containsProperty(name);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public List<String> getOptionValues(String name) {
 		List<String> values = this.source.getOptionValues(name);
 		return (values != null) ? Collections.unmodifiableList(values) : null;

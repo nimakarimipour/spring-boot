@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.core.Conventions;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Base class for Servlet 3.0+ {@link jakarta.servlet.Registration.Dynamic dynamic} based
@@ -40,7 +41,7 @@ public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> ex
 
 	private static final Log logger = LogFactory.getLog(RegistrationBean.class);
 
-	 private String name;
+	 @Nullable private String name;
 
 	private boolean asyncSupported = true;
 
@@ -127,7 +128,7 @@ public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> ex
 	 * @param value the object used for convention based names
 	 * @return the deduced name
 	 */
-	protected final String getOrDeduceName(Object value) {
+	protected final String getOrDeduceName(@Nullable Object value) {
 		return (this.name != null) ? this.name : Conventions.getVariableName(value);
 	}
 

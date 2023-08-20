@@ -66,6 +66,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.SingletonSupplier;
+import javax.annotation.Nullable;
 
 
 /**
@@ -222,7 +223,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			return reflectionTypes;
 		}
 
-		 private Class<?> determineType(Model model, Supplier<Object> parentSupplier) {
+		 @Nullable private Class<?> determineType(Model model, Supplier<Object> parentSupplier) {
 			String className = null;
 			if (model instanceof ComponentModel) {
 				className = ((ComponentModel) model).getClassName();
@@ -247,7 +248,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			return null;
 		}
 
-		 private Class<?> inferTypeFromParent(Supplier<Object> parentSupplier, String tag) {
+		 @Nullable private Class<?> inferTypeFromParent(Supplier<Object> parentSupplier, String tag) {
 			Object parent = parentSupplier.get();
 			if (parent != null) {
 				try {
@@ -275,7 +276,7 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			}
 		}
 
-		 private Object instantiate(Class<?> type) {
+		 @Nullable private Object instantiate(@Nullable Class<?> type) {
 			try {
 				return type.getConstructor().newInstance();
 			}

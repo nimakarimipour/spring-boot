@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 
 /**
@@ -69,7 +70,7 @@ class StaticResourceJars {
 		}
 	}
 
-	 private File toFile(URL url) {
+	 @Nullable private File toFile(URL url) {
 		try {
 			return new File(url.toURI());
 		}

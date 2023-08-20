@@ -22,6 +22,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyNameException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
+import javax.annotation.Nullable;
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by
@@ -40,7 +41,7 @@ class InvalidConfigurationPropertyNameFailureAnalyzer
 		return new FailureAnalysis(buildDescription(cause, exception), action, cause);
 	}
 
-	private String buildDescription(InvalidConfigurationPropertyNameException cause, BeanCreationException exception) {
+	private String buildDescription(InvalidConfigurationPropertyNameException cause, @Nullable BeanCreationException exception) {
 		StringBuilder description = new StringBuilder(
 				String.format("Configuration property name '%s' is not valid:%n", cause.getName()));
 		String invalid = cause.getInvalidCharacters().stream().map(this::quote).collect(Collectors.joining(", "));

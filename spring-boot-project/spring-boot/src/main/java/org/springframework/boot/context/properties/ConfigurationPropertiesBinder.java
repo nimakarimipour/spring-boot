@@ -52,6 +52,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.env.PropertySources;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
+import javax.annotation.Nullable;
 
 
 /**
@@ -71,15 +72,15 @@ class ConfigurationPropertiesBinder {
 
 	private final ApplicationContext applicationContext;
 
-	private final PropertySources propertySources;
+	@Nullable private final PropertySources propertySources;
 
-	private final Validator configurationPropertiesValidator;
+	@Nullable private final Validator configurationPropertiesValidator;
 
 	private final boolean jsr303Present;
 
-	 private volatile Validator jsr303Validator;
+	 @Nullable private volatile Validator jsr303Validator;
 
-	 private volatile Binder binder;
+	 @Nullable private volatile Binder binder;
 
 	ConfigurationPropertiesBinder(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
@@ -102,7 +103,7 @@ class ConfigurationPropertiesBinder {
 		return getBinder().bindOrCreate(annotation.prefix(), target, bindHandler);
 	}
 
-	 private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext) {
+	 @Nullable private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext) {
 		if (applicationContext.containsBean(VALIDATOR_BEAN_NAME)) {
 			return applicationContext.getBean(VALIDATOR_BEAN_NAME, Validator.class);
 		}
@@ -178,11 +179,11 @@ class ConfigurationPropertiesBinder {
 		return new PropertySourcesPlaceholdersResolver(this.propertySources);
 	}
 
-	private List<ConversionService> getConversionServices() {
+	@Nullable private List<ConversionService> getConversionServices() {
 		return new ConversionServiceDeducer(this.applicationContext).getConversionServices();
 	}
 
-	 private Consumer<PropertyEditorRegistry> getPropertyEditorInitializer() {
+	 @Nullable private Consumer<PropertyEditorRegistry> getPropertyEditorInitializer() {
 		if (this.applicationContext instanceof ConfigurableApplicationContext configurableContext) {
 			return configurableContext.getBeanFactory()::copyRegisteredEditorsTo;
 		}
@@ -219,7 +220,7 @@ class ConfigurationPropertiesBinder {
 	 */
 	static class Factory implements ApplicationContextAware {
 
-		 private ApplicationContext applicationContext;
+		 @Nullable private ApplicationContext applicationContext;
 
 		@Override
 		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

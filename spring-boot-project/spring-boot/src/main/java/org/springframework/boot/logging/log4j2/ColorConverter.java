@@ -36,6 +36,7 @@ import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiElement;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
+import javax.annotation.Nullable;
 
 
 /**
@@ -76,9 +77,9 @@ public final class ColorConverter extends LogEventPatternConverter {
 
 	private final List<PatternFormatter> formatters;
 
-	private final AnsiElement styling;
+	@Nullable private final AnsiElement styling;
 
-	private ColorConverter(List<PatternFormatter> formatters, AnsiElement styling) {
+	private ColorConverter(List<PatternFormatter> formatters, @Nullable AnsiElement styling) {
 		super("style", "style");
 		this.formatters = formatters;
 		this.styling = styling;
@@ -90,7 +91,7 @@ public final class ColorConverter extends LogEventPatternConverter {
 	 * @param options the options
 	 * @return a new instance, or {@code null} if the options are invalid
 	 */
-	 public static ColorConverter newInstance(Configuration config, String[] options) {
+	 @Nullable public static ColorConverter newInstance(Configuration config, String[] options) {
 		if (options.length < 1) {
 			LOGGER.error("Incorrect number of options on style. Expected at least 1, received {}", options.length);
 			return null;

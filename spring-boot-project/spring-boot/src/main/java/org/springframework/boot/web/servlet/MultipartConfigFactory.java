@@ -19,6 +19,7 @@ package org.springframework.boot.web.servlet;
 import jakarta.servlet.MultipartConfigElement;
 
 import org.springframework.util.unit.DataSize;
+import javax.annotation.Nullable;
 
 /**
  * Factory that can be used to create a {@link MultipartConfigElement}.
@@ -28,13 +29,13 @@ import org.springframework.util.unit.DataSize;
  */
 public class MultipartConfigFactory {
 
-	 private String location;
+	 @Nullable private String location;
 
-	 private DataSize maxFileSize;
+	 @Nullable private DataSize maxFileSize;
 
-	 private DataSize maxRequestSize;
+	 @Nullable private DataSize maxRequestSize;
 
-	 private DataSize fileSizeThreshold;
+	 @Nullable private DataSize fileSizeThreshold;
 
 	/**
 	 * Sets the directory location where files will be stored.
@@ -87,7 +88,7 @@ public class MultipartConfigFactory {
 	 * @param defaultValue the default value if the size is {@code null} or negative
 	 * @return the amount of bytes to use
 	 */
-	private long convertToBytes(DataSize size, int defaultValue) {
+	private long convertToBytes(@Nullable DataSize size, int defaultValue) {
 		if (size != null && !size.isNegative()) {
 			return size.toBytes();
 		}

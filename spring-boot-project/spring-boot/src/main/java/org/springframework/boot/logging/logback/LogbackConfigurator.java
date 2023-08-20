@@ -30,6 +30,7 @@ import ch.qos.logback.core.spi.ContextAware;
 import ch.qos.logback.core.spi.LifeCycle;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -80,7 +81,7 @@ class LogbackConfigurator {
 		logger(name, level, additive, null);
 	}
 
-	void logger(String name, Level level, boolean additive, Appender<ILoggingEvent> appender) {
+	void logger(String name, Level level, boolean additive, @Nullable Appender<ILoggingEvent> appender) {
 		Logger logger = this.context.getLogger(name);
 		if (level != null) {
 			logger.setLevel(level);

@@ -42,6 +42,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import javax.annotation.Nullable;
 
 
 /**
@@ -124,7 +125,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 	}
 
 	private void addServletContextInitializerBean(Class<?> type, String beanName, ServletContextInitializer initializer,
-			ListableBeanFactory beanFactory, Object source) {
+			ListableBeanFactory beanFactory, @Nullable Object source) {
 		this.initializers.add(type, initializer);
 		if (source != null) {
 			// Mark the underlying source as seen in case it wraps an existing bean
@@ -156,7 +157,7 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 		}
 	}
 
-	 private MultipartConfigElement getMultipartConfig(ListableBeanFactory beanFactory) {
+	 @Nullable private MultipartConfigElement getMultipartConfig(ListableBeanFactory beanFactory) {
 		List<Entry<String, MultipartConfigElement>> beans = getOrderedBeansOfType(beanFactory,
 				MultipartConfigElement.class);
 		return beans.isEmpty() ? null : beans.get(0).getValue();
@@ -261,9 +262,9 @@ public class ServletContextInitializerBeans extends AbstractCollection<ServletCo
 	 */
 	private static class ServletRegistrationBeanAdapter implements RegistrationBeanAdapter<Servlet> {
 
-		private final MultipartConfigElement multipartConfig;
+		@Nullable private final MultipartConfigElement multipartConfig;
 
-		ServletRegistrationBeanAdapter(MultipartConfigElement multipartConfig) {
+		ServletRegistrationBeanAdapter(@Nullable MultipartConfigElement multipartConfig) {
 			this.multipartConfig = multipartConfig;
 		}
 

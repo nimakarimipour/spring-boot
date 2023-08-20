@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.Nullable;
 
 
 /**
@@ -52,7 +53,7 @@ public final class LoggerGroups implements Iterable<LoggerGroup> {
 		this.groups.put(loggerGroup.getName(), loggerGroup);
 	}
 
-	 public LoggerGroup get(String name) {
+	 @Nullable public LoggerGroup get(String name) {
 		return this.groups.get(name);
 	}
 

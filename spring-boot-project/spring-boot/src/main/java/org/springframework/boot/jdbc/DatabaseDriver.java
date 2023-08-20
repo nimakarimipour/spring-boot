@@ -27,6 +27,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -210,23 +211,23 @@ public enum DatabaseDriver {
 
 	};
 
-	private final String productName;
+	@Nullable private final String productName;
 
-	private final String driverClassName;
+	@Nullable private final String driverClassName;
 
-	private final String xaDataSourceClassName;
+	@Nullable private final String xaDataSourceClassName;
 
-	private final String validationQuery;
+	@Nullable private final String validationQuery;
 
-	 DatabaseDriver(String productName, String driverClassName) {
+	 DatabaseDriver(@Nullable String productName, @Nullable String driverClassName) {
 		this(productName, driverClassName, null);
 	}
 
-	 DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName) {
+	 DatabaseDriver(@Nullable String productName, @Nullable String driverClassName, @Nullable String xaDataSourceClassName) {
 		this(productName, driverClassName, xaDataSourceClassName, null);
 	}
 
-	 DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName, String validationQuery) {
+	 DatabaseDriver(@Nullable String productName, @Nullable String driverClassName, @Nullable String xaDataSourceClassName, @Nullable String validationQuery) {
 		this.productName = productName;
 		this.driverClassName = driverClassName;
 		this.xaDataSourceClassName = xaDataSourceClassName;
@@ -253,7 +254,7 @@ public enum DatabaseDriver {
 	 * Return the driver class name.
 	 * @return the class name or {@code null}
 	 */
-	public String getDriverClassName() {
+	@Nullable public String getDriverClassName() {
 		return this.driverClassName;
 	}
 
@@ -261,7 +262,7 @@ public enum DatabaseDriver {
 	 * Return the XA driver source class name.
 	 * @return the class name or {@code null}
 	 */
-	public String getXaDataSourceClassName() {
+	@Nullable public String getXaDataSourceClassName() {
 		return this.xaDataSourceClassName;
 	}
 
@@ -269,7 +270,7 @@ public enum DatabaseDriver {
 	 * Return the validation query.
 	 * @return the validation query or {@code null}
 	 */
-	public String getValidationQuery() {
+	@Nullable public String getValidationQuery() {
 		return this.validationQuery;
 	}
 

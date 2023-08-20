@@ -25,6 +25,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ReflectionUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -41,7 +42,7 @@ final class DurationToNumberConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(Duration.class, Number.class));
 	}
 
-	 @Override
+	 @Nullable @Override
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;
@@ -49,12 +50,12 @@ final class DurationToNumberConverter implements GenericConverter {
 		return convert((Duration) source, getDurationUnit(sourceType), targetType.getObjectType());
 	}
 
-	 private ChronoUnit getDurationUnit(TypeDescriptor sourceType) {
+	 @Nullable private ChronoUnit getDurationUnit(TypeDescriptor sourceType) {
 		DurationUnit annotation = sourceType.getAnnotation(DurationUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
 
-	private Object convert(Duration source, ChronoUnit unit, Class<?> type) {
+	private Object convert(Duration source, @Nullable ChronoUnit unit, Class<?> type) {
 		try {
 			return type.getConstructor(String.class)
 					.newInstance(String.valueOf(DurationStyle.Unit.fromChronoUnit(unit).longValue(source)));

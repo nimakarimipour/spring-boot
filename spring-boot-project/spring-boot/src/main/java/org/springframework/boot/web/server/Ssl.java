@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.web.server;
+import javax.annotation.Nullable;
 
 /**
  * Simple server-independent abstraction for SSL configuration.
@@ -29,39 +30,39 @@ public class Ssl {
 
 	private boolean enabled = true;
 
-	 private ClientAuth clientAuth;
+	 @Nullable private ClientAuth clientAuth;
 
-	 private String[] ciphers;
+	 @Nullable private String[] ciphers;
 
-	 private String[] enabledProtocols;
+	 @Nullable private String[] enabledProtocols;
 
-	 private String keyAlias;
+	 @Nullable private String keyAlias;
 
-	 private String keyPassword;
+	 @Nullable private String keyPassword;
 
-	 private String keyStore;
+	 @Nullable private String keyStore;
 
-	 private String keyStorePassword;
+	 @Nullable private String keyStorePassword;
 
-	 private String keyStoreType;
+	 @Nullable private String keyStoreType;
 
-	 private String keyStoreProvider;
+	 @Nullable private String keyStoreProvider;
 
-	 private String trustStore;
+	 @Nullable private String trustStore;
 
-	 private String trustStorePassword;
+	 @Nullable private String trustStorePassword;
 
-	 private String trustStoreType;
+	 @Nullable private String trustStoreType;
 
-	 private String trustStoreProvider;
+	 @Nullable private String trustStoreProvider;
 
-	 private String certificate;
+	 @Nullable private String certificate;
 
-	 private String certificatePrivateKey;
+	 @Nullable private String certificatePrivateKey;
 
-	 private String trustCertificate;
+	 @Nullable private String trustCertificate;
 
-	 private String trustCertificatePrivateKey;
+	 @Nullable private String trustCertificatePrivateKey;
 
 	private String protocol = "TLS";
 
@@ -82,7 +83,7 @@ public class Ssl {
 	 * needed ("need"). Requires a trust store.
 	 * @return the {@link ClientAuth} to use
 	 */
-	public ClientAuth getClientAuth() {
+	@Nullable public ClientAuth getClientAuth() {
 		return this.clientAuth;
 	}
 
@@ -94,7 +95,7 @@ public class Ssl {
 	 * Return the supported SSL ciphers.
 	 * @return the supported SSL ciphers
 	 */
-	public String[] getCiphers() {
+	@Nullable public String[] getCiphers() {
 		return this.ciphers;
 	}
 
@@ -106,7 +107,7 @@ public class Ssl {
 	 * Return the enabled SSL protocols.
 	 * @return the enabled SSL protocols.
 	 */
-	public String[] getEnabledProtocols() {
+	@Nullable public String[] getEnabledProtocols() {
 		return this.enabledProtocols;
 	}
 
@@ -118,7 +119,7 @@ public class Ssl {
 	 * Return the alias that identifies the key in the key store.
 	 * @return the key alias
 	 */
-	public String getKeyAlias() {
+	@Nullable public String getKeyAlias() {
 		return this.keyAlias;
 	}
 
@@ -130,7 +131,7 @@ public class Ssl {
 	 * Return the password used to access the key in the key store.
 	 * @return the key password
 	 */
-	public String getKeyPassword() {
+	@Nullable public String getKeyPassword() {
 		return this.keyPassword;
 	}
 
@@ -143,7 +144,7 @@ public class Ssl {
 	 * file).
 	 * @return the path to the key store
 	 */
-	public String getKeyStore() {
+	@Nullable public String getKeyStore() {
 		return this.keyStore;
 	}
 
@@ -155,7 +156,7 @@ public class Ssl {
 	 * Return the password used to access the key store.
 	 * @return the key store password
 	 */
-	public String getKeyStorePassword() {
+	@Nullable public String getKeyStorePassword() {
 		return this.keyStorePassword;
 	}
 
@@ -167,7 +168,7 @@ public class Ssl {
 	 * Return the type of the key store.
 	 * @return the key store type
 	 */
-	public String getKeyStoreType() {
+	@Nullable public String getKeyStoreType() {
 		return this.keyStoreType;
 	}
 
@@ -179,7 +180,7 @@ public class Ssl {
 	 * Return the provider for the key store.
 	 * @return the key store provider
 	 */
-	public String getKeyStoreProvider() {
+	@Nullable public String getKeyStoreProvider() {
 		return this.keyStoreProvider;
 	}
 
@@ -191,7 +192,7 @@ public class Ssl {
 	 * Return the trust store that holds SSL certificates.
 	 * @return the trust store
 	 */
-	public String getTrustStore() {
+	@Nullable public String getTrustStore() {
 		return this.trustStore;
 	}
 
@@ -203,7 +204,7 @@ public class Ssl {
 	 * Return the password used to access the trust store.
 	 * @return the trust store password
 	 */
-	public String getTrustStorePassword() {
+	@Nullable public String getTrustStorePassword() {
 		return this.trustStorePassword;
 	}
 
@@ -215,7 +216,7 @@ public class Ssl {
 	 * Return the type of the trust store.
 	 * @return the trust store type
 	 */
-	public String getTrustStoreType() {
+	@Nullable public String getTrustStoreType() {
 		return this.trustStoreType;
 	}
 
@@ -227,7 +228,7 @@ public class Ssl {
 	 * Return the provider for the trust store.
 	 * @return the trust store provider
 	 */
-	public String getTrustStoreProvider() {
+	@Nullable public String getTrustStoreProvider() {
 		return this.trustStoreProvider;
 	}
 
@@ -239,7 +240,7 @@ public class Ssl {
 	 * Return the location of the certificate in PEM format.
 	 * @return the certificate location
 	 */
-	public String getCertificate() {
+	@Nullable public String getCertificate() {
 		return this.certificate;
 	}
 
@@ -251,7 +252,7 @@ public class Ssl {
 	 * Return the location of the private key for the certificate in PEM format.
 	 * @return the location of the certificate private key
 	 */
-	public String getCertificatePrivateKey() {
+	@Nullable public String getCertificatePrivateKey() {
 		return this.certificatePrivateKey;
 	}
 
@@ -263,7 +264,7 @@ public class Ssl {
 	 * Return the location of the trust certificate authority chain in PEM format.
 	 * @return the location of the trust certificate
 	 */
-	public String getTrustCertificate() {
+	@Nullable public String getTrustCertificate() {
 		return this.trustCertificate;
 	}
 
@@ -275,7 +276,7 @@ public class Ssl {
 	 * Return the location of the private key for the trust certificate in PEM format.
 	 * @return the location of the trust certificate private key
 	 */
-	public String getTrustCertificatePrivateKey() {
+	@Nullable public String getTrustCertificatePrivateKey() {
 		return this.trustCertificatePrivateKey;
 	}
 

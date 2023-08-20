@@ -58,6 +58,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.boot.Initializer;
+import javax.annotation.Nullable;
 
 
 /**
@@ -183,9 +184,9 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
-	 private LoggingSystem loggingSystem;
+	 @Nullable private LoggingSystem loggingSystem;
 
-	private LogFile logFile;
+	@Nullable private LogFile logFile;
 
 	private LoggerGroups loggerGroups;
 
@@ -193,7 +194,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private boolean parseArgs = true;
 
-	 private LogLevel springBootLogging = null;
+	 @Nullable private LogLevel springBootLogging = null;
 
 	@Override
 	public boolean supportsEventType(ResolvableType resolvableType) {
@@ -289,7 +290,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param environment the environment
 	 * @param classLoader the classloader
 	 */
-	 protected void initialize(ConfigurableEnvironment environment, ClassLoader classLoader) {
+	 @Initializer protected void initialize(ConfigurableEnvironment environment, ClassLoader classLoader) {
 		getLoggingSystemProperties(environment).apply();
 		this.logFile = LogFile.get(environment);
 		if (this.logFile != null) {
@@ -323,7 +324,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		return (value != null && !value.equals("false"));
 	}
 
-	 private void initializeSystem(ConfigurableEnvironment environment, LoggingSystem system, LogFile logFile) {
+	 private void initializeSystem(ConfigurableEnvironment environment, LoggingSystem system, @Nullable LogFile logFile) {
 		String logConfig = environment.getProperty(CONFIG_PROPERTY);
 		if (StringUtils.hasLength(logConfig)) {
 			logConfig = logConfig.strip();
@@ -354,7 +355,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		return !StringUtils.hasLength(logConfig) || logConfig.startsWith("-D");
 	}
 
-	private void initializeFinalLoggingLevels(ConfigurableEnvironment environment, LoggingSystem system) {
+	private void initializeFinalLoggingLevels(ConfigurableEnvironment environment, @Nullable LoggingSystem system) {
 		bindLoggerGroups(environment);
 		if (this.springBootLogging != null) {
 			initializeSpringBootLogging(system, this.springBootLogging);
@@ -377,7 +378,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param springBootLogging the spring boot logging level requested
 	 * @since 2.2.0
 	 */
-	protected void initializeSpringBootLogging(LoggingSystem system, LogLevel springBootLogging) {
+	protected void initializeSpringBootLogging(@Nullable LoggingSystem system, LogLevel springBootLogging) {
 		BiConsumer<String, LogLevel> configurer = getLogLevelConfigurer(system);
 		SPRING_BOOT_LOGGING_LOGGERS.getOrDefault(springBootLogging, Collections.emptyList())
 				.forEach((name) -> configureLogLevel(name, springBootLogging, configurer));
@@ -389,7 +390,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	 * @param environment the environment
 	 * @since 2.2.0
 	 */
-	protected void setLogLevels(LoggingSystem system, ConfigurableEnvironment environment) {
+	protected void setLogLevels(@Nullable LoggingSystem system, ConfigurableEnvironment environment) {
 		BiConsumer<String, LogLevel> customizer = getLogLevelConfigurer(system);
 		Binder binder = Binder.get(environment);
 		Map<String, LogLevel> levels = binder.bind(LOGGING_LEVEL, STRING_LOGLEVEL_MAP).orElseGet(Collections::emptyMap);
@@ -407,7 +408,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		configurer.accept(name, level);
 	}
 
-	 private BiConsumer<String, LogLevel> getLogLevelConfigurer(LoggingSystem system) {
+	 private BiConsumer<String, LogLevel> getLogLevelConfigurer(@Nullable LoggingSystem system) {
 		return (name, level) -> {
 			try {
 				name = name.equalsIgnoreCase(LoggingSystem.ROOT_LOGGER_NAME) ? null : name;
@@ -419,7 +420,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		};
 	}
 
-	private void registerShutdownHookIfNecessary(Environment environment, LoggingSystem loggingSystem) {
+	private void registerShutdownHookIfNecessary(Environment environment, @Nullable LoggingSystem loggingSystem) {
 		if (environment.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, true)) {
 			Runnable shutdownHandler = loggingSystem.getShutdownHandler();
 			if (shutdownHandler != null && shutdownHookRegistered.compareAndSet(false, true)) {

@@ -17,6 +17,7 @@
 package org.springframework.boot.diagnostics;
 
 import org.springframework.core.ResolvableType;
+import javax.annotation.Nullable;
 
 
 /**
@@ -29,7 +30,7 @@ import org.springframework.core.ResolvableType;
  */
 public abstract class AbstractFailureAnalyzer<T extends Throwable> implements FailureAnalyzer {
 
-	 @Override
+	 @Nullable @Override
 	public FailureAnalysis analyze(Throwable failure) {
 		T cause = findCause(failure, getCauseType());
 		return (cause != null) ? analyze(failure, cause) : null;
@@ -42,7 +43,7 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 	 * @param cause the actual found cause
 	 * @return the analysis or {@code null}
 	 */
-	protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause);
+	@Nullable protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause);
 
 	/**
 	 * Return the cause type being handled by the analyzer. By default the class generic
@@ -54,7 +55,7 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 		return (Class<? extends T>) ResolvableType.forClass(AbstractFailureAnalyzer.class, getClass()).resolveGeneric();
 	}
 
-	 @SuppressWarnings("unchecked")
+	 @Nullable @SuppressWarnings("unchecked")
 	protected final <E extends Throwable> E findCause(Throwable failure, Class<E> type) {
 		while (failure != null) {
 			if (type.isInstance(failure)) {

@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegistrar;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -40,7 +41,7 @@ import org.springframework.util.CollectionUtils;
  */
 class ConfigurationPropertiesBeanFactoryInitializationAotProcessor implements BeanFactoryInitializationAotProcessor {
 
-	 @Override
+	 @Nullable @Override
 	public BeanFactoryInitializationAotContribution processAheadOfTime(ConfigurableListableBeanFactory beanFactory) {
 		String[] beanNames = beanFactory.getBeanNamesForAnnotation(ConfigurationProperties.class);
 		List<Class<?>> types = new ArrayList<>();

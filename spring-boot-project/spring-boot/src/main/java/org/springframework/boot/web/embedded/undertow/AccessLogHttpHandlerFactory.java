@@ -31,6 +31,7 @@ import org.xnio.Xnio;
 import org.xnio.XnioWorker;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * A {@link HttpHandlerFactory} for an {@link AccessLogHandler}.
@@ -39,17 +40,17 @@ import org.springframework.util.Assert;
  */
 class AccessLogHttpHandlerFactory implements HttpHandlerFactory {
 
-	private final File directory;
+	@Nullable private final File directory;
 
-	private final String pattern;
+	@Nullable private final String pattern;
 
-	private final String prefix;
+	@Nullable private final String prefix;
 
-	private final String suffix;
+	@Nullable private final String suffix;
 
 	private final boolean rotate;
 
-	AccessLogHttpHandlerFactory(File directory, String pattern, String prefix, String suffix, boolean rotate) {
+	AccessLogHttpHandlerFactory(@Nullable File directory, @Nullable String pattern, @Nullable String prefix, @Nullable String suffix, boolean rotate) {
 		this.directory = directory;
 		this.pattern = pattern;
 		this.prefix = prefix;

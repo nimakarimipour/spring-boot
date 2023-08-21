@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -39,7 +40,7 @@ public class ApplicationPid {
 	private static final PosixFilePermission[] WRITE_PERMISSIONS = { PosixFilePermission.OWNER_WRITE,
 			PosixFilePermission.GROUP_WRITE, PosixFilePermission.OTHERS_WRITE };
 
-	private final String pid;
+	@Nullable private final String pid;
 
 	public ApplicationPid() {
 		this.pid = getPid();
@@ -49,7 +50,7 @@ public class ApplicationPid {
 		this.pid = pid;
 	}
 
-	 private String getPid() {
+	 @Nullable private String getPid() {
 		try {
 			return Long.toString(ProcessHandle.current().pid());
 		}

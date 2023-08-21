@@ -18,6 +18,7 @@ package org.springframework.boot.logging;
 
 import java.util.List;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 
 /**
@@ -37,7 +38,7 @@ class DelegatingLoggingSystemFactory implements LoggingSystemFactory {
 		this.delegates = delegates;
 	}
 
-	 @Override
+	 @Nullable @Override
 	public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 		List<LoggingSystemFactory> delegates = (this.delegates != null) ? this.delegates.apply(classLoader) : null;
 		if (delegates != null) {

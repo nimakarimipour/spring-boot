@@ -29,6 +29,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -46,25 +47,25 @@ import org.springframework.util.CollectionUtils;
  */
 public class TaskExecutorBuilder {
 
-	private final Integer queueCapacity;
+	@Nullable private final Integer queueCapacity;
 
-	private final Integer corePoolSize;
+	@Nullable private final Integer corePoolSize;
 
-	private final Integer maxPoolSize;
+	@Nullable private final Integer maxPoolSize;
 
-	private final Boolean allowCoreThreadTimeOut;
+	@Nullable private final Boolean allowCoreThreadTimeOut;
 
-	private final Duration keepAlive;
+	@Nullable private final Duration keepAlive;
 
-	private final Boolean awaitTermination;
+	@Nullable private final Boolean awaitTermination;
 
-	private final Duration awaitTerminationPeriod;
+	@Nullable private final Duration awaitTerminationPeriod;
 
-	private final String threadNamePrefix;
+	@Nullable private final String threadNamePrefix;
 
-	private final TaskDecorator taskDecorator;
+	@Nullable private final TaskDecorator taskDecorator;
 
-	private final Set<TaskExecutorCustomizer> customizers;
+	@Nullable private final Set<TaskExecutorCustomizer> customizers;
 
 	 public TaskExecutorBuilder() {
 		this.queueCapacity = null;
@@ -79,10 +80,10 @@ public class TaskExecutorBuilder {
 		this.customizers = null;
 	}
 
-	private TaskExecutorBuilder(Integer queueCapacity, Integer corePoolSize, Integer maxPoolSize,
-			Boolean allowCoreThreadTimeOut, Duration keepAlive, Boolean awaitTermination,
-			Duration awaitTerminationPeriod, String threadNamePrefix, TaskDecorator taskDecorator,
-			Set<TaskExecutorCustomizer> customizers) {
+	private TaskExecutorBuilder(@Nullable Integer queueCapacity, @Nullable Integer corePoolSize, @Nullable Integer maxPoolSize,
+			@Nullable Boolean allowCoreThreadTimeOut, @Nullable Duration keepAlive, @Nullable Boolean awaitTermination,
+			@Nullable Duration awaitTerminationPeriod, @Nullable String threadNamePrefix, @Nullable TaskDecorator taskDecorator,
+			@Nullable Set<TaskExecutorCustomizer> customizers) {
 		this.queueCapacity = queueCapacity;
 		this.corePoolSize = corePoolSize;
 		this.maxPoolSize = maxPoolSize;
@@ -318,7 +319,7 @@ public class TaskExecutorBuilder {
 		return taskExecutor;
 	}
 
-	private <T> Set<T> append(Set<T> set, Iterable<? extends T> additions) {
+	private <T> Set<T> append(@Nullable Set<T> set, Iterable<? extends T> additions) {
 		Set<T> result = new LinkedHashSet<>((set != null) ? set : Collections.emptySet());
 		additions.forEach(result::add);
 		return Collections.unmodifiableSet(result);

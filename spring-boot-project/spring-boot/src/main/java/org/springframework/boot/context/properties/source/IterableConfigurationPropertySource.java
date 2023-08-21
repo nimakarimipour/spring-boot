@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ConfigurationPropertySource} with a fully {@link Iterable} set of entries.
@@ -75,7 +76,7 @@ public interface IterableConfigurationPropertySource
 	}
 
 	@Override
-	default IterableConfigurationPropertySource withPrefix(String prefix) {
+	default IterableConfigurationPropertySource withPrefix(@Nullable String prefix) {
 		return (StringUtils.hasText(prefix)) ? new PrefixedIterableConfigurationPropertySource(this, prefix) : this;
 	}
 

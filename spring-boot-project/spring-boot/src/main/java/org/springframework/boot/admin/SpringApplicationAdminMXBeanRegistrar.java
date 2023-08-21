@@ -41,6 +41,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Register a {@link SpringApplicationAdminMXBean} implementation to the platform
@@ -55,7 +56,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 	private static final Log logger = LogFactory.getLog(SpringApplicationAdmin.class);
 
-	 private ConfigurableApplicationContext applicationContext;
+	 @SuppressWarnings("NullAway.Init") private ConfigurableApplicationContext applicationContext;
 
 	private Environment environment = new StandardEnvironment();
 

@@ -44,6 +44,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -138,7 +140,7 @@ class ConfigDataEnvironment {
 	 */
 	ConfigDataEnvironment(DeferredLogFactory logFactory, ConfigurableBootstrapContext bootstrapContext,
 			ConfigurableEnvironment environment, ResourceLoader resourceLoader, Collection<String> additionalProfiles,
-			ConfigDataEnvironmentUpdateListener environmentUpdateListener) {
+			@Nullable ConfigDataEnvironmentUpdateListener environmentUpdateListener) {
 		Binder binder = Binder.get(environment);
 		this.logFactory = logFactory;
 		this.logger = logFactory.getLog(getClass());
@@ -317,12 +319,12 @@ class ConfigDataEnvironment {
 	}
 
 	private void registerBootstrapBinder(ConfigDataEnvironmentContributors contributors,
-			ConfigDataActivationContext activationContext, BinderOption... binderOptions) {
+			@Nullable ConfigDataActivationContext activationContext, BinderOption... binderOptions) {
 		this.bootstrapContext.register(Binder.class, InstanceSupplier
 				.from(() -> contributors.getBinder(activationContext, binderOptions)).withScope(Scope.PROTOTYPE));
 	}
 
-	private void applyToEnvironment(ConfigDataEnvironmentContributors contributors,
+	@NullUnmarked private void applyToEnvironment(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext, Set<ConfigDataLocation> loadedLocations,
 			Set<ConfigDataLocation> optionalLocations) {
 		checkForInvalidProperties(contributors);

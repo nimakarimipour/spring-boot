@@ -37,6 +37,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -195,7 +196,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 	}
 
 	@SuppressWarnings("unchecked")
-	private void flatten(Properties properties, Map<String, Object> input, String path) {
+	private void flatten(Properties properties, Map<String, Object> input, @Nullable String path) {
 		input.forEach((key, value) -> {
 			String name = getPropertyName(path, key);
 			if (value instanceof Map) {
@@ -227,7 +228,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 		});
 	}
 
-	private String getPropertyName(String path, String key) {
+	private String getPropertyName(@Nullable String path, String key) {
 		if (!StringUtils.hasText(path)) {
 			return key;
 		}

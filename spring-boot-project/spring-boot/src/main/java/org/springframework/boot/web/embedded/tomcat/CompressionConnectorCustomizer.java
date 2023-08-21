@@ -22,6 +22,7 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures compression support on the given

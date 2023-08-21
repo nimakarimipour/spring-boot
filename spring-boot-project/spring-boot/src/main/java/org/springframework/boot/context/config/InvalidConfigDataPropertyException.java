@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.core.env.AbstractEnvironment;
+import javax.annotation.Nullable;
 
 
 /**
@@ -61,12 +62,12 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 
 	private final ConfigurationProperty property;
 
-	private final ConfigurationPropertyName replacement;
+	@Nullable private final ConfigurationPropertyName replacement;
 
-	private final ConfigDataResource location;
+	@Nullable private final ConfigDataResource location;
 
 	 InvalidConfigDataPropertyException(ConfigurationProperty property, boolean profileSpecific,
-			ConfigurationPropertyName replacement, ConfigDataResource location) {
+			@Nullable ConfigurationPropertyName replacement, @Nullable ConfigDataResource location) {
 		super(getMessage(property, profileSpecific, replacement, location), null);
 		this.property = property;
 		this.replacement = replacement;
@@ -86,7 +87,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * the source was not loaded from {@link ConfigData}.
 	 * @return the config data location or {@code null}
 	 */
-	public ConfigDataResource getLocation() {
+	@Nullable public ConfigDataResource getLocation() {
 		return this.location;
 	}
 
@@ -95,7 +96,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * replacement is available.
 	 * @return the replacement property name
 	 */
-	public ConfigurationPropertyName getReplacement() {
+	@Nullable public ConfigurationPropertyName getReplacement() {
 		return this.replacement;
 	}
 
@@ -127,7 +128,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	}
 
 	private static String getMessage(ConfigurationProperty property, boolean profileSpecific,
-			ConfigurationPropertyName replacement, ConfigDataResource location) {
+			@Nullable ConfigurationPropertyName replacement, @Nullable ConfigDataResource location) {
 		StringBuilder message = new StringBuilder("Property '");
 		message.append(property.getName());
 		if (location != null) {

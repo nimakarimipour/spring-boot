@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriTemplateHandler;
+import javax.annotation.Nullable;
 
 
 /**
@@ -35,7 +36,7 @@ import org.springframework.web.util.UriTemplateHandler;
  */
 public class RootUriTemplateHandler implements UriTemplateHandler {
 
-	private final String rootUri;
+	@Nullable private final String rootUri;
 
 	private final UriTemplateHandler handler;
 
@@ -58,7 +59,7 @@ public class RootUriTemplateHandler implements UriTemplateHandler {
 	 * @param rootUri the root URI to be used to prefix relative URLs
 	 * @param handler the delegate handler
 	 */
-	public RootUriTemplateHandler(String rootUri, UriTemplateHandler handler) {
+	public RootUriTemplateHandler(@Nullable String rootUri, UriTemplateHandler handler) {
 		Assert.notNull(rootUri, "RootUri must not be null");
 		Assert.notNull(handler, "Handler must not be null");
 		this.rootUri = rootUri;
@@ -82,7 +83,7 @@ public class RootUriTemplateHandler implements UriTemplateHandler {
 		return uriTemplate;
 	}
 
-	public String getRootUri() {
+	@Nullable public String getRootUri() {
 		return this.rootUri;
 	}
 

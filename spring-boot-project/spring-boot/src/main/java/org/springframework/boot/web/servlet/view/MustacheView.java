@@ -30,6 +30,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractTemplateView;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Spring MVC {@link View} using the Mustache template engine.
@@ -41,9 +43,9 @@ import org.springframework.web.servlet.view.AbstractTemplateView;
  */
 public class MustacheView extends AbstractTemplateView {
 
-	 private Compiler compiler;
+	 @Nullable private Compiler compiler;
 
-	 private String charset;
+	 @Nullable private String charset;
 
 	/**
 	 * Set the Mustache compiler to be used by this view.
@@ -61,7 +63,7 @@ public class MustacheView extends AbstractTemplateView {
 	 * Set the charset used for reading Mustache template files.
 	 * @param charset the charset to use for reading template files
 	 */
-	public void setCharset(String charset) {
+	public void setCharset(@Nullable String charset) {
 		this.charset = charset;
 	}
 
@@ -80,7 +82,7 @@ public class MustacheView extends AbstractTemplateView {
 		}
 	}
 
-	private Template createTemplate(Resource resource) throws IOException {
+	@NullUnmarked private Template createTemplate(Resource resource) throws IOException {
 		try (Reader reader = getReader(resource)) {
 			return this.compiler.compile(reader);
 		}

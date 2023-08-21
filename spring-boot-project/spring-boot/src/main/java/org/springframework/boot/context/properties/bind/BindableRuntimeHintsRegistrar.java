@@ -41,6 +41,8 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -90,9 +92,9 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
 		private final Class<?> type;
 
-		private final Constructor<?> bindConstructor;
+		@Nullable private final Constructor<?> bindConstructor;
 
-		private final BeanInfo beanInfo;
+		@Nullable private final BeanInfo beanInfo;
 
 		private final Set<Class<?>> seen;
 
@@ -107,7 +109,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			this.seen = seen;
 		}
 
-		 private static BeanInfo getBeanInfo(Class<?> beanType) {
+		 @Nullable private static BeanInfo getBeanInfo(Class<?> beanType) {
 			try {
 				BeanInfo beanInfo = beanInfoFactory.getBeanInfo(beanType);
 				if (beanInfo != null) {
@@ -147,7 +149,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			return candidate.getParameterCount() == 0;
 		}
 
-		private void handleValueObjectProperties(ReflectionHints hints) {
+		@NullUnmarked private void handleValueObjectProperties(ReflectionHints hints) {
 			for (int i = 0; i < this.bindConstructor.getParameterCount(); i++) {
 				String propertyName = this.bindConstructor.getParameters()[i].getName();
 				ResolvableType propertyType = ResolvableType.forConstructorParameter(this.bindConstructor, i);
@@ -155,7 +157,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			}
 		}
 
-		private void handleJavaBeanProperties(ReflectionHints hints) {
+		@NullUnmarked private void handleJavaBeanProperties(ReflectionHints hints) {
 			for (PropertyDescriptor propertyDescriptor : this.beanInfo.getPropertyDescriptors()) {
 				Method writeMethod = propertyDescriptor.getWriteMethod();
 				if (writeMethod != null) {
@@ -209,7 +211,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			new Processor(type, true, this.seen).process(hints);
 		}
 
-		 private Class<?> getComponentClass(ResolvableType type) {
+		 @Nullable private Class<?> getComponentClass(ResolvableType type) {
 			ResolvableType componentType = getComponentType(type);
 			if (componentType == null) {
 				return null;
@@ -221,7 +223,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			return componentType.toClass();
 		}
 
-		 private ResolvableType getComponentType(ResolvableType type) {
+		 @Nullable private ResolvableType getComponentType(ResolvableType type) {
 			if (type.isArray()) {
 				return type.getComponentType();
 			}

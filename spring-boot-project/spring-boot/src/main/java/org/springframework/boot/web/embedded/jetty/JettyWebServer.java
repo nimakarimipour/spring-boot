@@ -40,6 +40,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -64,7 +65,7 @@ public class JettyWebServer implements WebServer {
 
 	private final boolean autoStart;
 
-	private final GracefulShutdown gracefulShutdown;
+	@Nullable private final GracefulShutdown gracefulShutdown;
 
 	private Connector[] connectors;
 
@@ -91,7 +92,7 @@ public class JettyWebServer implements WebServer {
 		initialize();
 	}
 
-	 private GracefulShutdown createGracefulShutdown(Server server) {
+	 @Nullable private GracefulShutdown createGracefulShutdown(Server server) {
 		StatisticsHandler statisticsHandler = findStatisticsHandler(server);
 		if (statisticsHandler == null) {
 			return null;
@@ -99,11 +100,11 @@ public class JettyWebServer implements WebServer {
 		return new GracefulShutdown(server, statisticsHandler::getRequestsActive);
 	}
 
-	private StatisticsHandler findStatisticsHandler(Server server) {
+	@Nullable private StatisticsHandler findStatisticsHandler(Server server) {
 		return findStatisticsHandler(server.getHandler());
 	}
 
-	 private StatisticsHandler findStatisticsHandler(Handler handler) {
+	 @Nullable private StatisticsHandler findStatisticsHandler(Handler handler) {
 		if (handler instanceof StatisticsHandler statisticsHandler) {
 			return statisticsHandler;
 		}
@@ -204,7 +205,7 @@ public class JettyWebServer implements WebServer {
 				.map(ContextHandler::getContextPath).collect(Collectors.joining(" "));
 	}
 
-	 private ContextHandler findContextHandler(Handler handler) {
+	 @Nullable private ContextHandler findContextHandler(Handler handler) {
 		while (handler instanceof HandlerWrapper handlerWrapper) {
 			if (handler instanceof ContextHandler contextHandler) {
 				return contextHandler;

@@ -20,6 +20,7 @@ import java.time.Duration;
 
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -69,7 +70,7 @@ public interface ConfigurationPropertyCaching {
 	 * must match
 	 * @return a caching instance that controls the matching source
 	 */
-	static ConfigurationPropertyCaching get(Environment environment, Object underlyingSource) {
+	static ConfigurationPropertyCaching get(Environment environment, @Nullable Object underlyingSource) {
 		Iterable<ConfigurationPropertySource> sources = ConfigurationPropertySources.get(environment);
 		return get(sources, underlyingSource);
 	}
@@ -92,7 +93,7 @@ public interface ConfigurationPropertyCaching {
 	 * must match
 	 * @return a caching instance that controls the matching source
 	 */
-	static ConfigurationPropertyCaching get(Iterable<ConfigurationPropertySource> sources, Object underlyingSource) {
+	static ConfigurationPropertyCaching get(Iterable<ConfigurationPropertySource> sources, @Nullable Object underlyingSource) {
 		Assert.notNull(sources, "Sources must not be null");
 		if (underlyingSource == null) {
 			return new ConfigurationPropertySourcesCaching(sources);

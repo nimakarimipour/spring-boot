@@ -30,6 +30,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -73,7 +74,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		return super.onSuccess(name, target, context, result);
 	}
 
-	@Override
+	@Nullable @Override
 	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
 		if (error instanceof UnboundConfigurationPropertiesException) {
@@ -83,7 +84,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 	}
 
 	@Override
-	public void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result)
+	public void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, @Nullable Object result)
 			throws Exception {
 		if (context.getDepth() == 0) {
 			checkNoUnboundElements(name, context);
@@ -143,7 +144,7 @@ public class NoUnboundElementsBindHandler extends AbstractBindHandler {
 		return this.attemptedNames.contains(ConfigurationPropertyName.of(nestedZeroethProperty));
 	}
 
-	 private Indexed getIndexed(ConfigurationPropertyName candidate) {
+	 @Nullable private Indexed getIndexed(ConfigurationPropertyName candidate) {
 		for (int i = 0; i < candidate.getNumberOfElements(); i++) {
 			if (candidate.isNumericIndex(i)) {
 				return new Indexed(candidate.chop(i).toString(),

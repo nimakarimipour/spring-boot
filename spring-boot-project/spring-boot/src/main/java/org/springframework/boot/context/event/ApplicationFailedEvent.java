@@ -18,6 +18,7 @@ package org.springframework.boot.context.event;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import javax.annotation.Nullable;
 
 /**
  * Event published by a {@link SpringApplication} when it fails to start.
@@ -29,7 +30,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SuppressWarnings("serial")
 public class ApplicationFailedEvent extends SpringApplicationEvent {
 
-	private final ConfigurableApplicationContext context;
+	@Nullable private final ConfigurableApplicationContext context;
 
 	private final Throwable exception;
 
@@ -40,7 +41,7 @@ public class ApplicationFailedEvent extends SpringApplicationEvent {
 	 * @param context the context that was being created (maybe null)
 	 * @param exception the exception that caused the error
 	 */
-	public ApplicationFailedEvent(SpringApplication application, String[] args, ConfigurableApplicationContext context,
+	public ApplicationFailedEvent(SpringApplication application, String[] args, @Nullable ConfigurableApplicationContext context,
 			Throwable exception) {
 		super(application, args);
 		this.context = context;
@@ -51,7 +52,7 @@ public class ApplicationFailedEvent extends SpringApplicationEvent {
 	 * Return the application context.
 	 * @return the context
 	 */
-	public ConfigurableApplicationContext getApplicationContext() {
+	@Nullable public ConfigurableApplicationContext getApplicationContext() {
 		return this.context;
 	}
 

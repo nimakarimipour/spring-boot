@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.json;
+import javax.annotation.Nullable;
 
 
 /**
@@ -30,7 +31,7 @@ public class JsonParseException extends IllegalArgumentException {
 		this(null);
 	}
 
-	public JsonParseException(Throwable cause) {
+	public JsonParseException(@Nullable Throwable cause) {
 		super("Cannot parse JSON", cause);
 	}
 

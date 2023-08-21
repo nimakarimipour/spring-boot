@@ -25,6 +25,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -77,7 +79,7 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 		return this.mutuallyExclusiveNames;
 	}
 
-	 private static Set<String> asSet(Collection<String> collection) {
+	 @NullUnmarked private static Set<String> asSet(Collection<String> collection) {
 		return (collection != null) ? new LinkedHashSet<>(collection) : null;
 	}
 

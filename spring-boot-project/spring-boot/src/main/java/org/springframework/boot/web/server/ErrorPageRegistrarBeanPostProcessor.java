@@ -28,6 +28,8 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * {@link BeanPostProcessor} that applies all {@link ErrorPageRegistrar}s from the bean
@@ -39,9 +41,9 @@ import org.springframework.util.Assert;
  */
 public class ErrorPageRegistrarBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-	 private ListableBeanFactory beanFactory;
+	 @Nullable private ListableBeanFactory beanFactory;
 
-	 private List<ErrorPageRegistrar> registrars;
+	 @Nullable private List<ErrorPageRegistrar> registrars;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
@@ -69,7 +71,7 @@ public class ErrorPageRegistrarBeanPostProcessor implements BeanPostProcessor, B
 		}
 	}
 
-	private Collection<ErrorPageRegistrar> getRegistrars() {
+	@NullUnmarked private Collection<ErrorPageRegistrar> getRegistrars() {
 		if (this.registrars == null) {
 			// Look up does not include the parent context
 			this.registrars = new ArrayList<>(

@@ -26,6 +26,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -130,12 +131,12 @@ public class LoggingSystemProperties {
 		apply(null);
 	}
 
-	public final void apply(LogFile logFile) {
+	public final void apply(@Nullable LogFile logFile) {
 		PropertyResolver resolver = getPropertyResolver();
 		apply(logFile, resolver);
 	}
 
-	protected void apply(LogFile logFile, PropertyResolver resolver) {
+	protected void apply(@Nullable LogFile logFile, PropertyResolver resolver) {
 		setSystemProperty(resolver, EXCEPTION_CONVERSION_WORD, "logging.exception-conversion-word");
 		setSystemProperty(PID_KEY, new ApplicationPid().toString());
 		setSystemProperty(resolver, CONSOLE_LOG_PATTERN, "logging.pattern.console");
@@ -165,13 +166,13 @@ public class LoggingSystemProperties {
 	}
 
 	protected final void setSystemProperty(PropertyResolver resolver, String systemPropertyName, String propertyName,
-			String defaultValue) {
+			@Nullable String defaultValue) {
 		String value = resolver.getProperty(propertyName);
 		value = (value != null) ? value : defaultValue;
 		setSystemProperty(systemPropertyName, value);
 	}
 
-	protected final void setSystemProperty(String name, String value) {
+	protected final void setSystemProperty(String name, @Nullable String value) {
 		this.setter.accept(name, value);
 	}
 

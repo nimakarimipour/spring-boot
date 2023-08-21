@@ -25,6 +25,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+import javax.annotation.Nullable;
 
 
 /**
@@ -41,20 +42,20 @@ final class StringToDataSizeConverter implements GenericConverter {
 		return Collections.singleton(new ConvertiblePair(String.class, DataSize.class));
 	}
 
-	 @Override
-	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+	 @Nullable @Override
+	public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (ObjectUtils.isEmpty(source)) {
 			return null;
 		}
 		return convert(source.toString(), getDataUnit(targetType));
 	}
 
-	 private DataUnit getDataUnit(TypeDescriptor targetType) {
+	 @Nullable private DataUnit getDataUnit(TypeDescriptor targetType) {
 		DataSizeUnit annotation = targetType.getAnnotation(DataSizeUnit.class);
 		return (annotation != null) ? annotation.value() : null;
 	}
 
-	private DataSize convert(String source, DataUnit unit) {
+	private DataSize convert(String source, @Nullable DataUnit unit) {
 		return DataSize.parse(source, unit);
 	}
 

@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.bind;
 
 import java.lang.reflect.Constructor;
+import javax.annotation.Nullable;
 
 /**
  * Strategy interface used to determine a specific constructor to use when binding.
@@ -42,7 +43,7 @@ public interface BindConstructorProvider {
 	 * @return the bind constructor or {@code null}
 	 * @since 3.0.0
 	 */
-	default Constructor<?> getBindConstructor(Class<?> type, boolean isNestedConstructorBinding) {
+	@Nullable default Constructor<?> getBindConstructor(Class<?> type, boolean isNestedConstructorBinding) {
 		return getBindConstructor(Bindable.of(type), isNestedConstructorBinding);
 	}
 
@@ -54,6 +55,6 @@ public interface BindConstructorProvider {
 	 * binding
 	 * @return the bind constructor or {@code null}
 	 */
-	Constructor<?> getBindConstructor(Bindable<?> bindable, boolean isNestedConstructorBinding);
+	@Nullable Constructor<?> getBindConstructor(Bindable<?> bindable, boolean isNestedConstructorBinding);
 
 }

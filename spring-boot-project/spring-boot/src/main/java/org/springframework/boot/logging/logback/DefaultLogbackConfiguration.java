@@ -30,6 +30,7 @@ import ch.qos.logback.core.util.FileSize;
 import ch.qos.logback.core.util.OptionHelper;
 
 import org.springframework.boot.logging.LogFile;
+import javax.annotation.Nullable;
 
 /**
  * Default logback configuration used by Spring Boot. Uses {@link LogbackConfigurator} to
@@ -45,9 +46,9 @@ import org.springframework.boot.logging.LogFile;
  */
 class DefaultLogbackConfiguration {
 
-	private final LogFile logFile;
+	@Nullable private final LogFile logFile;
 
-	DefaultLogbackConfiguration(LogFile logFile) {
+	DefaultLogbackConfiguration(@Nullable LogFile logFile) {
 		this.logFile = logFile;
 	}
 

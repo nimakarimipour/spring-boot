@@ -27,6 +27,7 @@ import ch.qos.logback.core.model.processor.ModelInterpretationContext;
 import ch.qos.logback.core.util.OptionHelper;
 
 import org.springframework.core.env.Environment;
+import javax.annotation.Nullable;
 
 /**
  * Logback {@link ModelHandlerBase model handler} to support {@code <springProperty>}
@@ -60,7 +61,7 @@ class SpringPropertyModelHandler extends ModelHandlerBase {
 		ModelUtil.setProperty(intercon, propertyModel.getName(), getValue(source, defaultValue), scope);
 	}
 
-	private String getValue(String source, String defaultValue) {
+	@Nullable private String getValue(@Nullable String source, @Nullable String defaultValue) {
 		if (this.environment == null) {
 			addWarn("No Spring Environment available to resolve " + source);
 			return defaultValue;

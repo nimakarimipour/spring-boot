@@ -30,6 +30,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -48,7 +49,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	 @Override
+	 @Nullable @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, InvalidConfigurationPropertyValueException cause) {
 		List<Descriptor> descriptors = getDescriptors(cause.getName());
 		if (descriptors.isEmpty()) {
@@ -124,9 +125,9 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 
 		private final Object value;
 
-		private final Origin origin;
+		@Nullable private final Origin origin;
 
-		private Descriptor(String propertySource, Object value, Origin origin) {
+		private Descriptor(String propertySource, Object value, @Nullable Origin origin) {
 			this.propertySource = propertySource;
 			this.value = value;
 			this.origin = origin;

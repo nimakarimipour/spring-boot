@@ -33,6 +33,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ServletWebServerApplicationContext} that accepts annotated classes as input - in
@@ -62,7 +63,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
-	 private String[] basePackages;
+	 @Nullable private String[] basePackages;
 
 	/**
 	 * Create a new {@link AnnotationConfigServletWebServerApplicationContext} that needs

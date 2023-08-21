@@ -26,6 +26,7 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link MapPropertySource} containing default properties contributed directly to a
@@ -79,7 +80,7 @@ public class DefaultPropertiesPropertySource extends MapPropertySource {
 	 * @param sources the existing sources
 	 * @since 2.4.4
 	 */
-	public static void addOrMerge(Map<String, Object> source, MutablePropertySources sources) {
+	public static void addOrMerge(@Nullable Map<String, Object> source, MutablePropertySources sources) {
 		if (!CollectionUtils.isEmpty(source)) {
 			Map<String, Object> resultingSource = new HashMap<>();
 			DefaultPropertiesPropertySource propertySource = new DefaultPropertiesPropertySource(resultingSource);
@@ -95,7 +96,7 @@ public class DefaultPropertiesPropertySource extends MapPropertySource {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void mergeIfPossible(Map<String, Object> source, MutablePropertySources sources,
+	private static void mergeIfPossible(@Nullable Map<String, Object> source, MutablePropertySources sources,
 			Map<String, Object> resultingSource) {
 		PropertySource<?> existingSource = sources.get(NAME);
 		if (existingSource != null) {

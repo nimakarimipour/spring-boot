@@ -19,6 +19,8 @@ package org.springframework.boot.web.server;
 import java.net.BindException;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -46,7 +48,7 @@ public class PortInUseException extends WebServerException {
 	 * @param port the port that was in use
 	 * @param cause the cause of the exception
 	 */
-	public PortInUseException(int port, Throwable cause) {
+	public PortInUseException(int port, @Nullable Throwable cause) {
 		super("Port " + port + " is already in use", cause);
 		this.port = port;
 	}
@@ -79,7 +81,7 @@ public class PortInUseException extends WebServerException {
 	 * @param action the action to perform
 	 * @since 2.2.7
 	 */
-	 public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
+	 @NullUnmarked public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
 		ifCausedBy(ex, BindException.class, (bindException) -> {
 			// bind exception can be also thrown because an address can't be assigned
 			if (bindException.getMessage().toLowerCase().contains("in use")) {

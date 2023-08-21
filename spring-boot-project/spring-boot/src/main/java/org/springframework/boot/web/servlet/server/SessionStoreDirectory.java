@@ -21,6 +21,7 @@ import java.io.File;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Manages a session store directory.
@@ -30,9 +31,9 @@ import org.springframework.util.Assert;
  */
 class SessionStoreDirectory {
 
-	 private File directory;
+	 @Nullable private File directory;
 
-	File getDirectory() {
+	@Nullable File getDirectory() {
 		return this.directory;
 	}
 

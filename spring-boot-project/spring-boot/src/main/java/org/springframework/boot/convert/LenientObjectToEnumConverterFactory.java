@@ -27,6 +27,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import javax.annotation.Nullable;
 
 
 /**
@@ -68,7 +69,7 @@ abstract class LenientObjectToEnumConverterFactory<T> implements ConverterFactor
 			this.enumType = enumType;
 		}
 
-		 @Override
+		 @Nullable @Override
 		public E convert(T source) {
 			String value = source.toString().trim();
 			if (value.isEmpty()) {

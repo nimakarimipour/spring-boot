@@ -17,6 +17,7 @@
 package org.springframework.boot.origin;
 
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -32,9 +33,9 @@ public class OriginTrackedValue implements OriginProvider {
 
 	private final Object value;
 
-	private final Origin origin;
+	@Nullable private final Origin origin;
 
-	private OriginTrackedValue(Object value, Origin origin) {
+	private OriginTrackedValue(Object value, @Nullable Origin origin) {
 		this.value = value;
 		this.origin = origin;
 	}
@@ -47,7 +48,7 @@ public class OriginTrackedValue implements OriginProvider {
 		return this.value;
 	}
 
-	@Override
+	@Nullable @Override
 	public Origin getOrigin() {
 		return this.origin;
 	}
@@ -65,12 +66,12 @@ public class OriginTrackedValue implements OriginProvider {
 		return ObjectUtils.nullSafeHashCode(this.value);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public String toString() {
 		return (this.value != null) ? this.value.toString() : null;
 	}
 
-	 public static OriginTrackedValue of(Object value) {
+	 @Nullable public static OriginTrackedValue of(Object value) {
 		return of(value, null);
 	}
 
@@ -83,7 +84,7 @@ public class OriginTrackedValue implements OriginProvider {
 	 * @return an {@link OriginTrackedValue} or {@code null} if the source value was
 	 * {@code null}.
 	 */
-	 public static OriginTrackedValue of(Object value, Origin origin) {
+	 @Nullable public static OriginTrackedValue of(Object value, @Nullable Origin origin) {
 		if (value == null) {
 			return null;
 		}
@@ -98,7 +99,7 @@ public class OriginTrackedValue implements OriginProvider {
 	 */
 	private static class OriginTrackedCharSequence extends OriginTrackedValue implements CharSequence {
 
-		OriginTrackedCharSequence(CharSequence value, Origin origin) {
+		OriginTrackedCharSequence(CharSequence value, @Nullable Origin origin) {
 			super(value, origin);
 		}
 

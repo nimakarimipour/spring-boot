@@ -31,6 +31,8 @@ import org.apache.logging.log4j.status.StatusLogger;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -69,13 +71,13 @@ final class SpringProfileArbiter implements Arbiter {
 
 		private static final Logger statusLogger = StatusLogger.getLogger();
 
-		 @PluginBuilderAttribute
+		 @Nullable @PluginBuilderAttribute
 		private String name;
 
-		 @PluginConfiguration
+		 @Nullable @PluginConfiguration
 		private Configuration configuration;
 
-		 @PluginLoggerContext
+		 @Nullable @PluginLoggerContext
 		private LoggerContext loggerContext;
 
 		 private Builder() {
@@ -92,7 +94,7 @@ final class SpringProfileArbiter implements Arbiter {
 			return this;
 		}
 
-		 @Override
+		 @NullUnmarked @Nullable @Override
 		public SpringProfileArbiter build() {
 			Environment environment = Log4J2LoggingSystem.getEnvironment(this.loggerContext);
 			if (environment == null) {

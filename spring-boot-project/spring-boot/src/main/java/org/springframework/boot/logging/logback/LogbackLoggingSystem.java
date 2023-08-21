@@ -63,6 +63,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -178,7 +179,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 	}
 
 	@Override
-	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
+	public void initialize(LoggingInitializationContext initializationContext, @Nullable String configLocation, @Nullable LogFile logFile) {
 		LoggerContext loggerContext = getLoggerContext();
 		if (isAlreadyInitialized(loggerContext)) {
 			return;
@@ -195,7 +196,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 	}
 
 	private boolean initializeFromAotGeneratedArtifactsIfPossible(LoggingInitializationContext initializationContext,
-			LogFile logFile) {
+			@Nullable LogFile logFile) {
 		if (!AotDetector.useGeneratedArtifacts()) {
 			return false;
 		}
@@ -210,7 +211,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 	}
 
 	@Override
-	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
+	protected void loadDefaults(LoggingInitializationContext initializationContext, @Nullable LogFile logFile) {
 		LoggerContext context = getLoggerContext();
 		stopAndReset(context);
 		boolean debug = Boolean.getBoolean("logback.debug");
@@ -227,8 +228,8 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 	}
 
 	@Override
-	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+	protected void loadConfiguration(LoggingInitializationContext initializationContext, @Nullable String location,
+			@Nullable LogFile logFile) {
 		if (initializationContext != null) {
 			applySystemProperties(initializationContext.getEnvironment(), logFile);
 		}
@@ -318,21 +319,21 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		return result;
 	}
 
-	@Override
+	@Nullable @Override
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		String name = getLoggerName(loggerName);
 		LoggerContext loggerContext = getLoggerContext();
 		return getLoggerConfiguration(loggerContext.exists(name));
 	}
 
-	private String getLoggerName(String name) {
+	private String getLoggerName(@Nullable String name) {
 		if (!StringUtils.hasLength(name) || Logger.ROOT_LOGGER_NAME.equals(name)) {
 			return ROOT_LOGGER_NAME;
 		}
 		return name;
 	}
 
-	 private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
+	 @Nullable private LoggerConfiguration getLoggerConfiguration(ch.qos.logback.classic.Logger logger) {
 		if (logger == null) {
 			return null;
 		}
@@ -348,7 +349,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 	}
 
 	@Override
-	public void setLogLevel(String loggerName, LogLevel level) {
+	public void setLogLevel(@Nullable String loggerName, LogLevel level) {
 		ch.qos.logback.classic.Logger logger = getLogger(loggerName);
 		if (logger != null) {
 			logger.setLevel(LEVELS.convertSystemToNative(level));
@@ -360,7 +361,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		return () -> getLoggerContext().stop();
 	}
 
-	private ch.qos.logback.classic.Logger getLogger(String name) {
+	private ch.qos.logback.classic.Logger getLogger(@Nullable String name) {
 		LoggerContext factory = getLoggerContext();
 		return factory.getLogger(getLoggerName(name));
 	}
@@ -423,7 +424,7 @@ public class LogbackLoggingSystem extends AbstractLoggingSystem implements BeanF
 		private static final boolean PRESENT = ClassUtils.isPresent("ch.qos.logback.classic.LoggerContext",
 				Factory.class.getClassLoader());
 
-		 @Override
+		 @Nullable @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new LogbackLoggingSystem(classLoader);

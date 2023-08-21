@@ -29,6 +29,7 @@ import org.springframework.core.env.PropertySource.StubPropertySource;
 import org.springframework.core.env.PropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -101,7 +102,7 @@ public final class ConfigurationPropertySources {
 				&& ((SpringConfigurationPropertySources) attached.getSource()).isUsingSources(sources);
 	}
 
-	 static PropertySource<?> getAttached(MutablePropertySources sources) {
+	 @Nullable static PropertySource<?> getAttached(MutablePropertySources sources) {
 		return (sources != null) ? sources.get(ATTACHED_PROPERTY_SOURCE_NAME) : null;
 	}
 
@@ -149,7 +150,7 @@ public final class ConfigurationPropertySources {
 	 * @return an {@link Iterable} containing newly adapted
 	 * {@link SpringConfigurationPropertySource} instances
 	 */
-	public static Iterable<ConfigurationPropertySource> from(Iterable<PropertySource<?>> sources) {
+	public static Iterable<ConfigurationPropertySource> from(@Nullable Iterable<PropertySource<?>> sources) {
 		return new SpringConfigurationPropertySources(sources);
 	}
 

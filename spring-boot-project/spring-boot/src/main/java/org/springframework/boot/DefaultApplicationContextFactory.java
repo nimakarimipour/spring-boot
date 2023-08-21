@@ -25,6 +25,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import javax.annotation.Nullable;
 
 
 /**
@@ -35,17 +36,17 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  */
 class DefaultApplicationContextFactory implements ApplicationContextFactory {
 
-	 @Override
+	 @Nullable @Override
 	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
 		return getFromSpringFactories(webApplicationType, ApplicationContextFactory::getEnvironmentType, null);
 	}
 
-	 @Override
+	 @Nullable @Override
 	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
 		return getFromSpringFactories(webApplicationType, ApplicationContextFactory::createEnvironment, null);
 	}
 
-	@Override
+	@Nullable @Override
 	public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
 		try {
 			return getFromSpringFactories(webApplicationType, ApplicationContextFactory::create,
@@ -64,8 +65,8 @@ class DefaultApplicationContextFactory implements ApplicationContextFactory {
 		return new GenericApplicationContext();
 	}
 
-	 private <T> T getFromSpringFactories(WebApplicationType webApplicationType,
-			BiFunction<ApplicationContextFactory, WebApplicationType, T> action, Supplier<T> defaultResult) {
+	 @Nullable private <T> T getFromSpringFactories(WebApplicationType webApplicationType,
+			BiFunction<ApplicationContextFactory, WebApplicationType, T> action, @Nullable Supplier<T> defaultResult) {
 		for (ApplicationContextFactory candidate : SpringFactoriesLoader.loadFactories(ApplicationContextFactory.class,
 				getClass().getClassLoader())) {
 			T result = action.apply(candidate, webApplicationType);

@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Abstract base class for {@link ConfigurableWebServerFactory} implementations.
@@ -43,19 +44,19 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 
 	private int port = 8080;
 
-	 private InetAddress address;
+	 @Nullable private InetAddress address;
 
 	private Set<ErrorPage> errorPages = new LinkedHashSet<>();
 
-	 private Ssl ssl;
+	 @SuppressWarnings("NullAway.Init") private Ssl ssl;
 
-	 private SslStoreProvider sslStoreProvider;
+	 @Nullable private SslStoreProvider sslStoreProvider;
 
-	 private Http2 http2;
+	 @Nullable private Http2 http2;
 
-	 private Compression compression;
+	 @SuppressWarnings("NullAway.Init") private Compression compression;
 
-	 private String serverHeader;
+	 @Nullable private String serverHeader;
 
 	private Shutdown shutdown = Shutdown.IMMEDIATE;
 
@@ -91,7 +92,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * Return the address that the web server binds to.
 	 * @return the address
 	 */
-	public InetAddress getAddress() {
+	@Nullable public InetAddress getAddress() {
 		return this.address;
 	}
 
@@ -130,7 +131,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.ssl = ssl;
 	}
 
-	public SslStoreProvider getSslStoreProvider() {
+	@Nullable public SslStoreProvider getSslStoreProvider() {
 		return this.sslStoreProvider;
 	}
 
@@ -139,7 +140,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.sslStoreProvider = sslStoreProvider;
 	}
 
-	public Http2 getHttp2() {
+	@Nullable public Http2 getHttp2() {
 		return this.http2;
 	}
 
@@ -157,7 +158,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.compression = compression;
 	}
 
-	public String getServerHeader() {
+	@Nullable public String getServerHeader() {
 		return this.serverHeader;
 	}
 
@@ -176,7 +177,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * @return the shutdown configuration
 	 * @since 2.3.0
 	 */
-	public Shutdown getShutdown() {
+	@Nullable public Shutdown getShutdown() {
 		return this.shutdown;
 	}
 

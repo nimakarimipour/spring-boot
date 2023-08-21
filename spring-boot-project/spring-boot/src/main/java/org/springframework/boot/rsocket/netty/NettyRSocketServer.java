@@ -27,6 +27,8 @@ import reactor.core.publisher.Mono;
 import org.springframework.boot.rsocket.server.RSocketServer;
 import org.springframework.boot.rsocket.server.RSocketServerException;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -42,17 +44,17 @@ public class NettyRSocketServer implements RSocketServer {
 
 	private final Mono<CloseableChannel> starter;
 
-	private final Duration lifecycleTimeout;
+	@Nullable private final Duration lifecycleTimeout;
 
-	 private CloseableChannel channel;
+	 @Nullable private CloseableChannel channel;
 
-	public NettyRSocketServer(Mono<CloseableChannel> starter, Duration lifecycleTimeout) {
+	public NettyRSocketServer(Mono<CloseableChannel> starter, @Nullable Duration lifecycleTimeout) {
 		Assert.notNull(starter, "starter must not be null");
 		this.starter = starter;
 		this.lifecycleTimeout = lifecycleTimeout;
 	}
 
-	 @Override
+	 @Nullable @Override
 	public InetSocketAddress address() {
 		if (this.channel != null) {
 			return this.channel.address();
@@ -60,7 +62,7 @@ public class NettyRSocketServer implements RSocketServer {
 		return null;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void start() throws RSocketServerException {
 		this.channel = block(this.starter, this.lifecycleTimeout);
 		logger.info("Netty RSocket started on port(s): " + address().getPort());
@@ -82,7 +84,7 @@ public class NettyRSocketServer implements RSocketServer {
 		}
 	}
 
-	private <T> T block(Mono<T> mono, Duration timeout) {
+	private <T> T block(Mono<T> mono, @Nullable Duration timeout) {
 		return (timeout != null) ? mono.block(timeout) : mono.block();
 	}
 

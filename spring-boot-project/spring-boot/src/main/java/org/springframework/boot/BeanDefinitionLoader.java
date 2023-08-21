@@ -46,6 +46,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -69,11 +71,11 @@ class BeanDefinitionLoader {
 
 	private final AbstractBeanDefinitionReader xmlReader;
 
-	private final BeanDefinitionReader groovyReader;
+	@Nullable private final BeanDefinitionReader groovyReader;
 
 	private final ClassPathBeanDefinitionScanner scanner;
 
-	 private ResourceLoader resourceLoader;
+	 @Nullable private ResourceLoader resourceLoader;
 
 	/**
 	 * Create a new {@link BeanDefinitionLoader} that will load beans into the specified
@@ -158,7 +160,7 @@ class BeanDefinitionLoader {
 		throw new IllegalArgumentException("Invalid source type " + source.getClass());
 	}
 
-	private void load(Class<?> source) {
+	@NullUnmarked private void load(Class<?> source) {
 		if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
 			// Any GroovyLoaders added in beans{} DSL can contribute beans here
 			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);

@@ -29,6 +29,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
+import com.uber.nullaway.annotations.Initializer;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -61,7 +64,7 @@ public class ConfigurationPropertiesBindingPostProcessor
 		this.applicationContext = applicationContext;
 	}
 
-	 @Override
+	 @NullUnmarked @Initializer @Override
 	public void afterPropertiesSet() throws Exception {
 		// We can't use constructor injection of the application context because
 		// it causes eager factory bean initialization

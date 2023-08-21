@@ -43,6 +43,8 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -54,12 +56,12 @@ import org.springframework.util.CollectionUtils;
  */
 final class BindConverter {
 
-	 private static BindConverter sharedInstance;
+	 @Nullable private static BindConverter sharedInstance;
 
 	private final List<ConversionService> delegates;
 
-	private BindConverter(List<ConversionService> conversionServices,
-			Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
+	private BindConverter(@Nullable List<ConversionService> conversionServices,
+			@Nullable Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
 		List<ConversionService> delegates = new ArrayList<>();
 		delegates.add(new TypeConverterConversionService(propertyEditorInitializer));
 		boolean hasApplication = false;
@@ -89,12 +91,12 @@ final class BindConverter {
 		return false;
 	}
 
-	<T> T convert(Object source, Bindable<T> target) {
+	<T> T convert(@Nullable Object source, Bindable<T> target) {
 		return convert(source, target.getType(), target.getAnnotations());
 	}
 
-	 @SuppressWarnings("unchecked")
-	<T> T convert(Object source, ResolvableType targetType, Annotation... targetAnnotations) {
+	 @NullUnmarked @SuppressWarnings("unchecked")
+	<T> T convert(@Nullable Object source, ResolvableType targetType, Annotation... targetAnnotations) {
 		if (source == null) {
 			return null;
 		}
@@ -119,8 +121,8 @@ final class BindConverter {
 		throw (failure != null) ? failure : new ConverterNotFoundException(sourceType, targetType);
 	}
 
-	static BindConverter get(List<ConversionService> conversionServices,
-			Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
+	static BindConverter get(@Nullable List<ConversionService> conversionServices,
+			@Nullable Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
 		boolean sharedApplicationConversionService = (conversionServices == null) || (conversionServices.size() == 1
 				&& conversionServices.get(0) == ApplicationConversionService.getSharedInstance());
 		if (propertyEditorInitializer == null && sharedApplicationConversionService) {
@@ -154,7 +156,7 @@ final class BindConverter {
 	 */
 	private static class TypeConverterConversionService extends GenericConversionService {
 
-		TypeConverterConversionService(Consumer<PropertyEditorRegistry> initializer) {
+		TypeConverterConversionService(@Nullable Consumer<PropertyEditorRegistry> initializer) {
 			addConverter(new TypeConverterConverter(initializer));
 			ApplicationConversionService.addDelimitedStringConverters(this);
 		}
@@ -184,13 +186,13 @@ final class BindConverter {
 			EXCLUDED_EDITORS = Collections.unmodifiableSet(excluded);
 		}
 
-		private final Consumer<PropertyEditorRegistry> initializer;
+		@Nullable private final Consumer<PropertyEditorRegistry> initializer;
 
 		// SimpleTypeConverter is not thread-safe to use for conversion but we can use it
 		// in a thread-safe way to check if conversion is possible.
 		private final SimpleTypeConverter matchesOnlyTypeConverter;
 
-		TypeConverterConverter(Consumer<PropertyEditorRegistry> initializer) {
+		TypeConverterConverter(@Nullable Consumer<PropertyEditorRegistry> initializer) {
 			this.initializer = initializer;
 			this.matchesOnlyTypeConverter = createTypeConverter();
 		}

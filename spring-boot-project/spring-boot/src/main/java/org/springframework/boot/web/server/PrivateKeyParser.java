@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -94,7 +95,7 @@ final class PrivateKeyParser {
 		return createKeySpecForAlgorithm(bytes, EC_ALGORITHM, EC_PARAMETERS);
 	}
 
-	private static PKCS8EncodedKeySpec createKeySpecForAlgorithm(byte[] bytes, int[] algorithm, int[] parameters) {
+	private static PKCS8EncodedKeySpec createKeySpecForAlgorithm(byte[] bytes, int[] algorithm, @Nullable int[] parameters) {
 		try {
 			DerEncoder encoder = new DerEncoder();
 			encoder.integer(0x00); // Version 0
@@ -157,7 +158,7 @@ final class PrivateKeyParser {
 			this.keySpecFactory = keySpecFactory;
 		}
 
-		 PrivateKey parse(String text) {
+		 @Nullable PrivateKey parse(String text) {
 			Matcher matcher = this.pattern.matcher(text);
 			return (!matcher.find()) ? null : parse(decodeBase64(matcher.group(1)));
 		}
@@ -187,7 +188,7 @@ final class PrivateKeyParser {
 
 		private final ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-		void objectIdentifier(int... encodedObjectIdentifier) throws IOException {
+		void objectIdentifier(@Nullable int... encodedObjectIdentifier) throws IOException {
 			int code = (encodedObjectIdentifier != null) ? 0x06 : 0x05;
 			codeLengthBytes(code, bytes(encodedObjectIdentifier));
 		}
@@ -204,11 +205,11 @@ final class PrivateKeyParser {
 			sequence(bytes(elements));
 		}
 
-		void sequence(byte[] bytes) throws IOException {
+		void sequence(@Nullable byte[] bytes) throws IOException {
 			codeLengthBytes(0x30, bytes);
 		}
 
-		void codeLengthBytes(int code, byte[] bytes) throws IOException {
+		void codeLengthBytes(int code, @Nullable byte[] bytes) throws IOException {
 			this.stream.write(code);
 			int length = (bytes != null) ? bytes.length : 0;
 			if (length <= 127) {
@@ -231,7 +232,7 @@ final class PrivateKeyParser {
 			}
 		}
 
-		 private static byte[] bytes(int... elements) {
+		 @Nullable private static byte[] bytes(@Nullable int... elements) {
 			if (elements == null) {
 				return null;
 			}

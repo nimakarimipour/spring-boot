@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;
+import javax.annotation.Nullable;
 
 /**
  * Configuration properties for server HTTP encoding.
@@ -46,23 +47,23 @@ public class Encoding {
 	 * Whether to force the encoding to the configured charset on HTTP requests and
 	 * responses.
 	 */
-	 private Boolean force;
+	 @Nullable private Boolean force;
 
 	/**
 	 * Whether to force the encoding to the configured charset on HTTP requests. Defaults
 	 * to true when "force" has not been specified.
 	 */
-	 private Boolean forceRequest;
+	 @Nullable private Boolean forceRequest;
 
 	/**
 	 * Whether to force the encoding to the configured charset on HTTP responses.
 	 */
-	 private Boolean forceResponse;
+	 @Nullable private Boolean forceResponse;
 
 	/**
 	 * Mapping of locale to charset for response encoding..
 	 */
-	 private Map<Locale, Charset> mapping;
+	 @Nullable private Map<Locale, Charset> mapping;
 
 	public Charset getCharset() {
 		return this.charset;
@@ -96,7 +97,7 @@ public class Encoding {
 		this.forceResponse = forceResponse;
 	}
 
-	public Map<Locale, Charset> getMapping() {
+	@Nullable public Map<Locale, Charset> getMapping() {
 		return this.mapping;
 	}
 

@@ -28,6 +28,7 @@ import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.util.unit.DataSize;
+import javax.annotation.Nullable;
 
 /**
  * {@link LoggingSystemProperties} for Logback.
@@ -83,7 +84,7 @@ public class LogbackLoggingSystemProperties extends LoggingSystemProperties {
 	}
 
 	@Override
-	protected void apply(LogFile logFile, PropertyResolver resolver) {
+	protected void apply(@Nullable LogFile logFile, PropertyResolver resolver) {
 		super.apply(logFile, resolver);
 		applyRollingPolicy(resolver, ROLLINGPOLICY_FILE_NAME_PATTERN, "logging.logback.rollingpolicy.file-name-pattern",
 				"logging.pattern.rolling-file-name");

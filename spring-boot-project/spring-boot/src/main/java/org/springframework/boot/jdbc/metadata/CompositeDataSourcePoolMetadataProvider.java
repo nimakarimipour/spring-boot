@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -45,7 +46,7 @@ public class CompositeDataSourcePoolMetadataProvider implements DataSourcePoolMe
 				: Collections.emptyList();
 	}
 
-	 @Override
+	 @Nullable @Override
 	public DataSourcePoolMetadata getDataSourcePoolMetadata(DataSource dataSource) {
 		for (DataSourcePoolMetadataProvider provider : this.providers) {
 			DataSourcePoolMetadata metadata = provider.getDataSourcePoolMetadata(dataSource);

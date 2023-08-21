@@ -26,6 +26,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -71,7 +72,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	 @Override
+	 @Nullable @Override
 	@SuppressWarnings("unchecked")
 	public <T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type) {
 		synchronized (this.instanceSuppliers) {
@@ -84,17 +85,17 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		this.events.addApplicationListener(listener);
 	}
 
-	@Override
+	@Nullable @Override
 	public <T> T get(Class<T> type) throws IllegalStateException {
 		return getOrElseThrow(type, () -> new IllegalStateException(type.getName() + " has not been registered"));
 	}
 
-	@Override
+	@Nullable @Override
 	public <T> T getOrElse(Class<T> type, T other) {
 		return getOrElseSupply(type, () -> other);
 	}
 
-	@Override
+	@Nullable @Override
 	public <T> T getOrElseSupply(Class<T> type, Supplier<T> other) {
 		synchronized (this.instanceSuppliers) {
 			InstanceSupplier<?> instanceSupplier = this.instanceSuppliers.get(type);
@@ -102,7 +103,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	@Override
+	@Nullable @Override
 	public <T, X extends Throwable> T getOrElseThrow(Class<T> type, Supplier<? extends X> exceptionSupplier) throws X {
 		synchronized (this.instanceSuppliers) {
 			InstanceSupplier<?> instanceSupplier = this.instanceSuppliers.get(type);
@@ -113,7 +114,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@Nullable @SuppressWarnings("unchecked")
 	private <T> T getInstance(Class<T> type, InstanceSupplier<?> instanceSupplier) {
 		T instance = (T) this.instances.get(type);
 		if (instance == null) {

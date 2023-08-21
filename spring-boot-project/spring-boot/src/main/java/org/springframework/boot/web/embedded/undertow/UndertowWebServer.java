@@ -44,6 +44,8 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -72,13 +74,13 @@ public class UndertowWebServer implements WebServer {
 
 	private final boolean autoStart;
 
-	 private Undertow undertow;
+	 @SuppressWarnings("NullAway.Init") private Undertow undertow;
 
 	private volatile boolean started = false;
 
-	 private volatile GracefulShutdownHandler gracefulShutdown;
+	 @Nullable private volatile GracefulShutdownHandler gracefulShutdown;
 
-	 private volatile List<Closeable> closeables;
+	 @SuppressWarnings("NullAway.Init") private volatile List<Closeable> closeables;
 
 	/**
 	 * Create a new {@link UndertowWebServer} instance.
@@ -167,7 +169,7 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
-	 protected HttpHandler createHttpHandler() {
+	 @NullUnmarked @Nullable protected HttpHandler createHttpHandler() {
 		HttpHandler handler = null;
 		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
 			handler = factory.getHandler(handler);
@@ -215,7 +217,7 @@ public class UndertowWebServer implements WebServer {
 		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
 	}
 
-	 private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
+	 @Nullable private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
 		SocketAddress socketAddress = channel.getLocalAddress();
 		if (socketAddress instanceof InetSocketAddress inetSocketAddress) {
 			Field sslField = ReflectionUtils.findField(channel.getClass(), "ssl");
@@ -369,9 +371,9 @@ public class UndertowWebServer implements WebServer {
 	 */
 	private static final class CloseableHttpHandlerFactory implements HttpHandlerFactory {
 
-		private final Closeable closeable;
+		@Nullable private final Closeable closeable;
 
-		private CloseableHttpHandlerFactory(Closeable closeable) {
+		private CloseableHttpHandlerFactory(@Nullable Closeable closeable) {
 			this.closeable = closeable;
 		}
 
@@ -387,7 +389,7 @@ public class UndertowWebServer implements WebServer {
 					next.handleRequest(exchange);
 				}
 
-				@Override
+				@NullUnmarked @Override
 				public void close() throws IOException {
 					CloseableHttpHandlerFactory.this.closeable.close();
 				}

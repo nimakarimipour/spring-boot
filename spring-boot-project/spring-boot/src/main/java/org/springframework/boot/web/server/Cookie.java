@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 import org.springframework.boot.convert.DurationUnit;
+import javax.annotation.Nullable;
 
 /**
  * Cookie properties.
@@ -35,27 +36,27 @@ public class Cookie {
 	/**
 	 * Name for the cookie.
 	 */
-	 private String name;
+	 @Nullable private String name;
 
 	/**
 	 * Domain for the cookie.
 	 */
-	 private String domain;
+	 @Nullable private String domain;
 
 	/**
 	 * Path of the cookie.
 	 */
-	 private String path;
+	 @Nullable private String path;
 
 	/**
 	 * Whether to use "HttpOnly" cookies for the cookie.
 	 */
-	 private Boolean httpOnly;
+	 @Nullable private Boolean httpOnly;
 
 	/**
 	 * Whether to always mark the cookie as secure.
 	 */
-	 private Boolean secure;
+	 @Nullable private Boolean secure;
 
 	/**
 	 * Maximum age of the cookie. If a duration suffix is not specified, seconds will be
@@ -63,15 +64,15 @@ public class Cookie {
 	 * time. A value of 0 means the cookie should expire immediately. A negative value
 	 * means no "Max-Age".
 	 */
-	 @DurationUnit(ChronoUnit.SECONDS)
+	 @Nullable @DurationUnit(ChronoUnit.SECONDS)
 	private Duration maxAge;
 
 	/**
 	 * SameSite setting for the cookie.
 	 */
-	 private SameSite sameSite;
+	 @Nullable private SameSite sameSite;
 
-	public String getName() {
+	@Nullable public String getName() {
 		return this.name;
 	}
 
@@ -79,7 +80,7 @@ public class Cookie {
 		this.name = name;
 	}
 
-	public String getDomain() {
+	@Nullable public String getDomain() {
 		return this.domain;
 	}
 
@@ -87,7 +88,7 @@ public class Cookie {
 		this.domain = domain;
 	}
 
-	public String getPath() {
+	@Nullable public String getPath() {
 		return this.path;
 	}
 
@@ -95,7 +96,7 @@ public class Cookie {
 		this.path = path;
 	}
 
-	public Boolean getHttpOnly() {
+	@Nullable public Boolean getHttpOnly() {
 		return this.httpOnly;
 	}
 
@@ -103,7 +104,7 @@ public class Cookie {
 		this.httpOnly = httpOnly;
 	}
 
-	public Boolean getSecure() {
+	@Nullable public Boolean getSecure() {
 		return this.secure;
 	}
 
@@ -111,7 +112,7 @@ public class Cookie {
 		this.secure = secure;
 	}
 
-	public Duration getMaxAge() {
+	@Nullable public Duration getMaxAge() {
 		return this.maxAge;
 	}
 
@@ -119,7 +120,7 @@ public class Cookie {
 		this.maxAge = maxAge;
 	}
 
-	public SameSite getSameSite() {
+	@Nullable public SameSite getSameSite() {
 		return this.sameSite;
 	}
 

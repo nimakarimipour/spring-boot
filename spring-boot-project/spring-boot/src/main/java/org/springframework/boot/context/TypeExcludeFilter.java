@@ -26,6 +26,8 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Provides exclusion {@link TypeFilter TypeFilters} that are loaded from the
@@ -49,9 +51,9 @@ import org.springframework.core.type.filter.TypeFilter;
  */
 public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 
-	 private BeanFactory beanFactory;
+	 @Nullable private BeanFactory beanFactory;
 
-	 private Collection<TypeExcludeFilter> delegates;
+	 @Nullable private Collection<TypeExcludeFilter> delegates;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -71,7 +73,7 @@ public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 		return false;
 	}
 
-	private Collection<TypeExcludeFilter> getDelegates() {
+	@NullUnmarked private Collection<TypeExcludeFilter> getDelegates() {
 		Collection<TypeExcludeFilter> delegates = this.delegates;
 		if (delegates == null) {
 			delegates = ((ListableBeanFactory) this.beanFactory).getBeansOfType(TypeExcludeFilter.class).values();

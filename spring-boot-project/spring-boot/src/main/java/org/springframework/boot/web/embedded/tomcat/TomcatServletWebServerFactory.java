@@ -83,6 +83,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -118,7 +119,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 	 */
 	public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
 
-	 private File baseDirectory;
+	 @Nullable private File baseDirectory;
 
 	private List<Valve> engineValves = new ArrayList<>();
 
@@ -136,7 +137,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 
 	private final List<Connector> additionalTomcatConnectors = new ArrayList<>();
 
-	 private ResourceLoader resourceLoader;
+	 @Nullable private ResourceLoader resourceLoader;
 
 	private String protocol = DEFAULT_PROTOCOL;
 
@@ -940,7 +941,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			return delegate.generateHeader(cookie, request);
 		}
 
-		 private SameSite getSameSite(Cookie cookie) {
+		 @Nullable private SameSite getSameSite(Cookie cookie) {
 			for (CookieSameSiteSupplier supplier : this.suppliers) {
 				SameSite sameSite = supplier.getSameSite(cookie);
 				if (sameSite != null) {

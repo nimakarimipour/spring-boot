@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.bind;
 
 import org.springframework.core.env.PropertyResolver;
+import javax.annotation.Nullable;
 
 /**
  * Optional strategy that used by a {@link Binder} to resolve property placeholders.

@@ -29,6 +29,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -49,7 +50,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 		FALLBACKS = Collections.unmodifiableSet(fallbacks);
 	}
 
-	private final MessageSource messageSource;
+	@Nullable private final MessageSource messageSource;
 
 	 public MessageInterpolatorFactory() {
 		this(null);
@@ -62,7 +63,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 	 * @param messageSource message source to be used by the interpolator
 	 * @since 2.6.0
 	 */
-	public MessageInterpolatorFactory(MessageSource messageSource) {
+	public MessageInterpolatorFactory(@Nullable MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
 
@@ -88,7 +89,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 		}
 	}
 
-	 private MessageInterpolator getFallback() {
+	 @Nullable private MessageInterpolator getFallback() {
 		for (String fallback : FALLBACKS) {
 			try {
 				return getFallback(fallback);

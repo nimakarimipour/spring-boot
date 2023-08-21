@@ -28,6 +28,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -56,7 +58,7 @@ class WebFilterHandler extends ServletComponentHandler {
 		registry.registerBeanDefinition(name, builder.getBeanDefinition());
 	}
 
-	 private EnumSet<DispatcherType> extractDispatcherTypes(Map<String, Object> attributes) {
+	 @NullUnmarked private EnumSet<DispatcherType> extractDispatcherTypes(Map<String, Object> attributes) {
 		DispatcherType[] dispatcherTypes = (DispatcherType[]) attributes.get("dispatcherTypes");
 		if (dispatcherTypes.length == 0) {
 			return EnumSet.noneOf(DispatcherType.class);
@@ -67,7 +69,7 @@ class WebFilterHandler extends ServletComponentHandler {
 		return EnumSet.of(dispatcherTypes[0], Arrays.copyOfRange(dispatcherTypes, 1, dispatcherTypes.length));
 	}
 
-	 private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
+	 @Nullable private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
 		return (String) (StringUtils.hasText((String) attributes.get("filterName")) ? attributes.get("filterName")
 				: beanDefinition.getBeanClassName());
 	}

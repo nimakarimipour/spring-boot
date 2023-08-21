@@ -22,6 +22,7 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.MapPropertySource;
+import javax.annotation.Nullable;
 
 
 /**
@@ -69,7 +70,7 @@ public final class OriginTrackedMapPropertySource extends MapPropertySource impl
 		return value;
 	}
 
-	 @Override
+	 @Nullable @Override
 	public Origin getOrigin(String name) {
 		Object value = super.getProperty(name);
 		if (value instanceof OriginTrackedValue originTrackedValue) {

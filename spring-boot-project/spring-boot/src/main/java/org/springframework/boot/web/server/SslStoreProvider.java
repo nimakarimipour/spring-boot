@@ -17,6 +17,7 @@
 package org.springframework.boot.web.server;
 
 import java.security.KeyStore;
+import javax.annotation.Nullable;
 
 
 /**
@@ -40,14 +41,14 @@ public interface SslStoreProvider {
 	 * @return the trust store to use
 	 * @throws Exception on load error
 	 */
-	KeyStore getTrustStore() throws Exception;
+	@Nullable KeyStore getTrustStore() throws Exception;
 
 	/**
 	 * Return the password of the private key in the key store.
 	 * @return the key password
 	 * @since 2.7.2
 	 */
-	 default String getKeyPassword() {
+	 @Nullable default String getKeyPassword() {
 		return null;
 	}
 

@@ -27,6 +27,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 
 /**
@@ -74,8 +75,8 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 		this.mappers = mappers;
 	}
 
-	 @Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	 @Nullable @Override
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
 		}

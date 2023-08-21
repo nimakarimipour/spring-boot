@@ -50,6 +50,7 @@ import org.springframework.http.server.reactive.TomcatHttpHandlerAdapter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create a {@link TomcatWebServer}.
@@ -68,7 +69,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	 */
 	public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
 
-	 private File baseDirectory;
+	 @Nullable private File baseDirectory;
 
 	private final List<Valve> engineValves = new ArrayList<>();
 

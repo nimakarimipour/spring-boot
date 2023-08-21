@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import javax.annotation.Nullable;
 
 
 /**
@@ -43,9 +44,9 @@ class SpringApplicationBannerPrinter {
 
 	private final ResourceLoader resourceLoader;
 
-	private final Banner fallbackBanner;
+	@Nullable private final Banner fallbackBanner;
 
-	SpringApplicationBannerPrinter(ResourceLoader resourceLoader, Banner fallbackBanner) {
+	SpringApplicationBannerPrinter(ResourceLoader resourceLoader, @Nullable Banner fallbackBanner) {
 		this.resourceLoader = resourceLoader;
 		this.fallbackBanner = fallbackBanner;
 	}
@@ -78,7 +79,7 @@ class SpringApplicationBannerPrinter {
 		return DEFAULT_BANNER;
 	}
 
-	 private Banner getTextBanner(Environment environment) {
+	 @Nullable private Banner getTextBanner(Environment environment) {
 		String location = environment.getProperty(BANNER_LOCATION_PROPERTY, DEFAULT_BANNER_LOCATION);
 		Resource resource = this.resourceLoader.getResource(location);
 		try {

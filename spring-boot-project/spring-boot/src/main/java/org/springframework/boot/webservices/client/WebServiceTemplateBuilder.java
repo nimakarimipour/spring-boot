@@ -37,6 +37,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.destination.DestinationProvider;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.transport.WebServiceMessageSender;
+import javax.annotation.Nullable;
 
 
 /**
@@ -59,23 +60,23 @@ public class WebServiceTemplateBuilder {
 
 	private final boolean detectHttpMessageSender;
 
-	private final Set<ClientInterceptor> interceptors;
+	@Nullable private final Set<ClientInterceptor> interceptors;
 
-	private final Set<WebServiceTemplateCustomizer> internalCustomizers;
+	@Nullable private final Set<WebServiceTemplateCustomizer> internalCustomizers;
 
 	private final Set<WebServiceTemplateCustomizer> customizers;
 
 	private final WebServiceMessageSenders messageSenders;
 
-	private final Marshaller marshaller;
+	@Nullable private final Marshaller marshaller;
 
-	private final Unmarshaller unmarshaller;
+	@Nullable private final Unmarshaller unmarshaller;
 
-	private final DestinationProvider destinationProvider;
+	@Nullable private final DestinationProvider destinationProvider;
 
-	private final Class<? extends TransformerFactory> transformerFactoryClass;
+	@Nullable private final Class<? extends TransformerFactory> transformerFactoryClass;
 
-	private final WebServiceMessageFactory messageFactory;
+	@Nullable private final WebServiceMessageFactory messageFactory;
 
 	 public WebServiceTemplateBuilder(WebServiceTemplateCustomizer... customizers) {
 		this.detectHttpMessageSender = true;
@@ -90,11 +91,11 @@ public class WebServiceTemplateBuilder {
 		this.messageFactory = null;
 	}
 
-	private WebServiceTemplateBuilder(boolean detectHttpMessageSender, Set<ClientInterceptor> interceptors,
-			Set<WebServiceTemplateCustomizer> internalCustomizers, Set<WebServiceTemplateCustomizer> customizers,
-			WebServiceMessageSenders messageSenders, Marshaller marshaller, Unmarshaller unmarshaller,
-			DestinationProvider destinationProvider, Class<? extends TransformerFactory> transformerFactoryClass,
-			WebServiceMessageFactory messageFactory) {
+	private WebServiceTemplateBuilder(boolean detectHttpMessageSender, @Nullable Set<ClientInterceptor> interceptors,
+			@Nullable Set<WebServiceTemplateCustomizer> internalCustomizers, Set<WebServiceTemplateCustomizer> customizers,
+			WebServiceMessageSenders messageSenders, @Nullable Marshaller marshaller, @Nullable Unmarshaller unmarshaller,
+			@Nullable DestinationProvider destinationProvider, @Nullable Class<? extends TransformerFactory> transformerFactoryClass,
+			@Nullable WebServiceMessageFactory messageFactory) {
 		this.detectHttpMessageSender = detectHttpMessageSender;
 		this.interceptors = interceptors;
 		this.internalCustomizers = internalCustomizers;
@@ -472,7 +473,7 @@ public class WebServiceTemplateBuilder {
 	}
 
 	private void applyCustomizers(WebServiceTemplate webServiceTemplate,
-			Set<WebServiceTemplateCustomizer> customizers) {
+			@Nullable Set<WebServiceTemplateCustomizer> customizers) {
 		if (!CollectionUtils.isEmpty(customizers)) {
 			for (WebServiceTemplateCustomizer customizer : customizers) {
 				customizer.customize(webServiceTemplate);
@@ -492,11 +493,11 @@ public class WebServiceTemplateBuilder {
 		}
 	}
 
-	private <T> Set<T> append(Set<T> set, T addition) {
+	private <T> Set<T> append(@Nullable Set<T> set, T addition) {
 		return append(set, Collections.singleton(addition));
 	}
 
-	private static <T> Set<T> append(Set<T> set, Collection<? extends T> additions) {
+	private static <T> Set<T> append(@Nullable Set<T> set, Collection<? extends T> additions) {
 		Set<T> result = new LinkedHashSet<>((set != null) ? set : Collections.emptySet());
 		result.addAll((additions != null) ? additions : Collections.emptyList());
 		return Collections.unmodifiableSet(result);

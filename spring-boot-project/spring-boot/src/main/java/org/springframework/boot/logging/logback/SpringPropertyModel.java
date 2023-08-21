@@ -17,6 +17,7 @@
 package org.springframework.boot.logging.logback;
 
 import ch.qos.logback.core.model.NamedModel;
+import javax.annotation.Nullable;
 
 /**
  * Logback {@link NamedModel model} to support {@code <springProperty>} tags. Allows
@@ -28,13 +29,13 @@ import ch.qos.logback.core.model.NamedModel;
  */
 class SpringPropertyModel extends NamedModel {
 
-	 private String scope;
+	 @Nullable private String scope;
 
-	 private String defaultValue;
+	 @Nullable private String defaultValue;
 
-	 private String source;
+	 @Nullable private String source;
 
-	String getScope() {
+	@Nullable String getScope() {
 		return this.scope;
 	}
 
@@ -42,7 +43,7 @@ class SpringPropertyModel extends NamedModel {
 		this.scope = scope;
 	}
 
-	String getDefaultValue() {
+	@Nullable String getDefaultValue() {
 		return this.defaultValue;
 	}
 
@@ -50,7 +51,7 @@ class SpringPropertyModel extends NamedModel {
 		this.defaultValue = defaultValue;
 	}
 
-	String getSource() {
+	@Nullable String getSource() {
 		return this.source;
 	}
 

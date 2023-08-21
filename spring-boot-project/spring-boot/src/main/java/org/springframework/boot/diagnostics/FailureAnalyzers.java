@@ -32,6 +32,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.io.support.SpringFactoriesLoader.FailureHandler;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 
 /**
@@ -97,7 +98,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return analyzers;
 	}
 
-	 private static ArgumentResolver getArgumentResolver(ConfigurableApplicationContext context) {
+	 @Nullable private static ArgumentResolver getArgumentResolver(ConfigurableApplicationContext context) {
 		if (context == null) {
 			return null;
 		}
@@ -112,7 +113,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return report(analysis);
 	}
 
-	 private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
+	 @Nullable private FailureAnalysis analyze(Throwable failure, List<FailureAnalyzer> analyzers) {
 		for (FailureAnalyzer analyzer : analyzers) {
 			try {
 				FailureAnalysis analysis = analyzer.analyze(failure);
@@ -127,7 +128,7 @@ final class FailureAnalyzers implements SpringBootExceptionReporter {
 		return null;
 	}
 
-	private boolean report(FailureAnalysis analysis) {
+	private boolean report(@Nullable FailureAnalysis analysis) {
 		List<FailureAnalysisReporter> reporters = this.springFactoriesLoader.load(FailureAnalysisReporter.class);
 		if (analysis == null || reporters.isEmpty()) {
 			return false;

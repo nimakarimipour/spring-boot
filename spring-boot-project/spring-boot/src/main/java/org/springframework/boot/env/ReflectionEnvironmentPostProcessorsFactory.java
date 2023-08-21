@@ -27,6 +27,7 @@ import org.springframework.boot.BootstrapRegistry;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.boot.util.Instantiator;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -39,11 +40,11 @@ class ReflectionEnvironmentPostProcessorsFactory implements EnvironmentPostProce
 
 	private final List<Class<?>> classes;
 
-	 private ClassLoader classLoader;
+	 @SuppressWarnings("NullAway.Init") private ClassLoader classLoader;
 
 	private final List<String> classNames;
 
-	 ReflectionEnvironmentPostProcessorsFactory(Class<?>... classes) {
+	 @NullUnmarked ReflectionEnvironmentPostProcessorsFactory(Class<?>... classes) {
 		this.classes = new ArrayList<>(Arrays.asList(classes));
 		this.classNames = null;
 	}
@@ -52,7 +53,7 @@ class ReflectionEnvironmentPostProcessorsFactory implements EnvironmentPostProce
 		this(classLoader, Arrays.asList(classNames));
 	}
 
-	 ReflectionEnvironmentPostProcessorsFactory(ClassLoader classLoader, List<String> classNames) {
+	 @NullUnmarked ReflectionEnvironmentPostProcessorsFactory(ClassLoader classLoader, List<String> classNames) {
 		this.classes = null;
 		this.classLoader = classLoader;
 		this.classNames = classNames;

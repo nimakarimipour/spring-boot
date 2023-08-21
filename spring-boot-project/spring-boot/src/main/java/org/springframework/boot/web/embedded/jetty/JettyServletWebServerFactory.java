@@ -84,6 +84,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -125,9 +126,9 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 
 	private Set<JettyServerCustomizer> jettyServerCustomizers = new LinkedHashSet<>();
 
-	 private ResourceLoader resourceLoader;
+	 @SuppressWarnings("NullAway.Init") private ResourceLoader resourceLoader;
 
-	 private ThreadPool threadPool;
+	 @SuppressWarnings("NullAway.Init") private ThreadPool threadPool;
 
 	/**
 	 * Create a new {@link JettyServletWebServerFactory} instance.
@@ -282,7 +283,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 				.forEach((locale, charset) -> context.addLocaleEncoding(locale.toString(), charset.toString()));
 	}
 
-	 private File getTempDirectory() {
+	 @NullUnmarked private File getTempDirectory() {
 		String temp = System.getProperty("java.io.tmpdir");
 		return (temp != null) ? new File(temp) : null;
 	}
@@ -552,7 +553,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 			this.delegate = delegate;
 		}
 
-		 @Override
+		 @NullUnmarked @Override
 		public Resource addPath(String path) throws IOException {
 			if (path.startsWith("/org/springframework/boot")) {
 				return null;
@@ -712,7 +713,7 @@ public class JettyServletWebServerFactory extends AbstractServletWebServerFactor
 				};
 			}
 
-			 private SameSite getSameSite(Cookie cookie) {
+			 @NullUnmarked private SameSite getSameSite(Cookie cookie) {
 				for (CookieSameSiteSupplier supplier : SuppliedSameSiteCookieHandlerWrapper.this.suppliers) {
 					SameSite sameSite = supplier.getSameSite(cookie);
 					if (sameSite != null) {

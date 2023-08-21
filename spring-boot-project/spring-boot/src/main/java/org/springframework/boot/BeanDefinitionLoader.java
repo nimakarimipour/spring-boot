@@ -46,6 +46,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -73,7 +74,7 @@ class BeanDefinitionLoader {
 
 	private final ClassPathBeanDefinitionScanner scanner;
 
-	 private ResourceLoader resourceLoader;
+	 @SuppressWarnings("NullAway.Init") private ResourceLoader resourceLoader;
 
 	/**
 	 * Create a new {@link BeanDefinitionLoader} that will load beans into the specified
@@ -81,7 +82,7 @@ class BeanDefinitionLoader {
 	 * @param registry the bean definition registry that will contain the loaded beans
 	 * @param sources the bean sources
 	 */
-	 BeanDefinitionLoader(BeanDefinitionRegistry registry, Object... sources) {
+	 @NullUnmarked BeanDefinitionLoader(BeanDefinitionRegistry registry, Object... sources) {
 		Assert.notNull(registry, "Registry must not be null");
 		Assert.notEmpty(sources, "Sources must not be empty");
 		this.sources = sources;

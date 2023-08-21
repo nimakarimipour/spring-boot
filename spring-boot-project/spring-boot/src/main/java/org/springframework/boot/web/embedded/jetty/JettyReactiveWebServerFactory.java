@@ -75,9 +75,9 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private Set<JettyServerCustomizer> jettyServerCustomizers = new LinkedHashSet<>();
 
-	 private JettyResourceFactory resourceFactory;
+	 @SuppressWarnings("NullAway.Init") private JettyResourceFactory resourceFactory;
 
-	 private ThreadPool threadPool;
+	 @SuppressWarnings("NullAway.Init") private ThreadPool threadPool;
 
 	/**
 	 * Create a new {@link JettyServletWebServerFactory} instance.

@@ -25,6 +25,7 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -104,7 +105,7 @@ public interface CookieSameSiteSupplier {
 	 * @return a new {@link CookieSameSiteSupplier} that only calls this supplier when the
 	 * cookie matches the predicate
 	 */
-	 default CookieSameSiteSupplier when(Predicate<Cookie> predicate) {
+	 @NullUnmarked default CookieSameSiteSupplier when(Predicate<Cookie> predicate) {
 		Assert.notNull(predicate, "Predicate must not be null");
 		return (cookie) -> predicate.test(cookie) ? getSameSite(cookie) : null;
 	}

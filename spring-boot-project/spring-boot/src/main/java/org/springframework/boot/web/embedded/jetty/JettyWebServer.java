@@ -40,6 +40,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -91,7 +92,7 @@ public class JettyWebServer implements WebServer {
 		initialize();
 	}
 
-	 private GracefulShutdown createGracefulShutdown(Server server) {
+	 @NullUnmarked private GracefulShutdown createGracefulShutdown(Server server) {
 		StatisticsHandler statisticsHandler = findStatisticsHandler(server);
 		if (statisticsHandler == null) {
 			return null;
@@ -103,7 +104,7 @@ public class JettyWebServer implements WebServer {
 		return findStatisticsHandler(server.getHandler());
 	}
 
-	 private StatisticsHandler findStatisticsHandler(Handler handler) {
+	 @NullUnmarked private StatisticsHandler findStatisticsHandler(Handler handler) {
 		if (handler instanceof StatisticsHandler statisticsHandler) {
 			return statisticsHandler;
 		}
@@ -204,7 +205,7 @@ public class JettyWebServer implements WebServer {
 				.map(ContextHandler::getContextPath).collect(Collectors.joining(" "));
 	}
 
-	 private ContextHandler findContextHandler(Handler handler) {
+	 @NullUnmarked private ContextHandler findContextHandler(Handler handler) {
 		while (handler instanceof HandlerWrapper handlerWrapper) {
 			if (handler instanceof ContextHandler contextHandler) {
 				return contextHandler;

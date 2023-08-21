@@ -24,6 +24,7 @@ import jakarta.validation.MessageInterpolator;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -114,7 +115,7 @@ class MessageSourceMessageInterpolator implements MessageInterpolator {
 		return buf.toString();
 	}
 
-	 private String replaceParameter(String parameter, Locale locale, Set<String> visitedParameters) {
+	 @NullUnmarked private String replaceParameter(String parameter, Locale locale, Set<String> visitedParameters) {
 		parameter = replaceParameters(parameter, locale, visitedParameters);
 		String value = this.messageSource.getMessage(parameter, null, null, locale);
 		return (value != null && !isUsingCodeAsDefaultMessage(value, parameter))

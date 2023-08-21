@@ -26,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -78,7 +79,7 @@ class SpringApplicationBannerPrinter {
 		return DEFAULT_BANNER;
 	}
 
-	 private Banner getTextBanner(Environment environment) {
+	 @NullUnmarked private Banner getTextBanner(Environment environment) {
 		String location = environment.getProperty(BANNER_LOCATION_PROPERTY, DEFAULT_BANNER_LOCATION);
 		Resource resource = this.resourceLoader.getResource(location);
 		try {

@@ -43,19 +43,19 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 
 	private int port = 8080;
 
-	 private InetAddress address;
+	 @SuppressWarnings("NullAway.Init") private InetAddress address;
 
 	private Set<ErrorPage> errorPages = new LinkedHashSet<>();
 
-	 private Ssl ssl;
+	 @SuppressWarnings("NullAway.Init") private Ssl ssl;
 
-	 private SslStoreProvider sslStoreProvider;
+	 @SuppressWarnings("NullAway.Init") private SslStoreProvider sslStoreProvider;
 
-	 private Http2 http2;
+	 @SuppressWarnings("NullAway.Init") private Http2 http2;
 
-	 private Compression compression;
+	 @SuppressWarnings("NullAway.Init") private Compression compression;
 
-	 private String serverHeader;
+	 @SuppressWarnings("NullAway.Init") private String serverHeader;
 
 	private Shutdown shutdown = Shutdown.IMMEDIATE;
 

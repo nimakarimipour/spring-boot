@@ -35,9 +35,9 @@ final class DefaultPropertyMapper implements PropertyMapper {
 
 	public static final PropertyMapper INSTANCE = new DefaultPropertyMapper();
 
-	 private LastMapping<ConfigurationPropertyName, List<String>> lastMappedConfigurationPropertyName;
+	 @SuppressWarnings("NullAway.Init") private LastMapping<ConfigurationPropertyName, List<String>> lastMappedConfigurationPropertyName;
 
-	 private LastMapping<String, ConfigurationPropertyName> lastMappedPropertyName;
+	 @SuppressWarnings("NullAway.Init") private LastMapping<String, ConfigurationPropertyName> lastMappedPropertyName;
 
 	private DefaultPropertyMapper() {
 	}

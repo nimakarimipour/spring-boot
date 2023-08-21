@@ -43,6 +43,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -82,7 +83,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 	static class DependsOnDatabaseInitializationPostProcessor
 			implements BeanFactoryPostProcessor, EnvironmentAware, Ordered {
 
-		 private Environment environment;
+		 @SuppressWarnings("NullAway.Init") private Environment environment;
 
 		@Override
 		public void setEnvironment(Environment environment) {
@@ -94,7 +95,7 @@ public class DatabaseInitializationDependencyConfigurer implements ImportBeanDef
 			return 0;
 		}
 
-		 @Override
+		 @NullUnmarked @Override
 		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 			InitializerBeanNames initializerBeanNames = detectInitializerBeanNames(beanFactory);
 			if (initializerBeanNames.isEmpty()) {

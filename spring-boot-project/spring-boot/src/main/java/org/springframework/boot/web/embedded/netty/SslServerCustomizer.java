@@ -49,6 +49,7 @@ import org.springframework.boot.web.server.SslConfigurationValidator;
 import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -162,7 +163,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		return loadStore(type, provider, resource, password);
 	}
 
-	 private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
+	 @NullUnmarked private KeyStore loadTrustStore(String type, String provider, String resource, String password) throws Exception {
 		if (resource == null) {
 			return null;
 		}

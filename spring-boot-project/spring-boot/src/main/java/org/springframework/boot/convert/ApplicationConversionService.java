@@ -38,6 +38,7 @@ import org.springframework.format.Printer;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.StringValueResolver;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -54,11 +55,11 @@ import org.springframework.util.StringValueResolver;
  */
 public class ApplicationConversionService extends FormattingConversionService {
 
-	 private static volatile ApplicationConversionService sharedInstance;
+	 @SuppressWarnings("NullAway.Init") private static volatile ApplicationConversionService sharedInstance;
 
 	private final boolean unmodifiable;
 
-	 public ApplicationConversionService() {
+	 @NullUnmarked public ApplicationConversionService() {
 		this(null);
 	}
 
@@ -180,7 +181,7 @@ public class ApplicationConversionService extends FormattingConversionService {
 	 * @return the shared {@code ApplicationConversionService} instance (never
 	 * {@code null})
 	 */
-	 public static ConversionService getSharedInstance() {
+	 @NullUnmarked public static ConversionService getSharedInstance() {
 		ApplicationConversionService sharedInstance = ApplicationConversionService.sharedInstance;
 		if (sharedInstance == null) {
 			synchronized (ApplicationConversionService.class) {

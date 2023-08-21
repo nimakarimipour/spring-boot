@@ -23,6 +23,7 @@ import io.undertow.servlet.api.DeploymentManager;
 
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -59,7 +60,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 		this.manager = findManager(httpHandlerFactories);
 	}
 
-	 private DeploymentManager findManager(Iterable<HttpHandlerFactory> httpHandlerFactories) {
+	 @NullUnmarked private DeploymentManager findManager(Iterable<HttpHandlerFactory> httpHandlerFactories) {
 		for (HttpHandlerFactory httpHandlerFactory : httpHandlerFactories) {
 			if (httpHandlerFactory instanceof DeploymentManagerHttpHandlerFactory deploymentManagerFactory) {
 				return deploymentManagerFactory.getDeploymentManager();

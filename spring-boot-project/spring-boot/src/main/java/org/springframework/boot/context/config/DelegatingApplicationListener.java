@@ -49,7 +49,7 @@ public class DelegatingApplicationListener implements ApplicationListener<Applic
 
 	private int order = 0;
 
-	 private SimpleApplicationEventMulticaster multicaster;
+	 @SuppressWarnings("NullAway.Init") private SimpleApplicationEventMulticaster multicaster;
 
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {

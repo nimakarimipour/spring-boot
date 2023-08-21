@@ -23,6 +23,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -60,7 +61,7 @@ public class LogFile {
 	 * Create a new {@link LogFile} instance.
 	 * @param file a reference to the file to write
 	 */
-	 LogFile(String file) {
+	 @NullUnmarked LogFile(String file) {
 		this(file, null);
 	}
 
@@ -112,7 +113,7 @@ public class LogFile {
 	 * @return a {@link LogFile} or {@code null} if the environment didn't contain any
 	 * suitable properties
 	 */
-	 public static LogFile get(PropertyResolver propertyResolver) {
+	 @NullUnmarked public static LogFile get(PropertyResolver propertyResolver) {
 		String file = propertyResolver.getProperty(FILE_NAME_PROPERTY);
 		String path = propertyResolver.getProperty(FILE_PATH_PROPERTY);
 		if (StringUtils.hasLength(file) || StringUtils.hasLength(path)) {

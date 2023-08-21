@@ -18,6 +18,7 @@ package org.springframework.boot.context.config;
 
 import org.springframework.boot.origin.Origin;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -35,7 +36,7 @@ public class ConfigDataLocationNotFoundException extends ConfigDataNotFoundExcep
 	 * Create a new {@link ConfigDataLocationNotFoundException} instance.
 	 * @param location the location that could not be found
 	 */
-	 public ConfigDataLocationNotFoundException(ConfigDataLocation location) {
+	 @NullUnmarked public ConfigDataLocationNotFoundException(ConfigDataLocation location) {
 		this(location, null);
 	}
 

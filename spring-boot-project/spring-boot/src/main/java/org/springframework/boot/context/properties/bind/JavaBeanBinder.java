@@ -36,6 +36,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.context.properties.source.ConfigurationPropertyState;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -48,7 +49,7 @@ class JavaBeanBinder implements DataObjectBinder {
 
 	static final JavaBeanBinder INSTANCE = new JavaBeanBinder();
 
-	 @Override
+	 @NullUnmarked @Override
 	public <T> T bind(ConfigurationPropertyName name, Bindable<T> target, Context context,
 			DataObjectPropertyBinder propertyBinder) {
 		boolean hasKnownBindableProperties = target.getValue() != null && hasKnownBindableProperties(name, context);
@@ -61,7 +62,7 @@ class JavaBeanBinder implements DataObjectBinder {
 		return (bound ? beanSupplier.get() : null);
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	@SuppressWarnings("unchecked")
 	public <T> T create(Bindable<T> target, Context context) {
 		Class<T> type = (Class<T>) target.getType().resolve();
@@ -114,7 +115,7 @@ class JavaBeanBinder implements DataObjectBinder {
 	 */
 	static class Bean<T> {
 
-		 private static Bean<?> cached;
+		 @SuppressWarnings("NullAway.Init") private static Bean<?> cached;
 
 		private final ResolvableType type;
 
@@ -209,7 +210,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			});
 		}
 
-		 @SuppressWarnings("unchecked")
+		 @NullUnmarked @SuppressWarnings("unchecked")
 		static <T> Bean<T> get(Bindable<T> bindable, boolean canCallGetValue) {
 			ResolvableType type = bindable.getType();
 			Class<?> resolvedType = type.resolve(Object.class);
@@ -256,9 +257,9 @@ class JavaBeanBinder implements DataObjectBinder {
 
 		private final Supplier<T> factory;
 
-		 private T instance;
+		 @SuppressWarnings("NullAway.Init") private T instance;
 
-		 BeanSupplier(Supplier<T> factory) {
+		 @NullUnmarked BeanSupplier(Supplier<T> factory) {
 			this.factory = factory;
 		}
 
@@ -281,13 +282,13 @@ class JavaBeanBinder implements DataObjectBinder {
 
 		private final ResolvableType declaringClassType;
 
-		 private Method getter;
+		 @SuppressWarnings("NullAway.Init") private Method getter;
 
-		 private Method setter;
+		 @SuppressWarnings("NullAway.Init") private Method setter;
 
-		 private Field field;
+		 @SuppressWarnings("NullAway.Init") private Field field;
 
-		 BeanProperty(String name, ResolvableType declaringClassType) {
+		 @NullUnmarked BeanProperty(String name, ResolvableType declaringClassType) {
 			this.name = DataObjectPropertyName.toDashedForm(name);
 			this.declaringClassType = declaringClassType;
 		}
@@ -331,7 +332,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			return ResolvableType.forMethodParameter(methodParameter, this.declaringClassType);
 		}
 
-		 Annotation[] getAnnotations() {
+		 @NullUnmarked Annotation[] getAnnotations() {
 			try {
 				return (this.field != null) ? this.field.getDeclaredAnnotations() : null;
 			}
@@ -340,7 +341,7 @@ class JavaBeanBinder implements DataObjectBinder {
 			}
 		}
 
-		 Supplier<Object> getValue(Supplier<?> instance) {
+		 @NullUnmarked Supplier<Object> getValue(Supplier<?> instance) {
 			if (this.getter == null) {
 				return null;
 			}

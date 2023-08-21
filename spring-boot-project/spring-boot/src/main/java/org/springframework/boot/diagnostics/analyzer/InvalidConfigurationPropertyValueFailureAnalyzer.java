@@ -30,6 +30,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -48,7 +49,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	protected FailureAnalysis analyze(Throwable rootFailure, InvalidConfigurationPropertyValueException cause) {
 		List<Descriptor> descriptors = getDescriptors(cause.getName());
 		if (descriptors.isEmpty()) {

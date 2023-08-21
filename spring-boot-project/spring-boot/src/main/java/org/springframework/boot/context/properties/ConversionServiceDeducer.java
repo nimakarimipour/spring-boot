@@ -31,6 +31,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -47,7 +48,7 @@ class ConversionServiceDeducer {
 		this.applicationContext = applicationContext;
 	}
 
-	 List<ConversionService> getConversionServices() {
+	 @NullUnmarked List<ConversionService> getConversionServices() {
 		if (hasUserDefinedConfigurationServiceBean()) {
 			return Collections.singletonList(this.applicationContext
 					.getBean(ConfigurableApplicationContext.CONVERSION_SERVICE_BEAN_NAME, ConversionService.class));

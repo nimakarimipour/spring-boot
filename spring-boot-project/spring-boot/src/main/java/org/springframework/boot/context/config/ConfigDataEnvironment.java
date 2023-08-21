@@ -44,6 +44,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -223,7 +224,7 @@ class ConfigDataEnvironment {
 	 * Process all contributions and apply any newly imported property sources to the
 	 * {@link Environment}.
 	 */
-	 void processAndApply() {
+	 @NullUnmarked void processAndApply() {
 		ConfigDataImporter importer = new ConfigDataImporter(this.logFactory, this.notFoundAction, this.resolvers,
 				this.loaders);
 		registerBootstrapBinder(this.contributors, null, DENY_INACTIVE_BINDING);
@@ -237,7 +238,7 @@ class ConfigDataEnvironment {
 				importer.getOptionalLocations());
 	}
 
-	 private ConfigDataEnvironmentContributors processInitial(ConfigDataEnvironmentContributors contributors,
+	 @NullUnmarked private ConfigDataEnvironmentContributors processInitial(ConfigDataEnvironmentContributors contributors,
 			ConfigDataImporter importer) {
 		this.logger.trace("Processing initial config data environment contributors without activation context");
 		contributors = contributors.withProcessedImports(importer, null);
@@ -286,7 +287,7 @@ class ConfigDataEnvironment {
 		}
 	}
 
-	 private Collection<? extends String> getIncludedProfiles(ConfigDataEnvironmentContributors contributors,
+	 @NullUnmarked private Collection<? extends String> getIncludedProfiles(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext) {
 		PlaceholdersResolver placeholdersResolver = new ConfigDataEnvironmentContributorPlaceholdersResolver(
 				contributors, activationContext, null, true);

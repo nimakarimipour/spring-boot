@@ -29,6 +29,7 @@ import org.springframework.core.env.PropertySource.StubPropertySource;
 import org.springframework.core.env.PropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -101,7 +102,7 @@ public final class ConfigurationPropertySources {
 				&& ((SpringConfigurationPropertySources) attached.getSource()).isUsingSources(sources);
 	}
 
-	 static PropertySource<?> getAttached(MutablePropertySources sources) {
+	 @NullUnmarked static PropertySource<?> getAttached(MutablePropertySources sources) {
 		return (sources != null) ? sources.get(ATTACHED_PROPERTY_SOURCE_NAME) : null;
 	}
 

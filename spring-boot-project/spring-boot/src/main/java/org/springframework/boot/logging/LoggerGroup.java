@@ -34,7 +34,7 @@ public final class LoggerGroup {
 
 	private final List<String> members;
 
-	 private LogLevel configuredLevel;
+	 @SuppressWarnings("NullAway.Init") private LogLevel configuredLevel;
 
 	LoggerGroup(String name, List<String> members) {
 		this.name = name;

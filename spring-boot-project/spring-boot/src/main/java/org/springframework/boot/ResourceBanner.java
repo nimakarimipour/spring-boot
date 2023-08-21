@@ -38,6 +38,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -103,7 +104,7 @@ public class ResourceBanner implements Banner {
 		return versions;
 	}
 
-	 protected String getApplicationVersion(Class<?> sourceClass) {
+	 @NullUnmarked protected String getApplicationVersion(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationVersion() : null;
 	}
@@ -134,7 +135,7 @@ public class ResourceBanner implements Banner {
 		return new PropertySourcesPropertyResolver(sources);
 	}
 
-	 protected String getApplicationTitle(Class<?> sourceClass) {
+	 @NullUnmarked protected String getApplicationTitle(Class<?> sourceClass) {
 		Package sourcePackage = (sourceClass != null) ? sourceClass.getPackage() : null;
 		return (sourcePackage != null) ? sourcePackage.getImplementationTitle() : null;
 	}

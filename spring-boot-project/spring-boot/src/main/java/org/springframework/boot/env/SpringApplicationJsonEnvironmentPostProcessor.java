@@ -41,6 +41,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.StandardServletEnvironment;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -111,7 +112,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 	 * @param map the map that should be flattened
 	 * @return the flattened map
 	 */
-	 private Map<String, Object> flatten(Map<String, Object> map) {
+	 @NullUnmarked private Map<String, Object> flatten(Map<String, Object> map) {
 		Map<String, Object> result = new LinkedHashMap<>();
 		flatten(null, result, map);
 		return result;
@@ -211,7 +212,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 			return PropertySourceOrigin.get(this.propertySource, this.propertyName);
 		}
 
-		 static JsonPropertyValue get(PropertySource<?> propertySource) {
+		 @NullUnmarked static JsonPropertyValue get(PropertySource<?> propertySource) {
 			for (String candidate : CANDIDATES) {
 				Object value = propertySource.getProperty(candidate);
 				if (value instanceof String string && StringUtils.hasLength(string)) {

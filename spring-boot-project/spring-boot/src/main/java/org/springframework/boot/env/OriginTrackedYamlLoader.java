@@ -44,6 +44,7 @@ import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.boot.origin.TextResourceOrigin;
 import org.springframework.boot.origin.TextResourceOrigin.Location;
 import org.springframework.core.io.Resource;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -94,7 +95,7 @@ class OriginTrackedYamlLoader extends YamlProcessor {
 			super(loadingConfig);
 		}
 
-		 @Override
+		 @NullUnmarked @Override
 		public Object getData() throws NoSuchElementException {
 			Object data = super.getData();
 			if (data instanceof CharSequence charSequence && charSequence.isEmpty()) {

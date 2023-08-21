@@ -19,6 +19,7 @@ package org.springframework.boot.context.properties.source;
 import java.util.function.Predicate;
 
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -41,7 +42,7 @@ class FilteredConfigurationPropertiesSource implements ConfigurationPropertySour
 		this.filter = filter;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		boolean filtered = getFilter().test(name);
 		return filtered ? getSource().getConfigurationProperty(name) : null;

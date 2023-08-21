@@ -35,6 +35,7 @@ import org.reactivestreams.Publisher;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -106,7 +107,7 @@ public final class ConnectionFactoryBuilder {
 		return withOptions(options.mutate());
 	}
 
-	 private static ConnectionFactoryOptions extractOptionsIfPossible(ConnectionFactory connectionFactory) {
+	 @NullUnmarked private static ConnectionFactoryOptions extractOptionsIfPossible(ConnectionFactory connectionFactory) {
 		OptionsCapableConnectionFactory optionsCapable = OptionsCapableConnectionFactory.unwrapFrom(connectionFactory);
 		if (optionsCapable != null) {
 			return optionsCapable.getOptions();

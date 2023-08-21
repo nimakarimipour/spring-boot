@@ -28,6 +28,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -103,7 +104,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 		return findConfig(getSpringConfigLocations());
 	}
 
-	 private String findConfig(String[] locations) {
+	 @NullUnmarked private String findConfig(String[] locations) {
 		for (String location : locations) {
 			ClassPathResource resource = new ClassPathResource(location, this.classLoader);
 			if (resource.exists()) {
@@ -199,11 +200,11 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 			this.nativeToSystem.putIfAbsent(nativeLevel, system);
 		}
 
-		 public LogLevel convertNativeToSystem(T level) {
+		 @NullUnmarked public LogLevel convertNativeToSystem(T level) {
 			return this.nativeToSystem.get(level);
 		}
 
-		 public T convertSystemToNative(LogLevel level) {
+		 @NullUnmarked public T convertSystemToNative(LogLevel level) {
 			return this.systemToNative.get(level);
 		}
 

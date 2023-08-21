@@ -28,13 +28,13 @@ import org.springframework.util.unit.DataSize;
  */
 public class MultipartConfigFactory {
 
-	 private String location;
+	 @SuppressWarnings("NullAway.Init") private String location;
 
-	 private DataSize maxFileSize;
+	 @SuppressWarnings("NullAway.Init") private DataSize maxFileSize;
 
-	 private DataSize maxRequestSize;
+	 @SuppressWarnings("NullAway.Init") private DataSize maxRequestSize;
 
-	 private DataSize fileSizeThreshold;
+	 @SuppressWarnings("NullAway.Init") private DataSize fileSizeThreshold;
 
 	/**
 	 * Sets the directory location where files will be stored.

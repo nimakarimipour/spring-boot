@@ -30,6 +30,7 @@ import ch.qos.logback.core.spi.ContextAware;
 import ch.qos.logback.core.spi.LifeCycle;
 
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -76,7 +77,7 @@ class LogbackConfigurator {
 		logger(name, level, true);
 	}
 
-	 void logger(String name, Level level, boolean additive) {
+	 @NullUnmarked void logger(String name, Level level, boolean additive) {
 		logger(name, level, additive, null);
 	}
 

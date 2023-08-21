@@ -18,6 +18,7 @@ package org.springframework.boot.web.server;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ObjectUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -35,19 +36,19 @@ public class ErrorPage {
 
 	private final String path;
 
-	 public ErrorPage(String path) {
+	 @NullUnmarked public ErrorPage(String path) {
 		this.status = null;
 		this.exception = null;
 		this.path = path;
 	}
 
-	 public ErrorPage(HttpStatus status, String path) {
+	 @NullUnmarked public ErrorPage(HttpStatus status, String path) {
 		this.status = status;
 		this.exception = null;
 		this.path = path;
 	}
 
-	 public ErrorPage(Class<? extends Throwable> exception, String path) {
+	 @NullUnmarked public ErrorPage(Class<? extends Throwable> exception, String path) {
 		this.status = null;
 		this.exception = exception;
 		this.path = path;
@@ -92,7 +93,7 @@ public class ErrorPage {
 	 * The exception type name.
 	 * @return the exception type name (or {@code null} if there is none)
 	 */
-	 public String getExceptionName() {
+	 @NullUnmarked public String getExceptionName() {
 		return (this.exception != null) ? this.exception.getName() : null;
 	}
 

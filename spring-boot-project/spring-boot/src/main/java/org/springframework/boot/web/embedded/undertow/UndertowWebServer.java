@@ -44,6 +44,7 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -72,20 +73,20 @@ public class UndertowWebServer implements WebServer {
 
 	private final boolean autoStart;
 
-	 private Undertow undertow;
+	 @SuppressWarnings("NullAway.Init") private Undertow undertow;
 
 	private volatile boolean started = false;
 
-	 private volatile GracefulShutdownHandler gracefulShutdown;
+	 @SuppressWarnings("NullAway.Init") private volatile GracefulShutdownHandler gracefulShutdown;
 
-	 private volatile List<Closeable> closeables;
+	 @SuppressWarnings("NullAway.Init") private volatile List<Closeable> closeables;
 
 	/**
 	 * Create a new {@link UndertowWebServer} instance.
 	 * @param builder the builder
 	 * @param autoStart if the server should be started
 	 */
-	 public UndertowWebServer(Undertow.Builder builder, boolean autoStart) {
+	 @NullUnmarked public UndertowWebServer(Undertow.Builder builder, boolean autoStart) {
 		this(builder, Collections.singleton(new CloseableHttpHandlerFactory(null)), autoStart);
 	}
 
@@ -159,7 +160,7 @@ public class UndertowWebServer implements WebServer {
 		}
 	}
 
-	 private Undertow createUndertowServer() {
+	 @NullUnmarked private Undertow createUndertowServer() {
 		this.closeables = new ArrayList<>();
 		this.gracefulShutdown = null;
 		HttpHandler handler = createHttpHandler();
@@ -167,7 +168,7 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
-	 protected HttpHandler createHttpHandler() {
+	 @NullUnmarked protected HttpHandler createHttpHandler() {
 		HttpHandler handler = null;
 		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
 			handler = factory.getHandler(handler);
@@ -215,7 +216,7 @@ public class UndertowWebServer implements WebServer {
 		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
 	}
 
-	 private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
+	 @NullUnmarked private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
 		SocketAddress socketAddress = channel.getLocalAddress();
 		if (socketAddress instanceof InetSocketAddress inetSocketAddress) {
 			Field sslField = ReflectionUtils.findField(channel.getClass(), "ssl");

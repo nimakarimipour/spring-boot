@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -157,7 +158,7 @@ public interface BootstrapRegistry {
 		 * @param supplier the supplier that will provide the instance
 		 * @return a new {@link InstanceSupplier}
 		 */
-		 static <T> InstanceSupplier<T> from(Supplier<T> supplier) {
+		 @NullUnmarked static <T> InstanceSupplier<T> from(Supplier<T> supplier) {
 			return (registry) -> (supplier != null) ? supplier.get() : null;
 		}
 

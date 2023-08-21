@@ -45,6 +45,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -77,9 +78,9 @@ public class SpringApplicationBuilder {
 
 	private final SpringApplication application;
 
-	 private ConfigurableApplicationContext context;
+	 @SuppressWarnings("NullAway.Init") private ConfigurableApplicationContext context;
 
-	 private SpringApplicationBuilder parent;
+	 @SuppressWarnings("NullAway.Init") private SpringApplicationBuilder parent;
 
 	private final AtomicBoolean running = new AtomicBoolean();
 
@@ -87,7 +88,7 @@ public class SpringApplicationBuilder {
 
 	private final Map<String, Object> defaultProperties = new LinkedHashMap<>();
 
-	 private ConfigurableEnvironment environment;
+	 @SuppressWarnings("NullAway.Init") private ConfigurableEnvironment environment;
 
 	private Set<String> additionalProfiles = new LinkedHashSet<>();
 
@@ -95,7 +96,7 @@ public class SpringApplicationBuilder {
 
 	private boolean configuredAsChild = false;
 
-	 public SpringApplicationBuilder(Class<?>... sources) {
+	 @NullUnmarked public SpringApplicationBuilder(Class<?>... sources) {
 		this(null, sources);
 	}
 

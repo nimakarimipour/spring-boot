@@ -71,6 +71,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -398,7 +399,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		return result;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		LoggerConfig loggerConfig = getAllLoggers().get(loggerName);
 		return (loggerConfig != null) ? convertLoggerConfig(loggerName, loggerConfig) : null;
@@ -421,7 +422,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		}
 	}
 
-	 private String getSubName(String name) {
+	 @NullUnmarked private String getSubName(String name) {
 		if (!StringUtils.hasLength(name)) {
 			return null;
 		}
@@ -429,7 +430,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		return (nested != -1) ? name.substring(0, nested) : NameUtil.getSubName(name);
 	}
 
-	 private LoggerConfiguration convertLoggerConfig(String name, LoggerConfig loggerConfig) {
+	 @NullUnmarked private LoggerConfiguration convertLoggerConfig(String name, LoggerConfig loggerConfig) {
 		if (loggerConfig == null) {
 			return null;
 		}
@@ -463,7 +464,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		return findLogger(isRootLogger ? LogManager.ROOT_LOGGER_NAME : name);
 	}
 
-	 private LoggerConfig findLogger(String name) {
+	 @NullUnmarked private LoggerConfig findLogger(String name) {
 		Configuration configuration = getLoggerContext().getConfiguration();
 		if (configuration instanceof AbstractConfiguration abstractConfiguration) {
 			return abstractConfiguration.getLogger(name);
@@ -494,7 +495,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 	 * @return the Spring {@link Environment} or {@code null}
 	 * @since 3.0.0
 	 */
-	 public static Environment getEnvironment(LoggerContext loggerContext) {
+	 @NullUnmarked public static Environment getEnvironment(LoggerContext loggerContext) {
 		return (Environment) ((loggerContext != null) ? loggerContext.getObject(ENVIRONMENT_KEY) : null);
 	}
 
@@ -507,7 +508,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		private static final boolean PRESENT = ClassUtils
 				.isPresent("org.apache.logging.log4j.core.impl.Log4jContextFactory", Factory.class.getClassLoader());
 
-		 @Override
+		 @NullUnmarked @Override
 		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
 			if (PRESENT) {
 				return new Log4J2LoggingSystem(classLoader);

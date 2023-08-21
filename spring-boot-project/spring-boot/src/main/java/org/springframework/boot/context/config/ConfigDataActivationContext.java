@@ -20,6 +20,7 @@ import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.style.ToStringCreator;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -40,7 +41,7 @@ class ConfigDataActivationContext {
 	 * @param environment the source environment
 	 * @param binder a binder providing access to relevant config data contributions
 	 */
-	 ConfigDataActivationContext(Environment environment, Binder binder) {
+	 @NullUnmarked ConfigDataActivationContext(Environment environment, Binder binder) {
 		this.cloudPlatform = deduceCloudPlatform(environment, binder);
 		this.profiles = null;
 	}

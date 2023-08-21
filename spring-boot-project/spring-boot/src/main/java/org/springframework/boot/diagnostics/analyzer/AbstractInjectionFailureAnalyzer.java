@@ -23,6 +23,7 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.util.ClassUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -41,7 +42,7 @@ public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> exte
 		return analyze(rootFailure, cause, getDescription(rootFailure));
 	}
 
-	 private String getDescription(Throwable rootFailure) {
+	 @NullUnmarked private String getDescription(Throwable rootFailure) {
 		UnsatisfiedDependencyException unsatisfiedDependency = findMostNestedCause(rootFailure,
 				UnsatisfiedDependencyException.class);
 		if (unsatisfiedDependency != null) {
@@ -55,7 +56,7 @@ public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> exte
 		return null;
 	}
 
-	 @SuppressWarnings("unchecked")
+	 @NullUnmarked @SuppressWarnings("unchecked")
 	private <C extends Exception> C findMostNestedCause(Throwable root, Class<C> type) {
 		Throwable candidate = root;
 		C result = null;

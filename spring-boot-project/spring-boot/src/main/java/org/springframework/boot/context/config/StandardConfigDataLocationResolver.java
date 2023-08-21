@@ -46,6 +46,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -69,7 +70,7 @@ public class StandardConfigDataLocationResolver
 
 	private static final Pattern EXTENSION_HINT_PATTERN = Pattern.compile("^(.*)\\[(\\.\\w+)\\](?!\\[)$");
 
-	 private static final String NO_PROFILE = null;
+	 @SuppressWarnings("NullAway") private static final String NO_PROFILE = null;
 
 	private final Log logger;
 
@@ -213,7 +214,7 @@ public class StandardConfigDataLocationResolver
 		return references;
 	}
 
-	 private Set<StandardConfigDataReference> getReferencesForFile(ConfigDataLocation configDataLocation, String file,
+	 @NullUnmarked private Set<StandardConfigDataReference> getReferencesForFile(ConfigDataLocation configDataLocation, String file,
 			String profile) {
 		Matcher extensionHintMatcher = EXTENSION_HINT_PATTERN.matcher(file);
 		boolean extensionHintLocation = extensionHintMatcher.matches();
@@ -233,7 +234,7 @@ public class StandardConfigDataLocationResolver
 				+ "If the location is meant to reference a directory, it must end in '/' or File.separator");
 	}
 
-	 private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
+	 @NullUnmarked private String getLoadableFileExtension(PropertySourceLoader loader, String file) {
 		for (String fileExtension : loader.getFileExtensions()) {
 			if (StringUtils.endsWithIgnoreCase(file, fileExtension)) {
 				return fileExtension;
@@ -281,7 +282,7 @@ public class StandardConfigDataLocationResolver
 				: Collections.singleton(new StandardConfigDataResource(reference, resource, true));
 	}
 
-	 private Set<StandardConfigDataResource> resolvePatternEmptyDirectories(StandardConfigDataReference reference) {
+	 @NullUnmarked private Set<StandardConfigDataResource> resolvePatternEmptyDirectories(StandardConfigDataReference reference) {
 		Resource[] subdirectories = this.resourceLoader.getResources(reference.getDirectory(), ResourceType.DIRECTORY);
 		ConfigDataLocation location = reference.getConfigDataLocation();
 		if (!location.isOptional() && ObjectUtils.isEmpty(subdirectories)) {

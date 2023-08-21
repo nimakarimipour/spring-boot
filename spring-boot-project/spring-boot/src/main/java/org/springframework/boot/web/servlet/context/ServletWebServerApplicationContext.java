@@ -108,11 +108,11 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 */
 	public static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
 
-	 private volatile WebServer webServer;
+	 @SuppressWarnings("NullAway.Init") private volatile WebServer webServer;
 
-	 private ServletConfig servletConfig;
+	 @SuppressWarnings("NullAway.Init") private ServletConfig servletConfig;
 
-	 private String serverNamespace;
+	 @SuppressWarnings("NullAway.Init") private String serverNamespace;
 
 	/**
 	 * Create a new {@link ServletWebServerApplicationContext}.

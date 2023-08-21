@@ -32,6 +32,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -176,7 +177,7 @@ class StartupInfoLogger {
 		}
 	}
 
-	 private Object callIfPossible(Callable<Object> call) {
+	 @NullUnmarked private Object callIfPossible(Callable<Object> call) {
 		try {
 			return call.call();
 		}

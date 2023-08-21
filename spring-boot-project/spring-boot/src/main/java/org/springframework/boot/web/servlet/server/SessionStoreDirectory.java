@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
  */
 class SessionStoreDirectory {
 
-	 private File directory;
+	 @SuppressWarnings("NullAway.Init") private File directory;
 
 	File getDirectory() {
 		return this.directory;

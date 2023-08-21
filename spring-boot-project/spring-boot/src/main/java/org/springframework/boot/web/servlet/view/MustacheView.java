@@ -41,9 +41,9 @@ import org.springframework.web.servlet.view.AbstractTemplateView;
  */
 public class MustacheView extends AbstractTemplateView {
 
-	 private Compiler compiler;
+	 @SuppressWarnings("NullAway.Init") private Compiler compiler;
 
-	 private String charset;
+	 @SuppressWarnings("NullAway.Init") private String charset;
 
 	/**
 	 * Set the Mustache compiler to be used by this view.

@@ -24,6 +24,7 @@ import io.undertow.UndertowMessages;
 import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -46,7 +47,7 @@ class CompositeResourceManager implements ResourceManager {
 		}
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public Resource getResource(String path) throws IOException {
 		for (ResourceManager resourceManager : this.resourceManagers) {
 			Resource resource = resourceManager.getResource(path);

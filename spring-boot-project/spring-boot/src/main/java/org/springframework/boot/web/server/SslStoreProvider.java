@@ -17,6 +17,7 @@
 package org.springframework.boot.web.server;
 
 import java.security.KeyStore;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -47,7 +48,7 @@ public interface SslStoreProvider {
 	 * @return the key password
 	 * @since 2.7.2
 	 */
-	 default String getKeyPassword() {
+	 @NullUnmarked default String getKeyPassword() {
 		return null;
 	}
 

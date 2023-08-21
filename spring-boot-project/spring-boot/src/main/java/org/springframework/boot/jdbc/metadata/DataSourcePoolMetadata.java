@@ -17,6 +17,7 @@
 package org.springframework.boot.jdbc.metadata;
 
 import javax.sql.DataSource;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -58,7 +59,7 @@ public interface DataSourcePoolMetadata {
 	 * @since 2.2.0
 	 * @see #getActive()
 	 */
-	 default Integer getIdle() {
+	 @NullUnmarked default Integer getIdle() {
 		return null;
 	}
 

@@ -40,6 +40,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -75,7 +76,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
 		storeErrorAttributes(request, ex);
@@ -190,7 +191,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 		errorAttributes.put("errors", result.getAllErrors());
 	}
 
-	 private BindingResult extractBindingResult(Throwable error) {
+	 @NullUnmarked private BindingResult extractBindingResult(Throwable error) {
 		if (error instanceof BindingResult bindingResult) {
 			return bindingResult;
 		}

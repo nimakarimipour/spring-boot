@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -144,7 +145,7 @@ public enum PeriodStyle {
 	 * @param value the value to parse
 	 * @return a period
 	 */
-	 public Period parse(String value) {
+	 @NullUnmarked public Period parse(String value) {
 		return parse(value, null);
 	}
 
@@ -162,7 +163,7 @@ public enum PeriodStyle {
 	 * @param value the value to print
 	 * @return the printed result
 	 */
-	 public String print(Period value) {
+	 @NullUnmarked public String print(Period value) {
 		return print(value, null);
 	}
 
@@ -181,7 +182,7 @@ public enum PeriodStyle {
 	 * @throws IllegalArgumentException if the value is not a known style or cannot be
 	 * parsed
 	 */
-	 public static Period detectAndParse(String value) {
+	 @NullUnmarked public static Period detectAndParse(String value) {
 		return detectAndParse(value, null);
 	}
 
@@ -244,7 +245,7 @@ public enum PeriodStyle {
 
 		private final Function<Integer, Period> factory;
 
-		 Unit(ChronoUnit chronoUnit, String suffix, Function<Period, Integer> intValue,
+		 @NullUnmarked Unit(ChronoUnit chronoUnit, String suffix, Function<Period, Integer> intValue,
 				Function<Integer, Period> factory) {
 			this.chronoUnit = chronoUnit;
 			this.suffix = suffix;

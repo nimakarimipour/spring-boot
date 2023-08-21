@@ -17,6 +17,7 @@
 package org.springframework.boot.origin;
 
 import java.net.URI;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -73,7 +74,7 @@ final class JarUri {
 		return from(uri.toString());
 	}
 
-	 static JarUri from(String uri) {
+	 @NullUnmarked static JarUri from(String uri) {
 		if (uri.startsWith(JAR_SCHEME) && uri.contains(JAR_EXTENSION)) {
 			return new JarUri(uri);
 		}

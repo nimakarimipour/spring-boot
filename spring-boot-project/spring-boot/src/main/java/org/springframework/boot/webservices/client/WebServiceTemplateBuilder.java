@@ -37,6 +37,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.destination.DestinationProvider;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.transport.WebServiceMessageSender;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -77,7 +78,7 @@ public class WebServiceTemplateBuilder {
 
 	private final WebServiceMessageFactory messageFactory;
 
-	 public WebServiceTemplateBuilder(WebServiceTemplateCustomizer... customizers) {
+	 @NullUnmarked public WebServiceTemplateBuilder(WebServiceTemplateCustomizer... customizers) {
 		this.detectHttpMessageSender = true;
 		this.interceptors = null;
 		this.internalCustomizers = null;

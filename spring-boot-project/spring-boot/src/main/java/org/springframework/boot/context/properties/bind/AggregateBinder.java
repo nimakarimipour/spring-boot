@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -97,9 +98,9 @@ abstract class AggregateBinder<T> {
 
 		private final Supplier<T> supplier;
 
-		 private T supplied;
+		 @SuppressWarnings("NullAway.Init") private T supplied;
 
-		 public AggregateSupplier(Supplier<T> supplier) {
+		 @NullUnmarked public AggregateSupplier(Supplier<T> supplier) {
 			this.supplier = supplier;
 		}
 

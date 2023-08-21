@@ -42,7 +42,7 @@ public class ParentContextCloserApplicationListener
 
 	private int order = Ordered.LOWEST_PRECEDENCE - 10;
 
-	 private ApplicationContext context;
+	 @SuppressWarnings("NullAway.Init") private ApplicationContext context;
 
 	@Override
 	public int getOrder() {

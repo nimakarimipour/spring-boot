@@ -54,7 +54,7 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 
 	private final Set<String> packagesToScan;
 
-	 private ApplicationContext applicationContext;
+	 @SuppressWarnings("NullAway.Init") private ApplicationContext applicationContext;
 
 	ServletComponentRegisteringPostProcessor(Set<String> packagesToScan) {
 		this.packagesToScan = packagesToScan;

@@ -46,23 +46,23 @@ public class Encoding {
 	 * Whether to force the encoding to the configured charset on HTTP requests and
 	 * responses.
 	 */
-	 private Boolean force;
+	 @SuppressWarnings("NullAway.Init") private Boolean force;
 
 	/**
 	 * Whether to force the encoding to the configured charset on HTTP requests. Defaults
 	 * to true when "force" has not been specified.
 	 */
-	 private Boolean forceRequest;
+	 @SuppressWarnings("NullAway.Init") private Boolean forceRequest;
 
 	/**
 	 * Whether to force the encoding to the configured charset on HTTP responses.
 	 */
-	 private Boolean forceResponse;
+	 @SuppressWarnings("NullAway.Init") private Boolean forceResponse;
 
 	/**
 	 * Mapping of locale to charset for response encoding..
 	 */
-	 private Map<Locale, Charset> mapping;
+	 @SuppressWarnings("NullAway.Init") private Map<Locale, Charset> mapping;
 
 	public Charset getCharset() {
 		return this.charset;

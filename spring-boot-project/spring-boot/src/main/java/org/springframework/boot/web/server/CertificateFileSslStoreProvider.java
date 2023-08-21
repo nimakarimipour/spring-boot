@@ -22,6 +22,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -53,7 +54,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 				this.ssl.getKeyStoreType(), this.ssl.getKeyAlias());
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public KeyStore getTrustStore() throws Exception {
 		if (this.ssl.getTrustCertificate() == null) {
 			return null;
@@ -76,7 +77,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 	 * @param keyAlias the alias to use when adding keys to the {@code KeyStore}
 	 * @return the {@code KeyStore}
 	 */
-	 private KeyStore createKeyStore(String certPath, String keyPath, String storeType, String keyAlias) {
+	 @NullUnmarked private KeyStore createKeyStore(String certPath, String keyPath, String storeType, String keyAlias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance((storeType != null) ? storeType : KeyStore.getDefaultType());
 			keyStore.load(null);
@@ -114,7 +115,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 	 * @param ssl the SSL properties
 	 * @return an {@code SslStoreProvider} or {@code null}
 	 */
-	 public static SslStoreProvider from(Ssl ssl) {
+	 @NullUnmarked public static SslStoreProvider from(Ssl ssl) {
 		if (ssl != null && ssl.isEnabled()) {
 			if (ssl.getCertificate() != null && ssl.getCertificatePrivateKey() != null) {
 				return new CertificateFileSslStoreProvider(ssl);

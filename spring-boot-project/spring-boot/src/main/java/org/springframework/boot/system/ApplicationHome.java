@@ -31,6 +31,7 @@ import java.util.jar.Manifest;
 
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -50,7 +51,7 @@ public class ApplicationHome {
 	/**
 	 * Create a new {@link ApplicationHome} instance.
 	 */
-	 public ApplicationHome() {
+	 @NullUnmarked public ApplicationHome() {
 		this(null);
 	}
 
@@ -63,7 +64,7 @@ public class ApplicationHome {
 		this.dir = findHomeDir(this.source);
 	}
 
-	 private Class<?> getStartClass() {
+	 @NullUnmarked private Class<?> getStartClass() {
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
 			return getStartClass(classLoader.getResources("META-INF/MANIFEST.MF"));
@@ -73,7 +74,7 @@ public class ApplicationHome {
 		}
 	}
 
-	 private Class<?> getStartClass(Enumeration<URL> manifestResources) {
+	 @NullUnmarked private Class<?> getStartClass(Enumeration<URL> manifestResources) {
 		while (manifestResources.hasMoreElements()) {
 			try (InputStream inputStream = manifestResources.nextElement().openStream()) {
 				Manifest manifest = new Manifest(inputStream);
@@ -88,7 +89,7 @@ public class ApplicationHome {
 		return null;
 	}
 
-	 private File findSource(Class<?> sourceClass) {
+	 @NullUnmarked private File findSource(Class<?> sourceClass) {
 		try {
 			ProtectionDomain domain = (sourceClass != null) ? sourceClass.getProtectionDomain() : null;
 			CodeSource codeSource = (domain != null) ? domain.getCodeSource() : null;

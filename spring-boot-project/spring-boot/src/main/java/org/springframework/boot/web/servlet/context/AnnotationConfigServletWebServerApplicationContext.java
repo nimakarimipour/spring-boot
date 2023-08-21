@@ -62,7 +62,7 @@ public class AnnotationConfigServletWebServerApplicationContext extends ServletW
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
-	 private String[] basePackages;
+	 @SuppressWarnings("NullAway.Init") private String[] basePackages;
 
 	/**
 	 * Create a new {@link AnnotationConfigServletWebServerApplicationContext} that needs

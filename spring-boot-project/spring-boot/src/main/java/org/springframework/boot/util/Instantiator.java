@@ -35,6 +35,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -110,7 +111,7 @@ public class Instantiator<T> {
 	 * @param names the class names to instantiate
 	 * @return a list of instantiated instances
 	 */
-	 public List<T> instantiate(Collection<String> names) {
+	 @NullUnmarked public List<T> instantiate(Collection<String> names) {
 		return instantiate((ClassLoader) null, names);
 	}
 
@@ -144,7 +145,7 @@ public class Instantiator<T> {
 		return Collections.unmodifiableList(instances);
 	}
 
-	 private T instantiate(TypeSupplier typeSupplier) {
+	 @NullUnmarked private T instantiate(TypeSupplier typeSupplier) {
 		try {
 			Class<?> type = typeSupplier.get();
 			Assert.isAssignable(this.type, type);
@@ -170,7 +171,7 @@ public class Instantiator<T> {
 		throw new IllegalAccessException("Class [" + type.getName() + "] has no suitable constructor");
 	}
 
-	 private Object[] getArgs(Class<?>[] parameterTypes) {
+	 @NullUnmarked private Object[] getArgs(Class<?>[] parameterTypes) {
 		Object[] args = new Object[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; i++) {
 			Function<Class<?>, Object> parameter = getAvailableParameter(parameterTypes[i]);
@@ -182,7 +183,7 @@ public class Instantiator<T> {
 		return args;
 	}
 
-	 private Function<Class<?>, Object> getAvailableParameter(Class<?> parameterType) {
+	 @NullUnmarked private Function<Class<?>, Object> getAvailableParameter(Class<?> parameterType) {
 		for (Map.Entry<Class<?>, Function<Class<?>, Object>> entry : this.availableParameters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(parameterType)) {
 				return entry.getValue();

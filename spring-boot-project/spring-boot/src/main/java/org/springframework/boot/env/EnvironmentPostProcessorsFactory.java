@@ -21,6 +21,7 @@ import java.util.List;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -69,7 +70,7 @@ public interface EnvironmentPostProcessorsFactory {
 	 * @param classNames the post processor class names
 	 * @return an {@link EnvironmentPostProcessorsFactory} instance
 	 */
-	 static EnvironmentPostProcessorsFactory of(String... classNames) {
+	 @NullUnmarked static EnvironmentPostProcessorsFactory of(String... classNames) {
 		return of(null, classNames);
 	}
 

@@ -37,6 +37,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -176,7 +177,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 		}
 	}
 
-	 private void extractPropertiesFromServices(Properties properties, Map<String, Object> map) {
+	 @NullUnmarked private void extractPropertiesFromServices(Properties properties, Map<String, Object> map) {
 		if (map != null) {
 			for (Object services : map.values()) {
 				@SuppressWarnings("unchecked")

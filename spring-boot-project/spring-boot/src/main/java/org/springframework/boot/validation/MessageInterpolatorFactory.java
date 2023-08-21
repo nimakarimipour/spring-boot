@@ -29,6 +29,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.util.ClassUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -51,7 +52,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 
 	private final MessageSource messageSource;
 
-	 public MessageInterpolatorFactory() {
+	 @NullUnmarked public MessageInterpolatorFactory() {
 		this(null);
 	}
 
@@ -88,7 +89,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 		}
 	}
 
-	 private MessageInterpolator getFallback() {
+	 @NullUnmarked private MessageInterpolator getFallback() {
 		for (String fallback : FALLBACKS) {
 			try {
 				return getFallback(fallback);

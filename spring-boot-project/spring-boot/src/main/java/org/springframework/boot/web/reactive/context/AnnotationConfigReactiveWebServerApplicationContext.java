@@ -65,7 +65,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
 
-	 private String[] basePackages;
+	 @SuppressWarnings("NullAway.Init") private String[] basePackages;
 
 	/**
 	 * Create a new {@link AnnotationConfigReactiveWebServerApplicationContext} that needs

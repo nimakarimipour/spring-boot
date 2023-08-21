@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -55,12 +56,12 @@ class WebServletHandler extends ServletComponentHandler {
 		registry.registerBeanDefinition(name, builder.getBeanDefinition());
 	}
 
-	 private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
+	 @NullUnmarked private String determineName(Map<String, Object> attributes, BeanDefinition beanDefinition) {
 		return (String) (StringUtils.hasText((String) attributes.get("name")) ? attributes.get("name")
 				: beanDefinition.getBeanClassName());
 	}
 
-	 private MultipartConfigElement determineMultipartConfig(AnnotatedBeanDefinition beanDefinition) {
+	 @NullUnmarked private MultipartConfigElement determineMultipartConfig(AnnotatedBeanDefinition beanDefinition) {
 		Map<String, Object> attributes = beanDefinition.getMetadata()
 				.getAnnotationAttributes(MultipartConfig.class.getName());
 		if (attributes == null) {

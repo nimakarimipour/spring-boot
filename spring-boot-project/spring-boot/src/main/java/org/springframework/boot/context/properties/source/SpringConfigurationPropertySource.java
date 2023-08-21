@@ -27,6 +27,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -74,7 +75,7 @@ class SpringConfigurationPropertySource implements ConfigurationPropertySource {
 		this.mappers = mappers;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;

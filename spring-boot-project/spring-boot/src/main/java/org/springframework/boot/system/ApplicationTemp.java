@@ -31,6 +31,7 @@ import java.util.HexFormat;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -50,12 +51,12 @@ public class ApplicationTemp {
 
 	private final Class<?> sourceClass;
 
-	 private volatile Path path;
+	 @SuppressWarnings("NullAway.Init") private volatile Path path;
 
 	/**
 	 * Create a new {@link ApplicationTemp} instance.
 	 */
-	 public ApplicationTemp() {
+	 @NullUnmarked public ApplicationTemp() {
 		this(null);
 	}
 

@@ -22,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -51,7 +52,7 @@ public interface ApplicationContextFactory {
 	 * @return the expected application context type or {@code null} to use the default
 	 * @since 2.6.14
 	 */
-	 default Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
+	 @NullUnmarked default Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
 		return null;
 	}
 
@@ -64,7 +65,7 @@ public interface ApplicationContextFactory {
 	 * @return an environment instance or {@code null} to use the default
 	 * @since 2.6.14
 	 */
-	 default ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
+	 @NullUnmarked default ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
 		return null;
 	}
 

@@ -41,6 +41,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -137,7 +138,7 @@ public class ConfigurationWarningsApplicationContextInitializer
 			PROBLEM_PACKAGES = Collections.unmodifiableSet(packages);
 		}
 
-		 @Override
+		 @NullUnmarked @Override
 		public String getWarning(BeanDefinitionRegistry registry) {
 			Set<String> scannedPackages = getComponentScanningPackages(registry);
 			List<String> problematicPackages = getProblematicPackages(scannedPackages);

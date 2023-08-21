@@ -40,7 +40,7 @@ public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> ex
 
 	private static final Log logger = LogFactory.getLog(RegistrationBean.class);
 
-	 private String name;
+	 @SuppressWarnings("NullAway.Init") private String name;
 
 	private boolean asyncSupported = true;
 

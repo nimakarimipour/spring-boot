@@ -30,6 +30,7 @@ import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.Assert;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -83,7 +84,7 @@ public class ValidationErrors implements Iterable<ObjectError> {
 		return OriginTrackedFieldError.of(error, findFieldErrorOrigin(name, boundProperties, error));
 	}
 
-	 private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
+	 @NullUnmarked private Origin findFieldErrorOrigin(ConfigurationPropertyName name, Set<ConfigurationProperty> boundProperties,
 			FieldError error) {
 		for (ConfigurationProperty boundProperty : boundProperties) {
 			if (isForError(name, boundProperty.getName(), error)) {

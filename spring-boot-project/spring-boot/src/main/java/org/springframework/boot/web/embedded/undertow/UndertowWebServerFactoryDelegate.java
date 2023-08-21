@@ -49,21 +49,21 @@ class UndertowWebServerFactoryDelegate {
 
 	private Set<UndertowBuilderCustomizer> builderCustomizers = new LinkedHashSet<>();
 
-	 private Integer bufferSize;
+	 @SuppressWarnings("NullAway.Init") private Integer bufferSize;
 
-	 private Integer ioThreads;
+	 @SuppressWarnings("NullAway.Init") private Integer ioThreads;
 
-	 private Integer workerThreads;
+	 @SuppressWarnings("NullAway.Init") private Integer workerThreads;
 
-	 private Boolean directBuffers;
+	 @SuppressWarnings("NullAway.Init") private Boolean directBuffers;
 
-	 private File accessLogDirectory;
+	 @SuppressWarnings("NullAway.Init") private File accessLogDirectory;
 
-	 private String accessLogPattern;
+	 @SuppressWarnings("NullAway.Init") private String accessLogPattern;
 
-	 private String accessLogPrefix;
+	 @SuppressWarnings("NullAway.Init") private String accessLogPrefix;
 
-	 private String accessLogSuffix;
+	 @SuppressWarnings("NullAway.Init") private String accessLogSuffix;
 
 	private boolean accessLogEnabled = false;
 

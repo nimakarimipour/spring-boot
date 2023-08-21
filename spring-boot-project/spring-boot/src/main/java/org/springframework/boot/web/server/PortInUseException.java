@@ -19,6 +19,7 @@ package org.springframework.boot.web.server;
 import java.net.BindException;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -37,7 +38,7 @@ public class PortInUseException extends WebServerException {
 	 * Creates a new port in use exception for the given {@code port}.
 	 * @param port the port that was in use
 	 */
-	 public PortInUseException(int port) {
+	 @NullUnmarked public PortInUseException(int port) {
 		this(port, null);
 	}
 
@@ -79,7 +80,7 @@ public class PortInUseException extends WebServerException {
 	 * @param action the action to perform
 	 * @since 2.2.7
 	 */
-	 public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
+	 @NullUnmarked public static void ifPortBindingException(Exception ex, Consumer<BindException> action) {
 		ifCausedBy(ex, BindException.class, (bindException) -> {
 			// bind exception can be also thrown because an address can't be assigned
 			if (bindException.getMessage().toLowerCase().contains("in use")) {

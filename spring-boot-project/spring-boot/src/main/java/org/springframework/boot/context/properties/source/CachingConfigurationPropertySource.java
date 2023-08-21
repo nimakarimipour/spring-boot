@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.context.properties.source;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -37,7 +38,7 @@ interface CachingConfigurationPropertySource {
 	 * @return a {@link ConfigurationPropertyCaching} instance or {@code null} if the
 	 * source does not support caching.
 	 */
-	 static ConfigurationPropertyCaching find(ConfigurationPropertySource source) {
+	 @NullUnmarked static ConfigurationPropertyCaching find(ConfigurationPropertySource source) {
 		if (source instanceof CachingConfigurationPropertySource cachingSource) {
 			return cachingSource.getCaching();
 		}

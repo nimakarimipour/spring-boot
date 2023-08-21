@@ -39,6 +39,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -49,9 +50,9 @@ import org.springframework.web.server.ServerWebExchange;
  */
 public class MustacheView extends AbstractUrlBasedView {
 
-	 private Compiler compiler;
+	 @SuppressWarnings("NullAway.Init") private Compiler compiler;
 
-	 private String charset;
+	 @SuppressWarnings("NullAway.Init") private String charset;
 
 	/**
 	 * Set the JMustache compiler to be used by this view. Typically this property is not
@@ -100,7 +101,7 @@ public class MustacheView extends AbstractUrlBasedView {
 		return exchange.getResponse().writeWith(Flux.just(dataBuffer));
 	}
 
-	 private Resource resolveResource() {
+	 @NullUnmarked private Resource resolveResource() {
 		Resource resource = getApplicationContext().getResource(getUrl());
 		if (resource == null || !resource.exists()) {
 			return null;

@@ -26,6 +26,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -100,7 +101,7 @@ public abstract class LoggingSystem {
 	 * shutdown is required.
 	 * @return the shutdown handler, or {@code null}
 	 */
-	 public Runnable getShutdownHandler() {
+	 @NullUnmarked public Runnable getShutdownHandler() {
 		return null;
 	}
 
@@ -194,7 +195,7 @@ public abstract class LoggingSystem {
 			return Collections.emptyList();
 		}
 
-		 @Override
+		 @NullUnmarked @Override
 		public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 			return null;
 		}

@@ -27,6 +27,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -218,15 +219,15 @@ public enum DatabaseDriver {
 
 	private final String validationQuery;
 
-	 DatabaseDriver(String productName, String driverClassName) {
+	 @NullUnmarked DatabaseDriver(String productName, String driverClassName) {
 		this(productName, driverClassName, null);
 	}
 
-	 DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName) {
+	 @NullUnmarked DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName) {
 		this(productName, driverClassName, xaDataSourceClassName, null);
 	}
 
-	 DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName, String validationQuery) {
+	 @NullUnmarked DatabaseDriver(String productName, String driverClassName, String xaDataSourceClassName, String validationQuery) {
 		this.productName = productName;
 		this.driverClassName = driverClassName;
 		this.xaDataSourceClassName = xaDataSourceClassName;

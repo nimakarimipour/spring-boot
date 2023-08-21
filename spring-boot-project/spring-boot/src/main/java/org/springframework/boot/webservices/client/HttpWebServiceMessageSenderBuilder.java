@@ -36,11 +36,11 @@ import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
  */
 public class HttpWebServiceMessageSenderBuilder {
 
-	 private Duration connectTimeout;
+	 @SuppressWarnings("NullAway.Init") private Duration connectTimeout;
 
-	 private Duration readTimeout;
+	 @SuppressWarnings("NullAway.Init") private Duration readTimeout;
 
-	 private Supplier<ClientHttpRequestFactory> requestFactorySupplier;
+	 @SuppressWarnings("NullAway.Init") private Supplier<ClientHttpRequestFactory> requestFactorySupplier;
 
 	/**
 	 * Set the connection timeout.

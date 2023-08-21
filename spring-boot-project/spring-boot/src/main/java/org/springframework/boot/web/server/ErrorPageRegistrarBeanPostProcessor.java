@@ -39,9 +39,9 @@ import org.springframework.util.Assert;
  */
 public class ErrorPageRegistrarBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-	 private ListableBeanFactory beanFactory;
+	 @SuppressWarnings("NullAway.Init") private ListableBeanFactory beanFactory;
 
-	 private List<ErrorPageRegistrar> registrars;
+	 @SuppressWarnings("NullAway.Init") private List<ErrorPageRegistrar> registrars;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {

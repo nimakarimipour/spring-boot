@@ -29,6 +29,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -124,7 +125,7 @@ public class WebServerPortFileWriter implements ApplicationListener<WebServerIni
 		return new File(this.file.getParentFile(), name);
 	}
 
-	 private String getServerNamespace(ApplicationContext applicationContext) {
+	 @NullUnmarked private String getServerNamespace(ApplicationContext applicationContext) {
 		if (applicationContext instanceof WebServerApplicationContext webServerApplicationContext) {
 			return webServerApplicationContext.getServerNamespace();
 		}

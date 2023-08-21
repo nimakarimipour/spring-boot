@@ -53,7 +53,7 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
 
 	private Set<String> urlPatterns = new LinkedHashSet<>();
 
-	 private EnumSet<DispatcherType> dispatcherTypes;
+	 @SuppressWarnings("NullAway.Init") private EnumSet<DispatcherType> dispatcherTypes;
 
 	private boolean matchAfter = false;
 

@@ -15,6 +15,7 @@
  */
 
 package org.springframework.boot.json;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -26,7 +27,7 @@ package org.springframework.boot.json;
  */
 public class JsonParseException extends IllegalArgumentException {
 
-	 public JsonParseException() {
+	 @NullUnmarked public JsonParseException() {
 		this(null);
 	}
 

@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -49,7 +50,7 @@ public class ApplicationPid {
 		this.pid = pid;
 	}
 
-	 private String getPid() {
+	 @NullUnmarked private String getPid() {
 		try {
 			return Long.toString(ProcessHandle.current().pid());
 		}

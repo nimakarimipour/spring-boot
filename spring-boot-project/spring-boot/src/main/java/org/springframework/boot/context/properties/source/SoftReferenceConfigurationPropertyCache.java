@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -36,7 +37,7 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 
 	private final boolean neverExpire;
 
-	 private volatile Duration timeToLive;
+	 @SuppressWarnings("NullAway.Init") private volatile Duration timeToLive;
 
 	private volatile SoftReference<T> value = new SoftReference<>(null);
 
@@ -51,17 +52,17 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 		this.timeToLive = UNLIMITED;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public void disable() {
 		this.timeToLive = null;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public void setTimeToLive(Duration timeToLive) {
 		this.timeToLive = (timeToLive == null || timeToLive.isZero()) ? null : timeToLive;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public void clear() {
 		this.lastAccessed = null;
 	}
@@ -104,7 +105,7 @@ class SoftReferenceConfigurationPropertyCache<T> implements ConfigurationPropert
 		return Instant.now();
 	}
 
-	 protected T getValue() {
+	 @NullUnmarked protected T getValue() {
 		return this.value.get();
 	}
 

@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -86,7 +87,7 @@ final class PrivateKeyParser {
 	private PrivateKeyParser() {
 	}
 
-	 private static PKCS8EncodedKeySpec createKeySpecForPkcs1(byte[] bytes) {
+	 @NullUnmarked private static PKCS8EncodedKeySpec createKeySpecForPkcs1(byte[] bytes) {
 		return createKeySpecForAlgorithm(bytes, RSA_ALGORITHM, null);
 	}
 
@@ -157,7 +158,7 @@ final class PrivateKeyParser {
 			this.keySpecFactory = keySpecFactory;
 		}
 
-		 PrivateKey parse(String text) {
+		 @NullUnmarked PrivateKey parse(String text) {
 			Matcher matcher = this.pattern.matcher(text);
 			return (!matcher.find()) ? null : parse(decodeBase64(matcher.group(1)));
 		}
@@ -231,7 +232,7 @@ final class PrivateKeyParser {
 			}
 		}
 
-		 private static byte[] bytes(int... elements) {
+		 @NullUnmarked private static byte[] bytes(int... elements) {
 			if (elements == null) {
 				return null;
 			}

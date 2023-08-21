@@ -52,7 +52,7 @@ import org.springframework.util.ObjectUtils;
  */
 public class JsonComponentModule extends SimpleModule implements BeanFactoryAware, InitializingBean {
 
-	 private BeanFactory beanFactory;
+	 @SuppressWarnings("NullAway.Init") private BeanFactory beanFactory;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

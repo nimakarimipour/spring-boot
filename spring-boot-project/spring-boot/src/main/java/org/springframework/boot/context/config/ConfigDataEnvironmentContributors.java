@@ -41,6 +41,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.ObjectUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -138,7 +139,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return this.bootstrapContext;
 	}
 
-	 private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
+	 @NullUnmarked private ConfigDataEnvironmentContributor getNextToProcess(ConfigDataEnvironmentContributors contributors,
 			ConfigDataActivationContext activationContext, ImportPhase importPhase) {
 		for (ConfigDataEnvironmentContributor contributor : contributors.getRoot()) {
 			if (contributor.getKind() == Kind.UNBOUND_IMPORT
@@ -209,7 +210,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 				: EnumSet.copyOf(Arrays.asList(options));
 	}
 
-	 private Binder getBinder(ConfigDataActivationContext activationContext,
+	 @NullUnmarked private Binder getBinder(ConfigDataActivationContext activationContext,
 			Predicate<ConfigDataEnvironmentContributor> filter, Set<BinderOption> options) {
 		boolean failOnInactiveSource = options.contains(BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE);
 		Iterable<ConfigurationPropertySource> sources = () -> getBinderSources(
@@ -263,9 +264,9 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 
 		private final ConfigDataActivationContext activationContext;
 
-		 private volatile Binder binder;
+		 @SuppressWarnings("NullAway.Init") private volatile Binder binder;
 
-		 ContributorConfigDataLocationResolverContext(ConfigDataEnvironmentContributors contributors,
+		 @NullUnmarked ContributorConfigDataLocationResolverContext(ConfigDataEnvironmentContributors contributors,
 				ConfigDataEnvironmentContributor contributor, ConfigDataActivationContext activationContext) {
 			this.contributors = contributors;
 			this.contributor = contributor;

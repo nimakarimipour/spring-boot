@@ -19,6 +19,7 @@ package org.springframework.boot.web.embedded.tomcat;
 import org.apache.catalina.connector.Connector;
 
 import org.springframework.boot.web.server.WebServerException;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -37,7 +38,7 @@ public class ConnectorStartFailedException extends WebServerException {
 	 * configured to listen on the given {@code port}.
 	 * @param port the port
 	 */
-	 public ConnectorStartFailedException(int port) {
+	 @NullUnmarked public ConnectorStartFailedException(int port) {
 		super("Connector configured to listen on port " + port + " failed to start", null);
 		this.port = port;
 	}

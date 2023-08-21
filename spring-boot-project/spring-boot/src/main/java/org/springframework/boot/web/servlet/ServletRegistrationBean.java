@@ -52,7 +52,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 
 	private static final String[] DEFAULT_MAPPINGS = { "/*" };
 
-	 private T servlet;
+	 @SuppressWarnings("NullAway.Init") private T servlet;
 
 	private Set<String> urlMappings = new LinkedHashSet<>();
 
@@ -60,7 +60,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 
 	private int loadOnStartup = -1;
 
-	 private MultipartConfigElement multipartConfig;
+	 @SuppressWarnings("NullAway.Init") private MultipartConfigElement multipartConfig;
 
 	/**
 	 * Create a new {@link ServletRegistrationBean} instance.

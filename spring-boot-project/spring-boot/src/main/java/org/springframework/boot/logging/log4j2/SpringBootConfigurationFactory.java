@@ -23,6 +23,7 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -52,7 +53,7 @@ public class SpringBootConfigurationFactory extends ConfigurationFactory {
 		return TYPES;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public Configuration getConfiguration(LoggerContext loggerContext, ConfigurationSource source) {
 		if (source == null || source == ConfigurationSource.NULL_SOURCE) {
 			return null;

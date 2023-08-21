@@ -33,9 +33,9 @@ public abstract class AnsiOutput {
 
 	private static Enabled enabled = Enabled.DETECT;
 
-	 private static Boolean consoleAvailable;
+	 @SuppressWarnings("NullAway.Init") private static Boolean consoleAvailable;
 
-	 private static Boolean ansiCapable;
+	 @SuppressWarnings("NullAway.Init") private static Boolean ansiCapable;
 
 	private static final String OPERATING_SYSTEM_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
 

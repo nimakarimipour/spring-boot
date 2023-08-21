@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -90,7 +91,7 @@ public interface ConfigurationPropertySource {
 	 * Return the underlying source that is actually providing the properties.
 	 * @return the underlying property source or {@code null}.
 	 */
-	 default Object getUnderlyingSource() {
+	 @NullUnmarked default Object getUnderlyingSource() {
 		return null;
 	}
 
@@ -101,7 +102,7 @@ public interface ConfigurationPropertySource {
 	 * @return an adapted source or {@code null} {@link SpringConfigurationPropertySource}
 	 * @since 2.4.0
 	 */
-	 static ConfigurationPropertySource from(PropertySource<?> source) {
+	 @NullUnmarked static ConfigurationPropertySource from(PropertySource<?> source) {
 		if (source instanceof ConfigurationPropertySourcesPropertySource) {
 			return null;
 		}

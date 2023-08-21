@@ -25,6 +25,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -182,7 +183,7 @@ public enum CloudPlatform {
 	 * @return if the platform is enforced
 	 * @since 2.4.0
 	 */
-	 public boolean isEnforced(Binder binder) {
+	 @NullUnmarked public boolean isEnforced(Binder binder) {
 		return isEnforced(binder.bind(PROPERTY_NAME, String.class).orElse(null));
 	}
 
@@ -213,7 +214,7 @@ public enum CloudPlatform {
 	 * @param environment the environment
 	 * @return the {@link CloudPlatform} or {@code null}
 	 */
-	 public static CloudPlatform getActive(Environment environment) {
+	 @NullUnmarked public static CloudPlatform getActive(Environment environment) {
 		if (environment != null) {
 			for (CloudPlatform cloudPlatform : values()) {
 				if (cloudPlatform.isActive(environment)) {

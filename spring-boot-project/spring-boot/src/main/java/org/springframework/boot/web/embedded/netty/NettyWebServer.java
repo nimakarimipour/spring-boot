@@ -44,6 +44,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -77,9 +78,9 @@ public class NettyWebServer implements WebServer {
 
 	private List<NettyRouteProvider> routeProviders = Collections.emptyList();
 
-	 private volatile DisposableServer disposableServer;
+	 @SuppressWarnings("NullAway.Init") private volatile DisposableServer disposableServer;
 
-	 public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
+	 @NullUnmarked public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
 			Shutdown shutdown) {
 		Assert.notNull(httpServer, "HttpServer must not be null");
 		Assert.notNull(handlerAdapter, "HandlerAdapter must not be null");
@@ -187,7 +188,7 @@ public class NettyWebServer implements WebServer {
 		awaitThread.start();
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public void stop() throws WebServerException {
 		if (this.disposableServer != null) {
 			if (this.gracefulShutdown != null) {

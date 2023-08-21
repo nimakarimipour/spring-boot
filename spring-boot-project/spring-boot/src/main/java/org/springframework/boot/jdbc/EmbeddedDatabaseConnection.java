@@ -31,6 +31,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -79,7 +80,7 @@ public enum EmbeddedDatabaseConnection {
 
 	private final Predicate<String> embeddedUrl;
 
-	 EmbeddedDatabaseConnection(EmbeddedDatabaseType type, String driverClass, String url,
+	 @NullUnmarked EmbeddedDatabaseConnection(EmbeddedDatabaseType type, String driverClass, String url,
 			Predicate<String> embeddedUrl) {
 		this(type, driverClass, null, url, embeddedUrl);
 	}
@@ -114,7 +115,7 @@ public enum EmbeddedDatabaseConnection {
 	 * @param databaseName the name of the database
 	 * @return the connection URL
 	 */
-	 public String getUrl(String databaseName) {
+	 @NullUnmarked public String getUrl(String databaseName) {
 		Assert.hasText(databaseName, "DatabaseName must not be empty");
 		return (this.url != null) ? String.format(this.url, databaseName) : null;
 	}

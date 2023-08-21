@@ -34,6 +34,7 @@ import org.apache.catalina.session.ManagerBase;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ClassUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -45,9 +46,9 @@ import org.springframework.util.ClassUtils;
  */
 class TomcatEmbeddedContext extends StandardContext {
 
-	 private TomcatStarter starter;
+	 @SuppressWarnings("NullAway.Init") private TomcatStarter starter;
 
-	 private MimeMappings mimeMappings;
+	 @SuppressWarnings("NullAway.Init") private MimeMappings mimeMappings;
 
 	@Override
 	public boolean loadOnStartup(Container[] children) {
@@ -137,7 +138,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		return mappings.toArray(String[]::new);
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public String findMimeMapping(String extension) {
 		String mimeMapping = super.findMimeMapping(extension);
 		if (mimeMapping != null) {

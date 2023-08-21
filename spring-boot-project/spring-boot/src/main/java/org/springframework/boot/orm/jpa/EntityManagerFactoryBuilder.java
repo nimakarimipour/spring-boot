@@ -34,6 +34,7 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -59,9 +60,9 @@ public class EntityManagerFactoryBuilder {
 
 	private final URL persistenceUnitRootLocation;
 
-	 private AsyncTaskExecutor bootstrapExecutor;
+	 @SuppressWarnings("NullAway.Init") private AsyncTaskExecutor bootstrapExecutor;
 
-	 private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
+	 @SuppressWarnings("NullAway.Init") private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
 
 	/**
 	 * Create a new instance passing in the common pieces that will be shared if multiple
@@ -71,7 +72,7 @@ public class EntityManagerFactoryBuilder {
 	 * @param persistenceUnitManager optional source of persistence unit information (can
 	 * be null)
 	 */
-	 public EntityManagerFactoryBuilder(JpaVendorAdapter jpaVendorAdapter, Map<String, ?> jpaProperties,
+	 @NullUnmarked public EntityManagerFactoryBuilder(JpaVendorAdapter jpaVendorAdapter, Map<String, ?> jpaProperties,
 			PersistenceUnitManager persistenceUnitManager) {
 		this(jpaVendorAdapter, jpaProperties, persistenceUnitManager, null);
 	}
@@ -127,19 +128,19 @@ public class EntityManagerFactoryBuilder {
 
 		private DataSource dataSource;
 
-		 private PersistenceManagedTypes managedTypes;
+		 @SuppressWarnings("NullAway.Init") private PersistenceManagedTypes managedTypes;
 
-		 private String[] packagesToScan;
+		 @SuppressWarnings("NullAway.Init") private String[] packagesToScan;
 
-		 private String persistenceUnit;
+		 @SuppressWarnings("NullAway.Init") private String persistenceUnit;
 
 		private Map<String, Object> properties = new HashMap<>();
 
-		 private String[] mappingResources;
+		 @SuppressWarnings("NullAway.Init") private String[] mappingResources;
 
 		private boolean jta;
 
-		 private Builder(DataSource dataSource) {
+		 @NullUnmarked private Builder(DataSource dataSource) {
 			this.dataSource = dataSource;
 		}
 

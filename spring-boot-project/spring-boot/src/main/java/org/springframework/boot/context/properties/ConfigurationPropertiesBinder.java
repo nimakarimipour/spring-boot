@@ -52,6 +52,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.env.PropertySources;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -77,9 +78,9 @@ class ConfigurationPropertiesBinder {
 
 	private final boolean jsr303Present;
 
-	 private volatile Validator jsr303Validator;
+	 @SuppressWarnings("NullAway.Init") private volatile Validator jsr303Validator;
 
-	 private volatile Binder binder;
+	 @SuppressWarnings("NullAway.Init") private volatile Binder binder;
 
 	ConfigurationPropertiesBinder(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
@@ -102,7 +103,7 @@ class ConfigurationPropertiesBinder {
 		return getBinder().bindOrCreate(annotation.prefix(), target, bindHandler);
 	}
 
-	 private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext) {
+	 @NullUnmarked private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext) {
 		if (applicationContext.containsBean(VALIDATOR_BEAN_NAME)) {
 			return applicationContext.getBean(VALIDATOR_BEAN_NAME, Validator.class);
 		}
@@ -162,7 +163,7 @@ class ConfigurationPropertiesBinder {
 				.toList();
 	}
 
-	 private Binder getBinder() {
+	 @NullUnmarked private Binder getBinder() {
 		if (this.binder == null) {
 			this.binder = new Binder(getConfigurationPropertySources(), getPropertySourcesPlaceholdersResolver(),
 					getConversionServices(), getPropertyEditorInitializer(), null, null);
@@ -182,7 +183,7 @@ class ConfigurationPropertiesBinder {
 		return new ConversionServiceDeducer(this.applicationContext).getConversionServices();
 	}
 
-	 private Consumer<PropertyEditorRegistry> getPropertyEditorInitializer() {
+	 @NullUnmarked private Consumer<PropertyEditorRegistry> getPropertyEditorInitializer() {
 		if (this.applicationContext instanceof ConfigurableApplicationContext configurableContext) {
 			return configurableContext.getBeanFactory()::copyRegisteredEditorsTo;
 		}
@@ -219,7 +220,7 @@ class ConfigurationPropertiesBinder {
 	 */
 	static class Factory implements ApplicationContextAware {
 
-		 private ApplicationContext applicationContext;
+		 @SuppressWarnings("NullAway.Init") private ApplicationContext applicationContext;
 
 		@Override
 		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

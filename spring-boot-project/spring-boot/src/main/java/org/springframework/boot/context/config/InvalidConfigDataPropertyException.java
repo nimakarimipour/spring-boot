@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.core.env.AbstractEnvironment;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -65,7 +66,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 
 	private final ConfigDataResource location;
 
-	 InvalidConfigDataPropertyException(ConfigurationProperty property, boolean profileSpecific,
+	 @NullUnmarked InvalidConfigDataPropertyException(ConfigurationProperty property, boolean profileSpecific,
 			ConfigurationPropertyName replacement, ConfigDataResource location) {
 		super(getMessage(property, profileSpecific, replacement, location), null);
 		this.property = property;
@@ -104,7 +105,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * {@link ConfigDataEnvironmentContributor} contains any invalid property.
 	 * @param contributor the contributor to check
 	 */
-	 static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor) {
+	 @NullUnmarked static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor) {
 		ConfigurationPropertySource propertySource = contributor.getConfigurationPropertySource();
 		if (propertySource != null) {
 			ERRORS.forEach((name, replacement) -> {

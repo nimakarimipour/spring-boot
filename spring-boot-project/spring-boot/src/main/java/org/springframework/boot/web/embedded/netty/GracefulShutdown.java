@@ -25,6 +25,7 @@ import reactor.netty.DisposableServer;
 
 import org.springframework.boot.web.server.GracefulShutdownCallback;
 import org.springframework.boot.web.server.GracefulShutdownResult;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -38,7 +39,7 @@ final class GracefulShutdown {
 
 	private final Supplier<DisposableServer> disposableServer;
 
-	 private volatile Thread shutdownThread;
+	 @SuppressWarnings("NullAway.Init") private volatile Thread shutdownThread;
 
 	private volatile boolean shuttingDown;
 
@@ -56,7 +57,7 @@ final class GracefulShutdown {
 		this.shutdownThread.start();
 	}
 
-	 private void doShutdown(GracefulShutdownCallback callback, DisposableServer server) {
+	 @NullUnmarked private void doShutdown(GracefulShutdownCallback callback, DisposableServer server) {
 		this.shuttingDown = true;
 		try {
 			server.disposeNow(Duration.ofNanos(Long.MAX_VALUE));

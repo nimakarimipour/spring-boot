@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriTemplateHandler;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -39,7 +40,7 @@ public class RootUriTemplateHandler implements UriTemplateHandler {
 
 	private final UriTemplateHandler handler;
 
-	 protected RootUriTemplateHandler(UriTemplateHandler handler) {
+	 @NullUnmarked protected RootUriTemplateHandler(UriTemplateHandler handler) {
 		Assert.notNull(handler, "Handler must not be null");
 		this.rootUri = null;
 		this.handler = handler;

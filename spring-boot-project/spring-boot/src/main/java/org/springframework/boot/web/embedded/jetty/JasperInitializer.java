@@ -29,6 +29,7 @@ import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import org.springframework.util.ClassUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -51,7 +52,7 @@ class JasperInitializer extends AbstractLifeCycle {
 		this.initializer = newInitializer();
 	}
 
-	 private ServletContainerInitializer newInitializer() {
+	 @NullUnmarked private ServletContainerInitializer newInitializer() {
 		for (String className : INITIALIZER_CLASSES) {
 			try {
 				Class<?> initializerClass = ClassUtils.forName(className, null);
@@ -111,7 +112,7 @@ class JasperInitializer extends AbstractLifeCycle {
 	 */
 	private static class WarUrlStreamHandlerFactory implements URLStreamHandlerFactory {
 
-		 @Override
+		 @NullUnmarked @Override
 		public URLStreamHandler createURLStreamHandler(String protocol) {
 			if ("war".equals(protocol)) {
 				return new WarUrlStreamHandler();

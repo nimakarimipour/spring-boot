@@ -19,6 +19,7 @@ package org.springframework.boot.context.config;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -161,7 +162,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @return a {@link ConfigDataLocation} instance or {@code null} if no location was
 	 * provided
 	 */
-	 public static ConfigDataLocation of(String location) {
+	 @NullUnmarked public static ConfigDataLocation of(String location) {
 		boolean optional = location != null && location.startsWith(OPTIONAL_PREFIX);
 		String value = (!optional) ? location : location.substring(OPTIONAL_PREFIX.length());
 		if (!StringUtils.hasText(value)) {

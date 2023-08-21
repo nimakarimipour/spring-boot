@@ -48,6 +48,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -75,7 +76,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 public abstract class SpringBootServletInitializer implements WebApplicationInitializer {
 
-	 protected Log logger; // Don't initialize early
+	 @SuppressWarnings("NullAway.Init") protected Log logger; // Don't initialize early
 
 	private boolean registerErrorPageFilter = true;
 
@@ -175,7 +176,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 		return (WebApplicationContext) application.run();
 	}
 
-	 private ApplicationContext getExistingRootWebApplicationContext(ServletContext servletContext) {
+	 @NullUnmarked private ApplicationContext getExistingRootWebApplicationContext(ServletContext servletContext) {
 		Object context = servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 		if (context instanceof ApplicationContext applicationContext) {
 			return applicationContext;

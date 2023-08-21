@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.Name;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.util.ObjectUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -76,7 +77,7 @@ class ConfigDataProperties {
 	 * Return a new variant of these properties without any imports.
 	 * @return a new {@link ConfigDataProperties} instance
 	 */
-	 ConfigDataProperties withoutImports() {
+	 @NullUnmarked ConfigDataProperties withoutImports() {
 		return new ConfigDataProperties(null, this.activate);
 	}
 
@@ -86,7 +87,7 @@ class ConfigDataProperties {
 	 * @param binder the binder used to bind the properties
 	 * @return a {@link ConfigDataProperties} instance or {@code null}
 	 */
-	 static ConfigDataProperties get(Binder binder) {
+	 @NullUnmarked static ConfigDataProperties get(Binder binder) {
 		return binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler()).orElse(null);
 	}
 

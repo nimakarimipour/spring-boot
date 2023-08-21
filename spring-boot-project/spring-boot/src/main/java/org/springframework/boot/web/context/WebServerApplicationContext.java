@@ -19,6 +19,7 @@ package org.springframework.boot.web.context;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ObjectUtils;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -67,7 +68,7 @@ public interface WebServerApplicationContext extends ApplicationContext {
 	 * {@link WebServerApplicationContext}
 	 * @since 2.6.0
 	 */
-	 static String getServerNamespace(ApplicationContext context) {
+	 @NullUnmarked static String getServerNamespace(ApplicationContext context) {
 		return (context instanceof WebServerApplicationContext configurableContext)
 				? configurableContext.getServerNamespace() : null;
 

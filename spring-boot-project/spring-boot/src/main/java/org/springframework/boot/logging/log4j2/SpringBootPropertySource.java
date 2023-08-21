@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.logging.log4j.core.util.ShutdownCallbackRegistry;
 import org.apache.logging.log4j.util.BiConsumer;
 import org.apache.logging.log4j.util.PropertySource;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -53,7 +54,7 @@ public class SpringBootPropertySource implements PropertySource {
 		return -200;
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public String getProperty(String key) {
 		return this.properties.get(key);
 	}

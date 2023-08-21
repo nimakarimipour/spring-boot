@@ -28,6 +28,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -56,7 +57,7 @@ class PropertySourcesDeducer {
 		return sources;
 	}
 
-	 private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
+	 @NullUnmarked private PropertySourcesPlaceholderConfigurer getSinglePropertySourcesPlaceholderConfigurer() {
 		// Take care not to cause early instantiation of all FactoryBeans
 		Map<String, PropertySourcesPlaceholderConfigurer> beans = this.applicationContext
 				.getBeansOfType(PropertySourcesPlaceholderConfigurer.class, false, false);
@@ -70,7 +71,7 @@ class PropertySourcesDeducer {
 		return null;
 	}
 
-	 private MutablePropertySources extractEnvironmentPropertySources() {
+	 @NullUnmarked private MutablePropertySources extractEnvironmentPropertySources() {
 		Environment environment = this.applicationContext.getEnvironment();
 		if (environment instanceof ConfigurableEnvironment configurableEnvironment) {
 			return configurableEnvironment.getPropertySources();

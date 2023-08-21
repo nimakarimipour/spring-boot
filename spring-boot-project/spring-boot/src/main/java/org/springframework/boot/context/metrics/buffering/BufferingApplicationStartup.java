@@ -30,6 +30,7 @@ import org.springframework.boot.context.metrics.buffering.StartupTimeline.Timeli
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -106,7 +107,7 @@ public class BufferingApplicationStartup implements ApplicationStartup {
 		this.filter = this.filter.and(filter);
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public StartupStep start(String name) {
 		int id = this.idSeq.getAndIncrement();
 		Instant start = this.clock.instant();
@@ -120,7 +121,7 @@ public class BufferingApplicationStartup implements ApplicationStartup {
 		}
 	}
 
-	 private void record(BufferedStartupStep step) {
+	 @NullUnmarked private void record(BufferedStartupStep step) {
 		if (this.filter.test(step) && this.estimatedSize.get() < this.capacity) {
 			this.estimatedSize.incrementAndGet();
 			this.events.add(new TimelineEvent(step, this.clock.instant()));

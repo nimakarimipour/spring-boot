@@ -31,6 +31,7 @@ import io.undertow.servlet.UndertowServletLogger;
 import io.undertow.servlet.api.SessionPersistenceManager;
 
 import org.springframework.core.ConfigurableObjectInputStream;
+import org.jspecify.annotations.NullUnmarked;
 
 
 /**
@@ -70,7 +71,7 @@ class FileSessionPersistence implements SessionPersistenceManager {
 		stream.writeObject(session);
 	}
 
-	 @Override
+	 @NullUnmarked @Override
 	public Map<String, PersistentSession> loadSessionAttributes(String deploymentName, final ClassLoader classLoader) {
 		try {
 			File file = getSessionFile(deploymentName);

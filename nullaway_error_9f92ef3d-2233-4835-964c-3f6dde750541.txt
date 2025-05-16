@@ -1,0 +1,4 @@
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/web/server/Ssl.java:32: error: [NullAway] @NonNull field clientAuth not initialized
+	private ClientAuth clientAuth;
+	                   ^
+    (see http://t.uber.com/nullaway )

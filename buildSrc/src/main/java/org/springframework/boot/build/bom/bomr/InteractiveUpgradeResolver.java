@@ -75,14 +75,7 @@ public final class InteractiveUpgradeResolver implements UpgradeResolver {
 	}
 
 	private Upgrade resolveUpgrade(Library library, Map<String, Library> libraries) {
-		List<VersionOption> versionOptions = getVersionOptions(library, libraries);
-		if (versionOptions.isEmpty()) {
-			return null;
-		}
-		VersionOption current = new VersionOption(library.getVersion().getVersion());
-		VersionOption selected = this.userInputHandler
-				.selectOption(library.getName() + " " + library.getVersion().getVersion(), versionOptions, current);
-		return (selected.equals(current)) ? null : new Upgrade(library, selected.version);
+		return null;
 	}
 
 	private List<VersionOption> getVersionOptions(Library library, Map<String, Library> libraries) {

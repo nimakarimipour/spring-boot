@@ -50,51 +50,14 @@ dependencies {
 }
 
 task fullJar(type: Jar) {
-	dependsOn configurations.loader
-	classifier = "full"
-	entryCompression = "stored"
-	from(configurations.runtimeClasspath) {
-		into "BOOT-INF/lib"
-	}
-	from(sourceSets.main.output) {
-		into "BOOT-INF/classes"
-	}
-	from {
-		zipTree(configurations.loader.singleFile).matching {
-			exclude "META-INF/LICENSE.txt"
-			exclude "META-INF/NOTICE.txt"
-			exclude "META-INF/spring-boot.properties"
-		}
-	}
-	manifest {
-		attributes(
-			"Main-Class": "org.springframework.boot.loader.JarLauncher",
-			"Start-Class": "org.springframework.boot.cli.SpringCli"
-		)
-	}
+	
 }
 
 def configureArchive(archive) {
-	archive.classifier = "bin"
-	archive.into "spring-${project.version}"
-	archive.from(fullJar) {
-		rename {
-			it.replace("-full", "")
-		}
-		into "lib/"
-	}
-	archive.from(file("src/main/content")) {
-		dirMode = 0755
-		fileMode = 0644
-	}
-	archive.from(file("src/main/executablecontent")) {
-		fileMode = 0755
-	}
+	
 }
 
 task zip(type: Zip) {
-	classifier = "bin"
-	configureArchive it
 }
 
 intTest {

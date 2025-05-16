@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import javax.annotation.Nullable;
 
 /**
  * Context information for use by {@link BindHandler BindHandlers}.
@@ -53,6 +54,7 @@ public interface BindContext {
 	 * the property has not yet been determined.
 	 * @return the configuration property (may be {@code null}).
 	 */
+	@Nullable
 	ConfigurationProperty getConfigurationProperty();
 
 }

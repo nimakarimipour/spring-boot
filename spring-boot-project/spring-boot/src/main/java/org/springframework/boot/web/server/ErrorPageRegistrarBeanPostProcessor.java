@@ -28,6 +28,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link BeanPostProcessor} that applies all {@link ErrorPageRegistrar}s from the bean
@@ -39,8 +40,10 @@ import org.springframework.util.Assert;
  */
 public class ErrorPageRegistrarBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
+	@Nullable
 	private ListableBeanFactory beanFactory;
 
+	@Nullable
 	private List<ErrorPageRegistrar> registrars;
 
 	@Override

@@ -35,6 +35,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import javax.annotation.Nullable;
 
 /**
  * Simple factory used to instantiate objects by injecting available parameters.
@@ -121,7 +122,7 @@ public class Instantiator<T> {
 	 * @return a list of instantiated instances
 	 * @since 2.4.8
 	 */
-	public List<T> instantiate(ClassLoader classLoader, Collection<String> names) {
+	public List<T> instantiate(@Nullable ClassLoader classLoader, @Nullable Collection<String> names) {
 		Assert.notNull(names, "Names must not be null");
 		return instantiate(names.stream().map((name) -> TypeSupplier.forName(classLoader, name)));
 	}
@@ -143,6 +144,7 @@ public class Instantiator<T> {
 		return Collections.unmodifiableList(instances);
 	}
 
+	@Nullable
 	private T instantiate(TypeSupplier typeSupplier) {
 		try {
 			Class<?> type = typeSupplier.get();
@@ -181,6 +183,7 @@ public class Instantiator<T> {
 		return args;
 	}
 
+	@Nullable
 	private Function<Class<?>, Object> getAvailableParameter(Class<?> parameterType) {
 		for (Map.Entry<Class<?>, Function<Class<?>, Object>> entry : this.availableParameters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(parameterType)) {
@@ -220,7 +223,7 @@ public class Instantiator<T> {
 
 		Class<?> get() throws ClassNotFoundException;
 
-		static TypeSupplier forName(ClassLoader classLoader, String name) {
+		static TypeSupplier forName(@Nullable ClassLoader classLoader, String name) {
 			return new TypeSupplier() {
 
 				@Override

@@ -35,6 +35,7 @@ import org.reactivestreams.Publisher;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * Builder for {@link ConnectionFactory}.
@@ -105,6 +106,7 @@ public final class ConnectionFactoryBuilder {
 		return withOptions(options.mutate());
 	}
 
+	@Nullable
 	private static ConnectionFactoryOptions extractOptionsIfPossible(ConnectionFactory connectionFactory) {
 		OptionsCapableConnectionFactory optionsCapable = OptionsCapableConnectionFactory.unwrapFrom(connectionFactory);
 		if (optionsCapable != null) {

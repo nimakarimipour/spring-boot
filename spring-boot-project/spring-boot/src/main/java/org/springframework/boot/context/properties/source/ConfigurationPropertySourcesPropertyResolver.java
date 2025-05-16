@@ -20,6 +20,7 @@ import org.springframework.core.env.AbstractPropertyResolver;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
+import javax.annotation.Nullable;
 
 /**
  * Alternative {@link PropertySourcesPropertyResolver} implementation that recognizes
@@ -55,21 +56,25 @@ class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResol
 		return this.defaultResolver.containsProperty(key);
 	}
 
+	@Nullable
 	@Override
 	public String getProperty(String key) {
 		return getProperty(key, String.class, true);
 	}
 
+	@Nullable
 	@Override
 	public <T> T getProperty(String key, Class<T> targetValueType) {
 		return getProperty(key, targetValueType, true);
 	}
 
+	@Nullable
 	@Override
 	protected String getPropertyAsRawString(String key) {
 		return getProperty(key, String.class, false);
 	}
 
+	@Nullable
 	private <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
 		Object value = findPropertyValue(key);
 		if (value == null) {
@@ -81,6 +86,7 @@ class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResol
 		return convertValueIfNecessary(value, targetValueType);
 	}
 
+	@Nullable
 	private Object findPropertyValue(String key) {
 		ConfigurationPropertySourcesPropertySource attached = getAttached();
 		if (attached != null) {
@@ -97,6 +103,7 @@ class ConfigurationPropertySourcesPropertyResolver extends AbstractPropertyResol
 		return this.defaultResolver.getProperty(key, Object.class, false);
 	}
 
+	@Nullable
 	private ConfigurationPropertySourcesPropertySource getAttached() {
 		ConfigurationPropertySourcesPropertySource attached = (ConfigurationPropertySourcesPropertySource) ConfigurationPropertySources
 				.getAttached(this.propertySources);

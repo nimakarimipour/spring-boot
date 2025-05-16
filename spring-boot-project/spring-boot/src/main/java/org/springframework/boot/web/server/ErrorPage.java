@@ -18,6 +18,7 @@ package org.springframework.boot.web.server;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Simple server-independent abstraction for error pages. Roughly equivalent to the
@@ -28,8 +29,10 @@ import org.springframework.util.ObjectUtils;
  */
 public class ErrorPage {
 
+	@Nullable
 	private final HttpStatus status;
 
+	@Nullable
 	private final Class<? extends Throwable> exception;
 
 	private final String path;
@@ -66,6 +69,7 @@ public class ErrorPage {
 	 * Returns the exception type (or {@code null} for a page that matches by status).
 	 * @return the exception type or {@code null}
 	 */
+	@Nullable
 	public Class<? extends Throwable> getException() {
 		return this.exception;
 	}
@@ -75,6 +79,7 @@ public class ErrorPage {
 	 * matches by exception).
 	 * @return the status or {@code null}
 	 */
+	@Nullable
 	public HttpStatus getStatus() {
 		return this.status;
 	}
@@ -91,6 +96,7 @@ public class ErrorPage {
 	 * The exception type name.
 	 * @return the exception type name (or {@code null} if there is none)
 	 */
+	@Nullable
 	public String getExceptionName() {
 		return (this.exception != null) ? this.exception.getName() : null;
 	}

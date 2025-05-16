@@ -19,6 +19,7 @@ package org.springframework.boot.context.config;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * A user specified location that can be {@link ConfigDataLocationResolver resolved} to
@@ -44,9 +45,10 @@ public final class ConfigDataLocation implements OriginProvider {
 
 	private final String value;
 
+	@Nullable
 	private final Origin origin;
 
-	private ConfigDataLocation(boolean optional, String value, Origin origin) {
+	private ConfigDataLocation(boolean optional, String value, @Nullable Origin origin) {
 		this.value = value;
 		this.optional = optional;
 		this.origin = origin;
@@ -92,6 +94,7 @@ public final class ConfigDataLocation implements OriginProvider {
 		return this.value;
 	}
 
+	@Nullable
 	@Override
 	public Origin getOrigin() {
 		return this.origin;
@@ -150,7 +153,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @param origin the origin to set
 	 * @return a new {@link ConfigDataLocation} instance.
 	 */
-	ConfigDataLocation withOrigin(Origin origin) {
+	ConfigDataLocation withOrigin(@Nullable Origin origin) {
 		return new ConfigDataLocation(this.optional, this.value, origin);
 	}
 
@@ -160,6 +163,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @return a {@link ConfigDataLocation} instance or {@code null} if no location was
 	 * provided
 	 */
+	@Nullable
 	public static ConfigDataLocation of(String location) {
 		boolean optional = location != null && location.startsWith(OPTIONAL_PREFIX);
 		String value = (!optional) ? location : location.substring(OPTIONAL_PREFIX.length());

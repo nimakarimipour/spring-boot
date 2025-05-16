@@ -22,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
+import javax.annotation.Nullable;
 
 /**
  * Strategy interface for creating the {@link ConfigurableApplicationContext} used by a
@@ -50,6 +51,7 @@ public interface ApplicationContextFactory {
 	 * @return the expected application context type or {@code null} to use the default
 	 * @since 2.6.14
 	 */
+	@Nullable
 	default Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
 		return null;
 	}
@@ -63,6 +65,7 @@ public interface ApplicationContextFactory {
 	 * @return an environment instance or {@code null} to use the default
 	 * @since 2.6.14
 	 */
+	@Nullable
 	default ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
 		return null;
 	}
@@ -73,6 +76,7 @@ public interface ApplicationContextFactory {
 	 * @param webApplicationType the web application type
 	 * @return the newly created application context
 	 */
+	@Nullable
 	ConfigurableApplicationContext create(WebApplicationType webApplicationType);
 
 	/**

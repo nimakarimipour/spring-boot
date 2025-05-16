@@ -24,6 +24,7 @@ import jakarta.validation.MessageInterpolator;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import javax.annotation.Nullable;
 
 /**
  * Resolves any message parameters via {@link MessageSource} and then interpolates a
@@ -113,6 +114,7 @@ class MessageSourceMessageInterpolator implements MessageInterpolator {
 		return buf.toString();
 	}
 
+	@Nullable
 	private String replaceParameter(String parameter, Locale locale, Set<String> visitedParameters) {
 		parameter = replaceParameters(parameter, locale, visitedParameters);
 		String value = this.messageSource.getMessage(parameter, null, null, locale);

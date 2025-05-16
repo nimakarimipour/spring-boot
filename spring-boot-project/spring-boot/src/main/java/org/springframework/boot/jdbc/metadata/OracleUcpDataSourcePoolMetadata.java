@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import oracle.ucp.jdbc.PoolDataSource;
 
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link DataSourcePoolMetadata} for an Oracle UCP {@link DataSource}.
@@ -36,6 +37,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		super(dataSource);
 	}
 
+	@Nullable
 	@Override
 	public Integer getActive() {
 		try {
@@ -46,6 +48,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		}
 	}
 
+	@Nullable
 	@Override
 	public Integer getIdle() {
 		try {
@@ -71,6 +74,7 @@ public class OracleUcpDataSourcePoolMetadata extends AbstractDataSourcePoolMetad
 		return getDataSource().getSQLForValidateConnection();
 	}
 
+	@Nullable
 	@Override
 	public Boolean getDefaultAutoCommit() {
 		String autoCommit = getDataSource().getConnectionProperty("autoCommit");

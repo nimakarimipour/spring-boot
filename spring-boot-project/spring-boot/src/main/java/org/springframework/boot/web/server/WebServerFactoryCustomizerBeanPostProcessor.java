@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.util.LambdaSafe;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link BeanPostProcessor} that applies all {@link WebServerFactoryCustomizer} beans
@@ -41,8 +42,10 @@ import org.springframework.util.Assert;
  */
 public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
+	@Nullable
 	private ListableBeanFactory beanFactory;
 
+	@Nullable
 	private List<WebServerFactoryCustomizer<?>> customizers;
 
 	@Override

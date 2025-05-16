@@ -36,6 +36,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.AbstractBindingResult;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Validator;
+import javax.annotation.Nullable;
 
 /**
  * {@link BindHandler} to apply {@link Validator Validators} to bound results.
@@ -54,6 +55,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 
 	private final Set<ConfigurationProperty> boundProperties = new LinkedHashSet<>();
 
+	@Nullable
 	private BindValidationException exception;
 
 	public ValidationBindHandler(Validator... validators) {
@@ -80,6 +82,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 		return super.onSuccess(name, target, context, result);
 	}
 
+	@Nullable
 	@Override
 	public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Exception error)
 			throws Exception {
@@ -100,13 +103,14 @@ public class ValidationBindHandler extends AbstractBindHandler {
 	}
 
 	@Override
-	public void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result)
-			throws Exception {
+	public void onFinish(ConfigurationPropertyName name, Bindable<?> target, BindContext context,
+			@Nullable Object result) throws Exception {
 		validate(name, target, context, result);
 		super.onFinish(name, target, context, result);
 	}
 
-	private void validate(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
+	private void validate(ConfigurationPropertyName name, Bindable<?> target, BindContext context,
+			@Nullable Object result) {
 		if (this.exception == null) {
 			Object validationTarget = getValidationTarget(target, context, result);
 			Class<?> validationType = target.getBoxedType().resolve();
@@ -119,7 +123,8 @@ public class ValidationBindHandler extends AbstractBindHandler {
 		}
 	}
 
-	private Object getValidationTarget(Bindable<?> target, BindContext context, Object result) {
+	@Nullable
+	private Object getValidationTarget(Bindable<?> target, BindContext context, @Nullable Object result) {
 		if (result != null) {
 			return result;
 		}
@@ -169,6 +174,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			return super.getFieldType(field);
 		}
 
+		@Nullable
 		@Override
 		protected Object getActualFieldValue(String field) {
 			Object boundField = getBoundField(ValidationBindHandler.this.boundResults, field);
@@ -196,6 +202,7 @@ public class ValidationBindHandler extends AbstractBindHandler {
 			return false;
 		}
 
+		@Nullable
 		private <T> T getBoundField(Map<ConfigurationPropertyName, T> boundFields, String field) {
 			try {
 				ConfigurationPropertyName name = getName(field);

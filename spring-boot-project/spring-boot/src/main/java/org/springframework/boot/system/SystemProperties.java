@@ -16,6 +16,8 @@
 
 package org.springframework.boot.system;
 
+import javax.annotation.Nullable;
+
 /**
  * Access to system properties.
  *
@@ -27,6 +29,7 @@ public final class SystemProperties {
 	private SystemProperties() {
 	}
 
+	@Nullable
 	public static String get(String... properties) {
 		for (String property : properties) {
 			try {

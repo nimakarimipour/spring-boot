@@ -52,6 +52,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.env.PropertySources;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
+import javax.annotation.Nullable;
 
 /**
  * Internal class used by the {@link ConfigurationPropertiesBindingPostProcessor} to
@@ -70,14 +71,18 @@ class ConfigurationPropertiesBinder {
 
 	private final ApplicationContext applicationContext;
 
+	@Nullable
 	private final PropertySources propertySources;
 
+	@Nullable
 	private final Validator configurationPropertiesValidator;
 
 	private final boolean jsr303Present;
 
+	@Nullable
 	private volatile Validator jsr303Validator;
 
+	@Nullable
 	private volatile Binder binder;
 
 	ConfigurationPropertiesBinder(ApplicationContext applicationContext) {
@@ -101,6 +106,7 @@ class ConfigurationPropertiesBinder {
 		return getBinder().bindOrCreate(annotation.prefix(), target, bindHandler);
 	}
 
+	@Nullable
 	private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext) {
 		if (applicationContext.containsBean(VALIDATOR_BEAN_NAME)) {
 			return applicationContext.getBean(VALIDATOR_BEAN_NAME, Validator.class);
@@ -177,10 +183,12 @@ class ConfigurationPropertiesBinder {
 		return new PropertySourcesPlaceholdersResolver(this.propertySources);
 	}
 
+	@Nullable
 	private List<ConversionService> getConversionServices() {
 		return new ConversionServiceDeducer(this.applicationContext).getConversionServices();
 	}
 
+	@Nullable
 	private Consumer<PropertyEditorRegistry> getPropertyEditorInitializer() {
 		if (this.applicationContext instanceof ConfigurableApplicationContext configurableContext) {
 			return configurableContext.getBeanFactory()::copyRegisteredEditorsTo;
@@ -218,6 +226,7 @@ class ConfigurationPropertiesBinder {
 	 */
 	static class Factory implements ApplicationContextAware {
 
+		@Nullable
 		private ApplicationContext applicationContext;
 
 		@Override

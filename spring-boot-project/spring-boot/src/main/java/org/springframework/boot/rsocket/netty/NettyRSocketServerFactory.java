@@ -45,6 +45,7 @@ import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.unit.DataSize;
+import javax.annotation.Nullable;
 
 /**
  * {@link RSocketServerFactory} that can be used to create {@link RSocketServer}s backed
@@ -59,20 +60,26 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 
 	private int port = 9898;
 
+	@Nullable
 	private DataSize fragmentSize;
 
+	@Nullable
 	private InetAddress address;
 
 	private RSocketServer.Transport transport = RSocketServer.Transport.TCP;
 
+	@Nullable
 	private ReactorResourceFactory resourceFactory;
 
+	@Nullable
 	private Duration lifecycleTimeout;
 
 	private List<RSocketServerCustomizer> rSocketServerCustomizers = new ArrayList<>();
 
+	@Nullable
 	private Ssl ssl;
 
+	@Nullable
 	private SslStoreProvider sslStoreProvider;
 
 	@Override
@@ -198,6 +205,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 		return TcpServerTransport.create(tcpServer.bindAddress(this::getListenAddress));
 	}
 
+	@Nullable
 	private SslStoreProvider getOrCreateSslStoreProvider() {
 		if (this.sslStoreProvider != null) {
 			return this.sslStoreProvider;
@@ -216,7 +224,7 @@ public class NettyRSocketServerFactory implements RSocketServerFactory, Configur
 	private static final class TcpSslServerCustomizer
 			extends org.springframework.boot.web.embedded.netty.SslServerCustomizer {
 
-		private TcpSslServerCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+		private TcpSslServerCustomizer(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 			super(ssl, null, sslStoreProvider);
 		}
 

@@ -17,6 +17,7 @@
 package org.springframework.boot.jdbc.metadata;
 
 import javax.sql.DataSource;
+import javax.annotation.Nullable;
 
 /**
  * Provides access meta-data that is commonly available from most pooled
@@ -41,6 +42,7 @@ public interface DataSourcePoolMetadata {
 	 * information to compute the poll usage.
 	 * @return the usage value or {@code null}
 	 */
+	@Nullable
 	Float getUsage();
 
 	/**
@@ -48,6 +50,7 @@ public interface DataSourcePoolMetadata {
 	 * data source or {@code null} if that information is not available.
 	 * @return the number of active connections or {@code null}
 	 */
+	@Nullable
 	Integer getActive();
 
 	/**
@@ -57,6 +60,7 @@ public interface DataSourcePoolMetadata {
 	 * @since 2.2.0
 	 * @see #getActive()
 	 */
+	@Nullable
 	default Integer getIdle() {
 		return null;
 	}
@@ -89,6 +93,7 @@ public interface DataSourcePoolMetadata {
 	 * java.sql.Connection.setAutoCommit(boolean) method will not be called.)
 	 * @return the default auto-commit state or {@code null}
 	 */
+	@Nullable
 	Boolean getDefaultAutoCommit();
 
 }

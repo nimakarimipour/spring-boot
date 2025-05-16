@@ -27,6 +27,7 @@ import org.springframework.boot.BootstrapRegistry;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.boot.util.Instantiator;
+import javax.annotation.Nullable;
 
 /**
  * {@link EnvironmentPostProcessorsFactory} implementation that uses reflection to create
@@ -36,10 +37,13 @@ import org.springframework.boot.util.Instantiator;
  */
 class ReflectionEnvironmentPostProcessorsFactory implements EnvironmentPostProcessorsFactory {
 
+	@Nullable
 	private final List<Class<?>> classes;
 
+	@Nullable
 	private ClassLoader classLoader;
 
+	@Nullable
 	private final List<String> classNames;
 
 	ReflectionEnvironmentPostProcessorsFactory(Class<?>... classes) {
@@ -47,11 +51,11 @@ class ReflectionEnvironmentPostProcessorsFactory implements EnvironmentPostProce
 		this.classNames = null;
 	}
 
-	ReflectionEnvironmentPostProcessorsFactory(ClassLoader classLoader, String... classNames) {
+	ReflectionEnvironmentPostProcessorsFactory(@Nullable ClassLoader classLoader, String... classNames) {
 		this(classLoader, Arrays.asList(classNames));
 	}
 
-	ReflectionEnvironmentPostProcessorsFactory(ClassLoader classLoader, List<String> classNames) {
+	ReflectionEnvironmentPostProcessorsFactory(@Nullable ClassLoader classLoader, List<String> classNames) {
 		this.classes = null;
 		this.classLoader = classLoader;
 		this.classNames = classNames;

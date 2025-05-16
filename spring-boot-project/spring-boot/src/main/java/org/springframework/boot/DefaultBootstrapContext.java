@@ -26,6 +26,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Default {@link ConfigurableBootstrapContext} implementation.
@@ -70,6 +71,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
+	@Nullable
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type) {
@@ -83,16 +85,19 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		this.events.addApplicationListener(listener);
 	}
 
+	@Nullable
 	@Override
 	public <T> T get(Class<T> type) throws IllegalStateException {
 		return getOrElseThrow(type, () -> new IllegalStateException(type.getName() + " has not been registered"));
 	}
 
+	@Nullable
 	@Override
 	public <T> T getOrElse(Class<T> type, T other) {
 		return getOrElseSupply(type, () -> other);
 	}
 
+	@Nullable
 	@Override
 	public <T> T getOrElseSupply(Class<T> type, Supplier<T> other) {
 		synchronized (this.instanceSuppliers) {
@@ -101,6 +106,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
+	@Nullable
 	@Override
 	public <T, X extends Throwable> T getOrElseThrow(Class<T> type, Supplier<? extends X> exceptionSupplier) throws X {
 		synchronized (this.instanceSuppliers) {
@@ -112,6 +118,7 @@ public class DefaultBootstrapContext implements ConfigurableBootstrapContext {
 		}
 	}
 
+	@Nullable
 	@SuppressWarnings("unchecked")
 	private <T> T getInstance(Class<T> type, InstanceSupplier<?> instanceSupplier) {
 		T instance = (T) this.instances.get(type);

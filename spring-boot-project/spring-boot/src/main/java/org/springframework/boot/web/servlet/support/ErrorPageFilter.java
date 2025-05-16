@@ -44,6 +44,7 @@ import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.core.Ordered;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import javax.annotation.Nullable;
 
 /**
  * A Servlet {@link Filter} that provides an {@link ErrorPageRegistry} for non-embedded
@@ -85,6 +86,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		CLIENT_ABORT_EXCEPTIONS = Collections.unmodifiableSet(clientAbortExceptions);
 	}
 
+	@Nullable
 	private String global;
 
 	private final Map<Integer, String> statuses = new HashMap<>();
@@ -143,8 +145,8 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		}
 	}
 
-	private void handleErrorStatus(HttpServletRequest request, HttpServletResponse response, int status, String message)
-			throws ServletException, IOException {
+	private void handleErrorStatus(HttpServletRequest request, HttpServletResponse response, int status,
+			@Nullable String message) throws ServletException, IOException {
 		if (response.isCommitted()) {
 			handleCommittedResponse(request, null);
 			return;
@@ -203,7 +205,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		return "[" + request.getServletPath() + pathInfo + "]";
 	}
 
-	private void handleCommittedResponse(HttpServletRequest request, Throwable ex) {
+	private void handleCommittedResponse(HttpServletRequest request, @Nullable Throwable ex) {
 		if (isClientAbortException(ex)) {
 			return;
 		}
@@ -223,7 +225,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		}
 	}
 
-	private boolean isClientAbortException(Throwable ex) {
+	private boolean isClientAbortException(@Nullable Throwable ex) {
 		if (ex == null) {
 			return false;
 		}
@@ -235,6 +237,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		return isClientAbortException(ex.getCause());
 	}
 
+	@Nullable
 	private String getErrorPath(Map<Integer, String> map, Integer status) {
 		if (map.containsKey(status)) {
 			return map.get(status);
@@ -242,6 +245,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		return this.global;
 	}
 
+	@Nullable
 	private String getErrorPath(Class<?> type) {
 		while (type != Object.class) {
 			String path = this.exceptions.get(type);
@@ -253,7 +257,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		return this.global;
 	}
 
-	private void setErrorAttributes(HttpServletRequest request, int status, String message) {
+	private void setErrorAttributes(HttpServletRequest request, int status, @Nullable String message) {
 		request.setAttribute(ERROR_STATUS_CODE, status);
 		request.setAttribute(ERROR_MESSAGE, message);
 		request.setAttribute(ERROR_REQUEST_URI, request.getRequestURI());
@@ -311,6 +315,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 
 		private int status;
 
+		@Nullable
 		private String message;
 
 		private boolean hasErrorToSend = false;
@@ -325,7 +330,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 		}
 
 		@Override
-		public void sendError(int status, String message) throws IOException {
+		public void sendError(int status, @Nullable String message) throws IOException {
 			this.status = status;
 			this.message = message;
 			this.hasErrorToSend = true;
@@ -354,6 +359,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry, Ordered {
 			}
 		}
 
+		@Nullable
 		String getMessage() {
 			return this.message;
 		}

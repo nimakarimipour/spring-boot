@@ -26,6 +26,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ServletContextInitializer} to register {@link DelegatingFilterProxy}s in a
@@ -54,6 +55,7 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 public class DelegatingFilterProxyRegistrationBean extends AbstractFilterRegistrationBean<DelegatingFilterProxy>
 		implements ApplicationContextAware {
 
+	@Nullable
 	private ApplicationContext applicationContext;
 
 	private final String targetBeanName;
@@ -94,6 +96,7 @@ public class DelegatingFilterProxyRegistrationBean extends AbstractFilterRegistr
 		};
 	}
 
+	@Nullable
 	private WebApplicationContext getWebApplicationContext() {
 		Assert.notNull(this.applicationContext, "ApplicationContext be injected");
 		Assert.isInstanceOf(WebApplicationContext.class, this.applicationContext);

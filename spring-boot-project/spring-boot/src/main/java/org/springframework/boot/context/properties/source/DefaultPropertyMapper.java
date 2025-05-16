@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Default {@link PropertyMapper} implementation. Names are mapped by removing invalid
@@ -35,8 +36,10 @@ final class DefaultPropertyMapper implements PropertyMapper {
 
 	public static final PropertyMapper INSTANCE = new DefaultPropertyMapper();
 
+	@Nullable
 	private LastMapping<ConfigurationPropertyName, List<String>> lastMappedConfigurationPropertyName;
 
+	@Nullable
 	private LastMapping<String, ConfigurationPropertyName> lastMappedPropertyName;
 
 	private DefaultPropertyMapper() {

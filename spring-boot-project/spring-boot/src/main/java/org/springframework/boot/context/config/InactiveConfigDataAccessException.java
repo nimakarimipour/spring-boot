@@ -21,6 +21,7 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.origin.Origin;
 import org.springframework.core.env.PropertySource;
+import javax.annotation.Nullable;
 
 /**
  * Exception thrown when an attempt is made to resolve a property against an inactive
@@ -33,12 +34,15 @@ import org.springframework.core.env.PropertySource;
  */
 public class InactiveConfigDataAccessException extends ConfigDataException {
 
+	@Nullable
 	private final PropertySource<?> propertySource;
 
+	@Nullable
 	private final ConfigDataResource location;
 
 	private final String propertyName;
 
+	@Nullable
 	private final Origin origin;
 
 	/**
@@ -49,8 +53,8 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param propertyName the name of the property
 	 * @param origin the origin or the property or {@code null}
 	 */
-	InactiveConfigDataAccessException(PropertySource<?> propertySource, ConfigDataResource location,
-			String propertyName, Origin origin) {
+	InactiveConfigDataAccessException(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location,
+			String propertyName, @Nullable Origin origin) {
 		super(getMessage(propertySource, location, propertyName, origin), null);
 		this.propertySource = propertySource;
 		this.location = location;
@@ -58,8 +62,8 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 		this.origin = origin;
 	}
 
-	private static String getMessage(PropertySource<?> propertySource, ConfigDataResource location, String propertyName,
-			Origin origin) {
+	private static String getMessage(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location,
+			String propertyName, @Nullable Origin origin) {
 		StringBuilder message = new StringBuilder("Inactive property source '");
 		message.append(propertySource.getName());
 		if (location != null) {
@@ -81,6 +85,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the inactive property source that contained the property.
 	 * @return the property source
 	 */
+	@Nullable
 	public PropertySource<?> getPropertySource() {
 		return this.propertySource;
 	}
@@ -90,6 +95,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * source was not loaded from {@link ConfigData}.
 	 * @return the config data location or {@code null}
 	 */
+	@Nullable
 	public ConfigDataResource getLocation() {
 		return this.location;
 	}
@@ -106,6 +112,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the origin or the property or {@code null}.
 	 * @return the property origin
 	 */
+	@Nullable
 	public Origin getOrigin() {
 		return this.origin;
 	}

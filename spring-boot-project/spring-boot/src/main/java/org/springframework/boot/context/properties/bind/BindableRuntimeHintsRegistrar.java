@@ -41,6 +41,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link RuntimeHintsRegistrar} that can be used to register {@link ReflectionHints} for
@@ -89,8 +90,10 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
 		private final Class<?> type;
 
+		@Nullable
 		private final Constructor<?> bindConstructor;
 
+		@Nullable
 		private final BeanInfo beanInfo;
 
 		private final Set<Class<?>> seen;
@@ -106,6 +109,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			this.seen = seen;
 		}
 
+		@Nullable
 		private static BeanInfo getBeanInfo(Class<?> beanType) {
 			try {
 				BeanInfo beanInfo = beanInfoFactory.getBeanInfo(beanType);
@@ -208,6 +212,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			new Processor(type, true, this.seen).process(hints);
 		}
 
+		@Nullable
 		private Class<?> getComponentClass(ResolvableType type) {
 			ResolvableType componentType = getComponentType(type);
 			if (componentType == null) {
@@ -220,6 +225,7 @@ public class BindableRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 			return componentType.toClass();
 		}
 
+		@Nullable
 		private ResolvableType getComponentType(ResolvableType type) {
 			if (type.isArray()) {
 				return type.getComponentType();

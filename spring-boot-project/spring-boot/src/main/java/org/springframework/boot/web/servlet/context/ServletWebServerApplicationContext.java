@@ -61,6 +61,7 @@ import org.springframework.web.context.support.ServletContextAwareProcessor;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.context.support.ServletContextScope;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import javax.annotation.Nullable;
 
 /**
  * A {@link WebApplicationContext} that can be used to bootstrap itself from a contained
@@ -108,10 +109,13 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 */
 	public static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
 
+	@Nullable
 	private volatile WebServer webServer;
 
+	@Nullable
 	private ServletConfig servletConfig;
 
+	@Nullable
 	private String serverNamespace;
 
 	/**
@@ -306,6 +310,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		return new ServletContextResource(getServletContext(), path);
 	}
 
+	@Nullable
 	@Override
 	public String getServerNamespace() {
 		return this.serverNamespace;
@@ -321,6 +326,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		this.servletConfig = servletConfig;
 	}
 
+	@Nullable
 	@Override
 	public ServletConfig getServletConfig() {
 		return this.servletConfig;
@@ -331,6 +337,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 * the server has not yet been created.
 	 * @return the embedded web server
 	 */
+	@Nullable
 	@Override
 	public WebServer getWebServer() {
 		return this.webServer;

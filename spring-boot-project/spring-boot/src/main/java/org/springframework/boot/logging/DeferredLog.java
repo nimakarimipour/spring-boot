@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Deferred {@link Log} that can be used to store messages that shouldn't be written until
@@ -35,6 +36,7 @@ import org.springframework.util.Assert;
  */
 public class DeferredLog implements Log {
 
+	@Nullable
 	private volatile Log destination;
 
 	private final Supplier<Log> destinationSupplier;
@@ -163,7 +165,7 @@ public class DeferredLog implements Log {
 		log(LogLevel.FATAL, message, t);
 	}
 
-	private void log(LogLevel level, Object message, Throwable t) {
+	private void log(LogLevel level, Object message, @Nullable Throwable t) {
 		synchronized (this.lines) {
 			if (this.destination != null) {
 				logTo(this.destination, level, message, t);
@@ -243,7 +245,7 @@ public class DeferredLog implements Log {
 		return destination;
 	}
 
-	static void logTo(Log log, LogLevel level, Object message, Throwable throwable) {
+	static void logTo(Log log, LogLevel level, Object message, @Nullable Throwable throwable) {
 		switch (level) {
 			case TRACE -> log.trace(message, throwable);
 			case DEBUG -> log.debug(message, throwable);
@@ -258,7 +260,7 @@ public class DeferredLog implements Log {
 
 		private final List<Line> lines = new ArrayList<>();
 
-		void add(Supplier<Log> destinationSupplier, LogLevel level, Object message, Throwable throwable) {
+		void add(Supplier<Log> destinationSupplier, LogLevel level, Object message, @Nullable Throwable throwable) {
 			this.lines.add(new Line(destinationSupplier, level, message, throwable));
 		}
 
@@ -281,9 +283,10 @@ public class DeferredLog implements Log {
 
 		private final Object message;
 
+		@Nullable
 		private final Throwable throwable;
 
-		Line(Supplier<Log> destinationSupplier, LogLevel level, Object message, Throwable throwable) {
+		Line(Supplier<Log> destinationSupplier, LogLevel level, Object message, @Nullable Throwable throwable) {
 			this.destinationSupplier = destinationSupplier;
 			this.level = level;
 			this.message = message;
@@ -302,6 +305,7 @@ public class DeferredLog implements Log {
 			return this.message;
 		}
 
+		@Nullable
 		Throwable getThrowable() {
 			return this.throwable;
 		}

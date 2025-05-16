@@ -31,6 +31,7 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Simple server-independent abstraction for mime mappings. Roughly equivalent to the
@@ -91,6 +92,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param mimeType the mime type to map
 	 * @return any previous mapping or {@code null}
 	 */
+	@Nullable
 	public String add(String extension, String mimeType) {
 		Assert.notNull(extension, "Extension must not be null");
 		Assert.notNull(mimeType, "MimeType must not be null");
@@ -103,6 +105,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param extension the file extension (excluding '.')
 	 * @return the removed mime mapping or {@code null} if no item was removed
 	 */
+	@Nullable
 	public String remove(String extension) {
 		Assert.notNull(extension, "Extension must not be null");
 		Mapping previous = this.map.remove(extension.toLowerCase(Locale.ENGLISH));
@@ -114,6 +117,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	 * @param extension the file extension (excluding '.')
 	 * @return a mime mapping or {@code null}
 	 */
+	@Nullable
 	public String get(String extension) {
 		Assert.notNull(extension, "Extension must not be null");
 		Mapping mapping = this.map.get(extension.toLowerCase(Locale.ENGLISH));
@@ -281,6 +285,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			COMMON = unmodifiableMappings(mappings);
 		}
 
+		@Nullable
 		private volatile Map<String, Mapping> loaded;
 
 		DefaultMimeMappings() {
@@ -292,6 +297,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			return load().values();
 		}
 
+		@Nullable
 		@Override
 		public String get(String extension) {
 			Assert.notNull(extension, "Extension must not be null");
@@ -308,6 +314,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			return get(loaded, extension);
 		}
 
+		@Nullable
 		private String get(Map<String, Mapping> mappings, String extension) {
 			Mapping mapping = mappings.get(extension);
 			return (mapping != null) ? mapping.getMimeType() : null;
@@ -355,12 +362,14 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			this.source = source;
 		}
 
+		@Nullable
 		@Override
 		public String add(String extension, String mimeType) {
 			copyIfNecessary();
 			return super.add(extension, mimeType);
 		}
 
+		@Nullable
 		@Override
 		public String remove(String extension) {
 			copyIfNecessary();
@@ -373,6 +382,7 @@ public class MimeMappings implements Iterable<MimeMappings.Mapping> {
 			}
 		}
 
+		@Nullable
 		@Override
 		public String get(String extension) {
 			return !this.copied.get() ? this.source.get(extension) : super.get(extension);

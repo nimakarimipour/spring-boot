@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Exception thrown when more than one mutually exclusive configuration property has been

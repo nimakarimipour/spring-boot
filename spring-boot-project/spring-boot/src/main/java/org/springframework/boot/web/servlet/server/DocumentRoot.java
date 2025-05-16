@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
+import javax.annotation.Nullable;
 
 /**
  * Manages a {@link ServletWebServerFactory} document root.
@@ -38,12 +39,14 @@ class DocumentRoot {
 
 	private final Log logger;
 
+	@Nullable
 	private File directory;
 
 	DocumentRoot(Log logger) {
 		this.logger = logger;
 	}
 
+	@Nullable
 	File getDirectory() {
 		return this.directory;
 	}
@@ -57,6 +60,7 @@ class DocumentRoot {
 	 * warning and returning {@code null} otherwise.
 	 * @return the valid document root
 	 */
+	@Nullable
 	final File getValidDirectory() {
 		File file = this.directory;
 		file = (file != null) ? file : getWarFileDocumentRoot();
@@ -71,10 +75,12 @@ class DocumentRoot {
 		return file;
 	}
 
+	@Nullable
 	private File getWarFileDocumentRoot() {
 		return getArchiveFileDocumentRoot(".war");
 	}
 
+	@Nullable
 	private File getArchiveFileDocumentRoot(String extension) {
 		File file = getCodeSourceArchive();
 		if (this.logger.isDebugEnabled()) {
@@ -87,14 +93,17 @@ class DocumentRoot {
 		return null;
 	}
 
+	@Nullable
 	private File getExplodedWarFileDocumentRoot() {
 		return getExplodedWarFileDocumentRoot(getCodeSourceArchive());
 	}
 
+	@Nullable
 	private File getCodeSourceArchive() {
 		return getCodeSourceArchive(getClass().getProtectionDomain().getCodeSource());
 	}
 
+	@Nullable
 	File getCodeSourceArchive(CodeSource codeSource) {
 		try {
 			URL location = (codeSource != null) ? codeSource.getLocation() : null;
@@ -120,7 +129,8 @@ class DocumentRoot {
 		}
 	}
 
-	final File getExplodedWarFileDocumentRoot(File codeSourceFile) {
+	@Nullable
+	final File getExplodedWarFileDocumentRoot(@Nullable File codeSourceFile) {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Code archive: " + codeSourceFile);
 		}
@@ -135,6 +145,7 @@ class DocumentRoot {
 		return null;
 	}
 
+	@Nullable
 	private File getCommonDocumentRoot() {
 		for (String commonDocRoot : COMMON_DOC_ROOTS) {
 			File root = new File(commonDocRoot);

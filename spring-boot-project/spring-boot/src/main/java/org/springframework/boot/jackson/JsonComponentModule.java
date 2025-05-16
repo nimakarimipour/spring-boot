@@ -40,6 +40,7 @@ import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Spring Bean and Jackson {@link Module} to register {@link JsonComponent @JsonComponent}
@@ -52,6 +53,7 @@ import org.springframework.util.ObjectUtils;
  */
 public class JsonComponentModule extends SimpleModule implements BeanFactoryAware, InitializingBean {
 
+	@Nullable
 	private BeanFactory beanFactory;
 
 	@Override

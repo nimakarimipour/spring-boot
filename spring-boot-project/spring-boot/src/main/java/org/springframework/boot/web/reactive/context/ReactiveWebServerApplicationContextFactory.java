@@ -21,6 +21,7 @@ import org.springframework.boot.ApplicationContextFactory;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
+import javax.annotation.Nullable;
 
 /**
  * {@link ApplicationContextFactory} registered in {@code spring.factories} to support
@@ -32,16 +33,19 @@ import org.springframework.core.env.ConfigurableEnvironment;
  */
 class ReactiveWebServerApplicationContextFactory implements ApplicationContextFactory {
 
+	@Nullable
 	@Override
 	public Class<? extends ConfigurableEnvironment> getEnvironmentType(WebApplicationType webApplicationType) {
 		return (webApplicationType != WebApplicationType.REACTIVE) ? null : ApplicationReactiveWebEnvironment.class;
 	}
 
+	@Nullable
 	@Override
 	public ConfigurableEnvironment createEnvironment(WebApplicationType webApplicationType) {
 		return (webApplicationType != WebApplicationType.REACTIVE) ? null : new ApplicationReactiveWebEnvironment();
 	}
 
+	@Nullable
 	@Override
 	public ConfigurableApplicationContext create(WebApplicationType webApplicationType) {
 		return (webApplicationType != WebApplicationType.REACTIVE) ? null : createContext();

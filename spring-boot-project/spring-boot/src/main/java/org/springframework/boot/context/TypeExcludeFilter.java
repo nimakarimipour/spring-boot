@@ -26,6 +26,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
+import javax.annotation.Nullable;
 
 /**
  * Provides exclusion {@link TypeFilter TypeFilters} that are loaded from the
@@ -49,8 +50,10 @@ import org.springframework.core.type.filter.TypeFilter;
  */
 public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 
+	@Nullable
 	private BeanFactory beanFactory;
 
+	@Nullable
 	private Collection<TypeExcludeFilter> delegates;
 
 	@Override

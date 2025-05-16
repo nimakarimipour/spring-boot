@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+import javax.annotation.Nullable;
 
 /**
  * A simple bootstrap context that is available during startup and {@link Environment}
@@ -41,6 +42,7 @@ public interface BootstrapContext {
 	 * @return the instance managed by the context
 	 * @throws IllegalStateException if the type has not been registered
 	 */
+	@Nullable
 	<T> T get(Class<T> type) throws IllegalStateException;
 
 	/**
@@ -51,6 +53,7 @@ public interface BootstrapContext {
 	 * @param other the instance to use if the type has not been registered
 	 * @return the instance
 	 */
+	@Nullable
 	<T> T getOrElse(Class<T> type, T other);
 
 	/**
@@ -61,6 +64,7 @@ public interface BootstrapContext {
 	 * @param other a supplier for the instance to use if the type has not been registered
 	 * @return the instance
 	 */
+	@Nullable
 	<T> T getOrElseSupply(Class<T> type, Supplier<T> other);
 
 	/**
@@ -74,6 +78,7 @@ public interface BootstrapContext {
 	 * @throws X if the type has not been registered
 	 * @throws IllegalStateException if the type has not been registered
 	 */
+	@Nullable
 	<T, X extends Throwable> T getOrElseThrow(Class<T> type, Supplier<? extends X> exceptionSupplier) throws X;
 
 	/**

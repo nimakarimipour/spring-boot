@@ -44,6 +44,7 @@ import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.convert.ConversionException;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link DataObjectBinder} for immutable value objects.
@@ -61,6 +62,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		this.constructorProvider = constructorProvider;
 	}
 
+	@Nullable
 	@Override
 	public <T> T bind(ConfigurationPropertyName name, Bindable<T> target, Binder.Context context,
 			DataObjectPropertyBinder propertyBinder) {
@@ -83,6 +85,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return bound ? valueObject.instantiate(args) : null;
 	}
 
+	@Nullable
 	@Override
 	public <T> T create(Bindable<T> target, Binder.Context context) {
 		ValueObject<T> valueObject = ValueObject.get(target, this.constructorProvider, context);
@@ -97,6 +100,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return valueObject.instantiate(args);
 	}
 
+	@Nullable
 	private <T> T getDefaultValue(Binder.Context context, ConstructorParameter parameter) {
 		ResolvableType type = parameter.getType();
 		Annotation[] annotations = parameter.getAnnotations();
@@ -112,6 +116,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		return null;
 	}
 
+	@Nullable
 	private <T> T convertDefaultValue(BindConverter converter, String[] defaultValue, ResolvableType type,
 			Annotation[] annotations) {
 		try {
@@ -126,6 +131,7 @@ class ValueObjectBinder implements DataObjectBinder {
 		}
 	}
 
+	@Nullable
 	@SuppressWarnings("unchecked")
 	private <T> T getNewDefaultValueInstanceIfPossible(Binder.Context context, ResolvableType type) {
 		Class<T> resolved = (Class<T>) type.resolve();
@@ -180,6 +186,7 @@ class ValueObjectBinder implements DataObjectBinder {
 
 		abstract List<ConstructorParameter> getConstructorParameters();
 
+		@Nullable
 		@SuppressWarnings("unchecked")
 		static <T> ValueObject<T> get(Bindable<T> bindable, BindConstructorProvider constructorProvider,
 				Binder.Context context) {

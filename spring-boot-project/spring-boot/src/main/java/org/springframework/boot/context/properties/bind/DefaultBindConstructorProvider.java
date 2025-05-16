@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.KotlinDetector;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Default {@link BindConstructorProvider} implementation.
@@ -34,11 +35,13 @@ import org.springframework.util.Assert;
  */
 class DefaultBindConstructorProvider implements BindConstructorProvider {
 
+	@Nullable
 	@Override
 	public Constructor<?> getBindConstructor(Bindable<?> bindable, boolean isNestedConstructorBinding) {
 		return getBindConstructor(bindable.getType().resolve(), isNestedConstructorBinding);
 	}
 
+	@Nullable
 	@Override
 	public Constructor<?> getBindConstructor(Class<?> type, boolean isNestedConstructorBinding) {
 		if (type == null) {
@@ -59,9 +62,10 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 
 		private final boolean hasAutowired;
 
+		@Nullable
 		private final Constructor<?> bind;
 
-		private Constructors(boolean hasAutowired, Constructor<?> bind) {
+		private Constructors(boolean hasAutowired, @Nullable Constructor<?> bind) {
 			this.hasAutowired = hasAutowired;
 			this.bind = bind;
 		}
@@ -70,6 +74,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return this.hasAutowired;
 		}
 
+		@Nullable
 		Constructor<?> getBind() {
 			return this.bind;
 		}
@@ -165,6 +170,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 			return KotlinDetector.isKotlinPresent() && KotlinDetector.isKotlinType(type);
 		}
 
+		@Nullable
 		private static Constructor<?> deduceKotlinBindConstructor(Class<?> type) {
 			Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(type);
 			if (primaryConstructor != null && primaryConstructor.getParameterCount() > 0) {

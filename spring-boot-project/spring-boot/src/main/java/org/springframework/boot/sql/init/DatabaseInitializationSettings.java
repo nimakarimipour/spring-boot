@@ -18,6 +18,7 @@ package org.springframework.boot.sql.init;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * Settings for initializing an SQL database.
@@ -27,14 +28,17 @@ import java.util.List;
  */
 public class DatabaseInitializationSettings {
 
+	@Nullable
 	private List<String> schemaLocations;
 
+	@Nullable
 	private List<String> dataLocations;
 
 	private boolean continueOnError = false;
 
 	private String separator = ";";
 
+	@Nullable
 	private Charset encoding;
 
 	private DatabaseInitializationMode mode = DatabaseInitializationMode.EMBEDDED;
@@ -43,6 +47,7 @@ public class DatabaseInitializationSettings {
 	 * Returns the locations of the schema (DDL) scripts to apply to the database.
 	 * @return the locations of the schema scripts
 	 */
+	@Nullable
 	public List<String> getSchemaLocations() {
 		return this.schemaLocations;
 	}
@@ -61,6 +66,7 @@ public class DatabaseInitializationSettings {
 	 * Returns the locations of data (DML) scripts to apply to the database.
 	 * @return the locations of the data scripts
 	 */
+	@Nullable
 	public List<String> getDataLocations() {
 		return this.dataLocations;
 	}
@@ -113,6 +119,7 @@ public class DatabaseInitializationSettings {
 	 * Returns the encoding to use when reading the schema and data scripts.
 	 * @return the script encoding
 	 */
+	@Nullable
 	public Charset getEncoding() {
 		return this.encoding;
 	}

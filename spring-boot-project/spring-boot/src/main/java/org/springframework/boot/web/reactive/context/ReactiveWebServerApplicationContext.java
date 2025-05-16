@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationContextException;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * A {@link GenericReactiveWebApplicationContext} that can be used to bootstrap itself
@@ -41,8 +42,10 @@ import org.springframework.util.StringUtils;
 public class ReactiveWebServerApplicationContext extends GenericReactiveWebApplicationContext
 		implements ConfigurableWebServerApplicationContext {
 
+	@Nullable
 	private volatile WebServerManager serverManager;
 
+	@Nullable
 	private String serverNamespace;
 
 	/**
@@ -154,12 +157,14 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 	 * the server has not yet been created.
 	 * @return the web server
 	 */
+	@Nullable
 	@Override
 	public WebServer getWebServer() {
 		WebServerManager serverManager = this.serverManager;
 		return (serverManager != null) ? serverManager.getWebServer() : null;
 	}
 
+	@Nullable
 	@Override
 	public String getServerNamespace() {
 		return this.serverNamespace;

@@ -31,6 +31,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
+import javax.annotation.Nullable;
 
 /**
  * Utility to deduce the {@link ConversionService} to use for configuration properties
@@ -46,6 +47,7 @@ class ConversionServiceDeducer {
 		this.applicationContext = applicationContext;
 	}
 
+	@Nullable
 	List<ConversionService> getConversionServices() {
 		if (hasUserDefinedConfigurationServiceBean()) {
 			return Collections.singletonList(this.applicationContext

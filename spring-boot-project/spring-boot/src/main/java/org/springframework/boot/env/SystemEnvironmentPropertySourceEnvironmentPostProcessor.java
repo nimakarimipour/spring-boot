@@ -28,6 +28,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * An {@link EnvironmentPostProcessor} that replaces the systemEnvironment
@@ -58,7 +59,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 
 	@SuppressWarnings("unchecked")
 	private void replacePropertySource(ConfigurableEnvironment environment, String sourceName,
-			PropertySource<?> propertySource, String environmentPrefix) {
+			PropertySource<?> propertySource, @Nullable String environmentPrefix) {
 		Map<String, Object> originalSource = (Map<String, Object>) propertySource.getSource();
 		SystemEnvironmentPropertySource source = new OriginAwareSystemEnvironmentPropertySource(sourceName,
 				originalSource, environmentPrefix);
@@ -80,14 +81,17 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 	protected static class OriginAwareSystemEnvironmentPropertySource extends SystemEnvironmentPropertySource
 			implements OriginLookup<String> {
 
+		@Nullable
 		private final String prefix;
 
-		OriginAwareSystemEnvironmentPropertySource(String name, Map<String, Object> source, String environmentPrefix) {
+		OriginAwareSystemEnvironmentPropertySource(String name, Map<String, Object> source,
+				@Nullable String environmentPrefix) {
 			super(name, source);
 			this.prefix = determinePrefix(environmentPrefix);
 		}
 
-		private String determinePrefix(String environmentPrefix) {
+		@Nullable
+		private String determinePrefix(@Nullable String environmentPrefix) {
 			if (!StringUtils.hasText(environmentPrefix)) {
 				return null;
 			}
@@ -107,6 +111,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			return super.getProperty(name);
 		}
 
+		@Nullable
 		@Override
 		public Origin getOrigin(String key) {
 			String property = resolvePropertyName(key);
@@ -116,6 +121,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 			return null;
 		}
 
+		@Nullable
 		@Override
 		public String getPrefix() {
 			return this.prefix;

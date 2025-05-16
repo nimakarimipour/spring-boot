@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import javax.annotation.Nullable;
+
 /**
  * Binder that can be used by {@link DataObjectBinder} implementations to bind the data
  * object properties.

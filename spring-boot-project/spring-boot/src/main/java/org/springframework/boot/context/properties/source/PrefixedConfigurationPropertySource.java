@@ -17,6 +17,7 @@
 package org.springframework.boot.context.properties.source;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ConfigurationPropertySource} supporting a prefix.
@@ -40,8 +41,9 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 		return this.prefix;
 	}
 
+	@Nullable
 	@Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		ConfigurationProperty configurationProperty = this.source.getConfigurationProperty(getPrefixedName(name));
 		if (configurationProperty == null) {
 			return null;
@@ -50,7 +52,7 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 				configurationProperty.getOrigin());
 	}
 
-	private ConfigurationPropertyName getPrefixedName(ConfigurationPropertyName name) {
+	private ConfigurationPropertyName getPrefixedName(@Nullable ConfigurationPropertyName name) {
 		return this.prefix.append(name);
 	}
 
@@ -59,6 +61,7 @@ class PrefixedConfigurationPropertySource implements ConfigurationPropertySource
 		return this.source.containsDescendantOf(getPrefixedName(name));
 	}
 
+	@Nullable
 	@Override
 	public Object getUnderlyingSource() {
 		return this.source.getUnderlyingSource();

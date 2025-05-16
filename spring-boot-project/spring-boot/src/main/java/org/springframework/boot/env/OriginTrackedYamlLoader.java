@@ -44,6 +44,7 @@ import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.boot.origin.TextResourceOrigin;
 import org.springframework.boot.origin.TextResourceOrigin.Location;
 import org.springframework.core.io.Resource;
+import javax.annotation.Nullable;
 
 /**
  * Class to load {@code .yml} files into a map of {@code String} to
@@ -93,6 +94,7 @@ class OriginTrackedYamlLoader extends YamlProcessor {
 			super(loadingConfig);
 		}
 
+		@Nullable
 		@Override
 		public Object getData() throws NoSuchElementException {
 			Object data = super.getData();
@@ -102,6 +104,7 @@ class OriginTrackedYamlLoader extends YamlProcessor {
 			return data;
 		}
 
+		@Nullable
 		@Override
 		protected Object constructObject(Node node) {
 			if (node instanceof CollectionNode && ((CollectionNode<?>) node).getValue().isEmpty()) {
@@ -122,6 +125,7 @@ class OriginTrackedYamlLoader extends YamlProcessor {
 			node.setValue(node.getValue().stream().map(KeyScalarNode::get).toList());
 		}
 
+		@Nullable
 		private Object constructTrackedObject(Node node, Object value) {
 			Origin origin = getOrigin(node);
 			return OriginTrackedValue.of(getValue(value), origin);

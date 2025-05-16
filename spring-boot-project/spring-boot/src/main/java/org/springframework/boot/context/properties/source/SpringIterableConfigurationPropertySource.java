@@ -38,6 +38,7 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
+import javax.annotation.Nullable;
 
 /**
  * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
@@ -57,6 +58,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 	private final SoftReferenceConfigurationPropertyCache<Mappings> cache;
 
+	@Nullable
 	private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
 	SpringIterableConfigurationPropertySource(EnumerablePropertySource<?> propertySource, PropertyMapper... mappers) {
@@ -92,8 +94,9 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		return this.cache;
 	}
 
+	@Nullable
 	@Override
-	public ConfigurationProperty getConfigurationProperty(ConfigurationPropertyName name) {
+	public ConfigurationProperty getConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
 		}
@@ -195,12 +198,15 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 
 		private volatile Map<ConfigurationPropertyName, Set<String>> mappings;
 
+		@Nullable
 		private volatile Map<String, ConfigurationPropertyName> reverseMappings;
 
 		private volatile Map<ConfigurationPropertyName, Set<ConfigurationPropertyName>> descendants;
 
+		@Nullable
 		private volatile ConfigurationPropertyName[] configurationPropertyNames;
 
+		@Nullable
 		private volatile String[] lastUpdated;
 
 		Mappings(PropertyMapper[] mappers, boolean immutable, boolean trackDescendants) {
@@ -258,7 +264,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 					? reverseMappings.values().toArray(new ConfigurationPropertyName[0]) : null;
 		}
 
-		private <K, V> Map<K, V> cloneOrCreate(Map<K, V> source, int size) {
+		private <K, V> Map<K, V> cloneOrCreate(@Nullable Map<K, V> source, int size) {
 			return (source != null) ? new LinkedHashMap<>(source) : new LinkedHashMap<>(size);
 		}
 

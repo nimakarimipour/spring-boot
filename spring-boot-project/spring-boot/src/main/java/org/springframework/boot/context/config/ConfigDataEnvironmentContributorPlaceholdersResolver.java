@@ -23,6 +23,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link PlaceholdersResolver} backed by one or more
@@ -35,16 +36,19 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 
 	private final Iterable<ConfigDataEnvironmentContributor> contributors;
 
+	@Nullable
 	private final ConfigDataActivationContext activationContext;
 
 	private final boolean failOnResolveFromInactiveContributor;
 
 	private final PropertyPlaceholderHelper helper;
 
+	@Nullable
 	private final ConfigDataEnvironmentContributor activeContributor;
 
 	ConfigDataEnvironmentContributorPlaceholdersResolver(Iterable<ConfigDataEnvironmentContributor> contributors,
-			ConfigDataActivationContext activationContext, ConfigDataEnvironmentContributor activeContributor,
+			@Nullable ConfigDataActivationContext activationContext,
+			@Nullable ConfigDataEnvironmentContributor activeContributor,
 			boolean failOnResolveFromInactiveContributor) {
 		this.contributors = contributors;
 		this.activationContext = activationContext;
@@ -54,14 +58,16 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 				SystemPropertyUtils.PLACEHOLDER_SUFFIX, SystemPropertyUtils.VALUE_SEPARATOR, true);
 	}
 
+	@Nullable
 	@Override
-	public Object resolvePlaceholders(Object value) {
+	public Object resolvePlaceholders(@Nullable Object value) {
 		if (value instanceof String string) {
 			return this.helper.replacePlaceholders(string, this::resolvePlaceholder);
 		}
 		return value;
 	}
 
+	@Nullable
 	private String resolvePlaceholder(String placeholder) {
 		Object result = null;
 		for (ConfigDataEnvironmentContributor contributor : this.contributors) {

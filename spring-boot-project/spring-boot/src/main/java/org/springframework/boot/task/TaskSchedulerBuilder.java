@@ -27,6 +27,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import javax.annotation.Nullable;
 
 /**
  * Builder that can be used to configure and create a {@link TaskScheduler}. Provides
@@ -41,14 +42,19 @@ import org.springframework.util.CollectionUtils;
  */
 public class TaskSchedulerBuilder {
 
+	@Nullable
 	private final Integer poolSize;
 
+	@Nullable
 	private final Boolean awaitTermination;
 
+	@Nullable
 	private final Duration awaitTerminationPeriod;
 
+	@Nullable
 	private final String threadNamePrefix;
 
+	@Nullable
 	private final Set<TaskSchedulerCustomizer> customizers;
 
 	public TaskSchedulerBuilder() {
@@ -59,8 +65,9 @@ public class TaskSchedulerBuilder {
 		this.customizers = null;
 	}
 
-	public TaskSchedulerBuilder(Integer poolSize, Boolean awaitTermination, Duration awaitTerminationPeriod,
-			String threadNamePrefix, Set<TaskSchedulerCustomizer> taskSchedulerCustomizers) {
+	public TaskSchedulerBuilder(@Nullable Integer poolSize, @Nullable Boolean awaitTermination,
+			@Nullable Duration awaitTerminationPeriod, @Nullable String threadNamePrefix,
+			@Nullable Set<TaskSchedulerCustomizer> taskSchedulerCustomizers) {
 		this.poolSize = poolSize;
 		this.awaitTermination = awaitTermination;
 		this.awaitTerminationPeriod = awaitTerminationPeriod;
@@ -200,7 +207,7 @@ public class TaskSchedulerBuilder {
 		return taskScheduler;
 	}
 
-	private <T> Set<T> append(Set<T> set, Iterable<? extends T> additions) {
+	private <T> Set<T> append(@Nullable Set<T> set, Iterable<? extends T> additions) {
 		Set<T> result = new LinkedHashSet<>((set != null) ? set : Collections.emptySet());
 		additions.forEach(result::add);
 		return Collections.unmodifiableSet(result);

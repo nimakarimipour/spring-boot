@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 import org.springframework.boot.convert.DurationUnit;
+import javax.annotation.Nullable;
 
 /**
  * Cookie properties.
@@ -35,26 +36,31 @@ public class Cookie {
 	/**
 	 * Name for the cookie.
 	 */
+	@Nullable
 	private String name;
 
 	/**
 	 * Domain for the cookie.
 	 */
+	@Nullable
 	private String domain;
 
 	/**
 	 * Path of the cookie.
 	 */
+	@Nullable
 	private String path;
 
 	/**
 	 * Whether to use "HttpOnly" cookies for the cookie.
 	 */
+	@Nullable
 	private Boolean httpOnly;
 
 	/**
 	 * Whether to always mark the cookie as secure.
 	 */
+	@Nullable
 	private Boolean secure;
 
 	/**
@@ -63,14 +69,17 @@ public class Cookie {
 	 * time. A value of 0 means the cookie should expire immediately. A negative value
 	 * means no "Max-Age".
 	 */
+	@Nullable
 	@DurationUnit(ChronoUnit.SECONDS)
 	private Duration maxAge;
 
 	/**
 	 * SameSite setting for the cookie.
 	 */
+	@Nullable
 	private SameSite sameSite;
 
+	@Nullable
 	public String getName() {
 		return this.name;
 	}
@@ -79,6 +88,7 @@ public class Cookie {
 		this.name = name;
 	}
 
+	@Nullable
 	public String getDomain() {
 		return this.domain;
 	}
@@ -87,6 +97,7 @@ public class Cookie {
 		this.domain = domain;
 	}
 
+	@Nullable
 	public String getPath() {
 		return this.path;
 	}
@@ -95,6 +106,7 @@ public class Cookie {
 		this.path = path;
 	}
 
+	@Nullable
 	public Boolean getHttpOnly() {
 		return this.httpOnly;
 	}
@@ -103,6 +115,7 @@ public class Cookie {
 		this.httpOnly = httpOnly;
 	}
 
+	@Nullable
 	public Boolean getSecure() {
 		return this.secure;
 	}
@@ -111,6 +124,7 @@ public class Cookie {
 		this.secure = secure;
 	}
 
+	@Nullable
 	public Duration getMaxAge() {
 		return this.maxAge;
 	}
@@ -119,6 +133,7 @@ public class Cookie {
 		this.maxAge = maxAge;
 	}
 
+	@Nullable
 	public SameSite getSameSite() {
 		return this.sameSite;
 	}

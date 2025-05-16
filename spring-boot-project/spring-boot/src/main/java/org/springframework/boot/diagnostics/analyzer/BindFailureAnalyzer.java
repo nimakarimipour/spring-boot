@@ -30,6 +30,7 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
@@ -42,6 +43,7 @@ import org.springframework.util.StringUtils;
  */
 class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 
+	@Nullable
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, BindException cause) {
 		Throwable rootCause = cause.getCause();
@@ -60,7 +62,7 @@ class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 		return getFailureAnalysis(description, cause);
 	}
 
-	private void buildDescription(StringBuilder description, ConfigurationProperty property) {
+	private void buildDescription(StringBuilder description, @Nullable ConfigurationProperty property) {
 		if (property != null) {
 			description.append(String.format("%n    Property: %s", property.getName()));
 			description.append(String.format("%n    Value: \"%s\"", property.getValue()));
@@ -85,7 +87,8 @@ class BindFailureAnalyzer extends AbstractFailureAnalyzer<BindException> {
 		return getExceptionTypeAndMessage(cause);
 	}
 
-	private Throwable getRootCause(Throwable cause) {
+	@Nullable
+	private Throwable getRootCause(@Nullable Throwable cause) {
 		Throwable rootCause = cause;
 		while (rootCause != null && rootCause.getCause() != null) {
 			rootCause = rootCause.getCause();

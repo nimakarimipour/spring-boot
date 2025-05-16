@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties.bind;
 
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
+import javax.annotation.Nullable;
 
 /**
  * Internal strategy used by {@link Binder} to bind data objects. A data object is an
@@ -40,6 +41,7 @@ interface DataObjectBinder {
 	 * @param <T> the source type
 	 * @return a bound instance or {@code null}
 	 */
+	@Nullable
 	<T> T bind(ConfigurationPropertyName name, Bindable<T> target, Context context,
 			DataObjectPropertyBinder propertyBinder);
 
@@ -51,6 +53,7 @@ interface DataObjectBinder {
 	 * @param <T> the source type
 	 * @return the created instance
 	 */
+	@Nullable
 	<T> T create(Bindable<T> target, Context context);
 
 }

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
+import javax.annotation.Nullable;
 
 /**
  * A single logger group.
@@ -34,6 +35,7 @@ public final class LoggerGroup {
 
 	private final List<String> members;
 
+	@Nullable
 	private LogLevel configuredLevel;
 
 	LoggerGroup(String name, List<String> members) {
@@ -53,6 +55,7 @@ public final class LoggerGroup {
 		return !this.members.isEmpty();
 	}
 
+	@Nullable
 	public LogLevel getConfiguredLevel() {
 		return this.configuredLevel;
 	}

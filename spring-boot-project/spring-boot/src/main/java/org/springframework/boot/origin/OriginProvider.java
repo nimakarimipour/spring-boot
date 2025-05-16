@@ -16,6 +16,8 @@
 
 package org.springframework.boot.origin;
 
+import javax.annotation.Nullable;
+
 /**
  * Interface to provide access to the origin of an item.
  *
@@ -30,6 +32,7 @@ public interface OriginProvider {
 	 * Return the source origin or {@code null} if the origin is not known.
 	 * @return the origin or {@code null}
 	 */
+	@Nullable
 	Origin getOrigin();
 
 }

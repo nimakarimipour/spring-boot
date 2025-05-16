@@ -17,6 +17,7 @@
 package org.springframework.boot.web.server;
 
 import java.security.KeyStore;
+import javax.annotation.Nullable;
 
 /**
  * Interface to provide SSL key stores for an {@link WebServer} to use. Can be used when
@@ -39,6 +40,7 @@ public interface SslStoreProvider {
 	 * @return the trust store to use
 	 * @throws Exception on load error
 	 */
+	@Nullable
 	KeyStore getTrustStore() throws Exception;
 
 	/**
@@ -46,6 +48,7 @@ public interface SslStoreProvider {
 	 * @return the key password
 	 * @since 2.7.2
 	 */
+	@Nullable
 	default String getKeyPassword() {
 		return null;
 	}

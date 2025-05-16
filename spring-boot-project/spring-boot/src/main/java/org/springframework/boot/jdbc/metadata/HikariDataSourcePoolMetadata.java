@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
 
 import org.springframework.beans.DirectFieldAccessor;
+import javax.annotation.Nullable;
 
 /**
  * {@link DataSourcePoolMetadata} for a Hikari {@link DataSource}.
@@ -35,6 +36,7 @@ public class HikariDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata
 		super(dataSource);
 	}
 
+	@Nullable
 	@Override
 	public Integer getActive() {
 		try {
@@ -45,6 +47,7 @@ public class HikariDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata
 		}
 	}
 
+	@Nullable
 	@Override
 	public Integer getIdle() {
 		try {

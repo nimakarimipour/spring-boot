@@ -24,6 +24,7 @@ import ch.qos.logback.core.pattern.Converter;
 import ch.qos.logback.core.spi.LifeCycle;
 import ch.qos.logback.core.status.InfoStatus;
 import ch.qos.logback.core.status.Status;
+import javax.annotation.Nullable;
 
 /**
  * Custom {@link LogbackConfigurator} used to add {@link Status Statuses} when Logback
@@ -51,7 +52,7 @@ class DebugLogbackConfigurator extends LogbackConfigurator {
 	}
 
 	@Override
-	public void logger(String name, Level level, boolean additive, Appender<ILoggingEvent> appender) {
+	public void logger(String name, Level level, boolean additive, @Nullable Appender<ILoggingEvent> appender) {
 		info("Configuring logger '" + name + "' with level '" + level + "'. Additive: " + additive);
 		if (appender != null) {
 			info("Adding appender '" + appender + "' to logger '" + name + "'");

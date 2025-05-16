@@ -55,6 +55,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
+import javax.annotation.Nullable;
 
 /**
  * Builder that can be used to configure and create a {@link RestTemplate}. Provides
@@ -84,18 +85,24 @@ public class RestTemplateBuilder {
 
 	private final boolean detectRequestFactory;
 
+	@Nullable
 	private final String rootUri;
 
+	@Nullable
 	private final Set<HttpMessageConverter<?>> messageConverters;
 
 	private final Set<ClientHttpRequestInterceptor> interceptors;
 
+	@Nullable
 	private final Supplier<ClientHttpRequestFactory> requestFactory;
 
+	@Nullable
 	private final UriTemplateHandler uriTemplateHandler;
 
+	@Nullable
 	private final ResponseErrorHandler errorHandler;
 
+	@Nullable
 	private final BasicAuthentication basicAuthentication;
 
 	private final Map<String, List<String>> defaultHeaders;
@@ -126,10 +133,11 @@ public class RestTemplateBuilder {
 	}
 
 	private RestTemplateBuilder(RequestFactoryCustomizer requestFactoryCustomizer, boolean detectRequestFactory,
-			String rootUri, Set<HttpMessageConverter<?>> messageConverters,
-			Set<ClientHttpRequestInterceptor> interceptors, Supplier<ClientHttpRequestFactory> requestFactorySupplier,
-			UriTemplateHandler uriTemplateHandler, ResponseErrorHandler errorHandler,
-			BasicAuthentication basicAuthentication, Map<String, List<String>> defaultHeaders,
+			@Nullable String rootUri, @Nullable Set<HttpMessageConverter<?>> messageConverters,
+			Set<ClientHttpRequestInterceptor> interceptors,
+			@Nullable Supplier<ClientHttpRequestFactory> requestFactorySupplier,
+			@Nullable UriTemplateHandler uriTemplateHandler, @Nullable ResponseErrorHandler errorHandler,
+			@Nullable BasicAuthentication basicAuthentication, Map<String, List<String>> defaultHeaders,
 			Set<RestTemplateCustomizer> customizers, Set<RestTemplateRequestCustomizer<?>> requestCustomizers) {
 		this.requestFactoryCustomizer = requestFactoryCustomizer;
 		this.detectRequestFactory = detectRequestFactory;
@@ -394,7 +402,7 @@ public class RestTemplateBuilder {
 	 * @return a new builder instance
 	 * @since 2.2.0
 	 */
-	public RestTemplateBuilder basicAuthentication(String username, String password, Charset charset) {
+	public RestTemplateBuilder basicAuthentication(String username, String password, @Nullable Charset charset) {
 		return new RestTemplateBuilder(this.requestFactoryCustomizer, this.detectRequestFactory, this.rootUri,
 				this.messageConverters, this.interceptors, this.requestFactory, this.uriTemplateHandler,
 				this.errorHandler, new BasicAuthentication(username, password, charset), this.defaultHeaders,
@@ -650,6 +658,7 @@ public class RestTemplateBuilder {
 	 * @return a {@link ClientHttpRequestFactory} or {@code null}
 	 * @since 2.2.0
 	 */
+	@Nullable
 	public ClientHttpRequestFactory buildRequestFactory() {
 		ClientHttpRequestFactory requestFactory = null;
 		if (this.requestFactory != null) {
@@ -687,7 +696,7 @@ public class RestTemplateBuilder {
 		return Collections.unmodifiableList(Arrays.asList(Arrays.copyOf(items, items.length)));
 	}
 
-	private static <T> Set<T> append(Collection<? extends T> collection, Collection<? extends T> additions) {
+	private static <T> Set<T> append(@Nullable Collection<? extends T> collection, Collection<? extends T> additions) {
 		Set<T> result = new LinkedHashSet<>((collection != null) ? collection : Collections.emptySet());
 		if (additions != null) {
 			result.addAll(additions);
@@ -708,17 +717,21 @@ public class RestTemplateBuilder {
 	 */
 	private static class RequestFactoryCustomizer implements Consumer<ClientHttpRequestFactory> {
 
+		@Nullable
 		private final Duration connectTimeout;
 
+		@Nullable
 		private final Duration readTimeout;
 
+		@Nullable
 		private final Boolean bufferRequestBody;
 
 		RequestFactoryCustomizer() {
 			this(null, null, null);
 		}
 
-		private RequestFactoryCustomizer(Duration connectTimeout, Duration readTimeout, Boolean bufferRequestBody) {
+		private RequestFactoryCustomizer(@Nullable Duration connectTimeout, @Nullable Duration readTimeout,
+				@Nullable Boolean bufferRequestBody) {
 			this.connectTimeout = connectTimeout;
 			this.readTimeout = readTimeout;
 			this.bufferRequestBody = bufferRequestBody;
@@ -794,7 +807,7 @@ public class RestTemplateBuilder {
 			return method;
 		}
 
-		private void invoke(ClientHttpRequestFactory requestFactory, Method method, Object... parameters) {
+		private void invoke(ClientHttpRequestFactory requestFactory, Method method, @Nullable Object... parameters) {
 			ReflectionUtils.invokeMethod(method, requestFactory, parameters);
 		}
 

@@ -18,6 +18,7 @@ package org.springframework.boot;
 
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 /**
  * Provides access to the arguments that were used to run a {@link SpringApplication}.
@@ -63,6 +64,7 @@ public interface ApplicationArguments {
 	 * @param name the name of the option
 	 * @return a list of option values for the given name
 	 */
+	@Nullable
 	List<String> getOptionValues(String name);
 
 	/**

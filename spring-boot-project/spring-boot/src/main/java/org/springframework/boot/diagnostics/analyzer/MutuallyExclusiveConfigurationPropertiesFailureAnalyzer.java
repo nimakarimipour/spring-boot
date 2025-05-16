@@ -34,6 +34,7 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
+import javax.annotation.Nullable;
 
 /**
  * A {@link FailureAnalyzer} that performs analysis of failures caused by a
@@ -51,6 +52,7 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 		this.environment = (ConfigurableEnvironment) environment;
 	}
 
+	@Nullable
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, MutuallyExclusiveConfigurationPropertiesException cause) {
 		List<Descriptor> descriptors = new ArrayList<>();
@@ -112,9 +114,10 @@ class MutuallyExclusiveConfigurationPropertiesFailureAnalyzer
 
 		private final String propertyName;
 
+		@Nullable
 		private final Origin origin;
 
-		private Descriptor(String propertyName, Origin origin) {
+		private Descriptor(String propertyName, @Nullable Origin origin) {
 			this.propertyName = propertyName;
 			this.origin = origin;
 		}

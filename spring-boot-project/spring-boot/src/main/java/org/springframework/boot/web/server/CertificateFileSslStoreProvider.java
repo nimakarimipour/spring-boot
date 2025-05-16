@@ -22,6 +22,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import javax.annotation.Nullable;
 
 /**
  * An {@link SslStoreProvider} that creates key and trust stores from certificate and
@@ -52,6 +53,7 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 				this.ssl.getKeyStoreType(), this.ssl.getKeyAlias());
 	}
 
+	@Nullable
 	@Override
 	public KeyStore getTrustStore() throws Exception {
 		if (this.ssl.getTrustCertificate() == null) {
@@ -75,7 +77,8 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 	 * @param keyAlias the alias to use when adding keys to the {@code KeyStore}
 	 * @return the {@code KeyStore}
 	 */
-	private KeyStore createKeyStore(String certPath, String keyPath, String storeType, String keyAlias) {
+	private KeyStore createKeyStore(@Nullable String certPath, @Nullable String keyPath, @Nullable String storeType,
+			@Nullable String keyAlias) {
 		try {
 			KeyStore keyStore = KeyStore.getInstance((storeType != null) ? storeType : KeyStore.getDefaultType());
 			keyStore.load(null);
@@ -94,8 +97,8 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 		}
 	}
 
-	private void addCertificates(KeyStore keyStore, X509Certificate[] certificates, PrivateKey privateKey,
-			String keyAlias) throws KeyStoreException {
+	private void addCertificates(KeyStore keyStore, X509Certificate[] certificates, @Nullable PrivateKey privateKey,
+			@Nullable String keyAlias) throws KeyStoreException {
 		String alias = (keyAlias != null) ? keyAlias : DEFAULT_KEY_ALIAS;
 		if (privateKey != null) {
 			keyStore.setKeyEntry(alias, privateKey, KEY_PASSWORD.toCharArray(), certificates);
@@ -113,7 +116,8 @@ public final class CertificateFileSslStoreProvider implements SslStoreProvider {
 	 * @param ssl the SSL properties
 	 * @return an {@code SslStoreProvider} or {@code null}
 	 */
-	public static SslStoreProvider from(Ssl ssl) {
+	@Nullable
+	public static SslStoreProvider from(@Nullable Ssl ssl) {
 		if (ssl != null && ssl.isEnabled()) {
 			if (ssl.getCertificate() != null && ssl.getCertificatePrivateKey() != null) {
 				return new CertificateFileSslStoreProvider(ssl);

@@ -20,6 +20,7 @@ import jakarta.servlet.Filter;
 import jakarta.servlet.ServletContext;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * A {@link ServletContextInitializer} to register {@link Filter}s in a Servlet 3.0+
@@ -42,6 +43,7 @@ import org.springframework.util.Assert;
  */
 public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegistrationBean<T> {
 
+	@Nullable
 	private T filter;
 
 	/**
@@ -62,6 +64,7 @@ public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegi
 		this.filter = filter;
 	}
 
+	@Nullable
 	@Override
 	public T getFilter() {
 		return this.filter;

@@ -34,6 +34,7 @@ import org.apache.catalina.session.ManagerBase;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * Tomcat {@link StandardContext} used by {@link TomcatWebServer} to support deferred
@@ -44,8 +45,10 @@ import org.springframework.util.ClassUtils;
  */
 class TomcatEmbeddedContext extends StandardContext {
 
+	@Nullable
 	private TomcatStarter starter;
 
+	@Nullable
 	private MimeMappings mimeMappings;
 
 	@Override
@@ -118,6 +121,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		this.starter = starter;
 	}
 
+	@Nullable
 	TomcatStarter getStarter() {
 		return this.starter;
 	}
@@ -136,6 +140,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		return mappings.toArray(String[]::new);
 	}
 
+	@Nullable
 	@Override
 	public String findMimeMapping(String extension) {
 		String mimeMapping = super.findMimeMapping(extension);

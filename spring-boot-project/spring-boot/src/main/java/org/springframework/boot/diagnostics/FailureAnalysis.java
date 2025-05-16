@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics;
 
+import javax.annotation.Nullable;
+
 /**
  * The result of analyzing a failure.
  *
@@ -24,6 +26,7 @@ package org.springframework.boot.diagnostics;
  */
 public class FailureAnalysis {
 
+	@Nullable
 	private final String description;
 
 	private final String action;
@@ -38,7 +41,7 @@ public class FailureAnalysis {
 	 * @param action the action
 	 * @param cause the cause
 	 */
-	public FailureAnalysis(String description, String action, Throwable cause) {
+	public FailureAnalysis(@Nullable String description, String action, Throwable cause) {
 		this.description = description;
 		this.action = action;
 		this.cause = cause;
@@ -48,6 +51,7 @@ public class FailureAnalysis {
 	 * Returns a description of the failure.
 	 * @return the description
 	 */
+	@Nullable
 	public String getDescription() {
 		return this.description;
 	}

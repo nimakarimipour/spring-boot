@@ -18,6 +18,7 @@ package org.springframework.boot.context.properties;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * Exception thrown when {@link ConfigurationProperties @ConfigurationProperties} binding

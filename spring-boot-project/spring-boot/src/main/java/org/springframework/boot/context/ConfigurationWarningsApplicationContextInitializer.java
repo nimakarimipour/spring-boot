@@ -41,6 +41,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link ApplicationContextInitializer} to report warnings for common misconfiguration
@@ -118,6 +119,7 @@ public class ConfigurationWarningsApplicationContextInitializer
 		 * @param registry the {@link BeanDefinitionRegistry}
 		 * @return a warning message or {@code null}
 		 */
+		@Nullable
 		String getWarning(BeanDefinitionRegistry registry);
 
 	}
@@ -136,6 +138,7 @@ public class ConfigurationWarningsApplicationContextInitializer
 			PROBLEM_PACKAGES = Collections.unmodifiableSet(packages);
 		}
 
+		@Nullable
 		@Override
 		public String getWarning(BeanDefinitionRegistry registry) {
 			Set<String> scannedPackages = getComponentScanningPackages(registry);

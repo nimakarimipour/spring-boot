@@ -30,6 +30,7 @@ import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.ResourceLoader;
+import javax.annotation.Nullable;
 
 /**
  * {@link SmartApplicationListener} used to trigger {@link EnvironmentPostProcessor
@@ -122,7 +123,7 @@ public class EnvironmentPostProcessorApplicationListener implements SmartApplica
 		this.deferredLogs.switchOverAll();
 	}
 
-	List<EnvironmentPostProcessor> getEnvironmentPostProcessors(ResourceLoader resourceLoader,
+	List<EnvironmentPostProcessor> getEnvironmentPostProcessors(@Nullable ResourceLoader resourceLoader,
 			ConfigurableBootstrapContext bootstrapContext) {
 		ClassLoader classLoader = (resourceLoader != null) ? resourceLoader.getClassLoader() : null;
 		EnvironmentPostProcessorsFactory postProcessorsFactory = this.postProcessorsFactory.apply(classLoader);

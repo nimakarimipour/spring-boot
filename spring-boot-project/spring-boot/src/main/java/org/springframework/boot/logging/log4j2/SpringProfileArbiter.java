@@ -31,6 +31,7 @@ import org.apache.logging.log4j.status.StatusLogger;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * An Arbiter that uses the active Spring profile to determine if configuration should be
@@ -68,12 +69,15 @@ final class SpringProfileArbiter implements Arbiter {
 
 		private static final Logger statusLogger = StatusLogger.getLogger();
 
+		@Nullable
 		@PluginBuilderAttribute
 		private String name;
 
+		@Nullable
 		@PluginConfiguration
 		private Configuration configuration;
 
+		@Nullable
 		@PluginLoggerContext
 		private LoggerContext loggerContext;
 
@@ -91,6 +95,7 @@ final class SpringProfileArbiter implements Arbiter {
 			return this;
 		}
 
+		@Nullable
 		@Override
 		public SpringProfileArbiter build() {
 			Environment environment = Log4J2LoggingSystem.getEnvironment(this.loggerContext);

@@ -26,6 +26,7 @@ import java.util.List;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * An {@link AbstractFailureAnalyzer} that analyzes {@link NoSuchMethodError
@@ -37,6 +38,7 @@ import org.springframework.util.ClassUtils;
  */
 class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodError> {
 
+	@Nullable
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, NoSuchMethodError cause) {
 		NoSuchMethodDescriptor callerDescriptor = getCallerMethodDescriptor(cause);
@@ -52,6 +54,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		return new FailureAnalysis(description, action, cause);
 	}
 
+	@Nullable
 	private NoSuchMethodDescriptor getCallerMethodDescriptor(NoSuchMethodError cause) {
 		StackTraceElement firstStackTraceElement = cause.getStackTrace()[0];
 		String message = firstStackTraceElement.toString();
@@ -59,13 +62,15 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		return getDescriptorForClass(message, className);
 	}
 
-	protected NoSuchMethodDescriptor getNoSuchMethodDescriptor(String cause) {
+	@Nullable
+	protected NoSuchMethodDescriptor getNoSuchMethodDescriptor(@Nullable String cause) {
 		String message = cleanMessage(cause);
 		String className = extractClassName(message);
 		return getDescriptorForClass(message, className);
 	}
 
-	private NoSuchMethodDescriptor getDescriptorForClass(String message, String className) {
+	@Nullable
+	private NoSuchMethodDescriptor getDescriptorForClass(String message, @Nullable String className) {
 		if (className == null) {
 			return null;
 		}
@@ -84,7 +89,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		return new NoSuchMethodDescriptor(message, className, candidates, typeHierarchy);
 	}
 
-	private String cleanMessage(String message) {
+	private String cleanMessage(@Nullable String message) {
 		int loadedFromIndex = message.indexOf(" (loaded from");
 		if (loadedFromIndex == -1) {
 			return message;
@@ -92,6 +97,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		return message.substring(0, loadedFromIndex);
 	}
 
+	@Nullable
 	private String extractClassName(String message) {
 		if (message.startsWith("'") && message.endsWith("'")) {
 			int splitIndex = message.indexOf(' ');
@@ -113,6 +119,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		return className.replace('/', '.');
 	}
 
+	@Nullable
 	private List<URL> findCandidates(String className) {
 		try {
 			return Collections.list(NoSuchMethodFailureAnalyzer.class.getClassLoader()
@@ -123,6 +130,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		}
 	}
 
+	@Nullable
 	private Class<?> load(String className) {
 		try {
 			return Class.forName(className, false, getClass().getClassLoader());
@@ -132,6 +140,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		}
 	}
 
+	@Nullable
 	private List<ClassDescriptor> getTypeHierarchy(Class<?> type) {
 		try {
 			List<ClassDescriptor> typeHierarchy = new ArrayList<>();

@@ -23,6 +23,7 @@ import io.r2dbc.spi.ConnectionFactoryOptions;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import javax.annotation.Nullable;
 
 /**
  * Connection details for embedded databases compatible with R2DBC.
@@ -45,13 +46,16 @@ public enum EmbeddedDatabaseConnection {
 			(options) -> options.getValue(ConnectionFactoryOptions.DRIVER).equals("h2")
 					&& options.getValue(ConnectionFactoryOptions.PROTOCOL).equals("mem"));
 
+	@Nullable
 	private final String driverClassName;
 
+	@Nullable
 	private final String url;
 
 	private Predicate<ConnectionFactoryOptions> embedded;
 
-	EmbeddedDatabaseConnection(String driverClassName, String url, Predicate<ConnectionFactoryOptions> embedded) {
+	EmbeddedDatabaseConnection(@Nullable String driverClassName, @Nullable String url,
+			Predicate<ConnectionFactoryOptions> embedded) {
 		this.driverClassName = driverClassName;
 		this.url = url;
 		this.embedded = embedded;
@@ -61,6 +65,7 @@ public enum EmbeddedDatabaseConnection {
 	 * Returns the driver class name.
 	 * @return the driver class name
 	 */
+	@Nullable
 	public String getDriverClassName() {
 		return this.driverClassName;
 	}
@@ -70,6 +75,7 @@ public enum EmbeddedDatabaseConnection {
 	 * @param databaseName the name of the database
 	 * @return the connection URL
 	 */
+	@Nullable
 	public String getUrl(String databaseName) {
 		Assert.hasText(databaseName, "DatabaseName must not be empty");
 		return (this.url != null) ? String.format(this.url, databaseName) : null;

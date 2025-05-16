@@ -19,6 +19,7 @@ package org.springframework.boot.ansi;
 import java.util.Locale;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Generates ANSI encoded output, automatically attempting to detect if the terminal
@@ -33,8 +34,10 @@ public abstract class AnsiOutput {
 
 	private static Enabled enabled = Enabled.DETECT;
 
+	@Nullable
 	private static Boolean consoleAvailable;
 
+	@Nullable
 	private static Boolean ansiCapable;
 
 	private static final String OPERATING_SYSTEM_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);

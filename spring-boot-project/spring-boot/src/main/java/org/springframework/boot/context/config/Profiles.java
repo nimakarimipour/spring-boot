@@ -40,6 +40,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Provides access to environment profiles that have either been set directly on the
@@ -139,7 +140,7 @@ public class Profiles implements Iterable<String> {
 		return asUniqueItemList(expandedProfiles);
 	}
 
-	private List<String> asReversedList(List<String> list) {
+	private List<String> asReversedList(@Nullable List<String> list) {
 		if (CollectionUtils.isEmpty(list)) {
 			return Collections.emptyList();
 		}
@@ -152,7 +153,7 @@ public class Profiles implements Iterable<String> {
 		return asUniqueItemList(profiles, null);
 	}
 
-	private List<String> asUniqueItemList(Collection<String> profiles, Collection<String> additional) {
+	private List<String> asUniqueItemList(Collection<String> profiles, @Nullable Collection<String> additional) {
 		LinkedHashSet<String> uniqueItems = new LinkedHashSet<>();
 		if (!CollectionUtils.isEmpty(additional)) {
 			uniqueItems.addAll(additional);

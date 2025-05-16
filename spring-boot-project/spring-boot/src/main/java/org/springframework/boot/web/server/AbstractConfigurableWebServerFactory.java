@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * Abstract base class for {@link ConfigurableWebServerFactory} implementations.
@@ -43,18 +44,22 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 
 	private int port = 8080;
 
+	@Nullable
 	private InetAddress address;
 
 	private Set<ErrorPage> errorPages = new LinkedHashSet<>();
 
 	private Ssl ssl;
 
+	@Nullable
 	private SslStoreProvider sslStoreProvider;
 
+	@Nullable
 	private Http2 http2;
 
 	private Compression compression;
 
+	@Nullable
 	private String serverHeader;
 
 	private Shutdown shutdown = Shutdown.IMMEDIATE;
@@ -91,6 +96,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * Return the address that the web server binds to.
 	 * @return the address
 	 */
+	@Nullable
 	public InetAddress getAddress() {
 		return this.address;
 	}
@@ -130,6 +136,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.ssl = ssl;
 	}
 
+	@Nullable
 	public SslStoreProvider getSslStoreProvider() {
 		return this.sslStoreProvider;
 	}
@@ -139,6 +146,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.sslStoreProvider = sslStoreProvider;
 	}
 
+	@Nullable
 	public Http2 getHttp2() {
 		return this.http2;
 	}
@@ -157,6 +165,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 		this.compression = compression;
 	}
 
+	@Nullable
 	public String getServerHeader() {
 		return this.serverHeader;
 	}
@@ -176,6 +185,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * @return the shutdown configuration
 	 * @since 2.3.0
 	 */
+	@Nullable
 	public Shutdown getShutdown() {
 		return this.shutdown;
 	}
@@ -185,6 +195,7 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * properties.
 	 * @return the {@code SslStoreProvider}
 	 */
+	@Nullable
 	public final SslStoreProvider getOrCreateSslStoreProvider() {
 		if (this.sslStoreProvider != null) {
 			return this.sslStoreProvider;

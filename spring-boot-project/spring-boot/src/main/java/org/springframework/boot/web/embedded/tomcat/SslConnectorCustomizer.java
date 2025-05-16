@@ -32,6 +32,7 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures SSL support on the given connector.
@@ -44,9 +45,10 @@ class SslConnectorCustomizer implements TomcatConnectorCustomizer {
 
 	private final Ssl ssl;
 
+	@Nullable
 	private final SslStoreProvider sslStoreProvider;
 
-	SslConnectorCustomizer(Ssl ssl, SslStoreProvider sslStoreProvider) {
+	SslConnectorCustomizer(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		Assert.notNull(ssl, "Ssl configuration should not be null");
 		this.ssl = ssl;
 		this.sslStoreProvider = sslStoreProvider;
@@ -68,7 +70,8 @@ class SslConnectorCustomizer implements TomcatConnectorCustomizer {
 	 * @param ssl the ssl details
 	 * @param sslStoreProvider the ssl store provider
 	 */
-	protected void configureSsl(AbstractHttp11JsseProtocol<?> protocol, Ssl ssl, SslStoreProvider sslStoreProvider) {
+	protected void configureSsl(AbstractHttp11JsseProtocol<?> protocol, Ssl ssl,
+			@Nullable SslStoreProvider sslStoreProvider) {
 		protocol.setSSLEnabled(true);
 		SSLHostConfig sslHostConfig = new SSLHostConfig();
 		sslHostConfig.setHostName(protocol.getDefaultSSLHostConfigName());

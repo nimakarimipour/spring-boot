@@ -31,6 +31,7 @@ import java.util.jar.Manifest;
 
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Provides access to the application home directory. Attempts to pick a sensible home for
@@ -42,6 +43,7 @@ import org.springframework.util.StringUtils;
  */
 public class ApplicationHome {
 
+	@Nullable
 	private final File source;
 
 	private final File dir;
@@ -57,11 +59,12 @@ public class ApplicationHome {
 	 * Create a new {@link ApplicationHome} instance for the specified source class.
 	 * @param sourceClass the source class or {@code null}
 	 */
-	public ApplicationHome(Class<?> sourceClass) {
+	public ApplicationHome(@Nullable Class<?> sourceClass) {
 		this.source = findSource((sourceClass != null) ? sourceClass : getStartClass());
 		this.dir = findHomeDir(this.source);
 	}
 
+	@Nullable
 	private Class<?> getStartClass() {
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
@@ -72,6 +75,7 @@ public class ApplicationHome {
 		}
 	}
 
+	@Nullable
 	private Class<?> getStartClass(Enumeration<URL> manifestResources) {
 		while (manifestResources.hasMoreElements()) {
 			try (InputStream inputStream = manifestResources.nextElement().openStream()) {
@@ -87,7 +91,8 @@ public class ApplicationHome {
 		return null;
 	}
 
-	private File findSource(Class<?> sourceClass) {
+	@Nullable
+	private File findSource(@Nullable Class<?> sourceClass) {
 		try {
 			ProtectionDomain domain = (sourceClass != null) ? sourceClass.getProtectionDomain() : null;
 			CodeSource codeSource = (domain != null) ? domain.getCodeSource() : null;
@@ -133,7 +138,7 @@ public class ApplicationHome {
 		return new File(name);
 	}
 
-	private File findHomeDir(File source) {
+	private File findHomeDir(@Nullable File source) {
 		File homeDir = source;
 		homeDir = (homeDir != null) ? homeDir : findDefaultHomeDir();
 		if (homeDir.isFile()) {
@@ -154,6 +159,7 @@ public class ApplicationHome {
 	 * determined.
 	 * @return the underlying source or {@code null}
 	 */
+	@Nullable
 	public File getSource() {
 		return this.source;
 	}

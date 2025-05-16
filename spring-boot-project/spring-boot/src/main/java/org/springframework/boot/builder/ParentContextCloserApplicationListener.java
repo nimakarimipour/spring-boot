@@ -27,6 +27,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.core.Ordered;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * Listener that closes the application context if its parent is closed. It listens for
@@ -42,6 +43,7 @@ public class ParentContextCloserApplicationListener
 
 	private int order = Ordered.LOWEST_PRECEDENCE - 10;
 
+	@Nullable
 	private ApplicationContext context;
 
 	@Override

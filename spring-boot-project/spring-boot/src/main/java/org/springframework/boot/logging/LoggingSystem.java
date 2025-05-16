@@ -26,6 +26,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * Common abstraction over logging systems.
@@ -83,7 +84,8 @@ public abstract class LoggingSystem {
 	 * @param logFile the log output file that should be written or {@code null} for
 	 * console only output
 	 */
-	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
+	public void initialize(LoggingInitializationContext initializationContext, @Nullable String configLocation,
+			@Nullable LogFile logFile) {
 	}
 
 	/**
@@ -99,6 +101,7 @@ public abstract class LoggingSystem {
 	 * shutdown is required.
 	 * @return the shutdown handler, or {@code null}
 	 */
+	@Nullable
 	public Runnable getShutdownHandler() {
 		return null;
 	}
@@ -119,7 +122,7 @@ public abstract class LoggingSystem {
 	 * @param level the log level ({@code null} can be used to remove any custom level for
 	 * the logger and use the default configuration instead)
 	 */
-	public void setLogLevel(String loggerName, LogLevel level) {
+	public void setLogLevel(@Nullable String loggerName, LogLevel level) {
 		throw new UnsupportedOperationException("Unable to set log level");
 	}
 
@@ -139,6 +142,7 @@ public abstract class LoggingSystem {
 	 * @return the current configuration
 	 * @since 1.5.0
 	 */
+	@Nullable
 	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 		throw new UnsupportedOperationException("Unable to get logger configuration");
 	}
@@ -148,6 +152,7 @@ public abstract class LoggingSystem {
 	 * @param classLoader the classloader
 	 * @return the logging system
 	 */
+	@Nullable
 	public static LoggingSystem get(ClassLoader classLoader) {
 		String loggingSystemClassName = System.getProperty(SYSTEM_PROPERTY);
 		if (StringUtils.hasLength(loggingSystemClassName)) {
@@ -184,7 +189,7 @@ public abstract class LoggingSystem {
 		}
 
 		@Override
-		public void setLogLevel(String loggerName, LogLevel level) {
+		public void setLogLevel(@Nullable String loggerName, LogLevel level) {
 
 		}
 
@@ -193,6 +198,7 @@ public abstract class LoggingSystem {
 			return Collections.emptyList();
 		}
 
+		@Nullable
 		@Override
 		public LoggerConfiguration getLoggerConfiguration(String loggerName) {
 			return null;

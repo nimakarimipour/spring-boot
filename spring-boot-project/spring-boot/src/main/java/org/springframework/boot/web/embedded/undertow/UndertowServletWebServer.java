@@ -23,6 +23,7 @@ import io.undertow.servlet.api.DeploymentManager;
 
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link WebServer} that can be used to control an embedded Undertow server. Typically
@@ -41,6 +42,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 
 	private final String contextPath;
 
+	@Nullable
 	private final DeploymentManager manager;
 
 	/**
@@ -58,6 +60,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 		this.manager = findManager(httpHandlerFactories);
 	}
 
+	@Nullable
 	private DeploymentManager findManager(Iterable<HttpHandlerFactory> httpHandlerFactories) {
 		for (HttpHandlerFactory httpHandlerFactory : httpHandlerFactories) {
 			if (httpHandlerFactory instanceof DeploymentManagerHttpHandlerFactory deploymentManagerFactory) {
@@ -67,6 +70,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 		return null;
 	}
 
+	@Nullable
 	@Override
 	protected HttpHandler createHttpHandler() {
 		HttpHandler handler = super.createHttpHandler();
@@ -85,6 +89,7 @@ public class UndertowServletWebServer extends UndertowWebServer {
 		return message;
 	}
 
+	@Nullable
 	public DeploymentManager getDeploymentManager() {
 		return this.manager;
 	}

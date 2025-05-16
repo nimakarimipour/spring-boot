@@ -26,6 +26,7 @@ import java.util.function.IntFunction;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link PropertyResolver} for {@link AnsiStyle}, {@link AnsiColor},
@@ -72,6 +73,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 		this.encode = encode;
 	}
 
+	@Nullable
 	@Override
 	public Object getProperty(String name) {
 		if (StringUtils.hasLength(name)) {
@@ -104,6 +106,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 			return this.prefix;
 		}
 
+		@Nullable
 		abstract AnsiElement getElement(String postfix);
 
 	}
@@ -120,6 +123,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 			this.enums = EnumSet.allOf(enumType);
 		}
 
+		@Nullable
 		@Override
 		AnsiElement getElement(String postfix) {
 			for (Enum<?> candidate : this.enums) {
@@ -144,6 +148,7 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 			this.factory = factory;
 		}
 
+		@Nullable
 		@Override
 		AnsiElement getElement(String postfix) {
 			if (containsOnlyDigits(postfix)) {

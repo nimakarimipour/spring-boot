@@ -17,6 +17,7 @@
 package org.springframework.boot.availability;
 
 import org.springframework.context.ApplicationContext;
+import javax.annotation.Nullable;
 
 /**
  * Provides {@link AvailabilityState availability state} information for the application.
@@ -67,6 +68,7 @@ public interface ApplicationAvailability {
 	 * published yet
 	 * @see #getState(Class, AvailabilityState)
 	 */
+	@Nullable
 	<S extends AvailabilityState> S getState(Class<S> stateType);
 
 	/**
@@ -76,6 +78,7 @@ public interface ApplicationAvailability {
 	 * @return the readiness state or {@code null} if no event of the given type has been
 	 * published yet
 	 */
+	@Nullable
 	<S extends AvailabilityState> AvailabilityChangeEvent<S> getLastChangeEvent(Class<S> stateType);
 
 }

@@ -44,6 +44,7 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * {@link WebServer} that can be used to control an Undertow web server. Usually this
@@ -75,6 +76,7 @@ public class UndertowWebServer implements WebServer {
 
 	private volatile boolean started = false;
 
+	@Nullable
 	private volatile GracefulShutdownHandler gracefulShutdown;
 
 	private volatile List<Closeable> closeables;
@@ -166,6 +168,7 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
+	@Nullable
 	protected HttpHandler createHttpHandler() {
 		HttpHandler handler = null;
 		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
@@ -214,6 +217,7 @@ public class UndertowWebServer implements WebServer {
 		return (List<BoundChannel>) ReflectionUtils.getField(channelsField, this.undertow);
 	}
 
+	@Nullable
 	private UndertowWebServer.Port getPortFromChannel(BoundChannel channel) {
 		SocketAddress socketAddress = channel.getLocalAddress();
 		if (socketAddress instanceof InetSocketAddress inetSocketAddress) {
@@ -368,9 +372,10 @@ public class UndertowWebServer implements WebServer {
 	 */
 	private static final class CloseableHttpHandlerFactory implements HttpHandlerFactory {
 
+		@Nullable
 		private final Closeable closeable;
 
-		private CloseableHttpHandlerFactory(Closeable closeable) {
+		private CloseableHttpHandlerFactory(@Nullable Closeable closeable) {
 			this.closeable = closeable;
 		}
 

@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 /**
  * {@link UncaughtExceptionHandler} to suppress handling already logged exceptions and
@@ -85,7 +86,7 @@ class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 	 * @param ex the source exception
 	 * @return {@code true} if the exception contains a log configuration message
 	 */
-	private boolean isLogConfigurationMessage(Throwable ex) {
+	private boolean isLogConfigurationMessage(@Nullable Throwable ex) {
 		if (ex instanceof InvocationTargetException) {
 			return isLogConfigurationMessage(ex.getCause());
 		}
@@ -100,7 +101,7 @@ class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 		return false;
 	}
 
-	private boolean isRegistered(Throwable ex) {
+	private boolean isRegistered(@Nullable Throwable ex) {
 		if (this.loggedExceptions.contains(ex)) {
 			return true;
 		}

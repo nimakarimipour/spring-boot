@@ -37,6 +37,7 @@ import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link NettyWebServer}s.
@@ -50,12 +51,15 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	private List<NettyRouteProvider> routeProviders = new ArrayList<>();
 
+	@Nullable
 	private Duration lifecycleTimeout;
 
 	private boolean useForwardHeaders;
 
+	@Nullable
 	private ReactorResourceFactory resourceFactory;
 
+	@Nullable
 	private Shutdown shutdown;
 
 	public NettyReactiveWebServerFactory() {
@@ -76,7 +80,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	}
 
 	NettyWebServer createNettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter,
-			Duration lifecycleTimeout, Shutdown shutdown) {
+			@Nullable Duration lifecycleTimeout, @Nullable Shutdown shutdown) {
 		return new NettyWebServer(httpServer, handlerAdapter, lifecycleTimeout, shutdown);
 	}
 
@@ -151,6 +155,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 		this.shutdown = shutdown;
 	}
 
+	@Nullable
 	@Override
 	public Shutdown getShutdown() {
 		return this.shutdown;

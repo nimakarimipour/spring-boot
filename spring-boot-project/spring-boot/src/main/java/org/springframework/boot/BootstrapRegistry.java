@@ -22,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * A simple object registry that is available during startup and {@link Environment}
@@ -78,6 +79,7 @@ public interface BootstrapRegistry {
 	 * @param type the instance type
 	 * @return the registered {@link InstanceSupplier} or {@code null}
 	 */
+	@Nullable
 	<T> InstanceSupplier<T> getRegisteredInstanceSupplier(Class<T> type);
 
 	/**
@@ -103,6 +105,7 @@ public interface BootstrapRegistry {
 		 * bootstrap instances.
 		 * @return the instance
 		 */
+		@Nullable
 		T get(BootstrapContext context);
 
 		/**
@@ -125,6 +128,7 @@ public interface BootstrapRegistry {
 			InstanceSupplier<T> parent = this;
 			return new InstanceSupplier<T>() {
 
+				@Nullable
 				@Override
 				public T get(BootstrapContext context) {
 					return parent.get(context);

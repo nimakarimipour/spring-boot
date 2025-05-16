@@ -34,6 +34,7 @@ import org.springframework.beans.factory.aot.BeanRegistrationCodeFragments;
 import org.springframework.beans.factory.aot.BeanRegistrationCodeFragmentsDecorator;
 import org.springframework.beans.factory.support.RegisteredBean;
 import org.springframework.javapoet.CodeBlock;
+import javax.annotation.Nullable;
 
 /**
  * {@link BeanRegistrationAotProcessor} that replaces any {@link JsonMixinModuleEntries}
@@ -43,6 +44,7 @@ import org.springframework.javapoet.CodeBlock;
  */
 class JsonMixinModuleEntriesBeanRegistrationAotProcessor implements BeanRegistrationAotProcessor {
 
+	@Nullable
 	@Override
 	public BeanRegistrationAotContribution processAheadOfTime(RegisteredBean registeredBean) {
 		if (registeredBean.getBeanClass().equals(JsonMixinModuleEntries.class)) {

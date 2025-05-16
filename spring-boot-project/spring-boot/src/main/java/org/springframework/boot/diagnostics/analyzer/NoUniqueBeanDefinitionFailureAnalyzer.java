@@ -24,6 +24,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import javax.annotation.Nullable;
 
 /**
  * An {@link AbstractInjectionFailureAnalyzer} that performs analysis of failures caused
@@ -41,9 +42,10 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
 		this.beanFactory = (ConfigurableBeanFactory) beanFactory;
 	}
 
+	@Nullable
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, NoUniqueBeanDefinitionException cause,
-			String description) {
+			@Nullable String description) {
 		if (description == null) {
 			return null;
 		}
@@ -81,6 +83,7 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
 		return String.format("\t- %s: defined in %s%n", beanName, definition.getResourceDescription());
 	}
 
+	@Nullable
 	private String[] extractBeanNames(NoUniqueBeanDefinitionException cause) {
 		if (cause.getMessage().contains("but found")) {
 			return StringUtils.commaDelimitedListToStringArray(

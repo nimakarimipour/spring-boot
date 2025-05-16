@@ -29,6 +29,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.function.ThrowingSupplier;
+import javax.annotation.Nullable;
 
 /**
  * Entry point for AOT processing of a {@link SpringApplication}.
@@ -55,6 +56,7 @@ public class SpringApplicationAotProcessor extends ContextAotProcessor {
 		this.applicationArgs = applicationArgs;
 	}
 
+	@Nullable
 	@Override
 	protected GenericApplicationContext prepareApplicationContext(Class<?> application) {
 		return new AotProcessorHook(application).run(() -> {
@@ -100,6 +102,7 @@ public class SpringApplicationAotProcessor extends ContextAotProcessor {
 			};
 		}
 
+		@Nullable
 		private <T> GenericApplicationContext run(ThrowingSupplier<T> action) {
 			try {
 				SpringApplication.withHook(this, action);

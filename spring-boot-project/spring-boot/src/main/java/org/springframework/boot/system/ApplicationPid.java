@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import javax.annotation.Nullable;
 
 /**
  * An application process ID.
@@ -38,6 +39,7 @@ public class ApplicationPid {
 	private static final PosixFilePermission[] WRITE_PERMISSIONS = { PosixFilePermission.OWNER_WRITE,
 			PosixFilePermission.GROUP_WRITE, PosixFilePermission.OTHERS_WRITE };
 
+	@Nullable
 	private final String pid;
 
 	public ApplicationPid() {
@@ -48,6 +50,7 @@ public class ApplicationPid {
 		this.pid = pid;
 	}
 
+	@Nullable
 	private String getPid() {
 		try {
 			return Long.toString(ProcessHandle.current().pid());

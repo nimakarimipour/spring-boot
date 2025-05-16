@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.properties.source;
 
+import javax.annotation.Nullable;
+
 /**
  * Interface used to indicate that a {@link ConfigurationPropertySource} supports
  * {@link ConfigurationPropertyCaching}.
@@ -36,6 +38,7 @@ interface CachingConfigurationPropertySource {
 	 * @return a {@link ConfigurationPropertyCaching} instance or {@code null} if the
 	 * source does not support caching.
 	 */
+	@Nullable
 	static ConfigurationPropertyCaching find(ConfigurationPropertySource source) {
 		if (source instanceof CachingConfigurationPropertySource cachingSource) {
 			return cachingSource.getCaching();

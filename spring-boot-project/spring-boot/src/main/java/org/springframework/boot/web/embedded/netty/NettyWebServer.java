@@ -44,6 +44,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import javax.annotation.Nullable;
 
 /**
  * {@link WebServer} that can be used to control a Reactor Netty web server. Usually this
@@ -70,16 +71,19 @@ public class NettyWebServer implements WebServer {
 
 	private final BiFunction<? super HttpServerRequest, ? super HttpServerResponse, ? extends Publisher<Void>> handler;
 
+	@Nullable
 	private final Duration lifecycleTimeout;
 
+	@Nullable
 	private final GracefulShutdown gracefulShutdown;
 
 	private List<NettyRouteProvider> routeProviders = Collections.emptyList();
 
+	@Nullable
 	private volatile DisposableServer disposableServer;
 
-	public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter, Duration lifecycleTimeout,
-			Shutdown shutdown) {
+	public NettyWebServer(HttpServer httpServer, ReactorHttpHandlerAdapter handlerAdapter,
+			@Nullable Duration lifecycleTimeout, @Nullable Shutdown shutdown) {
 		Assert.notNull(httpServer, "HttpServer must not be null");
 		Assert.notNull(handlerAdapter, "HandlerAdapter must not be null");
 		this.lifecycleTimeout = lifecycleTimeout;
@@ -145,7 +149,7 @@ public class NettyWebServer implements WebServer {
 		return server.bindNow();
 	}
 
-	private boolean isPermissionDenied(Throwable bindExceptionCause) {
+	private boolean isPermissionDenied(@Nullable Throwable bindExceptionCause) {
 		try {
 			if (bindExceptionCause instanceof NativeIoException nativeException) {
 				return nativeException.expectedErr() == ERROR_NO_EACCES;

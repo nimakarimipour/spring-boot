@@ -1,0 +1,118 @@
+====================
+Type='RETURN_NULLABLE', message='returning @Nullable expression from method with @NonNull return type'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/config/ConfigDataLoaders.java:116
+		return result;
+Log:
+---NullAway.lambda$resolveRemainingErrors$17---
+==============================
+---NullAway.lambda$resolveRemainingErrors$17---
+TOP LEVEL CALL TO FIX ERROR: Type='RETURN_NULLABLE', message='returning @Nullable expression from method with @NonNull return type'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/config/ConfigDataLoaders.java:116
+		return result;
+---ChatGPT.ask---
+Asking ChatGPT:
+I want to resolve a warning reported by NullAway.
+The error is of the type of "RETURN_NULLABLE" and the full error message is: "returning @Nullable expression from method with @NonNull return type".
+The line with the error is: "		return result;".
+
+The error is within "the method: getLoader(org.springframework.boot.context.config.ConfigDataLoaderContext,R)" and the code surrounding the error is:
+```java
+		return loader.load(context, resource);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
+		ConfigDataLoader<R> result = null;
+		for (int i = 0; i < this.loaders.size(); i++) {
+			ConfigDataLoader<?> candidate = this.loaders.get(i);
+			if (this.resourceTypes.get(i).isInstance(resource)) {
+				ConfigDataLoader<R> loader = (ConfigDataLoader<R>) candidate;
+				if (loader.isLoadable(context, resource)) {
+					if (result != null) {
+						throw new IllegalStateException("Multiple loaders found for resource '" + resource + "' ["
+								+ candidate.getClass().getName() + "," + result.getClass().getName() + "]");
+					}
+					result = loader;
+				}
+			}
+		}
+		Assert.state(result != null, () -> "No loader found for resource '" + resource + "'");
+		return result;
+	}
+
+}
+```
+
+Give me the fixed code snippet (ONLY THE METHOD REWRITE OF "getLoader(org.springframework.boot.context.config.ConfigDataLoaderContext,R)") in XML format in <response> tag like the example below. I will apply the fix to my codebase.
+Do not import any additional libraries or classes or java comments.
+If you can provide the fixed code snippet, provide it in the following format and place the code snippet in the <code> tag within ```java block.
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  Your fixed code snippet here
+  ```
+    ]]>
+  </code>
+</response>
+
+---ChatGPT.sendRequestToOpenAI---
+Sending request to OpenAI...
+---ChatGPT.sendRequestToOpenAI---
+Response received from OpenAI.
+---Response.<init>---
+Creating Response:
+```xml
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  @SuppressWarnings("unchecked")
+  private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
+      ConfigDataLoader<R> result = null;
+      for (int i = 0; i < this.loaders.size(); i++) {
+          ConfigDataLoader<?> candidate = this.loaders.get(i);
+          if (this.resourceTypes.get(i).isInstance(resource)) {
+              ConfigDataLoader<R> loader = (ConfigDataLoader<R>) candidate;
+              if (loader.isLoadable(context, resource)) {
+                  if (result != null) {
+                      throw new IllegalStateException("Multiple loaders found for resource '" + resource + "' ["
+                              + candidate.getClass().getName() + "," + result.getClass().getName() + "]");
+                  }
+                  result = loader;
+              }
+          }
+      }
+      if (result == null) {
+          throw new IllegalStateException("No loader found for resource '" + resource + "'");
+      }
+      return result;
+  }
+  ```
+  ]]>
+  </code>
+</response>
+```
+---Response.<init>---
+Response created:
+@SuppressWarnings("unchecked")
+  private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
+      ConfigDataLoader<R> result = null;
+      for (int i = 0; i < this.loaders.size(); i++) {
+          ConfigDataLoader<?> candidate = this.loaders.get(i);
+          if (this.resourceTypes.get(i).isInstance(resource)) {
+              ConfigDataLoader<R> loader = (ConfigDataLoader<R>) candidate;
+              if (loader.isLoadable(context, resource)) {
+                  if (result != null) {
+                      throw new IllegalStateException("Multiple loaders found for resource '" + resource + "' ["
+                              + candidate.getClass().getName() + "," + result.getClass().getName() + "]");
+                  }
+                  result = loader;
+              }
+          }
+      }
+      if (result == null) {
+          throw new IllegalStateException("No loader found for resource '" + resource + "'");
+      }
+      return result;
+  }

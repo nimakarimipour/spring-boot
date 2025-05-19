@@ -75,16 +75,13 @@ public class TypeExcludeFilter implements TypeFilter, BeanFactoryAware {
 	}
 
 	private Collection<TypeExcludeFilter> getDelegates() {
-       if (this.beanFactory instanceof ListableBeanFactory) {
-           Collection<TypeExcludeFilter> delegates = this.delegates;
-           if (delegates == null) {
-               delegates = ((ListableBeanFactory) this.beanFactory).getBeansOfType(TypeExcludeFilter.class).values();
-               this.delegates = delegates;
-           }
-           return delegates;
-       }
-       throw new IllegalStateException("beanFactory is not an instance of ListableBeanFactory");
-   }
+		Collection<TypeExcludeFilter> delegates = this.delegates;
+		if (delegates == null) {
+			delegates = ((ListableBeanFactory) this.beanFactory).getBeansOfType(TypeExcludeFilter.class).values();
+			this.delegates = delegates;
+		}
+		return delegates;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

@@ -1,0 +1,106 @@
+====================
+Type='RETURN_NULLABLE', message='returning @Nullable expression from method with @NonNull return type'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/properties/bind/BindConverter.java:94
+		return convert(source, target.getType(), target.getAnnotations());
+Log:
+---NullAway.lambda$resolveRemainingErrors$17---
+==============================
+---NullAway.lambda$resolveRemainingErrors$17---
+TOP LEVEL CALL TO FIX ERROR: Type='RETURN_NULLABLE', message='returning @Nullable expression from method with @NonNull return type'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/properties/bind/BindConverter.java:94
+		return convert(source, target.getType(), target.getAnnotations());
+---ChatGPT.ask---
+Asking ChatGPT:
+I want to resolve a warning reported by NullAway.
+The error is of the type of "RETURN_NULLABLE" and the full error message is: "returning @Nullable expression from method with @NonNull return type".
+The line with the error is: "		return convert(source, target.getType(), target.getAnnotations());".
+
+The error is within "the method: convert(java.lang.Object,org.springframework.boot.context.properties.bind.Bindable)" and the code surrounding the error is:
+```java
+			delegates.add(ApplicationConversionService.getSharedInstance());
+		}
+		this.delegates = Collections.unmodifiableList(delegates);
+	}
+
+	boolean canConvert(@Nullable Object source, ResolvableType targetType, Annotation... targetAnnotations) {
+		return canConvert(TypeDescriptor.forObject(source),
+				new ResolvableTypeDescriptor(targetType, targetAnnotations));
+	}
+
+	private boolean canConvert(TypeDescriptor sourceType, TypeDescriptor targetType) {
+		for (ConversionService service : this.delegates) {
+			if (service.canConvert(sourceType, targetType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	<T> T convert(@Nullable Object source, Bindable<T> target) {
+		return convert(source, target.getType(), target.getAnnotations());
+	}
+
+	@Nullable
+	@SuppressWarnings("unchecked")
+	<T> T convert(@Nullable Object source, ResolvableType targetType, Annotation... targetAnnotations) {
+		if (source == null) {
+			return null;
+		}
+		return (T) convert(source, TypeDescriptor.forObject(source),
+				new ResolvableTypeDescriptor(targetType, targetAnnotations));
+	}
+
+	private Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+		ConversionException failure = null;
+		for (ConversionService delegate : this.delegates) {
+			try {
+				if (delegate.canConvert(sourceType, targetType)) {
+					return delegate.convert(source, sourceType, targetType);
+				}
+```
+
+Give me the fixed code snippet (ONLY THE METHOD REWRITE OF "convert(java.lang.Object,org.springframework.boot.context.properties.bind.Bindable)") in XML format in <response> tag like the example below. I will apply the fix to my codebase.
+Do not import any additional libraries or classes or java comments.
+If you can provide the fixed code snippet, provide it in the following format and place the code snippet in the <code> tag within ```java block.
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  Your fixed code snippet here
+  ```
+    ]]>
+  </code>
+</response>
+
+---ChatGPT.sendRequestToOpenAI---
+Sending request to OpenAI...
+---ChatGPT.sendRequestToOpenAI---
+Response received from OpenAI.
+---Response.<init>---
+Creating Response:
+```xml
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  <T> T convert(Object source, Bindable<T> target) {
+      T result = convert(source, target.getType(), target.getAnnotations());
+      if (result == null) {
+          throw new IllegalStateException("Conversion returned null for a non-nullable type");
+      }
+      return result;
+  }
+  ```
+    ]]>
+  </code>
+</response>
+```
+---Response.<init>---
+Response created:
+<T> T convert(Object source, Bindable<T> target) {
+      T result = convert(source, target.getType(), target.getAnnotations());
+      if (result == null) {
+          throw new IllegalStateException("Conversion returned null for a non-nullable type");
+      }
+      return result;
+  }

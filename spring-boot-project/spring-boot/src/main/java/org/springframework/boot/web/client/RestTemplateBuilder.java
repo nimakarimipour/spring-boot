@@ -778,14 +778,10 @@ public class RestTemplateBuilder {
 		}
 
 		private void setConnectTimeout(ClientHttpRequestFactory factory) {
-        if (this.connectTimeout != null) {
-            Method method = findMethod(factory, "setConnectTimeout", int.class);
-            int timeout = Math.toIntExact(this.connectTimeout.toMillis());
-            invoke(factory, method, timeout);
-        } else {
-            throw new IllegalStateException("Connect timeout is not initialized.");
-        }
-    }
+			Method method = findMethod(factory, "setConnectTimeout", int.class);
+			int timeout = Math.toIntExact(this.connectTimeout.toMillis());
+			invoke(factory, method, timeout);
+		}
 
 		private void setReadTimeout(ClientHttpRequestFactory factory) {
 			Method method = findMethod(factory, "setReadTimeout", int.class);

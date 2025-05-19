@@ -1,0 +1,134 @@
+====================
+Type='DEREFERENCE_NULLABLE', message='dereferenced expression propertySource is @Nullable'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/config/InactiveConfigDataAccessException.java:68
+		message.append(propertySource.getName());
+Log:
+---NullAway.lambda$resolveRemainingErrors$17---
+==============================
+---NullAway.lambda$resolveRemainingErrors$17---
+TOP LEVEL CALL TO FIX ERROR: Type='DEREFERENCE_NULLABLE', message='dereferenced expression propertySource is @Nullable'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/config/InactiveConfigDataAccessException.java:68
+		message.append(propertySource.getName());
+---ChatGPT.ask---
+Asking ChatGPT:
+I want to resolve a warning reported by NullAway.
+The error is of the type of "DEREFERENCE_NULLABLE" and the full error message is: "dereferenced expression propertySource is @Nullable".
+The line with the error is: "		message.append(propertySource.getName());".
+
+The error is within "the method: getMessage(org.springframework.core.env.PropertySource,org.springframework.boot.context.config.ConfigDataResource,java.lang.String,org.springframework.boot.origin.Origin)" and the code surrounding the error is:
+```java
+	/**
+	 * Create a new {@link InactiveConfigDataAccessException} instance.
+	 * @param propertySource the inactive property source
+	 * @param location the {@link ConfigDataResource} of the property source or
+	 * {@code null} if the source was not loaded from {@link ConfigData}.
+	 * @param propertyName the name of the property
+	 * @param origin the origin or the property or {@code null}
+	 */
+	InactiveConfigDataAccessException(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location,
+			String propertyName, @Nullable Origin origin) {
+		super(getMessage(propertySource, location, propertyName, origin), null);
+		this.propertySource = propertySource;
+		this.location = location;
+		this.propertyName = propertyName;
+		this.origin = origin;
+	}
+
+	private static String getMessage(@Nullable PropertySource<?> propertySource, @Nullable ConfigDataResource location,
+			String propertyName, @Nullable Origin origin) {
+		StringBuilder message = new StringBuilder("Inactive property source '");
+		message.append(propertySource.getName());
+		if (location != null) {
+			message.append("' imported from location '");
+			message.append(location);
+		}
+		message.append("' cannot contain property '");
+		message.append(propertyName);
+		message.append("'");
+		if (origin != null) {
+			message.append(" [origin: ");
+			message.append(origin);
+			message.append("]");
+		}
+		return message.toString();
+	}
+
+	/**
+	 * Return the inactive property source that contained the property.
+	 * @return the property source
+	 */
+```
+
+Give me the fixed code snippet (ONLY THE METHOD REWRITE OF "getMessage(org.springframework.core.env.PropertySource,org.springframework.boot.context.config.ConfigDataResource,java.lang.String,org.springframework.boot.origin.Origin)") in XML format in <response> tag like the example below. I will apply the fix to my codebase.
+Do not import any additional libraries or classes or java comments.
+If you can provide the fixed code snippet, provide it in the following format and place the code snippet in the <code> tag within ```java block.
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  Your fixed code snippet here
+  ```
+    ]]>
+  </code>
+</response>
+
+---ChatGPT.sendRequestToOpenAI---
+Sending request to OpenAI...
+---ChatGPT.sendRequestToOpenAI---
+Response received from OpenAI.
+---Response.<init>---
+Creating Response:
+```xml
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  private static String getMessage(PropertySource<?> propertySource, ConfigDataResource location,
+          String propertyName, Origin origin) {
+      if (propertySource == null) {
+          throw new IllegalArgumentException("propertySource cannot be null");
+      }
+      StringBuilder message = new StringBuilder("Inactive property source '");
+      message.append(propertySource.getName());
+      if (location != null) {
+          message.append("' imported from location '");
+          message.append(location);
+      }
+      message.append("' cannot contain property '");
+      message.append(propertyName);
+      message.append("'");
+      if (origin != null) {
+          message.append(" [origin: ");
+          message.append(origin);
+          message.append("]");
+      }
+      return message.toString();
+  }
+  ```
+  ]]>
+  </code>
+</response>
+```
+---Response.<init>---
+Response created:
+private static String getMessage(PropertySource<?> propertySource, ConfigDataResource location,
+          String propertyName, Origin origin) {
+      if (propertySource == null) {
+          throw new IllegalArgumentException("propertySource cannot be null");
+      }
+      StringBuilder message = new StringBuilder("Inactive property source '");
+      message.append(propertySource.getName());
+      if (location != null) {
+          message.append("' imported from location '");
+          message.append(location);
+      }
+      message.append("' cannot contain property '");
+      message.append(propertyName);
+      message.append("'");
+      if (origin != null) {
+          message.append(" [origin: ");
+          message.append(origin);
+          message.append("]");
+      }
+      return message.toString();
+  }

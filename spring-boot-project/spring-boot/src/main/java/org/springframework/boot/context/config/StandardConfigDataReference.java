@@ -74,8 +74,11 @@ class StandardConfigDataReference {
 	}
 
 	String getDirectory() {
-		return this.directory;
-	}
+       if (this.directory == null) {
+           throw new IllegalStateException("Directory cannot be null");
+       }
+       return this.directory;
+   }
 
 	@Nullable
 	String getProfile() {

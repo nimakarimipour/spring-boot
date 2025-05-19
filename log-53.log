@@ -1,0 +1,96 @@
+====================
+Type='DEREFERENCE_NULLABLE', message='dereferenced expression cause.getMessage() is @Nullable'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/diagnostics/analyzer/NoUniqueBeanDefinitionFailureAnalyzer.java:88
+		if (cause.getMessage().contains("but found")) {
+Log:
+---NullAway.lambda$resolveRemainingErrors$17---
+==============================
+---NullAway.lambda$resolveRemainingErrors$17---
+TOP LEVEL CALL TO FIX ERROR: Type='DEREFERENCE_NULLABLE', message='dereferenced expression cause.getMessage() is @Nullable'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/diagnostics/analyzer/NoUniqueBeanDefinitionFailureAnalyzer.java:88
+		if (cause.getMessage().contains("but found")) {
+---ChatGPT.ask---
+Asking ChatGPT:
+I want to resolve a warning reported by NullAway.
+The error is of the type of "DEREFERENCE_NULLABLE" and the full error message is: "dereferenced expression cause.getMessage() is @Nullable".
+The line with the error is: "		if (cause.getMessage().contains("but found")) {".
+
+The error is within "the method: extractBeanNames(org.springframework.beans.factory.NoUniqueBeanDefinitionException)" and the code surrounding the error is:
+```java
+	private void buildMessage(StringBuilder message, String beanName) {
+		try {
+			BeanDefinition definition = this.beanFactory.getMergedBeanDefinition(beanName);
+			message.append(getDefinitionDescription(beanName, definition));
+		}
+		catch (NoSuchBeanDefinitionException ex) {
+			message.append(String.format("\t- %s: a programmatically registered singleton", beanName));
+		}
+	}
+
+	private String getDefinitionDescription(String beanName, BeanDefinition definition) {
+		if (StringUtils.hasText(definition.getFactoryMethodName())) {
+			return String.format("\t- %s: defined by method '%s' in %s%n", beanName, definition.getFactoryMethodName(),
+					definition.getResourceDescription());
+		}
+		return String.format("\t- %s: defined in %s%n", beanName, definition.getResourceDescription());
+	}
+
+	@Nullable
+	private String[] extractBeanNames(NoUniqueBeanDefinitionException cause) {
+		if (cause.getMessage().contains("but found")) {
+			return StringUtils.commaDelimitedListToStringArray(
+					cause.getMessage().substring(cause.getMessage().lastIndexOf(':') + 1).trim());
+		}
+		return null;
+	}
+
+}
+```
+
+Give me the fixed code snippet (ONLY THE METHOD REWRITE OF "extractBeanNames(org.springframework.beans.factory.NoUniqueBeanDefinitionException)") in XML format in <response> tag like the example below. I will apply the fix to my codebase.
+Do not import any additional libraries or classes or java comments.
+If you can provide the fixed code snippet, provide it in the following format and place the code snippet in the <code> tag within ```java block.
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  Your fixed code snippet here
+  ```
+    ]]>
+  </code>
+</response>
+
+---ChatGPT.sendRequestToOpenAI---
+Sending request to OpenAI...
+---ChatGPT.sendRequestToOpenAI---
+Response received from OpenAI.
+---Response.<init>---
+Creating Response:
+```xml
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  private String[] extractBeanNames(NoUniqueBeanDefinitionException cause) {
+      String message = cause.getMessage();
+      if (message != null && message.contains("but found")) {
+          return StringUtils.commaDelimitedListToStringArray(
+                  message.substring(message.lastIndexOf(':') + 1).trim());
+      }
+      return null;
+  }
+  ```
+    ]]>
+  </code>
+</response>
+```
+---Response.<init>---
+Response created:
+private String[] extractBeanNames(NoUniqueBeanDefinitionException cause) {
+      String message = cause.getMessage();
+      if (message != null && message.contains("but found")) {
+          return StringUtils.commaDelimitedListToStringArray(
+                  message.substring(message.lastIndexOf(':') + 1).trim());
+      }
+      return null;
+  }

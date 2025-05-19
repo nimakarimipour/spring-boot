@@ -122,10 +122,10 @@ public class Instantiator<T> {
 	 * @return a list of instantiated instances
 	 * @since 2.4.8
 	 */
-	public List<T> instantiate(@Nullable ClassLoader classLoader, @Nullable Collection<String> names) {
-		Assert.notNull(names, "Names must not be null");
-		return instantiate(names.stream().map((name) -> TypeSupplier.forName(classLoader, name)));
-	}
+	public List<T> instantiate(ClassLoader classLoader, Collection<String> names) {
+       Assert.notNull(names, "Names must not be null");
+       return instantiate(names.stream().filter(Objects::nonNull).map((name) -> TypeSupplier.forName(classLoader, name)));
+   }
 
 	/**
 	 * Instantiate the given set of classes, injecting constructor arguments as necessary.

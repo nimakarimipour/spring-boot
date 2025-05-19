@@ -78,8 +78,8 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 	}
 
 	private static Set<String> asSet(Collection<String> collection) {
-		return (collection != null) ? new LinkedHashSet<>(collection) : null;
-	}
+       return (collection != null) ? new LinkedHashSet<>(collection) : Collections.emptySet();
+   }
 
 	private static String buildMessage(Set<String> mutuallyExclusiveNames, Set<String> configuredNames) {
 		Assert.isTrue(configuredNames != null && configuredNames.size() > 1,

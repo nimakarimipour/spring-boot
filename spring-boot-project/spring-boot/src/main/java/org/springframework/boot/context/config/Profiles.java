@@ -93,7 +93,7 @@ public class Profiles implements Iterable<String> {
 		return asUniqueItemList(getProfiles(environment, binder, Type.DEFAULT));
 	}
 
-	private Collection<String> getProfiles(Environment environment, Binder binder, Type type) {
+	@Nullable private Collection<String> getProfiles(Environment environment, Binder binder, Type type) {
 		String environmentPropertyValue = environment.getProperty(type.getName());
 		Set<String> environmentPropertyProfiles = (!StringUtils.hasLength(environmentPropertyValue))
 				? Collections.emptySet()

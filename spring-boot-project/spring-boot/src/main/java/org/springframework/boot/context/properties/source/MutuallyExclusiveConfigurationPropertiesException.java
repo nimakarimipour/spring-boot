@@ -54,8 +54,8 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 		this(asSet(configuredNames), asSet(mutuallyExclusiveNames));
 	}
 
-	private MutuallyExclusiveConfigurationPropertiesException(@Nullable Set<String> configuredNames,
-			@Nullable Set<String> mutuallyExclusiveNames) {
+	private MutuallyExclusiveConfigurationPropertiesException(Set<String> configuredNames,
+			Set<String> mutuallyExclusiveNames) {
 		super(buildMessage(mutuallyExclusiveNames, configuredNames));
 		this.configuredNames = configuredNames;
 		this.mutuallyExclusiveNames = mutuallyExclusiveNames;
@@ -77,7 +77,7 @@ public class MutuallyExclusiveConfigurationPropertiesException extends RuntimeEx
 		return this.mutuallyExclusiveNames;
 	}
 
-	@Nullable private static Set<String> asSet(Collection<String> collection) {
+	private static Set<String> asSet(Collection<String> collection) {
 		return (collection != null) ? new LinkedHashSet<>(collection) : null;
 	}
 

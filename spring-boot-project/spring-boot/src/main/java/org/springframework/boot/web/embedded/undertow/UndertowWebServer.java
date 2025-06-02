@@ -72,14 +72,14 @@ public class UndertowWebServer implements WebServer {
 
 	private final boolean autoStart;
 
-	private Undertow undertow;
+	@Nullable private Undertow undertow;
 
 	private volatile boolean started = false;
 
 	@Nullable
 	private volatile GracefulShutdownHandler gracefulShutdown;
 
-	private volatile List<Closeable> closeables;
+	@Nullable private volatile List<Closeable> closeables;
 
 	/**
 	 * Create a new {@link UndertowWebServer} instance.
@@ -141,16 +141,18 @@ public class UndertowWebServer implements WebServer {
 	}
 
 	private void stopSilently() {
-		try {
-			if (this.undertow != null) {
-				this.undertow.stop();
-				this.closeables.forEach(this::closeSilently);
-			}
-		}
-		catch (Exception ex) {
-			// Ignore
-		}
-	}
+       try {
+           if (this.undertow != null) {
+               this.undertow.stop();
+               if (this.closeables != null) {
+                   this.closeables.forEach(this::closeSilently);
+               }
+           }
+       }
+       catch (Exception ex) {
+           // Ignore
+       }
+   }
 
 	private void closeSilently(Closeable closeable) {
 		try {
@@ -168,21 +170,21 @@ public class UndertowWebServer implements WebServer {
 		return this.builder.build();
 	}
 
-	@Nullable
 	protected HttpHandler createHttpHandler() {
-		HttpHandler handler = null;
-		for (HttpHandlerFactory factory : this.httpHandlerFactories) {
-			handler = factory.getHandler(handler);
-			if (handler instanceof Closeable closeable) {
-				this.closeables.add(closeable);
-			}
-			if (handler instanceof GracefulShutdownHandler shutdownHandler) {
-				Assert.isNull(this.gracefulShutdown, "Only a single GracefulShutdownHandler can be defined");
-				this.gracefulShutdown = shutdownHandler;
-			}
-		}
-		return handler;
-	}
+       this.closeables = new ArrayList<>();
+       HttpHandler handler = null;
+       for (HttpHandlerFactory factory : this.httpHandlerFactories) {
+           handler = factory.getHandler(handler);
+           if (handler instanceof Closeable closeable) {
+               this.closeables.add(closeable);
+           }
+           if (handler instanceof GracefulShutdownHandler shutdownHandler) {
+               Assert.isNull(this.gracefulShutdown, "Only a single GracefulShutdownHandler can be defined");
+               this.gracefulShutdown = shutdownHandler;
+           }
+       }
+       return handler;
+   }
 
 	private String getPortsDescription() {
 		List<UndertowWebServer.Port> ports = getActualPorts();
@@ -262,26 +264,27 @@ public class UndertowWebServer implements WebServer {
 	}
 
 	@Override
-	public void stop() throws WebServerException {
-		synchronized (this.monitor) {
-			if (!this.started) {
-				return;
-			}
-			this.started = false;
-			if (this.gracefulShutdown != null) {
-				notifyGracefulCallback(false);
-			}
-			try {
-				this.undertow.stop();
-				for (Closeable closeable : this.closeables) {
-					closeable.close();
-				}
-			}
-			catch (Exception ex) {
-				throw new WebServerException("Unable to stop undertow", ex);
-			}
-		}
-	}
+   public void stop() throws WebServerException {
+       synchronized (this.monitor) {
+           if (!this.started) {
+               return;
+           }
+           this.started = false;
+           if (this.gracefulShutdown != null) {
+               notifyGracefulCallback(false);
+           }
+           try {
+               if (this.undertow != null) {
+                   this.undertow.stop();
+               }
+               for (Closeable closeable : this.closeables) {
+                   closeable.close();
+               }
+           } catch (Exception ex) {
+               throw new WebServerException("Unable to stop undertow", ex);
+           }
+       }
+   }
 
 	@Override
 	public int getPort() {

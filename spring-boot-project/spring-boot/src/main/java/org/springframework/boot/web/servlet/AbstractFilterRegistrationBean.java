@@ -34,6 +34,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import javax.annotation.Nullable;
+import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * Abstract base {@link ServletContextInitializer} to register {@link Filter}s in a
@@ -218,38 +219,38 @@ public abstract class AbstractFilterRegistrationBean<T extends Filter> extends D
 	 * @param registration the registration
 	 */
 	@Override
-	protected void configure(FilterRegistration.Dynamic registration) {
-		super.configure(registration);
-		EnumSet<DispatcherType> dispatcherTypes = this.dispatcherTypes;
-		if (dispatcherTypes == null) {
-			T filter = getFilter();
-			if (ClassUtils.isPresent("org.springframework.web.filter.OncePerRequestFilter",
-					filter.getClass().getClassLoader()) && filter instanceof OncePerRequestFilter) {
-				dispatcherTypes = EnumSet.allOf(DispatcherType.class);
-			}
-			else {
-				dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);
-			}
-		}
-		Set<String> servletNames = new LinkedHashSet<>();
-		for (ServletRegistrationBean<?> servletRegistrationBean : this.servletRegistrationBeans) {
-			servletNames.add(servletRegistrationBean.getServletName());
-		}
-		servletNames.addAll(this.servletNames);
-		if (servletNames.isEmpty() && this.urlPatterns.isEmpty()) {
-			registration.addMappingForUrlPatterns(dispatcherTypes, this.matchAfter, DEFAULT_URL_MAPPINGS);
-		}
-		else {
-			if (!servletNames.isEmpty()) {
-				registration.addMappingForServletNames(dispatcherTypes, this.matchAfter,
-						StringUtils.toStringArray(servletNames));
-			}
-			if (!this.urlPatterns.isEmpty()) {
-				registration.addMappingForUrlPatterns(dispatcherTypes, this.matchAfter,
-						StringUtils.toStringArray(this.urlPatterns));
-			}
-		}
-	}
+   protected void configure(FilterRegistration.Dynamic registration) {
+     super.configure(registration);
+     EnumSet<DispatcherType> dispatcherTypes = this.dispatcherTypes;
+     if (dispatcherTypes == null) {
+       T filter = getFilter();
+       if (ClassUtils.isPresent("org.springframework.web.filter.OncePerRequestFilter",
+           NullabilityUtil.castToNonnull(filter, "filter cannot be null").getClass().getClassLoader()) && filter instanceof OncePerRequestFilter) {
+         dispatcherTypes = EnumSet.allOf(DispatcherType.class);
+       }
+       else {
+         dispatcherTypes = EnumSet.of(DispatcherType.REQUEST);
+       }
+     }
+     Set<String> servletNames = new LinkedHashSet<>();
+     for (ServletRegistrationBean<?> servletRegistrationBean : this.servletRegistrationBeans) {
+       servletNames.add(servletRegistrationBean.getServletName());
+     }
+     servletNames.addAll(this.servletNames);
+     if (servletNames.isEmpty() && this.urlPatterns.isEmpty()) {
+       registration.addMappingForUrlPatterns(dispatcherTypes, this.matchAfter, DEFAULT_URL_MAPPINGS);
+     }
+     else {
+       if (!servletNames.isEmpty()) {
+         registration.addMappingForServletNames(dispatcherTypes, this.matchAfter,
+             StringUtils.toStringArray(servletNames));
+       }
+       if (!this.urlPatterns.isEmpty()) {
+         registration.addMappingForUrlPatterns(dispatcherTypes, this.matchAfter,
+             StringUtils.toStringArray(this.urlPatterns));
+       }
+     }
+   }
 
 	/**
 	 * Return the {@link Filter} to be registered.

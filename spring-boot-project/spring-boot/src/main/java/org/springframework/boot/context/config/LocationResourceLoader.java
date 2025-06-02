@@ -72,7 +72,7 @@ class LocationResourceLoader {
 	 * @return the resource
 	 * @see #isPattern(String)
 	 */
-	Resource getResource(@Nullable String location) {
+	Resource getResource(String location) {
 		validateNonPattern(location);
 		location = StringUtils.cleanPath(location);
 		if (!ResourceUtils.isUrl(location)) {
@@ -92,7 +92,7 @@ class LocationResourceLoader {
 	 * @return the resources
 	 * @see #isPattern(String)
 	 */
-	Resource[] getResources(@Nullable String location, ResourceType type) {
+	Resource[] getResources(String location, ResourceType type) {
 		validatePattern(location, type);
 		String directoryPath = location.substring(0, location.indexOf("*/"));
 		String fileName = location.substring(location.lastIndexOf("/") + 1);

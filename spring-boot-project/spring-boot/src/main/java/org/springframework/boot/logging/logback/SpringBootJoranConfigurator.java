@@ -67,6 +67,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.function.SingletonSupplier;
 import javax.annotation.Nullable;
+import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * Extended version of the Logback {@link JoranConfigurator} that adds additional Spring
@@ -277,15 +278,14 @@ class SpringBootJoranConfigurator extends JoranConfigurator {
 			}
 		}
 
-		@Nullable
-		private Object instantiate(@Nullable Class<?> type) {
-			try {
-				return type.getConstructor().newInstance();
-			}
-			catch (Exception ex) {
-				return null;
-			}
-		}
+		private Object instantiate( Class<?> type) {
+  			try {
+  				return NullabilityUtil.castToNonnull(type, "null reference throws exception").getConstructor().newInstance();
+  			}
+  			catch (Exception ex) {
+  				return null;
+  			}
+  		}
 
 		private void processComponent(Class<?> componentType, Set<String> reflectionTypes) {
 			BeanDescription beanDescription = this.modelInterpretationContext.getBeanDescriptionCache()

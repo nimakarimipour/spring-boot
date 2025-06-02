@@ -95,18 +95,20 @@ final class SpringProfileArbiter implements Arbiter {
 			return this;
 		}
 
-		@Nullable
-		@Override
-		public SpringProfileArbiter build() {
-			Environment environment = Log4J2LoggingSystem.getEnvironment(this.loggerContext);
-			if (environment == null) {
-				statusLogger.warn("Cannot create Arbiter, no Spring Environment available");
-				return null;
-			}
-			String name = this.configuration.getStrSubstitutor().replace(this.name);
-			String[] profiles = StringUtils.trimArrayElements(StringUtils.commaDelimitedListToStringArray(name));
-			return new SpringProfileArbiter(environment, profiles);
-		}
+		@Nullable @Override
+    public SpringProfileArbiter build() {
+        if (this.configuration == null) {
+            return null;
+        }
+        Environment environment = Log4J2LoggingSystem.getEnvironment(this.loggerContext);
+        if (environment == null) {
+            statusLogger.warn("Cannot create Arbiter, no Spring Environment available");
+            return null;
+        }
+        String name = this.configuration.getStrSubstitutor().replace(this.name);
+        String[] profiles = StringUtils.trimArrayElements(StringUtils.commaDelimitedListToStringArray(name));
+        return new SpringProfileArbiter(environment, profiles);
+    }
 
 	}
 

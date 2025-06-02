@@ -109,7 +109,7 @@ class ConfigDataEnvironment {
 
 	private final Log logger;
 
-	@Nullable private final ConfigDataNotFoundAction notFoundAction;
+	private final ConfigDataNotFoundAction notFoundAction;
 
 	private final ConfigurableBootstrapContext bootstrapContext;
 
@@ -203,7 +203,7 @@ class ConfigDataEnvironment {
 		return initialContributors;
 	}
 
-	@Nullable private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
+	private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
 		return binder.bind(propertyName, CONFIG_DATA_LOCATION_ARRAY).orElse(other);
 	}
 

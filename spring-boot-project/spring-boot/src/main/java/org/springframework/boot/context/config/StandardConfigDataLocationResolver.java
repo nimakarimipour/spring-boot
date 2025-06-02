@@ -47,7 +47,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * {@link ConfigDataLocationResolver} for standard locations.
@@ -97,12 +96,12 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private String[] getConfigNames(Binder binder) {
- 		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
- 		for (String configName : NullabilityUtil.castToNonnull(configNames, "orElse guarantees value")) {
- 			validateConfigName(configName);
- 		}
- 		return configNames;
- }
+		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
+		for (String configName : configNames) {
+			validateConfigName(configName);
+		}
+		return configNames;
+	}
 
 	private void validateConfigName(String name) {
 		Assert.state(!name.contains("*"), () -> "Config name '" + name + "' cannot contain '*'");

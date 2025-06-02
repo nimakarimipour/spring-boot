@@ -258,7 +258,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		}
 	}
 
-	@Nullable private List<String> getOverrides(LoggingInitializationContext initializationContext) {
+	private List<String> getOverrides(LoggingInitializationContext initializationContext) {
 		BindResult<List<String>> overrides = Binder.get(initializationContext.getEnvironment())
 				.bind("logging.log4j2.config.override", Bindable.listOf(String.class));
 		return overrides.orElse(Collections.emptyList());

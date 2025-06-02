@@ -198,7 +198,7 @@ class UndertowWebServerFactoryDelegate {
 		return factories;
 	}
 
-	static List<HttpHandlerFactory> createHttpHandlerFactories(Compression compression, boolean useForwardHeaders,
+	static List<HttpHandlerFactory> createHttpHandlerFactories(@Nullable Compression compression, boolean useForwardHeaders,
 			@Nullable String serverHeader, @Nullable Shutdown shutdown,
 			HttpHandlerFactory... initialHttpHandlerFactories) {
 		List<HttpHandlerFactory> factories = new ArrayList<>(Arrays.asList(initialHttpHandlerFactories));

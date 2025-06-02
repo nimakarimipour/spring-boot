@@ -67,7 +67,7 @@ class ConfigurationPropertySourcesPropertySource extends PropertySource<Iterable
 	}
 
 	@Nullable
-	ConfigurationProperty findConfigurationProperty(ConfigurationPropertyName name) {
+	ConfigurationProperty findConfigurationProperty(@Nullable ConfigurationPropertyName name) {
 		if (name == null) {
 			return null;
 		}

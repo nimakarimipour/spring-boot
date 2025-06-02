@@ -562,7 +562,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @return a {@link ConfigurationPropertyName} instance
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid
 	 */
-	public static ConfigurationPropertyName of(CharSequence name) {
+	@Nullable public static ConfigurationPropertyName of(CharSequence name) {
 		return of(name, false);
 	}
 
@@ -573,7 +573,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @return a {@link ConfigurationPropertyName} instance
 	 * @since 2.3.1
 	 */
-	public static ConfigurationPropertyName ofIfValid(CharSequence name) {
+	@Nullable public static ConfigurationPropertyName ofIfValid(CharSequence name) {
 		return of(name, true);
 	}
 
@@ -585,7 +585,7 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 	 * @throws InvalidConfigurationPropertyNameException if the name is not valid and
 	 * {@code returnNullIfInvalid} is {@code false}
 	 */
-	static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
+	@Nullable static ConfigurationPropertyName of(CharSequence name, boolean returnNullIfInvalid) {
 		Elements elements = elementsOf(name, returnNullIfInvalid);
 		return (elements != null) ? new ConfigurationPropertyName(elements) : null;
 	}

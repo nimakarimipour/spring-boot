@@ -48,7 +48,7 @@ class SslConnectorCustomizer implements TomcatConnectorCustomizer {
 	@Nullable
 	private final SslStoreProvider sslStoreProvider;
 
-	SslConnectorCustomizer(Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
+	SslConnectorCustomizer(@Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider) {
 		Assert.notNull(ssl, "Ssl configuration should not be null");
 		this.ssl = ssl;
 		this.sslStoreProvider = sslStoreProvider;

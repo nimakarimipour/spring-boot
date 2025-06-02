@@ -354,7 +354,7 @@ public class Binder {
 		}
 	}
 
-	private <T> T handleBindResult(ConfigurationPropertyName name, Bindable<T> target, BindHandler handler,
+	@Nullable private <T> T handleBindResult(ConfigurationPropertyName name, Bindable<T> target, BindHandler handler,
 			Context context, @Nullable Object result, boolean create) throws Exception {
 		if (result != null) {
 			result = handler.onSuccess(name, target, context, result);
@@ -381,7 +381,7 @@ public class Binder {
 		return null;
 	}
 
-	private <T> T handleBindError(ConfigurationPropertyName name, Bindable<T> target, BindHandler handler,
+	@Nullable private <T> T handleBindError(ConfigurationPropertyName name, Bindable<T> target, BindHandler handler,
 			Context context, Exception error) {
 		try {
 			Object result = handler.onFailure(name, target, context, error);
@@ -462,7 +462,7 @@ public class Binder {
 		return null;
 	}
 
-	private <T> Object bindProperty(Bindable<T> target, Context context, ConfigurationProperty property) {
+	@Nullable private <T> Object bindProperty(Bindable<T> target, Context context, ConfigurationProperty property) {
 		context.setConfigurationProperty(property);
 		Object result = property.getValue();
 		result = this.placeholdersResolver.resolvePlaceholders(result);

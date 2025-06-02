@@ -34,7 +34,7 @@ class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 
 	private final Compression compression;
 
-	CompressionConnectorCustomizer(@Nullable Compression compression) {
+	CompressionConnectorCustomizer(Compression compression) {
 		this.compression = compression;
 	}
 

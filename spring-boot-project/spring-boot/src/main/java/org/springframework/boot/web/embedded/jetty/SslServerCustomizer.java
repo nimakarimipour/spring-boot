@@ -65,7 +65,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 	@Nullable
 	private final Http2 http2;
 
-	SslServerCustomizer(InetSocketAddress address, @Nullable Ssl ssl, @Nullable SslStoreProvider sslStoreProvider,
+	SslServerCustomizer(InetSocketAddress address, Ssl ssl, @Nullable SslStoreProvider sslStoreProvider,
 			@Nullable Http2 http2) {
 		this.address = address;
 		this.ssl = ssl;

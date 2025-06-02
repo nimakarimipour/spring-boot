@@ -55,7 +55,7 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 
 	private final Set<String> packagesToScan;
 
-	private ApplicationContext applicationContext;
+	@Nullable private ApplicationContext applicationContext;
 
 	ServletComponentRegisteringPostProcessor(Set<String> packagesToScan) {
 		this.packagesToScan = packagesToScan;
@@ -72,14 +72,16 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 	}
 
 	private void scanPackage(ClassPathScanningCandidateComponentProvider componentProvider, String packageToScan) {
-		for (BeanDefinition candidate : componentProvider.findCandidateComponents(packageToScan)) {
-			if (candidate instanceof AnnotatedBeanDefinition annotatedBeanDefinition) {
-				for (ServletComponentHandler handler : HANDLERS) {
-					handler.handle(annotatedBeanDefinition, (BeanDefinitionRegistry) this.applicationContext);
-				}
-			}
-		}
-	}
+       if (this.applicationContext instanceof BeanDefinitionRegistry registry) {
+           for (BeanDefinition candidate : componentProvider.findCandidateComponents(packageToScan)) {
+               if (candidate instanceof AnnotatedBeanDefinition annotatedBeanDefinition) {
+                   for (ServletComponentHandler handler : HANDLERS) {
+                       handler.handle(annotatedBeanDefinition, registry);
+                   }
+               }
+           }
+       }
+   }
 
 	private boolean isRunningInEmbeddedWebServer() {
 		return this.applicationContext instanceof WebApplicationContext webApplicationContext
@@ -87,15 +89,18 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 	}
 
 	private ClassPathScanningCandidateComponentProvider createComponentProvider() {
-		ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(
-				false);
-		componentProvider.setEnvironment(this.applicationContext.getEnvironment());
-		componentProvider.setResourceLoader(this.applicationContext);
-		for (ServletComponentHandler handler : HANDLERS) {
-			componentProvider.addIncludeFilter(handler.getTypeFilter());
-		}
-		return componentProvider;
-	}
+     if (this.applicationContext == null) {
+       throw new IllegalStateException("ApplicationContext has not been set");
+     }
+     ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(
+         false);
+     componentProvider.setEnvironment(this.applicationContext.getEnvironment());
+     componentProvider.setResourceLoader(this.applicationContext);
+     for (ServletComponentHandler handler : HANDLERS) {
+       componentProvider.addIncludeFilter(handler.getTypeFilter());
+     }
+     return componentProvider;
+   }
 
 	Set<String> getPackagesToScan() {
 		return Collections.unmodifiableSet(this.packagesToScan);

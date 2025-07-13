@@ -161,17 +161,15 @@ class BeanDefinitionLoader {
 	}
 
 	private void load(Class<?> source) {
-       if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
-           if (this.groovyReader == null) {
-               throw new IllegalStateException("Groovy reader must be initialized to load Groovy beans.");
-           }
-           GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
-           ((GroovyBeanDefinitionReader) this.groovyReader).beans(loader.getBeans());
-       }
-       if (isEligible(source)) {
-           this.annotatedReader.register(source);
-       }
-   }
+		if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
+			// Any GroovyLoaders added in beans{} DSL can contribute beans here
+			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
+			((GroovyBeanDefinitionReader) this.groovyReader).beans(loader.getBeans());
+		}
+		if (isEligible(source)) {
+			this.annotatedReader.register(source);
+		}
+	}
 
 	private void load(Resource source) {
 		if (source.getFilename().endsWith(".groovy")) {

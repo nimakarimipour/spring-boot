@@ -150,7 +150,7 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 		private static Constructor<?> deduceBindConstructor(Class<?> type, Constructor<?>[] candidates) {
         if (candidates.length == 1 && candidates[0].getParameterCount() > 0) {
             if (type.isMemberClass() && Modifier.isPrivate(candidates[0].getModifiers())) {
-                return null;
+                throw new IllegalStateException(type.getName() + " has a private no-args constructor");
             }
             return candidates[0];
         }
@@ -158,12 +158,18 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
         for (Constructor<?> candidate : candidates) {
             if (!Modifier.isPrivate(candidate.getModifiers())) {
                 if (result != null) {
-                    return null;
+                    throw new IllegalStateException(type.getName() + " has more than one accessible constructor");
                 }
                 result = candidate;
             }
         }
-        return result != null && result.getParameterCount() > 0 ? result : candidates[0];
+        if (result != null && result.getParameterCount() > 0) {
+            return result;
+        }
+        if (candidates.length > 0 && candidates[0].getParameterCount() > 0) {
+            return candidates[0];
+        }
+        throw new IllegalStateException(type.getName() + " has no suitable constructor");
     }
 
 		private static boolean isKotlinType(Class<?> type) {

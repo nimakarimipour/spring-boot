@@ -91,8 +91,12 @@ final class BindConverter {
 	}
 
 	<T> T convert(@Nullable Object source, Bindable<T> target) {
-		return convert(source, target.getType(), target.getAnnotations());
-	}
+       T result = convert(source, target.getType(), target.getAnnotations());
+       if (result == null) {
+           throw new IllegalStateException("Conversion returned null for a non-nullable type");
+       }
+       return result;
+   }
 
 	@Nullable
 	@SuppressWarnings("unchecked")

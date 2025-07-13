@@ -45,6 +45,7 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * Wrapper around a {@link ConfigurableEnvironment} that can be used to import and apply
@@ -109,7 +110,7 @@ class ConfigDataEnvironment {
 
 	private final Log logger;
 
-	private final ConfigDataNotFoundAction notFoundAction;
+	@Nullable private final ConfigDataNotFoundAction notFoundAction;
 
 	private final ConfigurableBootstrapContext bootstrapContext;
 
@@ -194,14 +195,14 @@ class ConfigDataEnvironment {
 	}
 
 	private List<ConfigDataEnvironmentContributor> getInitialImportContributors(Binder binder) {
-		List<ConfigDataEnvironmentContributor> initialContributors = new ArrayList<>();
-		addInitialImportContributors(initialContributors, bindLocations(binder, IMPORT_PROPERTY, EMPTY_LOCATIONS));
-		addInitialImportContributors(initialContributors,
-				bindLocations(binder, ADDITIONAL_LOCATION_PROPERTY, EMPTY_LOCATIONS));
-		addInitialImportContributors(initialContributors,
-				bindLocations(binder, LOCATION_PROPERTY, DEFAULT_SEARCH_LOCATIONS));
-		return initialContributors;
-	}
+   		List<ConfigDataEnvironmentContributor> initialContributors = new ArrayList<>();
+   		addInitialImportContributors(initialContributors, Nullability.castToNonnull(bindLocations(binder, IMPORT_PROPERTY, EMPTY_LOCATIONS)));
+   		addInitialImportContributors(initialContributors,
+   				Nullability.castToNonnull(bindLocations(binder, ADDITIONAL_LOCATION_PROPERTY, EMPTY_LOCATIONS)));
+   		addInitialImportContributors(initialContributors,
+   				Nullability.castToNonnull(bindLocations(binder, LOCATION_PROPERTY, DEFAULT_SEARCH_LOCATIONS)));
+   		return initialContributors;
+ }
 
 	private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
 		return binder.bind(propertyName, CONFIG_DATA_LOCATION_ARRAY).orElse(other);
@@ -224,18 +225,18 @@ class ConfigDataEnvironment {
 	 * {@link Environment}.
 	 */
 	void processAndApply() {
-		ConfigDataImporter importer = new ConfigDataImporter(this.logFactory, this.notFoundAction, this.resolvers,
-				this.loaders);
-		registerBootstrapBinder(this.contributors, null, DENY_INACTIVE_BINDING);
-		ConfigDataEnvironmentContributors contributors = processInitial(this.contributors, importer);
-		ConfigDataActivationContext activationContext = createActivationContext(
-				contributors.getBinder(null, BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE));
-		contributors = processWithoutProfiles(contributors, importer, activationContext);
-		activationContext = withProfiles(contributors, activationContext);
-		contributors = processWithProfiles(contributors, importer, activationContext);
-		applyToEnvironment(contributors, activationContext, importer.getLoadedLocations(),
-				importer.getOptionalLocations());
-	}
+ 		ConfigDataImporter importer = new ConfigDataImporter(this.logFactory, Nullability.castToNonnull(this.notFoundAction), this.resolvers,
+ 				this.loaders);
+ 		registerBootstrapBinder(this.contributors, null, DENY_INACTIVE_BINDING);
+ 		ConfigDataEnvironmentContributors contributors = processInitial(this.contributors, importer);
+ 		ConfigDataActivationContext activationContext = createActivationContext(
+ 				contributors.getBinder(null, BinderOption.FAIL_ON_BIND_TO_INACTIVE_SOURCE));
+ 		contributors = processWithoutProfiles(contributors, importer, activationContext);
+ 		activationContext = withProfiles(contributors, activationContext);
+ 		contributors = processWithProfiles(contributors, importer, activationContext);
+ 		applyToEnvironment(contributors, activationContext, importer.getLoadedLocations(),
+ 				importer.getOptionalLocations());
+ }
 
 	private ConfigDataEnvironmentContributors processInitial(ConfigDataEnvironmentContributors contributors,
 			ConfigDataImporter importer) {
@@ -366,27 +367,27 @@ class ConfigDataEnvironment {
 	}
 
 	private void checkMandatoryLocations(ConfigDataEnvironmentContributors contributors,
-			ConfigDataActivationContext activationContext, Set<ConfigDataLocation> loadedLocations,
-			Set<ConfigDataLocation> optionalLocations) {
-		Set<ConfigDataLocation> mandatoryLocations = new LinkedHashSet<>();
-		for (ConfigDataEnvironmentContributor contributor : contributors) {
-			if (contributor.isActive(activationContext)) {
-				mandatoryLocations.addAll(getMandatoryImports(contributor));
-			}
-		}
-		for (ConfigDataEnvironmentContributor contributor : contributors) {
-			if (contributor.getLocation() != null) {
-				mandatoryLocations.remove(contributor.getLocation());
-			}
-		}
-		mandatoryLocations.removeAll(loadedLocations);
-		mandatoryLocations.removeAll(optionalLocations);
-		if (!mandatoryLocations.isEmpty()) {
-			for (ConfigDataLocation mandatoryLocation : mandatoryLocations) {
-				this.notFoundAction.handle(this.logger, new ConfigDataLocationNotFoundException(mandatoryLocation));
-			}
-		}
-	}
+       ConfigDataActivationContext activationContext, Set<ConfigDataLocation> loadedLocations,
+       Set<ConfigDataLocation> optionalLocations) {
+     Set<ConfigDataLocation> mandatoryLocations = new LinkedHashSet<>();
+     for (ConfigDataEnvironmentContributor contributor : contributors) {
+       if (contributor.isActive(activationContext)) {
+         mandatoryLocations.addAll(getMandatoryImports(contributor));
+       }
+     }
+     for (ConfigDataEnvironmentContributor contributor : contributors) {
+       if (contributor.getLocation() != null) {
+         mandatoryLocations.remove(contributor.getLocation());
+       }
+     }
+     mandatoryLocations.removeAll(loadedLocations);
+     mandatoryLocations.removeAll(optionalLocations);
+     if (!mandatoryLocations.isEmpty()) {
+       for (ConfigDataLocation mandatoryLocation : mandatoryLocations) {
+         Nullability.castToNonnull(this.notFoundAction).handle(this.logger, new ConfigDataLocationNotFoundException(mandatoryLocation));
+       }
+     }
+   }
 
 	private Set<ConfigDataLocation> getMandatoryImports(ConfigDataEnvironmentContributor contributor) {
 		List<ConfigDataLocation> imports = contributor.getImports();

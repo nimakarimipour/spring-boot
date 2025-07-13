@@ -80,13 +80,11 @@ class AccessLogHttpHandlerFactory implements HttpHandlerFactory {
 	}
 
 	private void createAccessLogDirectoryIfNecessary() {
-       if (this.directory == null) {
-           throw new IllegalStateException("Access log directory is not set");
-       }
-       if (!this.directory.isDirectory() && !this.directory.mkdirs()) {
-           throw new IllegalStateException("Failed to create access log directory '" + this.directory + "'");
-       }
-   }
+		Assert.state(this.directory != null, "Access log directory is not set");
+		if (!this.directory.isDirectory() && !this.directory.mkdirs()) {
+			throw new IllegalStateException("Failed to create access log directory '" + this.directory + "'");
+		}
+	}
 
 	private XnioWorker createWorker() throws IOException {
 		Xnio xnio = Xnio.getInstance(Undertow.class.getClassLoader());

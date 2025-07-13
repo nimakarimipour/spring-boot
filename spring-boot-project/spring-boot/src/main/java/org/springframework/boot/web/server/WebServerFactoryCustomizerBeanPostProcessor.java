@@ -42,8 +42,8 @@ import javax.annotation.Nullable;
  */
 public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-	@Nullable
-	private ListableBeanFactory beanFactory;
+	
+	@Nullable private ListableBeanFactory beanFactory;
 
 	@Nullable
 	private List<WebServerFactoryCustomizer<?>> customizers;
@@ -86,8 +86,9 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Collection<WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
-		return (Collection) this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false).values();
-	}
+   private Collection<WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
+       Assert.state(this.beanFactory != null, "BeanFactory must not be null");
+       return (Collection) this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false).values();
+   }
 
 }

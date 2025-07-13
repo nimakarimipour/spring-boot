@@ -39,7 +39,7 @@ public class DeferredLog implements Log {
 	@Nullable
 	private volatile Log destination;
 
-	private final Supplier<Log> destinationSupplier;
+	@Nullable private final Supplier<Log> destinationSupplier;
 
 	private final Lines lines;
 
@@ -165,20 +165,29 @@ public class DeferredLog implements Log {
 		log(LogLevel.FATAL, message, t);
 	}
 
-	private void log(LogLevel level, Object message, @Nullable Throwable t) {
-		synchronized (this.lines) {
-			if (this.destination != null) {
-				logTo(this.destination, level, message, t);
-			}
-			else {
-				this.lines.add(this.destinationSupplier, level, message, t);
-			}
-		}
-	}
+	private void log(LogLevel level, Object message,  @Nullable Throwable t) {
+       synchronized (this.lines) {
+           if (this.destination != null) {
+               logTo(this.destination, level, message, t);
+           }
+           else {
+               Supplier<Log> supplier = this.destinationSupplier;
+               if (supplier != null) {
+                   this.lines.add(supplier, level, message, t);
+               }
+               // Consider handling the case where supplier is null, if needed
+           }
+       }
+   }
 
 	void switchOver() {
-		this.destination = this.destinationSupplier.get();
-	}
+       if (this.destinationSupplier != null) {
+           this.destination = this.destinationSupplier.get();
+       } else {
+           // Handle the case where destinationSupplier is null, e.g., throw an exception
+           throw new IllegalStateException("destinationSupplier must not be null");
+       }
+   }
 
 	/**
 	 * Switch from deferred logging to immediate logging to the specified destination.
@@ -260,7 +269,7 @@ public class DeferredLog implements Log {
 
 		private final List<Line> lines = new ArrayList<>();
 
-		void add(Supplier<Log> destinationSupplier, LogLevel level, Object message, @Nullable Throwable throwable) {
+		void add(@Nullable Supplier<Log> destinationSupplier, LogLevel level, Object message, @Nullable Throwable throwable) {
 			this.lines.add(new Line(destinationSupplier, level, message, throwable));
 		}
 

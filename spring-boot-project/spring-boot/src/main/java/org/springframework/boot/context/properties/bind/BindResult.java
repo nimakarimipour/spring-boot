@@ -100,11 +100,8 @@ public final class BindResult<T> {
 	 * @return the value, if bound, otherwise {@code other}
 	 */
 	public T orElse(@Nullable T other) {
-       if (this.value == null && other == null) {
-           throw new IllegalStateException("Cannot return null from a method with @NonNull return type");
-       }
-       return (this.value != null) ? this.value : other;
-   }
+		return (this.value != null) ? this.value : other;
+	}
 
 	/**
 	 * Return the object that was bound, or the result of invoking {@code other} if no

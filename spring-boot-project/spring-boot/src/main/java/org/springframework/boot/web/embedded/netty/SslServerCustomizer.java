@@ -72,11 +72,11 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 	@Nullable
 	private final SslStoreProvider sslStoreProvider;
 
-	public SslServerCustomizer(@Nullable @NonNull Ssl ssl, @Nullable Http2 http2, @Nullable SslStoreProvider sslStoreProvider) {
-       this.ssl = ssl;
-       this.http2 = http2;
-       this.sslStoreProvider = sslStoreProvider;
-   }
+	public SslServerCustomizer(@Nullable Ssl ssl, @Nullable Http2 http2, @Nullable SslStoreProvider sslStoreProvider) {
+		this.ssl = ssl;
+		this.http2 = http2;
+		this.sslStoreProvider = sslStoreProvider;
+	}
 
 	@Override
 	public HttpServer apply(HttpServer server) {

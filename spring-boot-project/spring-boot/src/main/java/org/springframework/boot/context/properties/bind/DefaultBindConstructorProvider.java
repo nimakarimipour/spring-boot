@@ -148,23 +148,26 @@ class DefaultBindConstructorProvider implements BindConstructorProvider {
 		}
 
 		private static Constructor<?> deduceBindConstructor(Class<?> type, Constructor<?>[] candidates) {
-			if (candidates.length == 1 && candidates[0].getParameterCount() > 0) {
-				if (type.isMemberClass() && Modifier.isPrivate(candidates[0].getModifiers())) {
-					return null;
-				}
-				return candidates[0];
-			}
-			Constructor<?> result = null;
-			for (Constructor<?> candidate : candidates) {
-				if (!Modifier.isPrivate(candidate.getModifiers())) {
-					if (result != null) {
-						return null;
-					}
-					result = candidate;
-				}
-			}
-			return (result != null && result.getParameterCount() > 0) ? result : null;
-		}
+        if (candidates.length == 1 && candidates[0].getParameterCount() > 0) {
+            if (type.isMemberClass() && Modifier.isPrivate(candidates[0].getModifiers())) {
+                throw new IllegalStateException(type.getName() + " has a private no-arg constructor in a member class");
+            }
+            return candidates[0];
+        }
+        Constructor<?> result = null;
+        for (Constructor<?> candidate : candidates) {
+            if (!Modifier.isPrivate(candidate.getModifiers()) && candidate.getParameterCount() > 0) {
+                if (result != null) {
+                    throw new IllegalStateException(type.getName() + " has more than one accessible constructor with parameters");
+                }
+                result = candidate;
+            }
+        }
+        if (result == null) {
+            throw new IllegalStateException(type.getName() + " has no visible constructor with parameters");
+        }
+        return result;
+    }
 
 		private static boolean isKotlinType(Class<?> type) {
 			return KotlinDetector.isKotlinPresent() && KotlinDetector.isKotlinType(type);

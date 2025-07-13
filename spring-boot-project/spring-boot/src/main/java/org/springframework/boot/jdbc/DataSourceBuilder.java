@@ -46,7 +46,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * Convenience class for building a {@link DataSource}. Provides a limited subset of the
@@ -494,18 +493,18 @@ public final class DataSourceBuilder<T extends DataSource> {
 		}
 
 		void set(T dataSource, @Nullable String value) {
-  			try {
-  				if (this.setter == null) {
-  					UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),
-  							() -> "No setter mapped for '" + this.property + "' property");
-  					return;
-  				}
-  				this.setter.set(dataSource, Nullability.castToNonnull(convertFromString(value)));
-  			}
-  			catch (SQLException ex) {
-  				throw new IllegalStateException(ex);
-  			}
-  }
+			try {
+				if (this.setter == null) {
+					UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),
+							() -> "No setter mapped for '" + this.property + "' property");
+					return;
+				}
+				this.setter.set(dataSource, convertFromString(value));
+			}
+			catch (SQLException ex) {
+				throw new IllegalStateException(ex);
+			}
+		}
 
 		@Nullable
 		String get(@Nullable T dataSource) {

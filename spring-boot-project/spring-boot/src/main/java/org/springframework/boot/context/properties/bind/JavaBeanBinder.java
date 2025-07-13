@@ -37,7 +37,6 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyS
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * {@link DataObjectBinder} for mutable Java Beans.
@@ -287,9 +286,9 @@ class JavaBeanBinder implements DataObjectBinder {
 
 		private final ResolvableType declaringClassType;
 
-		@Nullable private Method getter;
+		private Method getter;
 
-		@Nullable private Method setter;
+		private Method setter;
 
 		@Nullable
 		private Field field;
@@ -348,38 +347,35 @@ class JavaBeanBinder implements DataObjectBinder {
 			}
 		}
 
-		@Nullable Supplier<Object> getValue(Supplier<?> instance) {
-  		if (this.getter == null) {
-  			return null;
-  		}
-  		return () -> {
-  			try {
-  				Nullability.castToNonnull(this.getter, "explicitly checked").setAccessible(true);
-  				return this.getter.invoke(instance.get());
-  			}
-  			catch (Exception ex) {
-  				throw new IllegalStateException("Unable to get value for property " + this.name, ex);
-  			}
-  		};
-  	}
+		@Nullable
+		Supplier<Object> getValue(Supplier<?> instance) {
+			if (this.getter == null) {
+				return null;
+			}
+			return () -> {
+				try {
+					this.getter.setAccessible(true);
+					return this.getter.invoke(instance.get());
+				}
+				catch (Exception ex) {
+					throw new IllegalStateException("Unable to get value for property " + this.name, ex);
+				}
+			};
+		}
 
 		boolean isSettable() {
 			return this.setter != null;
 		}
 
 		void setValue(Supplier<?> instance, Object value) {
-        try {
-            if (this.setter != null) {
-                this.setter.setAccessible(true);
-                this.setter.invoke(instance.get(), value);
-            } else {
-                throw new IllegalStateException("Setter method is null for property " + this.name);
-            }
-        }
-        catch (Exception ex) {
-            throw new IllegalStateException("Unable to set value for property " + this.name, ex);
-        }
-    }
+			try {
+				this.setter.setAccessible(true);
+				this.setter.invoke(instance.get(), value);
+			}
+			catch (Exception ex) {
+				throw new IllegalStateException("Unable to set value for property " + this.name, ex);
+			}
+		}
 
 	}
 

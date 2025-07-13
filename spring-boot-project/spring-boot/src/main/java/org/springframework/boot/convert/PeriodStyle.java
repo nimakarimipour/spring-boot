@@ -266,11 +266,9 @@ public enum PeriodStyle {
 		}
 
 		private int intValue(Period value) {
-        if (this.intValue == null) {
-            throw new IllegalStateException("intValue cannot be extracted from " + this.name());
-        }
-        return this.intValue.apply(value);
-    }
+			Assert.notNull(this.intValue, () -> "intValue cannot be extracted from " + this.name());
+			return this.intValue.apply(value);
+		}
 
 		private static Unit fromChronoUnit(@Nullable ChronoUnit chronoUnit) {
 			if (chronoUnit == null) {

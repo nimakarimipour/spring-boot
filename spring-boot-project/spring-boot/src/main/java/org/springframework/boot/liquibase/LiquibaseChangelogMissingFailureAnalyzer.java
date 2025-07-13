@@ -45,9 +45,9 @@ class LiquibaseChangelogMissingFailureAnalyzer extends AbstractFailureAnalyzer<C
    }
 
 	private String extractChangelogPath(ChangeLogParseException cause) {
-     return Nullability.castToNonnull(cause.getMessage(), "checked before method call")
-         .substring(0, cause.getMessage().length() - MESSAGE_SUFFIX.length());
- }
+      return Nullability.castToNonnull(cause.getMessage(), "checked before method call")
+          .substring(0, Nullability.castToNonnull(cause.getMessage(), "checked before method call").length() - MESSAGE_SUFFIX.length());
+   }
 
 	private String getDescription(String changelogPath) {
 		return "Liquibase failed to start because no changelog could be found at '" + changelogPath + "'.";

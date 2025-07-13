@@ -784,10 +784,12 @@ public class RestTemplateBuilder {
 		}
 
 		private void setReadTimeout(ClientHttpRequestFactory factory) {
-			Method method = findMethod(factory, "setReadTimeout", int.class);
-			int timeout = Math.toIntExact(this.readTimeout.toMillis());
-			invoke(factory, method, timeout);
-		}
+        if (this.readTimeout != null) {
+            Method method = findMethod(factory, "setReadTimeout", int.class);
+            int timeout = Math.toIntExact(this.readTimeout.toMillis());
+            invoke(factory, method, timeout);
+        }
+    }
 
 		private void setBufferRequestBody(ClientHttpRequestFactory factory) {
 			Method method = findMethod(factory, "setBufferRequestBody", boolean.class);

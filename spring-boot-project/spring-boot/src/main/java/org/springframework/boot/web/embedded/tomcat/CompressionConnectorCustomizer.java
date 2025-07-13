@@ -23,7 +23,6 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * {@link TomcatConnectorCustomizer} that configures compression support on the given
@@ -33,7 +32,7 @@ import edu.ucr.cs.riple.annotator.util.Nullability;
  */
 class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 
-	@Nullable private final Compression compression;
+	private final Compression compression;
 
 	CompressionConnectorCustomizer(Compression compression) {
 		this.compression = compression;
@@ -50,30 +49,25 @@ class CompressionConnectorCustomizer implements TomcatConnectorCustomizer {
 	}
 
 	private void customize(AbstractHttp11Protocol<?> protocol) {
-        Compression compression = this.compression;
-        if (compression != null) {
-            protocol.setCompression("on");
-            protocol.setCompressionMinSize(getMinResponseSize(compression));
-            protocol.setCompressibleMimeType(getMimeTypes(compression));
-            if (Nullability.castToNonnull(this.compression, "explicitly checked for null").getExcludedUserAgents() != null) {
-                protocol.setNoCompressionUserAgents(getExcludedUserAgents());
-            }
-        }
-   }
+		Compression compression = this.compression;
+		protocol.setCompression("on");
+		protocol.setCompressionMinSize(getMinResponseSize(compression));
+		protocol.setCompressibleMimeType(getMimeTypes(compression));
+		if (this.compression.getExcludedUserAgents() != null) {
+			protocol.setNoCompressionUserAgents(getExcludedUserAgents());
+		}
+	}
 
-	private int getMinResponseSize(@Nullable Compression compression) {
+	private int getMinResponseSize(Compression compression) {
 		return (int) compression.getMinResponseSize().toBytes();
 	}
 
-	private String getMimeTypes(@Nullable Compression compression) {
+	private String getMimeTypes(Compression compression) {
 		return StringUtils.arrayToCommaDelimitedString(compression.getMimeTypes());
 	}
 
 	private String getExcludedUserAgents() {
-       if (this.compression != null) {
-           return StringUtils.arrayToCommaDelimitedString(this.compression.getExcludedUserAgents());
-       }
-       return ""; // or return null; depending on how you want to handle the null case
-   }
+		return StringUtils.arrayToCommaDelimitedString(this.compression.getExcludedUserAgents());
+	}
 
 }

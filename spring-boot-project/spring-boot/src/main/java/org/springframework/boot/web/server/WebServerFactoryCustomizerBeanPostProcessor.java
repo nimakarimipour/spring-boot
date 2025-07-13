@@ -86,11 +86,8 @@ public class WebServerFactoryCustomizerBeanPostProcessor implements BeanPostProc
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-   private Collection<WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
-       if (this.beanFactory == null) {
-           throw new IllegalStateException("BeanFactory must not be null");
-       }
-       return (Collection) this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false).values();
-   }
+	private Collection<WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
+		return (Collection) this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false).values();
+	}
 
 }

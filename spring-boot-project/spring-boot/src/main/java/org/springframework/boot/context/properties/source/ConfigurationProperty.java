@@ -50,14 +50,14 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 	}
 
 	private ConfigurationProperty(@Nullable ConfigurationPropertySource source,
-              @Nullable ConfigurationPropertyName name, Object value, @Nullable Origin origin) {
-       Assert.notNull(name, "Name must not be null");
-       Assert.notNull(value, "Value must not be null");
-       this.source = source;
-       this.name = name != null ? name : ConfigurationPropertyName.of("default");
-       this.value = value;
-       this.origin = origin;
-   }
+			@Nullable ConfigurationPropertyName name, Object value, @Nullable Origin origin) {
+		Assert.notNull(name, "Name must not be null");
+		Assert.notNull(value, "Value must not be null");
+		this.source = source;
+		this.name = name;
+		this.value = value;
+		this.origin = origin;
+	}
 
 	/**
 	 * Return the {@link ConfigurationPropertySource} that provided the property or

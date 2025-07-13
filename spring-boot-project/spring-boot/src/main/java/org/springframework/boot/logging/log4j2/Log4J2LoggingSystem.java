@@ -72,6 +72,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
+import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
@@ -372,14 +373,14 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		getLoggerContext().updateLoggers();
 	}
 
-	private void clearLogLevel(@Nullable String loggerName, @Nullable LoggerConfig logger) {
-		if (logger instanceof LevelSetLoggerConfig) {
-			getLoggerContext().getConfiguration().removeLogger(loggerName);
-		}
-		else {
-			logger.setLevel(null);
-		}
-	}
+	private void clearLogLevel( @Nullable String loggerName,  @Nullable LoggerConfig logger) {
+ 		if (logger instanceof LevelSetLoggerConfig) {
+ 			getLoggerContext().getConfiguration().removeLogger(loggerName);
+ 		}
+ 		else {
+ 			Nullability.castToNonnull(logger).setLevel(null);
+ 		}
+ }
 
 	private void setLogLevel(@Nullable String loggerName, @Nullable LoggerConfig logger, Level level) {
 		if (logger == null) {

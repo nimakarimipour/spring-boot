@@ -51,6 +51,9 @@ abstract class ServletComponentHandler {
 
 	@Nullable protected String[] extractUrlPatterns(Map<String, Object> attributes) {
        String[] value = (String[]) attributes.get("value");
+       if (value == null) {
+           return null;
+       }
        String[] urlPatterns = (String[]) attributes.get("urlPatterns");
        if (urlPatterns == null || urlPatterns.length > 0) {
            if (urlPatterns == null) {

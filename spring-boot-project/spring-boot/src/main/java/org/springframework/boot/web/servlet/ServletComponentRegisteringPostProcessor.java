@@ -58,8 +58,11 @@ class ServletComponentRegisteringPostProcessor implements BeanFactoryPostProcess
 	private ApplicationContext applicationContext;
 
 	ServletComponentRegisteringPostProcessor(Set<String> packagesToScan) {
-		this.packagesToScan = packagesToScan;
-	}
+       this.packagesToScan = packagesToScan;
+       if (packagesToScan == null) {
+           throw new IllegalArgumentException("packagesToScan cannot be null");
+       }
+   }
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {

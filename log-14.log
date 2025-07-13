@@ -1,0 +1,117 @@
+====================
+Type='RETURN_NULLABLE', message='returning @Nullable expression from method with @NonNull return type'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/properties/source/MutuallyExclusiveConfigurationPropertiesException.java:81
+		return (collection != null) ? new LinkedHashSet<>(collection) : null;
+Log:
+15:39:14.178 TRACE edu.ucr.cs.riple.core.checkers.nullaway.NullAway.lambda$resolveRemainingErrors$19
+==============================
+15:39:14.178 TRACE edu.ucr.cs.riple.core.checkers.nullaway.NullAway.lambda$resolveRemainingErrors$19
+CHATGPT.COUNT = 1
+15:39:14.178 TRACE edu.ucr.cs.riple.core.checkers.nullaway.NullAway.lambda$resolveRemainingErrors$19
+CHATGPT.PROMPTS SIZE = 1
+15:39:14.178 TRACE edu.ucr.cs.riple.core.checkers.nullaway.NullAway.lambda$resolveRemainingErrors$19
+Both set to 0 and cleared 0
+15:39:14.178 TRACE edu.ucr.cs.riple.core.checkers.nullaway.NullAway.lambda$resolveRemainingErrors$19
+14 : TOP LEVEL CALL TO FIX ERROR: Type='RETURN_NULLABLE', message='returning @Nullable expression from method with @NonNull return type'
+/home/nima/Developer/nullness-benchmarks/spring-boot/spring-boot-project/spring-boot/src/main/java/org/springframework/boot/context/properties/source/MutuallyExclusiveConfigurationPropertiesException.java:81
+		return (collection != null) ? new LinkedHashSet<>(collection) : null;
+15:39:21.933 TRACE edu.ucr.cs.riple.core.checkers.nullaway.codefix.ChatGPT.ask
+Asking ChatGPT:
+I want to resolve a warning reported by NullAway.
+The error is of the type of "RETURN_NULLABLE" and the full error message is: "returning @Nullable expression from method with @NonNull return type".
+The line with the error is: "		return (collection != null) ? new LinkedHashSet<>(collection) : null;".
+
+The error is within "the method: asSet(java.util.Collection)" and the code surrounding the error is:
+```java
+		this.mutuallyExclusiveNames = mutuallyExclusiveNames;
+	}
+
+	/**
+	 * Return the names of the properties that have been configured.
+	 * @return the names of the configured properties
+	 */
+	public Set<String> getConfiguredNames() {
+		return this.configuredNames;
+	}
+
+	/**
+	 * Return the names of the properties that are mutually exclusive.
+	 * @return the names of the mutually exclusive properties
+	 */
+	public Set<String> getMutuallyExclusiveNames() {
+		return this.mutuallyExclusiveNames;
+	}
+
+	private static Set<String> asSet(Collection<String> collection) {
+		return (collection != null) ? new LinkedHashSet<>(collection) : null;
+	}
+
+	private static String buildMessage(Set<String> mutuallyExclusiveNames, Set<String> configuredNames) {
+		Assert.isTrue(configuredNames != null && configuredNames.size() > 1,
+				"ConfiguredNames must contain 2 or more names");
+		Assert.isTrue(mutuallyExclusiveNames != null && mutuallyExclusiveNames.size() > 1,
+				"MutuallyExclusiveNames must contain 2 or more names");
+		return "The configuration properties '" + String.join(", ", mutuallyExclusiveNames)
+				+ "' are mutually exclusive and '" + String.join(", ", configuredNames)
+				+ "' have been configured together";
+	}
+
+	/**
+	 * Throw a new {@link MutuallyExclusiveConfigurationPropertiesException} if multiple
+	 * non-null values are defined in a set of entries.
+	 * @param entries a consumer used to populate the entries to check
+	 */
+	public static void throwIfMultipleNonNullValuesIn(Consumer<Map<String, Object>> entries) {
+		Map<String, Object> map = new LinkedHashMap<>();
+```
+
+Give me the fixed code snippet (ONLY THE METHOD REWRITE OF "asSet(java.util.Collection)") in XML format in <response> tag like the example below. I will apply the fix to my codebase.
+Do not import any additional libraries or classes or java comments.
+If you can provide the fixed code snippet, provide it in the following format and place the code snippet in the <code> tag within ```java block.
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  Your fixed code snippet here
+  ```
+    ]]>
+  </code>
+</response>
+
+15:39:21.933 TRACE edu.ucr.cs.riple.core.checkers.nullaway.codefix.ChatGPT.ask
+Retrieving response from cache
+15:39:21.933 TRACE edu.ucr.cs.riple.core.checkers.nullaway.codefix.Response.tryCreate
+Trying to create Response:
+```xml
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  private static Set<String> asSet(Collection<String> collection) {
+      return (collection != null) ? new LinkedHashSet<>(collection) : Collections.emptySet();
+  }
+  ```
+    ]]>
+  </code>
+</response>
+```
+15:39:21.934 TRACE edu.ucr.cs.riple.core.checkers.nullaway.codefix.Response.<init>
+Creating Response:
+```xml
+<response>
+  <success>true</success>
+  <code><![CDATA[
+  ```java
+  private static Set<String> asSet(Collection<String> collection) {
+      return (collection != null) ? new LinkedHashSet<>(collection) : Collections.emptySet();
+  }
+  ```
+    ]]>
+  </code>
+</response>
+```
+15:39:21.935 TRACE edu.ucr.cs.riple.core.checkers.nullaway.codefix.Response.<init>
+Response created:
+private static Set<String> asSet(Collection<String> collection) {
+      return (collection != null) ? new LinkedHashSet<>(collection) : Collections.emptySet();
+  }

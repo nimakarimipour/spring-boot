@@ -69,8 +69,8 @@ class BeanDefinitionLoader {
 
 	private final AbstractBeanDefinitionReader xmlReader;
 
-	@Nullable
-	private final BeanDefinitionReader groovyReader;
+	
+	@Nullable private final BeanDefinitionReader groovyReader;
 
 	private final ClassPathBeanDefinitionScanner scanner;
 
@@ -161,15 +161,17 @@ class BeanDefinitionLoader {
 	}
 
 	private void load(Class<?> source) {
-		if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
-			// Any GroovyLoaders added in beans{} DSL can contribute beans here
-			GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
-			((GroovyBeanDefinitionReader) this.groovyReader).beans(loader.getBeans());
-		}
-		if (isEligible(source)) {
-			this.annotatedReader.register(source);
-		}
-	}
+       if (isGroovyPresent() && GroovyBeanDefinitionSource.class.isAssignableFrom(source)) {
+           GroovyBeanDefinitionSource loader = BeanUtils.instantiateClass(source, GroovyBeanDefinitionSource.class);
+           if (this.groovyReader == null) {
+               throw new BeanDefinitionStoreException("Cannot load Groovy beans without Groovy Bean Definition Reader instantiated");
+           }
+           ((GroovyBeanDefinitionReader) this.groovyReader).beans(loader.getBeans());
+       }
+       if (isEligible(source)) {
+           this.annotatedReader.register(source);
+       }
+   }
 
 	private void load(Resource source) {
 		if (source.getFilename().endsWith(".groovy")) {

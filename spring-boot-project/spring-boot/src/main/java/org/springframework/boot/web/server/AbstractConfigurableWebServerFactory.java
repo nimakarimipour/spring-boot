@@ -68,7 +68,9 @@ public abstract class AbstractConfigurableWebServerFactory implements Configurab
 	 * Create a new {@link AbstractConfigurableWebServerFactory} instance.
 	 */
 	public AbstractConfigurableWebServerFactory() {
-	}
+       this.ssl = new Ssl(); // Initialize ssl with a default value or configuration
+       this.compression = new Compression(); // Initialize compression with a default value or configuration
+   }
 
 	/**
 	 * Create a new {@link AbstractConfigurableWebServerFactory} instance with the

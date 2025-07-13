@@ -47,7 +47,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * {@link ConfigDataLocationResolver} for standard locations.
@@ -77,7 +76,7 @@ public class StandardConfigDataLocationResolver
 
 	private final List<PropertySourceLoader> propertySourceLoaders;
 
-	@Nullable private final String[] configNames;
+	private final String[] configNames;
 
 	private final LocationResourceLoader resourceLoader;
 
@@ -97,12 +96,12 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private String[] getConfigNames(Binder binder) {
-         String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
-         for (String configName : Nullability.castToNonnull(configNames, "ensures non-null value")) {
-             validateConfigName(configName);
-         }
-         return configNames;
-   }
+		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
+		for (String configName : configNames) {
+			validateConfigName(configName);
+		}
+		return configNames;
+	}
 
 	private void validateConfigName(String name) {
 		Assert.state(!name.contains("*"), () -> "Config name '" + name + "' cannot contain '*'");
@@ -190,17 +189,15 @@ public class StandardConfigDataLocationResolver
 	}
 
 	private Set<StandardConfigDataReference> getReferencesForDirectory(ConfigDataLocation configDataLocation,
-       String directory, @Nullable String profile) {
-     Set<StandardConfigDataReference> references = new LinkedHashSet<>();
-     if (this.configNames != null) {
-       for (String name : this.configNames) {
-         Deque<StandardConfigDataReference> referencesForName = getReferencesForConfigName(name, configDataLocation,
-             directory, profile);
-         references.addAll(referencesForName);
-       }
-     }
-     return references;
-   }
+			String directory, @Nullable String profile) {
+		Set<StandardConfigDataReference> references = new LinkedHashSet<>();
+		for (String name : this.configNames) {
+			Deque<StandardConfigDataReference> referencesForName = getReferencesForConfigName(name, configDataLocation,
+					directory, profile);
+			references.addAll(referencesForName);
+		}
+		return references;
+	}
 
 	private Deque<StandardConfigDataReference> getReferencesForConfigName(String name,
 			ConfigDataLocation configDataLocation, String directory, @Nullable String profile) {

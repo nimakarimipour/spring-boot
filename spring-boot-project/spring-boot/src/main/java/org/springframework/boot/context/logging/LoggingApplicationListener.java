@@ -59,7 +59,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import com.uber.nullaway.annotations.Initializer;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * An {@link ApplicationListener} that configures the {@link LoggingSystem}. If the
@@ -426,13 +425,13 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 	}
 
 	private void registerShutdownHookIfNecessary(Environment environment, @Nullable LoggingSystem loggingSystem) {
- 		if (environment.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, true)) {
- 			Runnable shutdownHandler = Nullability.castToNonnull(loggingSystem).getShutdownHandler();
- 			if (shutdownHandler != null && shutdownHookRegistered.compareAndSet(false, true)) {
- 				registerShutdownHook(shutdownHandler);
- 			}
- 		}
- }
+		if (environment.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, true)) {
+			Runnable shutdownHandler = loggingSystem.getShutdownHandler();
+			if (shutdownHandler != null && shutdownHookRegistered.compareAndSet(false, true)) {
+				registerShutdownHook(shutdownHandler);
+			}
+		}
+	}
 
 	void registerShutdownHook(Runnable shutdownHandler) {
 		SpringApplication.getShutdownHandlers().add(shutdownHandler);

@@ -36,7 +36,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import javax.annotation.Nullable;
-import edu.ucr.cs.riple.annotator.util.Nullability;
 
 /**
  * Simple factory used to instantiate objects by injecting available parameters.
@@ -124,9 +123,9 @@ public class Instantiator<T> {
 	 * @since 2.4.8
 	 */
 	public List<T> instantiate(@Nullable ClassLoader classLoader, @Nullable Collection<String> names) {
-       Assert.notNull(names, "Names must not be null");
-       return instantiate(Nullability.castToNonnull(names, "Names must not be null").stream().map((name) -> TypeSupplier.forName(classLoader, name)));
-   }
+		Assert.notNull(names, "Names must not be null");
+		return instantiate(names.stream().map((name) -> TypeSupplier.forName(classLoader, name)));
+	}
 
 	/**
 	 * Instantiate the given set of classes, injecting constructor arguments as necessary.

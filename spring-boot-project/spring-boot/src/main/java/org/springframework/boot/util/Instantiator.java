@@ -172,16 +172,16 @@ public class Instantiator<T> {
 	}
 
 	private Object[] getArgs(Class<?>[] parameterTypes) {
-		Object[] args = new Object[parameterTypes.length];
-		for (int i = 0; i < parameterTypes.length; i++) {
-			Function<Class<?>, Object> parameter = getAvailableParameter(parameterTypes[i]);
-			if (parameter == null) {
-				return null;
-			}
-			args[i] = parameter.apply(this.type);
-		}
-		return args;
-	}
+       Object[] args = new Object[parameterTypes.length];
+       for (int i = 0; i < parameterTypes.length; i++) {
+           Function<Class<?>, Object> parameter = getAvailableParameter(parameterTypes[i]);
+           if (parameter == null) {
+               throw new IllegalArgumentException("No available parameter for type: " + parameterTypes[i]);
+           }
+           args[i] = parameter.apply(this.type);
+       }
+       return args;
+   }
 
 	@Nullable
 	private Function<Class<?>, Object> getAvailableParameter(Class<?> parameterType) {

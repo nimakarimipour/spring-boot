@@ -507,20 +507,19 @@ public final class DataSourceBuilder<T extends DataSource> {
   			}
   }
 
-		@Nullable
-		String get(@Nullable T dataSource) {
-			try {
-				if (this.getter == null) {
-					UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),
-							() -> "No getter mapped for '" + this.property + "' property");
-					return null;
-				}
-				return convertToString(this.getter.get(dataSource));
-			}
-			catch (SQLException ex) {
-				throw new IllegalStateException(ex);
-			}
-		}
+		@Nullable String get( @Nullable T dataSource) {
+        try {
+            if (this.getter == null) {
+                UnsupportedDataSourcePropertyException.throwIf(!this.property.isOptional(),
+                        () -> "No getter mapped for '" + this.property + "' property");
+                return null;
+            }
+            return convertToString(this.getter.get(Nullability.castToNonnull(dataSource)));
+        }
+        catch (SQLException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
 
 		@Nullable
 		@SuppressWarnings("unchecked")
